@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jlacube/awesome-coding-assistants/main/index.schema.json",
+  "version": "1.0.0",
+  "sources": [
+    {
+      "url": "https://github.com/jlacube/awesome-coding-assistants",
+      "name": "Awesome Coding Assistants",
+      "description": "Community-curated collection of coding assistant customizations",
+      "branch": "main",
+      "categories": ["agents", "instructions", "skills", "prompts", "rules", "modes"],
+      "tools": ["copilot"],
+      "private": false
+    }
+  ]
+}
