@@ -4,7 +4,7 @@ name: "4. Coder"
 tools: [vscode/askQuestions, execute/getTerminalOutput, execute/awaitTerminal, execute/killTerminal, execute/createAndRunTask, execute/runInTerminal, execute/runTests, execute/runNotebookCell, execute/testFailure, read/terminalSelection, read/terminalLastCommand, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web, web/fetch, web/githubRepo, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
 handoffs:
   - label: Request Review
-    agent: 5. Reviewer
+    agent: 5. Review Coordinator
     prompt: "Review the implemented work package"
     send: true
   - label: Clarify Specification
@@ -324,7 +324,7 @@ Do NOT set `lane: done` — only the Reviewer agent sets `done`. The coder's fin
 
 After marking a work package complete, **immediately invoke the Reviewer agent** to begin review. Do not wait for the user to manually trigger a review.
 
-Invoke `#agent:5. Reviewer` with the following structured handoff message:
+Invoke `#agent:5. Review Coordinator` with the following structured handoff message:
 
 > WP<NN> implementation is complete and ready for review.
 > The work package is at lane=for_review.

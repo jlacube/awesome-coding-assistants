@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
+review_status: acknowledged
 ---
 
 # WP01 - Foundation & Scaffolding
@@ -203,7 +203,7 @@ Set up the directory structure, artifact templates, and agent references require
 
 > Implementers: address every FB-XX item before returning for re-review.
 
-- [ ] **FB-01**: [spec-adherence] C-006, T01-04 acceptance criterion FAIL - Coder agent still references "5. Reviewer" in handoff configuration and invocation instruction. The deprecated agent file will not be loaded by VS Code, breaking the pipeline handoff chain.
+- [x] **FB-01**: [spec-adherence] C-006, T01-04 acceptance criterion FAIL - Coder agent still references "5. Reviewer" in handoff configuration and invocation instruction. The deprecated agent file will not be loaded by VS Code, breaking the pipeline handoff chain.
   File: .github/agents/coder.agent.md#L7. Expected: Update Coder agent handoff and invocation references from "5. Reviewer" to "5. Review Coordinator".
   Source skills: review-spec (SPEC-011)
 
@@ -234,3 +234,5 @@ Set up the directory structure, artifact templates, and agent references require
 - 2026-04-04T12:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-04T12:10:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-04T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-04T18:15:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
+- 2026-04-04T18:20:00Z - coder - lane=for_review - FB-01 remediated, resubmitted for re-review
