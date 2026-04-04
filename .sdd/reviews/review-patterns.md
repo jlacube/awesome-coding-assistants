@@ -1,6 +1,6 @@
 # Review Patterns
 
-> Last updated: 2026-04-04T20:00:00Z
+> Last updated: 2026-04-04T21:00:00Z
 > Last review: WP02-review-coordinator
 
 Coder: read this file before implementing any WP. These patterns document
@@ -8,8 +8,13 @@ mistakes caught in previous reviews. Avoid repeating them.
 
 ## Active Patterns
 
+(none)
+
+## Resolved
+
 ### PAT-002 [spec-adherence] Spec SHALL deviation on optional handling
 - **First seen**: WP02 (2026-04-04)
+- **Resolved**: WP02 (2026-04-04)
 - **Occurrences**: 1
 - **Pattern**: Implementation treats a chain item as optional ("record a note but continue") when the spec uses SHALL language requiring halt on ANY missing item. Deviates from strict spec language without proposing a spec amendment.
 - **Fix**: Follow spec SHALL obligations exactly. If the obligation is overly strict, propose a spec amendment via the "Update Specification" handoff rather than silently deviating.
@@ -17,12 +22,11 @@ mistakes caught in previous reviews. Avoid repeating them.
 
 ### PAT-003 [docs] Missing project documentation directory
 - **First seen**: WP02 (2026-04-04)
+- **Resolved**: WP02 (2026-04-04)
 - **Occurrences**: 1
 - **Pattern**: `.sdd/docs/` directory and standard documentation files (architecture.md, user-guide.md, developer-guide.md) are missing. No WP in the plan is assigned to create them.
 - **Fix**: Create a documentation WP or add documentation tasks to existing WPs. At minimum, create architecture.md, user-guide.md, and developer-guide.md for user-facing and developer-facing components.
 - **Source**: review-docs DOC-001, DOC-005, DOC-006, DOC-009, DOC-010
-
-## Resolved
 
 ### PAT-001 [spec-adherence] Incomplete agent name reference updates
 - **First seen**: WP01 (2026-04-04)
