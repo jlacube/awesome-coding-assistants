@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP01 - Foundation & Scaffolding
@@ -184,8 +185,52 @@ Set up the directory structure, artifact templates, and agent references require
 - **Risk**: Deprecated reviewer file is still loaded by VS Code
   - Mitigation: The `.deprecated` extension should prevent VS Code from treating it as an agent. Verify by checking VS Code agent discovery behavior.
 
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-04T18:00:00Z
+> **Verdict**: Changes Required
+> **Skills dispatched**: review-spec (FAIL), review-security (PASS), review-quality (PASS), review-tests (PASS), review-architecture (PASS), review-performance (PASS), review-docs (PASS), review-deps (PASS)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All acceptance criteria checked off in all 6 tasks
+- [PASS] Activity Log: Consistent lane transitions (planned -> doing -> for_review)
+- [WARN] Commit granularity: All 6 tasks committed in a single bulk commit (f77c009) instead of one commit per task
+- [WARN] Encoding: 25 em dashes (U+2014) in reviewer.agent.md.deprecated -- pre-existing in original file, not introduced by WP01
+
+### Review Feedback
+
+> Implementers: address every FB-XX item before returning for re-review.
+
+- [ ] **FB-01**: [spec-adherence] C-006, T01-04 acceptance criterion FAIL - Coder agent still references "5. Reviewer" in handoff configuration and invocation instruction. The deprecated agent file will not be loaded by VS Code, breaking the pipeline handoff chain.
+  File: .github/agents/coder.agent.md#L7. Expected: Update Coder agent handoff and invocation references from "5. Reviewer" to "5. Review Coordinator".
+  Source skills: review-spec (SPEC-011)
+
+### Warnings
+- [WARN] Commit granularity: All 6 WP01 tasks delivered in a single commit f77c009 instead of per-task commits (PROC-003)
+- [WARN] Encoding: 25 em dashes (U+2014) found in .github/agents/reviewer.agent.md.deprecated. These are inherited from the original file content and were not introduced by WP01 (ENC-001)
+
+### Cross-Correlation Notes
+- No cross-correlation findings. The single FAIL (SPEC-011) was reported only by review-spec. No duplicates, conflicts, or systemic patterns detected.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 2 | 2 | 0 |
+| review-spec | 11 | 0 | 1 |
+| review-security | 2 | 0 | 0 |
+| review-quality | 2 | 0 | 0 |
+| review-tests | 0 | 0 | 0 |
+| review-architecture | 3 | 0 | 0 |
+| review-performance | 0 | 0 | 0 |
+| review-docs | 0 | 0 | 0 |
+| review-deps | 0 | 0 | 0 |
+| **Total** | **20** | **2** | **1** |
+
 ## Activity Log
 
 - 2026-04-04T11:10:00Z - planner - lane=planned - Work package created
 - 2026-04-04T12:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-04T12:10:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-04T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
