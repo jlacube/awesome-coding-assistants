@@ -1,7 +1,7 @@
 # Review Patterns
 
-> Last updated: 2026-04-04T23:30:00Z
-> Last review: WP04-review-security
+> Last updated: 2026-04-05T01:00:00Z
+> Last review: WP06-p2-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
