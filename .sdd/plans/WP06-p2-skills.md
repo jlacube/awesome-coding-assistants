@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP06 - P2 Review Skills (review-tests, review-architecture)
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md` |
 | Priority | P2 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP02 |
 | Goal | Create two P2 review skills: review-tests (test quality evaluation) and review-architecture (architecture adherence), extending the coordinator's review coverage beyond MVP dimensions |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Install both P2 skills alongside P1 skills. Invoke the coordinator on a WP with test quality issues (vacuous test, missing BDD scenario) and architecture issues (scope creep, wrong technology). Verify: coordinator dispatches all 5 skills, findings files for review-tests and review-architecture contain appropriate FAIL/WARN entries |
 | Parallelisable | Yes (with WP07; internal tasks for each skill are also independent) |
 | Prompt | `.sdd/plans/WP06-p2-skills.md` |
@@ -37,11 +37,11 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: Yes (independent of T06-04 through T06-06)
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/review-tests/` exists
-  - [ ] File `.github/skills/review-tests/SKILL.md` exists
-  - [ ] YAML frontmatter `name` is `review-tests`
-  - [ ] YAML frontmatter `description` explains: evaluates test validity, coverage, BDD matching, edge cases, structure, and error path testing
-  - [ ] Purpose section states the skill's role as subagent invoked by coordinator
+  - [x] Directory `.github/skills/review-tests/` exists
+  - [x] File `.github/skills/review-tests/SKILL.md` exists
+  - [x] YAML frontmatter `name` is `review-tests`
+  - [x] YAML frontmatter `description` explains: evaluates test validity, coverage, BDD matching, edge cases, structure, and error path testing
+  - [x] Purpose section states the skill's role as subagent invoked by coordinator
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -60,13 +60,13 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: FR-040 (6 test quality dimensions)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Test Validity checks: tests can fail, flag `assert True`, empty bodies, no assertions, mocking away entire subject (vacuous tests)
-  - [ ] Coverage Thresholds checks: code coverage >= 80%, branch coverage >= 90% for WP files. Flag files below threshold. Flag `# pragma: no cover` without justification
-  - [ ] BDD Scenario Matching checks: every acceptance scenario from spec Sections 5 and 11.2 mapped to this WP has a corresponding test
-  - [ ] Edge Case Coverage checks: error paths, boundary values, empty inputs, max inputs, concurrent access tested
-  - [ ] Test Structure checks: Arrange/Act/Assert (or Given/When/Then), isolated tests (no shared mutable state), descriptive test names
-  - [ ] Error Path Testing checks: every specified error response has at least one test exercising it
-  - [ ] Each dimension has at least 3 verifiable checklist items
+  - [x] Test Validity checks: tests can fail, flag `assert True`, empty bodies, no assertions, mocking away entire subject (vacuous tests)
+  - [x] Coverage Thresholds checks: code coverage >= 80%, branch coverage >= 90% for WP files. Flag files below threshold. Flag `# pragma: no cover` without justification
+  - [x] BDD Scenario Matching checks: every acceptance scenario from spec Sections 5 and 11.2 mapped to this WP has a corresponding test
+  - [x] Edge Case Coverage checks: error paths, boundary values, empty inputs, max inputs, concurrent access tested
+  - [x] Test Structure checks: Arrange/Act/Assert (or Given/When/Then), isolated tests (no shared mutable state), descriptive test names
+  - [x] Error Path Testing checks: every specified error response has at least one test exercising it
+  - [x] Each dimension has at least 3 verifiable checklist items
 - **Test requirements**: BDD (reference spec Section 11.2 test-related scenarios)
 - **Depends on**: T06-01
 - **Implementation Guidance**:
@@ -81,13 +81,13 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: FR-041 (severity rules), FR-027 (findings format), FR-028 (read-only), FR-029 (N/A)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] FAIL: vacuous tests (`assert True`, empty bodies, mocking entire subject), coverage below threshold without justification, missing BDD scenario coverage
-  - [ ] WARN: test naming issues, minor structural concerns (shared setup that could be isolated)
-  - [ ] N/A with justification for dimensions not applicable to the WP
-  - [ ] Finding prefix is `TEST-` (e.g., `TEST-001`, `TEST-002`)
-  - [ ] Output format matches Section 7.1 with `files_reviewed` field
-  - [ ] Read-only constraint: "Do NOT modify any test files, source code, WP file, or spec file" (FR-028)
-  - [ ] Complete example findings file included
+  - [x] FAIL: vacuous tests (`assert True`, empty bodies, mocking entire subject), coverage below threshold without justification, missing BDD scenario coverage
+  - [x] WARN: test naming issues, minor structural concerns (shared setup that could be isolated)
+  - [x] N/A with justification for dimensions not applicable to the WP
+  - [x] Finding prefix is `TEST-` (e.g., `TEST-001`, `TEST-002`)
+  - [x] Output format matches Section 7.1 with `files_reviewed` field
+  - [x] Read-only constraint: "Do NOT modify any test files, source code, WP file, or spec file" (FR-028)
+  - [x] Complete example findings file included
 - **Test requirements**: BDD - reference test quality BDD scenarios
 - **Depends on**: T06-02
 - **Implementation Guidance**:
@@ -112,11 +112,11 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: Yes (independent of T06-01 through T06-03)
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/review-architecture/` exists
-  - [ ] File `.github/skills/review-architecture/SKILL.md` exists
-  - [ ] YAML frontmatter `name` is `review-architecture`
-  - [ ] YAML frontmatter `description` explains: evaluates architecture adherence, component design, tech stack compliance, SOLID principles, scope discipline
-  - [ ] Purpose section states the skill's role as subagent invoked by coordinator
+  - [x] Directory `.github/skills/review-architecture/` exists
+  - [x] File `.github/skills/review-architecture/SKILL.md` exists
+  - [x] YAML frontmatter `name` is `review-architecture`
+  - [x] YAML frontmatter `description` explains: evaluates architecture adherence, component design, tech stack compliance, SOLID principles, scope discipline
+  - [x] Purpose section states the skill's role as subagent invoked by coordinator
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -135,15 +135,15 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: FR-042 (8 architecture dimensions)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Component Adherence: implemented components match spec Section 9.1
-  - [ ] Technology Stack Compliance: technologies match spec Section 9.2, no unauthorized substitutions
-  - [ ] Directory Structure Compliance: file locations match spec Section 9.3
-  - [ ] Key Design Decisions: architectural decisions from spec Section 9.4 are honored
-  - [ ] Separation of Concerns: each module has single clear responsibility, no god objects
-  - [ ] SOLID Principles: SRP especially. Flag classes/modules with multiple unrelated responsibilities
-  - [ ] Dependency Direction: high-level modules do not depend on low-level implementation details
-  - [ ] Scope Discipline: no code outside WP tasks, no files modified beyond WP scope, no unspecified features/abstractions/utilities
-  - [ ] Each dimension has at least 3 verifiable checklist items
+  - [x] Component Adherence: implemented components match spec Section 9.1
+  - [x] Technology Stack Compliance: technologies match spec Section 9.2, no unauthorized substitutions
+  - [x] Directory Structure Compliance: file locations match spec Section 9.3
+  - [x] Key Design Decisions: architectural decisions from spec Section 9.4 are honored
+  - [x] Separation of Concerns: each module has single clear responsibility, no god objects
+  - [x] SOLID Principles: SRP especially. Flag classes/modules with multiple unrelated responsibilities
+  - [x] Dependency Direction: high-level modules do not depend on low-level implementation details
+  - [x] Scope Discipline: no code outside WP tasks, no files modified beyond WP scope, no unspecified features/abstractions/utilities
+  - [x] Each dimension has at least 3 verifiable checklist items
 - **Test requirements**: BDD (reference architecture-related scenarios)
 - **Depends on**: T06-04
 - **Implementation Guidance**:
@@ -159,12 +159,12 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: FR-043 (severity rules), FR-027 (findings format), FR-028 (read-only), FR-029 (N/A)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] FAIL: scope creep (unspecified code), technology stack violations, component design violations
-  - [ ] WARN: SRP concerns, minor structural deviations, dependency direction suggestions
-  - [ ] N/A with justification for dimensions not applicable
-  - [ ] Finding prefix is `ARCH-` (e.g., `ARCH-001`, `ARCH-002`)
-  - [ ] Output format matches Section 7.1 with `files_reviewed` field
-  - [ ] Read-only constraint (FR-028) and complete example included
+  - [x] FAIL: scope creep (unspecified code), technology stack violations, component design violations
+  - [x] WARN: SRP concerns, minor structural deviations, dependency direction suggestions
+  - [x] N/A with justification for dimensions not applicable
+  - [x] Finding prefix is `ARCH-` (e.g., `ARCH-001`, `ARCH-002`)
+  - [x] Output format matches Section 7.1 with `files_reviewed` field
+  - [x] Read-only constraint (FR-028) and complete example included
 - **Test requirements**: BDD - reference architecture BDD scenarios
 - **Depends on**: T06-05
 - **Implementation Guidance**:
@@ -185,12 +185,12 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Spec refs**: FR-003 (discovery), FR-004 (dispatch order), FR-010 (aggregation)
 - **Parallel**: No (final task)
 - **Acceptance criteria**:
-  - [ ] Coordinator discovers review-tests and review-architecture via glob scan
-  - [ ] Dispatch order is: review-spec, review-security, review-quality, review-tests, review-architecture (positions 4 and 5)
-  - [ ] Findings files are named: `review-tests-findings.md` and `review-architecture-findings.md`
-  - [ ] Finding prefixes are `TEST-` and `ARCH-` respectively
-  - [ ] Aggregate verdict includes P2 skill findings in the statistics table
-  - [ ] P2 skill findings participate in cross-correlation with P1 skill findings
+  - [x] Coordinator discovers review-tests and review-architecture via glob scan
+  - [x] Dispatch order is: review-spec, review-security, review-quality, review-tests, review-architecture (positions 4 and 5)
+  - [x] Findings files are named: `review-tests-findings.md` and `review-architecture-findings.md`
+  - [x] Finding prefixes are `TEST-` and `ARCH-` respectively
+  - [x] Aggregate verdict includes P2 skill findings in the statistics table
+  - [x] P2 skill findings participate in cross-correlation with P1 skill findings
 - **Test requirements**: BDD - "Dynamic skill discovery" scenario with 5 skills
 - **Depends on**: T06-03, T06-06 (both skills must be complete)
 - **Implementation Guidance**:
@@ -223,3 +223,5 @@ Create two P2 review skills that add test quality and architecture adherence rev
 ## Activity Log
 
 - 2026-04-04T11:35:00Z - planner - lane=planned - Work package created
+- 2026-04-04T16:00:00Z - coder - lane=doing - Starting WP06 implementation
+- 2026-04-04T16:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
