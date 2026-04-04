@@ -1,6 +1,6 @@
 ---
 description: "Use for extended brainstorming sessions - deep exploration of ideas with extensive research, alternatives generation, and iterative refinement. Triggers on: brainstorm deeply, long brainstorm, explore alternatives, what are my options, help me think this through, let's workshop this, compare approaches, deep dive, refine this idea, optimize this concept. Runs 10+ round Q&A loops, proactively proposes variations and counter-ideas, and researches extensively before converging."
-name: "A. Brainstorming"
+name: "1.1. Brainstorming"
 model: Claude Opus 4.6 (copilot)
 tools: [vscode/askQuestions, vscode/memory, execute/getTerminalOutput, execute/awaitTerminal, execute/killTerminal, execute/createAndRunTask, execute/runInTerminal, execute/runTests, execute/runNotebookCell, execute/testFailure, read/terminalSelection, read/terminalLastCommand, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web, web/fetch, web/githubRepo, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
 handoffs:
