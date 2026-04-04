@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP05 - Code Quality Review Skill (review-quality)
@@ -36,11 +36,11 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: No (foundation for all T05 tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/review-quality/SKILL.md`
-  - [ ] YAML frontmatter `name` is `review-quality`
-  - [ ] YAML frontmatter `description` explains: evaluates code quality across 8 dimensions (readability, complexity, naming, comments, error handling, style, dead code, duplication)
-  - [ ] Purpose section states the skill's role as subagent invoked by coordinator
-  - [ ] `.gitkeep` file removed from `.github/skills/review-quality/` (replaced by SKILL.md)
+  - [x] File exists at `.github/skills/review-quality/SKILL.md`
+  - [x] YAML frontmatter `name` is `review-quality`
+  - [x] YAML frontmatter `description` explains: evaluates code quality across 8 dimensions (readability, complexity, naming, comments, error handling, style, dead code, duplication)
+  - [x] Purpose section states the skill's role as subagent invoked by coordinator
+  - [x] `.gitkeep` file removed from `.github/skills/review-quality/` (replaced by SKILL.md)
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -59,12 +59,12 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 - **Spec refs**: FR-037 dimensions 1-4
 - **Parallel**: Yes (can be written alongside T05-03)
 - **Acceptance criteria**:
-  - [ ] Readability checks: functions are concise and single-purpose, control flow is straightforward (low nesting depth), code is understandable without extensive comments
-  - [ ] Complexity checks: flag functions with cyclomatic complexity > 10 (branching, nested conditionals, multiple loops), recommend extraction or simplification
-  - [ ] Naming quality checks: descriptive intention-revealing names, no single-letter variables outside loop counters, no misleading names, consistent with codebase conventions
-  - [ ] Comment quality checks: comments explain "why" not "what", no commented-out code, no redundant comments, TODO/FIXME/HACK markers flagged as WARN
-  - [ ] Each dimension has at least 3 specific, verifiable checklist items
-  - [ ] Checklist items are phrased as questions the subagent can answer by reading code
+  - [x] Readability checks: functions are concise and single-purpose, control flow is straightforward (low nesting depth), code is understandable without extensive comments
+  - [x] Complexity checks: flag functions with cyclomatic complexity > 10 (branching, nested conditionals, multiple loops), recommend extraction or simplification
+  - [x] Naming quality checks: descriptive intention-revealing names, no single-letter variables outside loop counters, no misleading names, consistent with codebase conventions
+  - [x] Comment quality checks: comments explain "why" not "what", no commented-out code, no redundant comments, TODO/FIXME/HACK markers flagged as WARN
+  - [x] Each dimension has at least 3 specific, verifiable checklist items
+  - [x] Checklist items are phrased as questions the subagent can answer by reading code
 - **Test requirements**: BDD - Section 11.2 "High complexity function" scenario
 - **Depends on**: T05-01
 - **Implementation Guidance**:
@@ -82,11 +82,11 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 - **Spec refs**: FR-037 dimensions 5-8
 - **Parallel**: Yes (can be written alongside T05-02)
 - **Acceptance criteria**:
-  - [ ] Error handling checks: no bare `except` (Python) or empty `catch` blocks, no swallowed exceptions, descriptive error messages, specific exception types, graceful error recovery
-  - [ ] Style/consistency checks: code follows codebase's established patterns (indentation, bracket style, import ordering, module structure), no inconsistencies introduced by the WP
-  - [ ] Dead code checks: declared symbols (functions, classes, variables, imports, routes) never referenced anywhere, unreachable code paths (code after return/throw/break)
-  - [ ] Duplication checks: 3+ lines of identical or near-identical logic in multiple locations flagged
-  - [ ] Each dimension has at least 3 specific, verifiable checklist items
+  - [x] Error handling checks: no bare `except` (Python) or empty `catch` blocks, no swallowed exceptions, descriptive error messages, specific exception types, graceful error recovery
+  - [x] Style/consistency checks: code follows codebase's established patterns (indentation, bracket style, import ordering, module structure), no inconsistencies introduced by the WP
+  - [x] Dead code checks: declared symbols (functions, classes, variables, imports, routes) never referenced anywhere, unreachable code paths (code after return/throw/break)
+  - [x] Duplication checks: 3+ lines of identical or near-identical logic in multiple locations flagged
+  - [x] Each dimension has at least 3 specific, verifiable checklist items
 - **Test requirements**: BDD - Section 11.2 "Dead code detected" and "Bare except handler" scenarios
 - **Depends on**: T05-01
 - **Implementation Guidance**:
@@ -104,11 +104,11 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 - **Spec refs**: FR-038 (severity rules), FR-039 (no subjective preferences)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] FAIL: dead code (declared but never referenced symbols), unreachable code, bare exception handlers / empty catch blocks
-  - [ ] WARN: complexity > 10, naming issues, comment issues (TODO/FIXME/HACK), style inconsistencies, duplication, readability concerns
-  - [ ] WARN items become FAIL only when they "significantly impair maintainability" (FR-038) - include guidance on what "significantly" means: 3+ WARN-level issues of the same type in the same file, or complexity > 20
-  - [ ] No subjective style preferences enforced (FR-039): only flag deviations from EXISTING codebase patterns, not the skill's or subagent's preferences
-  - [ ] Explicit instruction: "If you cannot determine the codebase convention for a style question, do not flag it"
+  - [x] FAIL: dead code (declared but never referenced symbols), unreachable code, bare exception handlers / empty catch blocks
+  - [x] WARN: complexity > 10, naming issues, comment issues (TODO/FIXME/HACK), style inconsistencies, duplication, readability concerns
+  - [x] WARN items become FAIL only when they "significantly impair maintainability" (FR-038) - include guidance on what "significantly" means: 3+ WARN-level issues of the same type in the same file, or complexity > 20
+  - [x] No subjective style preferences enforced (FR-039): only flag deviations from EXISTING codebase patterns, not the skill's or subagent's preferences
+  - [x] Explicit instruction: "If you cannot determine the codebase convention for a style question, do not flag it"
 - **Test requirements**: BDD - Section 11.2 code quality severity scenarios
 - **Depends on**: T05-02, T05-03 (must have all dimensions defined)
 - **Implementation Guidance**:
@@ -125,15 +125,15 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 - **Spec refs**: FR-027 (findings format), FR-028 (read-only), FR-029 (N/A handling)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Output format matches Section 7.1: YAML frontmatter with skill, wp, spec, reviewed_at, status, finding_counts, files_reviewed
-  - [ ] Finding prefix is `QUAL-` (e.g., `QUAL-001`, `QUAL-002`)
-  - [ ] Each FAIL/WARN finding includes: checklist item reference, requirement ref, file path with line range, description, expected behavior, evidence
-  - [ ] Each PASS finding includes: checklist item, file path, description
-  - [ ] N/A items include justification
-  - [ ] Finding IDs are sequential, `finding_counts` matches actual findings
-  - [ ] `files_reviewed` lists all files evaluated
-  - [ ] Read-only constraint: "Do NOT modify any source code, WP file, or spec file" (FR-028)
-  - [ ] Complete example findings file included in skill instructions
+  - [x] Output format matches Section 7.1: YAML frontmatter with skill, wp, spec, reviewed_at, status, finding_counts, files_reviewed
+  - [x] Finding prefix is `QUAL-` (e.g., `QUAL-001`, `QUAL-002`)
+  - [x] Each FAIL/WARN finding includes: checklist item reference, requirement ref, file path with line range, description, expected behavior, evidence
+  - [x] Each PASS finding includes: checklist item, file path, description
+  - [x] N/A items include justification
+  - [x] Finding IDs are sequential, `finding_counts` matches actual findings
+  - [x] `files_reviewed` lists all files evaluated
+  - [x] Read-only constraint: "Do NOT modify any source code, WP file, or spec file" (FR-028)
+  - [x] Complete example findings file included in skill instructions
 - **Test requirements**: BDD - format verification
 - **Depends on**: T05-04 (must have severity rules for the example)
 - **Implementation Guidance**:
@@ -175,3 +175,5 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 ## Activity Log
 
 - 2026-04-04T11:30:00Z - planner - lane=planned - Work package created
+- 2026-04-04T15:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-04T15:15:00Z - coder - lane=for_review - All tasks complete, submitted for review

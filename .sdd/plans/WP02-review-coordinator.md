@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP02 - Review Coordinator Agent
@@ -336,3 +336,4 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 
 - 2026-04-04T11:15:00Z - planner - lane=planned - Work package created
 - 2026-04-04T13:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-04T13:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
