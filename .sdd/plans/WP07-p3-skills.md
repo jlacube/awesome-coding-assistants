@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP07 - P3 Review Skills (review-performance, review-docs, review-deps)
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md` |
 | Priority | P3 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP02 |
 | Goal | Create three P3 review skills: review-performance (performance patterns), review-docs (documentation accuracy), and review-deps (dependency review), completing the full 8-skill review suite |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Install all 8 review skills. Invoke the coordinator on a WP. Verify: coordinator discovers and dispatches all 8 skills in canonical order, 8 findings files are created, aggregate verdict includes all dimensions in the statistics table |
 | Parallelisable | Yes (with WP06; internal tasks for each skill are independent) |
 | Prompt | `.sdd/plans/WP07-p3-skills.md` |
@@ -37,11 +37,11 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: Yes (independent of T07-03 through T07-07)
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/review-performance/` exists
-  - [ ] File `.github/skills/review-performance/SKILL.md` exists
-  - [ ] YAML frontmatter `name` is `review-performance`
-  - [ ] YAML frontmatter `description` explains: detects performance anti-patterns (N+1 queries, missing indexes, blocking in async, unbounded fetching, unnecessary computation, inefficient data structures, missing caching)
-  - [ ] Purpose section states the skill's role as subagent invoked by coordinator
+  - [x] Directory `.github/skills/review-performance/` exists
+  - [x] File `.github/skills/review-performance/SKILL.md` exists
+  - [x] YAML frontmatter `name` is `review-performance`
+  - [x] YAML frontmatter `description` explains: detects performance anti-patterns (N+1 queries, missing indexes, blocking in async, unbounded fetching, unnecessary computation, inefficient data structures, missing caching)
+  - [x] Purpose section states the skill's role as subagent invoked by coordinator
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -60,14 +60,14 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: FR-044 (7 check categories), FR-045 (severity rules), FR-027 (format), FR-028 (read-only), FR-029 (N/A)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Checklist covers all 7 categories: N+1 query patterns, missing database indexes, blocking in async contexts, unbounded data fetching, unnecessary computation in hot paths, inefficient data structures, missing caching
-  - [ ] Each category has at least 3 verifiable checklist items phrased as questions
-  - [ ] Default severity is WARN for all performance findings (FR-045)
-  - [ ] FAIL only when the issue violates a specific performance NFR from spec Section 10.1 (e.g., a query that would prevent meeting NFR-001's 30-minute review time)
-  - [ ] N/A with justification for categories not applicable (e.g., "No database access" for N+1 queries)
-  - [ ] Finding prefix is `PERF-` (e.g., `PERF-001`)
-  - [ ] Output format matches Section 7.1 with `files_reviewed` field
-  - [ ] Read-only constraint and complete example included
+  - [x] Checklist covers all 7 categories: N+1 query patterns, missing database indexes, blocking in async contexts, unbounded data fetching, unnecessary computation in hot paths, inefficient data structures, missing caching
+  - [x] Each category has at least 3 verifiable checklist items phrased as questions
+  - [x] Default severity is WARN for all performance findings (FR-045)
+  - [x] FAIL only when the issue violates a specific performance NFR from spec Section 10.1 (e.g., a query that would prevent meeting NFR-001's 30-minute review time)
+  - [x] N/A with justification for categories not applicable (e.g., "No database access" for N+1 queries)
+  - [x] Finding prefix is `PERF-` (e.g., `PERF-001`)
+  - [x] Output format matches Section 7.1 with `files_reviewed` field
+  - [x] Read-only constraint and complete example included
 - **Test requirements**: BDD - performance scenario references
 - **Depends on**: T07-01
 - **Implementation Guidance**:
@@ -92,11 +92,11 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: Yes (independent of T07-01, T07-02, T07-05 through T07-07)
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/review-docs/` exists
-  - [ ] File `.github/skills/review-docs/SKILL.md` exists
-  - [ ] YAML frontmatter `name` is `review-docs`
-  - [ ] YAML frontmatter `description` explains: compares documentation against actual implementation for accuracy, completeness, and staleness
-  - [ ] Purpose section states the skill's role as subagent invoked by coordinator
+  - [x] Directory `.github/skills/review-docs/` exists
+  - [x] File `.github/skills/review-docs/SKILL.md` exists
+  - [x] YAML frontmatter `name` is `review-docs`
+  - [x] YAML frontmatter `description` explains: compares documentation against actual implementation for accuracy, completeness, and staleness
+  - [x] Purpose section states the skill's role as subagent invoked by coordinator
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -115,17 +115,17 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: FR-046 (9 check categories), FR-047 (severity rules), FR-027 (format), FR-028 (read-only), FR-029 (N/A)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Checklist covers all 9 categories: architecture docs, API reference, configuration guide, data model docs, user guide, developer guide, deployment guide, staleness, completeness
-  - [ ] Each doc check verifies content against ACTUAL implementation (not just that the file exists)
-  - [ ] Architecture docs: module structure matches real directory layout
-  - [ ] API reference: endpoints, params, response schemas match actual code
-  - [ ] Configuration guide: env vars, defaults, options match actual code
-  - [ ] Staleness: no references to removed features, old APIs, deprecated behavior
-  - [ ] Completeness: all six standard doc files exist and are populated
-  - [ ] FAIL: missing or empty required doc files, inaccurate content
-  - [ ] WARN: minor omissions (missing one parameter in otherwise accurate doc)
-  - [ ] Finding prefix is `DOC-` (e.g., `DOC-001`)
-  - [ ] Output format matches Section 7.1 with `files_reviewed` field
+  - [x] Checklist covers all 9 categories: architecture docs, API reference, configuration guide, data model docs, user guide, developer guide, deployment guide, staleness, completeness
+  - [x] Each doc check verifies content against ACTUAL implementation (not just that the file exists)
+  - [x] Architecture docs: module structure matches real directory layout
+  - [x] API reference: endpoints, params, response schemas match actual code
+  - [x] Configuration guide: env vars, defaults, options match actual code
+  - [x] Staleness: no references to removed features, old APIs, deprecated behavior
+  - [x] Completeness: all six standard doc files exist and are populated
+  - [x] FAIL: missing or empty required doc files, inaccurate content
+  - [x] WARN: minor omissions (missing one parameter in otherwise accurate doc)
+  - [x] Finding prefix is `DOC-` (e.g., `DOC-001`)
+  - [x] Output format matches Section 7.1 with `files_reviewed` field
 - **Test requirements**: BDD - documentation scenario references
 - **Depends on**: T07-03
 - **Implementation Guidance**:
@@ -150,11 +150,11 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: Yes (independent of T07-01 through T07-04)
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/review-deps/` exists
-  - [ ] File `.github/skills/review-deps/SKILL.md` exists
-  - [ ] YAML frontmatter `name` is `review-deps`
-  - [ ] YAML frontmatter `description` explains: reviews dependencies for CVEs, abandonment, unnecessary packages, license compatibility, version pinning, and supply chain integrity
-  - [ ] Purpose section states the skill's role as subagent invoked by coordinator
+  - [x] Directory `.github/skills/review-deps/` exists
+  - [x] File `.github/skills/review-deps/SKILL.md` exists
+  - [x] YAML frontmatter `name` is `review-deps`
+  - [x] YAML frontmatter `description` explains: reviews dependencies for CVEs, abandonment, unnecessary packages, license compatibility, version pinning, and supply chain integrity
+  - [x] Purpose section states the skill's role as subagent invoked by coordinator
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -173,17 +173,17 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: FR-048 (6 check categories), FR-049 (severity rules), FR-027 (format), FR-028 (read-only), FR-029 (N/A)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Checklist covers all 6 categories: known CVEs, abandoned/unmaintained packages, unnecessary dependencies, license compatibility, version pinning, supply chain integrity
-  - [ ] CVE checks: use `#tool:web` to research CVEs for major dependencies against NVD/advisory databases
-  - [ ] Abandoned packages: flag deps with no commits in 12 months or explicitly archived
-  - [ ] Unnecessary deps: flag imported but unused deps, or deps duplicating runtime functionality
-  - [ ] License compatibility: verify dep licenses are compatible with project license
-  - [ ] Version pinning: verify exact pins or lockfile usage, flag floating ranges without lockfile
-  - [ ] Supply chain: verify lockfile exists with checksums, flag missing lockfiles
-  - [ ] FAIL: CVEs with CVSS >= 7.0 (High/Critical)
-  - [ ] WARN: low-severity CVEs (CVSS < 7.0), abandoned packages, license issues, missing lockfiles
-  - [ ] Finding prefix is `DEP-` (e.g., `DEP-001`)
-  - [ ] Output format matches Section 7.1 with `files_reviewed` field
+  - [x] Checklist covers all 6 categories: known CVEs, abandoned/unmaintained packages, unnecessary dependencies, license compatibility, version pinning, supply chain integrity
+  - [x] CVE checks: use `#tool:web` to research CVEs for major dependencies against NVD/advisory databases
+  - [x] Abandoned packages: flag deps with no commits in 12 months or explicitly archived
+  - [x] Unnecessary deps: flag imported but unused deps, or deps duplicating runtime functionality
+  - [x] License compatibility: verify dep licenses are compatible with project license
+  - [x] Version pinning: verify exact pins or lockfile usage, flag floating ranges without lockfile
+  - [x] Supply chain: verify lockfile exists with checksums, flag missing lockfiles
+  - [x] FAIL: CVEs with CVSS >= 7.0 (High/Critical)
+  - [x] WARN: low-severity CVEs (CVSS < 7.0), abandoned packages, license issues, missing lockfiles
+  - [x] Finding prefix is `DEP-` (e.g., `DEP-001`)
+  - [x] Output format matches Section 7.1 with `files_reviewed` field
 - **Test requirements**: BDD - dependency scenario references
 - **Depends on**: T07-05
 - **Implementation Guidance**:
@@ -209,12 +209,12 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 - **Spec refs**: FR-003 (discovery), FR-004 (full 8-skill dispatch order), FR-010 (aggregation)
 - **Parallel**: No (final task)
 - **Acceptance criteria**:
-  - [ ] Coordinator discovers all 8 review skills via glob scan
-  - [ ] Dispatch order matches FR-004: review-spec, review-security, review-quality, review-tests, review-architecture, review-performance, review-docs, review-deps
-  - [ ] 8 findings files created in `.sdd/reviews/<WP-id>/` with correct naming and prefixes
-  - [ ] Finding prefixes across all skills are unique: SPEC-, SEC-, QUAL-, TEST-, ARCH-, PERF-, DOC-, DEP-
-  - [ ] Aggregate verdict statistics table includes all 8 skill dimensions
-  - [ ] Cross-correlation works across all dimensions (e.g., a security finding might correlate with a code quality finding)
+  - [x] Coordinator discovers all 8 review skills via glob scan
+  - [x] Dispatch order matches FR-004: review-spec, review-security, review-quality, review-tests, review-architecture, review-performance, review-docs, review-deps
+  - [x] 8 findings files created in `.sdd/reviews/<WP-id>/` with correct naming and prefixes
+  - [x] Finding prefixes across all skills are unique: SPEC-, SEC-, QUAL-, TEST-, ARCH-, PERF-, DOC-, DEP-
+  - [x] Aggregate verdict statistics table includes all 8 skill dimensions
+  - [x] Cross-correlation works across all dimensions (e.g., a security finding might correlate with a code quality finding)
 - **Test requirements**: BDD - full suite discovery and dispatch
 - **Depends on**: T07-02, T07-04, T07-06 (all three P3 skills must be complete)
 - **Implementation Guidance**:
@@ -251,3 +251,5 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 ## Activity Log
 
 - 2026-04-04T11:40:00Z - planner - lane=planned - Work package created
+- 2026-04-04T17:00:00Z - coder - lane=doing - Starting WP07 implementation
+- 2026-04-04T17:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
