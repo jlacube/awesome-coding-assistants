@@ -79,10 +79,10 @@ Load the full artifact chain before any review work begins. Load these in order:
 
 1. **WP plan file** (`.sdd/plans/WP<NN>-*.md`) - already identified in Step 1.
 2. **Specification** - read the WP file's `Spec` field to find the spec path (e.g., `.sdd/specs/001-feature.spec.md`). Read the spec file.
-3. **Ideation brief** - read the spec file's `Source brief` field to find the brief path (e.g., `.sdd/ideas/001-feature.md`). Read the brief. If the brief does not exist, record a note but continue (briefs are informational).
+3. **Ideation brief** - read the spec file's `Source brief` field to find the brief path (e.g., `.sdd/ideas/001-feature.md`). Read the brief.
 4. **Plan index** - read `.sdd/plans/README.md` for dependency context.
 
-If the WP file or spec file is missing or unreadable, halt and report: "Cannot proceed: <artifact> not found at <path>."
+If any artifact in the chain (WP file, spec, brief, or plan index) is missing or unreadable, halt and report: "Cannot proceed: <artifact> not found at <path>."
 
 ## Step 3 - Create Review Directory (FR-008)
 
