@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP04 - Security Review Skill (review-security)
@@ -38,11 +38,11 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Spec refs**: Section 7.5, FR-025
 - **Parallel**: No (foundation for all T04 tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/review-security/SKILL.md`
-  - [ ] YAML frontmatter `name` is `review-security`
-  - [ ] YAML frontmatter `description` explains: audits code against 14 OWASP Secure Coding Practices categories
-  - [ ] Purpose section states: invoked by coordinator as subagent, reads SKILL.md + spec, discovers code, evaluates OWASP checklist, writes findings
-  - [ ] `.gitkeep` file removed from `.github/skills/review-security/` (replaced by SKILL.md)
+  - [x] File exists at `.github/skills/review-security/SKILL.md`
+  - [x] YAML frontmatter `name` is `review-security`
+  - [x] YAML frontmatter `description` explains: audits code against 14 OWASP Secure Coding Practices categories
+  - [x] Purpose section states: invoked by coordinator as subagent, reads SKILL.md + spec, discovers code, evaluates OWASP checklist, writes findings
+  - [x] `.gitkeep` file removed from `.github/skills/review-security/` (replaced by SKILL.md)
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -62,14 +62,14 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Spec refs**: FR-034 (14 OWASP categories - first half), Section 17 (OWASP SCP reference)
 - **Parallel**: Yes (can be written alongside T04-03)
 - **Acceptance criteria**:
-  - [ ] Input Validation checklist includes: server-side validation, allow-list approach, data type/range/length checks, centralized validation, canonicalization, rejection on failure
-  - [ ] Output Encoding checklist includes: server-side encoding, context-appropriate encoding, sanitization for SQL/XML/LDAP/OS commands
-  - [ ] Authentication checklist includes: auth for non-public resources, secure credential storage (salted hashes), fail-secure, no credential leakage in errors, account lockout, MFA for sensitive ops
-  - [ ] Session Management checklist includes: server-side creation, sufficient randomness, inactivity timeout, new ID on re-auth, no IDs in URLs/logs, HttpOnly+Secure flags
-  - [ ] Access Control checklist includes: centralized authorization, fail-secure, enforced on every request, least privilege, RBAC/ABAC enforcement
-  - [ ] Cryptographic Practices checklist includes: approved algorithms only, secure random generation, proper key management
-  - [ ] Error Handling/Logging checklist includes: no sensitive data in errors, generic messages to users, centralized logging, log security events, no sensitive data in logs
-  - [ ] Each checklist item is phrased as a verifiable check (not a general principle)
+  - [x] Input Validation checklist includes: server-side validation, allow-list approach, data type/range/length checks, centralized validation, canonicalization, rejection on failure
+  - [x] Output Encoding checklist includes: server-side encoding, context-appropriate encoding, sanitization for SQL/XML/LDAP/OS commands
+  - [x] Authentication checklist includes: auth for non-public resources, secure credential storage (salted hashes), fail-secure, no credential leakage in errors, account lockout, MFA for sensitive ops
+  - [x] Session Management checklist includes: server-side creation, sufficient randomness, inactivity timeout, new ID on re-auth, no IDs in URLs/logs, HttpOnly+Secure flags
+  - [x] Access Control checklist includes: centralized authorization, fail-secure, enforced on every request, least privilege, RBAC/ABAC enforcement
+  - [x] Cryptographic Practices checklist includes: approved algorithms only, secure random generation, proper key management
+  - [x] Error Handling/Logging checklist includes: no sensitive data in errors, generic messages to users, centralized logging, log security events, no sensitive data in logs
+  - [x] Each checklist item is phrased as a verifiable check (not a general principle)
 - **Test requirements**: BDD - Section 11.2 "SQL injection detected", "Hardcoded secret detected" scenarios
 - **Depends on**: T04-01
 - **Implementation Guidance**:
@@ -86,14 +86,14 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Spec refs**: FR-034 (14 OWASP categories - second half)
 - **Parallel**: Yes (can be written alongside T04-02)
 - **Acceptance criteria**:
-  - [ ] Data Protection checklist includes: least privilege data access, encrypted sensitive data at rest, no secrets in source code, no sensitive data in GET params, cache control for sensitive pages
-  - [ ] Communication Security checklist includes: TLS for sensitive data, valid certificates, no insecure fallback, character encoding specified
-  - [ ] System Configuration checklist includes: latest versions, patches applied, unnecessary functionality removed, test code removed from prod, HTTP methods restricted, security headers
-  - [ ] Database Security checklist includes: parameterized queries, least-privilege DB access, no hardcoded connection strings, default credentials changed
-  - [ ] File Management checklist includes: no user data in dynamic includes, auth before upload, file type validation by headers, upload directory execution disabled
-  - [ ] Memory Management checklist includes: buffer size checks, resource cleanup, no known vulnerable functions
-  - [ ] General Coding Practices checklist includes: no direct OS commands from user input, checksums for integrity, locking for race conditions, no dynamic code execution from user data
-  - [ ] Each category is clearly labeled and organized for easy subagent navigation
+  - [x] Data Protection checklist includes: least privilege data access, encrypted sensitive data at rest, no secrets in source code, no sensitive data in GET params, cache control for sensitive pages
+  - [x] Communication Security checklist includes: TLS for sensitive data, valid certificates, no insecure fallback, character encoding specified
+  - [x] System Configuration checklist includes: latest versions, patches applied, unnecessary functionality removed, test code removed from prod, HTTP methods restricted, security headers
+  - [x] Database Security checklist includes: parameterized queries, least-privilege DB access, no hardcoded connection strings, default credentials changed
+  - [x] File Management checklist includes: no user data in dynamic includes, auth before upload, file type validation by headers, upload directory execution disabled
+  - [x] Memory Management checklist includes: buffer size checks, resource cleanup, no known vulnerable functions
+  - [x] General Coding Practices checklist includes: no direct OS commands from user input, checksums for integrity, locking for race conditions, no dynamic code execution from user data
+  - [x] Each category is clearly labeled and organized for easy subagent navigation
 - **Test requirements**: BDD - Section 11.2 security scenarios
 - **Depends on**: T04-01
 - **Implementation Guidance**:
@@ -108,10 +108,10 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Spec refs**: FR-035 (spec security cross-reference)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill reads the spec's Section 10.2 (Security NFRs) to identify specified security controls
-  - [ ] Each specified security control is verified as implemented in code
-  - [ ] Missing security controls produce FAIL findings with the specific NFR reference
-  - [ ] Security controls found in code but not in spec are noted (informational, not FAIL)
+  - [x] Skill reads the spec's Section 10.2 (Security NFRs) to identify specified security controls
+  - [x] Each specified security control is verified as implemented in code
+  - [x] Missing security controls produce FAIL findings with the specific NFR reference
+  - [x] Security controls found in code but not in spec are noted (informational, not FAIL)
 - **Test requirements**: BDD - Section 11.2 security scenarios
 - **Depends on**: T04-02, T04-03 (must have OWASP checklist as context)
 - **Implementation Guidance**:
@@ -125,11 +125,11 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Spec refs**: FR-036 (web research for unfamiliar patterns), NFR-006 (trusted URLs only)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill is instructed to use `#tool:web` when encountering unfamiliar security patterns in code
-  - [ ] Web research targets are restricted to well-known security resources: OWASP, NVD (nvd.nist.gov), framework-specific security docs (e.g., Django security, Express security)
-  - [ ] Skill SHALL NOT fetch arbitrary URLs from the codebase (NFR-006)
-  - [ ] If web research fails, skill records WARN: "Unable to verify against external source" and continues with checklist-based review
-  - [ ] Web research findings are cited with source URL in the evidence field
+  - [x] Skill is instructed to use `#tool:web` when encountering unfamiliar security patterns in code
+  - [x] Web research targets are restricted to well-known security resources: OWASP, NVD (nvd.nist.gov), framework-specific security docs (e.g., Django security, Express security)
+  - [x] Skill SHALL NOT fetch arbitrary URLs from the codebase (NFR-006)
+  - [x] If web research fails, skill records WARN: "Unable to verify against external source" and continues with checklist-based review
+  - [x] Web research findings are cited with source URL in the evidence field
 - **Test requirements**: none (web research is opportunistic)
 - **Depends on**: T04-01
 - **Implementation Guidance**:
@@ -146,16 +146,16 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Spec refs**: FR-027 (findings format), FR-028 (read-only), FR-029 (N/A handling), FR-034 (severity implied by OWASP), NFR-005 (no secret reproduction)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] FAIL: violations of OWASP checklist items that represent exploitable vulnerabilities (SQL injection, XSS, hardcoded secrets, missing auth, etc.)
-  - [ ] WARN: non-critical security concerns (missing cache control headers, informational findings, best practices not followed but not exploitable)
-  - [ ] PASS: checklist items verified as correctly implemented
-  - [ ] N/A: checklist items not applicable to the codebase (with justification, e.g., "No database access in this WP")
-  - [ ] NFR-005 enforced: findings MUST NOT reproduce actual secret values found in code. Reference file and line only.
-  - [ ] Output format matches Section 7.1 exactly: YAML frontmatter + markdown findings
-  - [ ] Finding prefix is `SEC-` (e.g., `SEC-001`, `SEC-002`)
-  - [ ] `files_reviewed` in frontmatter lists all files the skill evaluated
-  - [ ] Explicit instruction: "Do NOT modify any source code, WP file, or spec file" (FR-028)
-  - [ ] NFR-004 enforced: "Do NOT execute any code from the codebase - review is static analysis only"
+  - [x] FAIL: violations of OWASP checklist items that represent exploitable vulnerabilities (SQL injection, XSS, hardcoded secrets, missing auth, etc.)
+  - [x] WARN: non-critical security concerns (missing cache control headers, informational findings, best practices not followed but not exploitable)
+  - [x] PASS: checklist items verified as correctly implemented
+  - [x] N/A: checklist items not applicable to the codebase (with justification, e.g., "No database access in this WP")
+  - [x] NFR-005 enforced: findings MUST NOT reproduce actual secret values found in code. Reference file and line only.
+  - [x] Output format matches Section 7.1 exactly: YAML frontmatter + markdown findings
+  - [x] Finding prefix is `SEC-` (e.g., `SEC-001`, `SEC-002`)
+  - [x] `files_reviewed` in frontmatter lists all files the skill evaluated
+  - [x] Explicit instruction: "Do NOT modify any source code, WP file, or spec file" (FR-028)
+  - [x] NFR-004 enforced: "Do NOT execute any code from the codebase - review is static analysis only"
 - **Test requirements**: BDD - Section 11.2 "SQL injection detected", "Non-applicable category skipped", "Hardcoded secret detected" scenarios
 - **Depends on**: T04-02, T04-03, T04-04 (must have all checklist items defined)
 - **Implementation Guidance**:
@@ -205,3 +205,5 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 ## Activity Log
 
 - 2026-04-04T11:25:00Z - planner - lane=planned - Work package created
+- 2026-04-04T14:30:00Z - coder - lane=doing - Starting implementation
+- 2026-04-04T14:45:00Z - coder - lane=for_review - All tasks complete, submitted for review
