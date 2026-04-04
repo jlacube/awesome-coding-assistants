@@ -2,7 +2,7 @@
 
 > **Source brief**: `.sdd/ideas/001-reviewer-v2-skill-based-architecture.md`
 > **Feature branch**: `002-reviewer-v2`
-> **Status**: Draft
+> **Status**: Validated
 > **Version**: 1.0
 
 ---
