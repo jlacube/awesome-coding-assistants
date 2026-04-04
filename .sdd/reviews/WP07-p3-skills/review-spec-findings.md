@@ -2,12 +2,13 @@
 skill: review-spec
 wp: WP07-p3-skills
 spec: .sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md
-reviewed_at: 2026-04-05T12:00:00Z
+reviewed_at: 2026-04-05T14:00:00Z
 status: completed
+review_round: 2
 finding_counts:
-  pass: 21
+  pass: 22
   warn: 0
-  fail: 1
+  fail: 0
   na: 4
 files_reviewed:
   - .github/skills/review-performance/SKILL.md
@@ -21,7 +22,7 @@ files_reviewed:
 
 ## Summary
 
-Evaluated 11 functional requirements (FR-025 through FR-029, FR-044 through FR-049) plus Section 7.1 (findings format) and Section 7.5 (skill file metadata) across three deliverables: review-performance, review-docs, and review-deps SKILL.md files. 21 checks passed, 1 failed, 4 are not applicable. The single FAIL is review-deps omitting the specification file read from its input contract, deviating from FR-026 step 2. All other requirements are fully satisfied across all three skills.
+Re-review (Round 2). Evaluated 11 functional requirements (FR-025 through FR-029, FR-044 through FR-049) plus Section 7.1 (findings format) and Section 7.5 (skill file metadata) across three deliverables: review-performance, review-docs, and review-deps SKILL.md files. 22 checks passed, 0 failed, 4 are not applicable. The Round 1 FAIL (SPEC-004: review-deps omitted FR-026 step 2 spec file read) has been resolved -- step 2 now reads "Read the specification file to understand dependency-relevant requirements (NFRs, security constraints, license requirements)" and steps are correctly renumbered 1-7. No regressions detected in previously-passing items. All requirements are fully satisfied across all three skills.
 
 ## Findings
 
@@ -43,22 +44,11 @@ Evaluated 11 functional requirements (FR-025 through FR-029, FR-044 through FR-0
 - **File**: .github/skills/review-docs/SKILL.md
 - **Description**: review-docs input contract covers all 5 required steps: (1) reads own SKILL.md, (2) reads specification file for documentation requirements, (3) reads WP file and discovers implementation code, (4) evaluates each checklist item, (5) writes structured findings to output path.
 
-### SPEC-004 [FAIL]
+### SPEC-004 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-026 (common execution steps, step 2)
-- **File**: .github/skills/review-deps/SKILL.md#L8-L14
-- **Description**: review-deps input contract omits FR-026 step 2: "Read the specification file to understand what was required." The input contract jumps from reading SKILL.md (step 1) directly to identifying dependency manifest files (step 2), skipping the spec file read entirely. The specification may contain dependency-relevant requirements (e.g., NFRs about specific library versions, security constraints on dependencies, or license requirements) that the skill would miss.
-- **Expected**: Input contract step 2 should read: "Read the specification file to understand dependency-relevant requirements (NFRs, security constraints, license requirements)." — matching the pattern used by review-performance ("Read the specification file for any performance NFRs") and review-docs ("Read the specification file for documentation requirements").
-- **Evidence**:
-  ```markdown
-  **Input contract** (received via subagent prompt):
-  1. Read this SKILL.md file for review instructions.
-  2. Identify the project's dependency manifest files (see known patterns below).
-  3. For each major dependency, use `#tool:web` to research known CVEs against trusted databases.
-  4. Evaluate each checklist item below.
-  5. Write structured findings to the specified output path.
-  6. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
-  ```
+- **File**: .github/skills/review-deps/SKILL.md#L8-L15
+- **Description**: [RESOLVED in Round 2] review-deps input contract now includes FR-026 step 2: "Read the specification file to understand dependency-relevant requirements (NFRs, security constraints, license requirements)." Steps are correctly renumbered 1-7 (was 1-6). This matches the pattern used by review-performance and review-docs. Previously FAIL in Round 1.
 
 ### SPEC-005 [PASS]
 - **Checklist item**: FR classification - SHALL obligation (output format)

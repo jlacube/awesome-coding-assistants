@@ -1,6 +1,5 @@
 ---
-lane: for_review
-review_status: acknowledged
+lane: done
 ---
 
 # WP07 - P3 Review Skills (review-performance, review-docs, review-deps)
@@ -251,83 +250,60 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 
 ## Review
 
-### Round 1
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-05T14:00:00Z
+> **Verdict**: Approved with Findings
+> **Skills dispatched**: review-spec (PASS), review-security (WARN), review-quality (PASS), review-tests (PASS), review-architecture (PASS), review-performance (PASS), review-docs (WARN), review-deps (PASS)
+> **Review round**: 2
 
-| Field | Value |
-|-------|-------|
-| Reviewer | 5. Review Coordinator |
-| Date | 2026-04-05 |
-| Verdict | Changes Required |
-| Round | 1 |
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All acceptance criteria checked off across all 7 tasks
+- [PASS] Activity Log: Consistent transitions (planned -> doing -> for_review -> to_do -> doing -> for_review)
+- [PASS] Commit granularity: 2 commits -- initial implementation + targeted fix
+- [PASS] Encoding: No violations found
 
-#### Aggregated Statistics
+### Review Feedback
 
-| Skill | PASS | WARN | FAIL | N/A |
-|-------|------|------|------|-----|
-| review-spec | 21 | 0 | 1 | 4 |
-| review-security | 3 | 3 | 0 | 13 |
-| review-quality | 6 | 0 | 0 | 2 |
-| review-tests | 0 | 0 | 0 | 6 |
-| review-architecture | 12 | 0 | 0 | 6 |
-| review-performance | 0 | 0 | 0 | 7 |
-| review-docs | 14 | 1 | 0 | 18 |
-| review-deps | 0 | 0 | 0 | 6 |
-| **Total** | **56** | **4** | **1** | **62** |
+No FAIL findings. All Round 1 feedback has been addressed.
 
-#### FAIL Findings
+- [x] **FB-01**: [spec-adherence] FR-026 step 2 RESOLVED - review-deps input contract now includes spec file read. File: `.github/skills/review-deps/SKILL.md`#L14. Source skills: review-spec (SPEC-004)
 
-##### FB-01: SPEC-004 - review-deps omits spec file read (FR-026 step 2)
-- [x] Resolved
-- **Severity**: FAIL
-- **Source**: review-spec SPEC-004
-- **Requirement**: FR-026 (common execution steps, step 2: "Read the specification file to understand what was required")
-- **File**: `.github/skills/review-deps/SKILL.md` lines 8-14
-- **Description**: The review-deps input contract jumps from reading SKILL.md directly to identifying dependency manifest files, skipping the specification file read entirely. The spec may contain dependency-relevant requirements (NFRs about library versions, security constraints, license requirements) that the skill would miss.
-- **Required fix**: Insert a new step 2 in the input contract: "Read the specification file to understand dependency-relevant requirements (NFRs, security constraints, license requirements)." Renumber subsequent steps 2-6 to 3-7. This matches the pattern used by review-performance and review-docs.
+### Warnings
+- [WARN] P3 skills omit explicit NFR-004 static-analysis constraint (review-security SEC-002)
+- [WARN] P3 skills omit NFR-005 secret non-reproduction constraint (review-security SEC-003)
+- [WARN] review-deps NFR-006 constraint scoped too narrowly (review-security SEC-004)
+- [WARN] 3 of 6 standard doc files missing -- project type justifies absence (review-docs DOC-031)
 
-#### WARN Findings (Acknowledged)
+### Cross-Correlation Notes
+- SEC-002/SEC-003 are a known project-wide pattern (identical WARNs in WP06). No action required.
+- No duplicate or conflicting findings across skills.
+- No systemic patterns detected.
 
-##### SEC-002: P3 skills omit explicit NFR-004 static-analysis constraint
-- **Severity**: WARN
-- **Source**: review-security SEC-002
-- **Description**: All three P3 skills lack the explicit "Do NOT execute code" constraint present in review-security. Defense-in-depth concern -- the skills don't actively encourage code execution but don't prohibit it either.
-- **Action**: Recommended but not blocking. Consistent with WP06 SEC-002 WARN.
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 4 | 0 | 0 |
+| review-spec | 22 | 0 | 0 |
+| review-security | 3 | 3 | 0 |
+| review-quality | 6 | 0 | 0 |
+| review-tests | 0 | 0 | 0 |
+| review-architecture | 12 | 0 | 0 |
+| review-performance | 0 | 0 | 0 |
+| review-docs | 14 | 1 | 0 |
+| review-deps | 0 | 0 | 0 |
+| **Total** | **61** | **4** | **0** |
 
-##### SEC-003: P3 skills omit NFR-005 secret non-reproduction constraint
-- **Severity**: WARN
-- **Source**: review-security SEC-003
-- **Description**: None of the three P3 skills includes an explicit constraint against reproducing secret values in findings evidence. Consistent with WP06 SEC-002 pattern.
-- **Action**: Recommended but not blocking.
-
-##### SEC-004: review-deps NFR-006 constraint scoped too narrowly
-- **Severity**: WARN
-- **Source**: review-security SEC-004
-- **Description**: review-deps lists trusted CVE sources for Category 1 but lacks the explicit "Do NOT fetch arbitrary URLs from the codebase" prohibition for other categories. Agent could follow URLs found in package manifests.
-- **Action**: Recommended but not blocking. The trusted sources list provides partial coverage.
-
-##### DOC-031: 3 of 6 standard doc files missing
-- **Severity**: WARN
-- **Source**: review-docs DOC-031
-- **Description**: api-reference.md, configuration-guide.md, deployment-guide.md do not exist. Recurring WARN -- project type justifies absence.
-- **Action**: Accepted.
-
-#### Cross-Correlation Notes
-
-- SPEC-004 (missing spec read) is independent of the security WARNs. No cross-correlation needed.
-- SEC-002/SEC-003 are consistent with the same WARNs from WP06 review -- they reflect a project-wide pattern where only review-security includes explicit NFR constraints. This has been accepted as WARN across all WP reviews.
-- No duplicate findings across skills.
-
-#### Findings Directory
+### Findings Directory
 
 All individual skill findings are in `.sdd/reviews/WP07-p3-skills/`:
-- `review-spec-findings.md`
-- `review-security-findings.md`
-- `review-quality-findings.md`
-- `review-tests-findings.md`
-- `review-architecture-findings.md`
-- `review-performance-findings.md`
-- `review-docs-findings.md`
-- `review-deps-findings.md`
+- `review-spec-findings.md` (re-reviewed Round 2)
+- `review-security-findings.md` (preserved from Round 1)
+- `review-quality-findings.md` (preserved from Round 1)
+- `review-tests-findings.md` (preserved from Round 1)
+- `review-architecture-findings.md` (preserved from Round 1)
+- `review-performance-findings.md` (preserved from Round 1)
+- `review-docs-findings.md` (preserved from Round 1)
+- `review-deps-findings.md` (preserved from Round 1)
 
 ## Activity Log
 
@@ -337,3 +313,4 @@ All individual skill findings are in `.sdd/reviews/WP07-p3-skills/`:
 - 2026-04-05T01:00:00Z - reviewer - lane=to_do - Round 1 review: Changes Required (1 FAIL: SPEC-004 missing spec read in review-deps)
 - 2026-04-05T01:05:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
 - 2026-04-05T01:10:00Z - coder - lane=for_review - FB-01 resolved, resubmitted for review
+- 2026-04-05T14:00:00Z - review-coordinator - lane=done - Verdict: Approved with Findings (4 WARNs)

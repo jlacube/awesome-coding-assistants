@@ -1,7 +1,7 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T01:00:00Z
-> Last review: WP06-p2-skills
+> Last updated: 2026-04-05T14:00:00Z
+> Last review: WP07-p3-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
