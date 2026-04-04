@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP03 - Spec Adherence Review Skill (review-spec)
@@ -37,12 +37,12 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 - **Spec refs**: Section 7.5 (Skill File metadata), FR-025 (input contract)
 - **Parallel**: No (foundation for all T03 tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/review-spec/SKILL.md`
-  - [ ] YAML frontmatter `name` is `review-spec`
-  - [ ] YAML frontmatter `description` explains the skill's purpose: evaluating spec adherence by comparing implementation against functional requirements
-  - [ ] Purpose section states: this skill is invoked by the Review Coordinator as a subagent, receives WP and spec paths, discovers and reads implementation code, evaluates each FR, and writes structured findings
-  - [ ] Purpose section references the common input contract (FR-025): reads SKILL.md, reads spec, discovers code, evaluates checklist, writes findings
-  - [ ] `.gitkeep` file removed from `.github/skills/review-spec/` (replaced by SKILL.md)
+  - [x] File exists at `.github/skills/review-spec/SKILL.md`
+  - [x] YAML frontmatter `name` is `review-spec`
+  - [x] YAML frontmatter `description` explains the skill's purpose: evaluating spec adherence by comparing implementation against functional requirements
+  - [x] Purpose section states: this skill is invoked by the Review Coordinator as a subagent, receives WP and spec paths, discovers and reads implementation code, evaluates each FR, and writes structured findings
+  - [x] Purpose section references the common input contract (FR-025): reads SKILL.md, reads spec, discovers code, evaluates checklist, writes findings
+  - [x] `.gitkeep` file removed from `.github/skills/review-spec/` (replaced by SKILL.md)
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -64,10 +64,10 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 - **Spec refs**: FR-030 (FR classification), FR-031 (detailed verification checklist)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Checklist instructs: for each FR referenced by the WP's `Spec References` section, classify adherence as Compliant, Partial, Deviating, or Missing
-  - [ ] Classification definitions match spec exactly: Compliant = fully implemented as specified; Partial = some aspects missing; Deviating = implemented but behaves differently; Missing = not implemented at all
-  - [ ] Partial, Deviating, or Missing classification produces a FAIL finding
-  - [ ] Detailed verification checklist per FR includes all 8 items from FR-031:
+  - [x] Checklist instructs: for each FR referenced by the WP's `Spec References` section, classify adherence as Compliant, Partial, Deviating, or Missing
+  - [x] Classification definitions match spec exactly: Compliant = fully implemented as specified; Partial = some aspects missing; Deviating = implemented but behaves differently; Missing = not implemented at all
+  - [x] Partial, Deviating, or Missing classification produces a FAIL finding
+  - [x] Detailed verification checklist per FR includes all 8 items from FR-031:
     - SHALL/SHALL NOT obligation satisfied exactly
     - Preconditions enforced in code
     - Postconditions produced by code
@@ -76,7 +76,7 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
     - Data model fields/types/validation match Section 7
     - API request/response schemas match Section 8
     - Error codes match spec error taxonomy
-  - [ ] Each checklist item that fails produces evidence (code snippet, expected vs actual behavior)
+  - [x] Each checklist item that fails produces evidence (code snippet, expected vs actual behavior)
 - **Test requirements**: BDD - Section 11.2 "FR fully implemented", "FR partially implemented" scenarios
 - **Depends on**: T03-01
 - **Implementation Guidance**:
@@ -92,10 +92,10 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 - **Spec refs**: FR-032 (stub detection)
 - **Parallel**: Yes (can be written alongside T03-04)
 - **Acceptance criteria**:
-  - [ ] Skill checks for stub patterns: `pass` (alone in function body), `raise NotImplementedError`, `...` (ellipsis), `# TODO`, empty function bodies, any placeholder that makes a test vacuously pass
-  - [ ] Stubs are classified as Missing (not Partial) per FR-032
-  - [ ] Missing classification produces a FAIL finding with evidence showing the stub code
-  - [ ] The skill explicitly lists all stub patterns to check (no reliance on "judgment")
+  - [x] Skill checks for stub patterns: `pass` (alone in function body), `raise NotImplementedError`, `...` (ellipsis), `# TODO`, empty function bodies, any placeholder that makes a test vacuously pass
+  - [x] Stubs are classified as Missing (not Partial) per FR-032
+  - [x] Missing classification produces a FAIL finding with evidence showing the stub code
+  - [x] The skill explicitly lists all stub patterns to check (no reliance on "judgment")
 - **Test requirements**: BDD - Section 11.2 "Stub detected as Missing" scenario
 - **Depends on**: T03-01
 - **Implementation Guidance**:
@@ -112,11 +112,11 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 - **Spec refs**: FR-033 (success criteria verification)
 - **Parallel**: Yes (can be written alongside T03-03)
 - **Acceptance criteria**:
-  - [ ] Skill checks each SC-XXX referenced by the WP for evidence: passing test, observable behavior, or measurable metric
-  - [ ] Evidence is verified as genuine (the claimed test or metric actually exists - not fabricated)
-  - [ ] SC-XXX that cannot be verified at this stage are documented with a reason (not marked as FAIL)
-  - [ ] Missing evidence for a verifiable SC-XXX produces a FAIL finding
-  - [ ] Fabricated evidence (claimed test does not exist, claimed metric is not measured) produces a FAIL finding
+  - [x] Skill checks each SC-XXX referenced by the WP for evidence: passing test, observable behavior, or measurable metric
+  - [x] Evidence is verified as genuine (the claimed test or metric actually exists - not fabricated)
+  - [x] SC-XXX that cannot be verified at this stage are documented with a reason (not marked as FAIL)
+  - [x] Missing evidence for a verifiable SC-XXX produces a FAIL finding
+  - [x] Fabricated evidence (claimed test does not exist, claimed metric is not measured) produces a FAIL finding
 - **Test requirements**: BDD - Section 11.2 spec adherence scenarios
 - **Depends on**: T03-01
 - **Implementation Guidance**:
@@ -132,12 +132,12 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 - **Spec refs**: FR-029 (N/A with justification), FR-030 (classification -> severity mapping)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] FAIL: any FR classified as Partial, Deviating, or Missing; any SC-XXX with missing or fabricated evidence; any stub implementation
-  - [ ] PASS: FR classified as Compliant with all 8 checklist items verified
-  - [ ] WARN: (none for spec adherence - spec compliance is binary, not gradual)
-  - [ ] N/A: FR or checklist item not applicable to this WP's codebase (with justification string, e.g., "No API endpoints in this WP")
-  - [ ] Every N/A finding MUST include a justification field explaining why the item does not apply
-  - [ ] The skill explicitly states: "Do not produce findings for checklist items that are not applicable"
+  - [x] FAIL: any FR classified as Partial, Deviating, or Missing; any SC-XXX with missing or fabricated evidence; any stub implementation
+  - [x] PASS: FR classified as Compliant with all 8 checklist items verified
+  - [x] WARN: (none for spec adherence - spec compliance is binary, not gradual)
+  - [x] N/A: FR or checklist item not applicable to this WP's codebase (with justification string, e.g., "No API endpoints in this WP")
+  - [x] Every N/A finding MUST include a justification field explaining why the item does not apply
+  - [x] The skill explicitly states: "Do not produce findings for checklist items that are not applicable"
 - **Test requirements**: BDD - Section 11.2 non-applicable category scenarios
 - **Depends on**: T03-02 (severity depends on classification system)
 - **Implementation Guidance**:
@@ -151,16 +151,16 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 - **Spec refs**: FR-027 (findings format), FR-028 (read-only constraint), Section 7.1 (Skill Findings File format)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Output format matches Section 7.1 exactly: YAML frontmatter with skill, wp, spec, reviewed_at, status, finding_counts, files_reviewed fields
-  - [ ] Each finding uses the heading format: `### <ID> [SEVERITY]`
-  - [ ] Finding prefix is `SPEC-` (e.g., `SPEC-001`, `SPEC-002`)
-  - [ ] Each FAIL/WARN finding includes: checklist item, requirement ref, file path with line range, description, expected behavior, evidence (code snippet)
-  - [ ] Each PASS finding includes: checklist item, requirement ref, file path, description
-  - [ ] Each N/A finding includes: checklist item, justification
-  - [ ] Finding IDs are sequential (no gaps)
-  - [ ] `finding_counts` in frontmatter accurately reflects actual findings in the file
-  - [ ] `files_reviewed` lists all files the skill read and evaluated
-  - [ ] Explicit instruction: "Do NOT modify any source code, WP file, or spec file" (FR-028)
+  - [x] Output format matches Section 7.1 exactly: YAML frontmatter with skill, wp, spec, reviewed_at, status, finding_counts, files_reviewed fields
+  - [x] Each finding uses the heading format: `### <ID> [SEVERITY]`
+  - [x] Finding prefix is `SPEC-` (e.g., `SPEC-001`, `SPEC-002`)
+  - [x] Each FAIL/WARN finding includes: checklist item, requirement ref, file path with line range, description, expected behavior, evidence (code snippet)
+  - [x] Each PASS finding includes: checklist item, requirement ref, file path, description
+  - [x] Each N/A finding includes: checklist item, justification
+  - [x] Finding IDs are sequential (no gaps)
+  - [x] `finding_counts` in frontmatter accurately reflects actual findings in the file
+  - [x] `files_reviewed` lists all files the skill read and evaluated
+  - [x] Explicit instruction: "Do NOT modify any source code, WP file, or spec file" (FR-028)
 - **Test requirements**: BDD - format verification
 - **Depends on**: T03-02, T03-05 (must know what findings to produce and their severities)
 - **Implementation Guidance**:
@@ -207,3 +207,5 @@ Create `.github/skills/review-spec/SKILL.md` - the spec adherence review skill. 
 ## Activity Log
 
 - 2026-04-04T11:20:00Z - planner - lane=planned - Work package created
+- 2026-04-04T14:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-04T14:15:00Z - coder - lane=for_review - All tasks complete, submitted for review
