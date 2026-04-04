@@ -67,6 +67,7 @@ For each category, evaluate all applicable items. Mark items N/A with justificat
 - [ ] Only approved, standard cryptographic algorithms are used (no custom crypto)
 - [ ] Random number generation uses cryptographically secure generators
 - [ ] Key management follows best practices (keys not hardcoded, proper rotation)
+- [ ] FIPS 140-2 compliance where required
 
 ### Category 7: Error Handling and Logging
 - [ ] Error responses do not contain sensitive data (stack traces, internal paths, credentials)
@@ -99,16 +100,19 @@ For each category, evaluate all applicable items. Mark items N/A with justificat
 - [ ] Database access uses least-privilege accounts
 - [ ] Connection strings are not hardcoded in source (use environment/config)
 - [ ] Default database credentials have been changed
+- [ ] Stored procedures are used for data access abstraction
 
 ### Category 12: File Management
 - [ ] User-supplied data is not used in dynamic includes or file paths
 - [ ] Authentication/authorization is checked before file upload
 - [ ] File type is validated by content headers (not file extension alone)
 - [ ] Upload directories do not allow script execution
+- [ ] No user-supplied data in redirects (prevent open redirect / CWE-601)
 - [ ] Absolute file paths are not exposed to clients
 
 ### Category 13: Memory Management
 - [ ] Buffer sizes are validated before use
+- [ ] Null termination is handled correctly for string buffers
 - [ ] Resources are properly released/cleaned up (not relying solely on GC)
 - [ ] Known vulnerable functions are avoided (e.g., strcpy, gets in C/C++)
 

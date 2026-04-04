@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: doing
+review_status: acknowledged
 ---
 
 # WP04 - Security Review Skill (review-security)
@@ -221,7 +221,7 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 
 > Implementers: address every FB-XX item before returning for re-review.
 
-- [ ] **FB-01**: [spec-adherence] FR-034 Partial - 4 OWASP checklist items specified in FR-034 are missing from the implementation. Add the following items to their respective categories in `.github/skills/review-security/SKILL.md`:
+- [x] **FB-01**: [spec-adherence] FR-034 Partial - 4 OWASP checklist items specified in FR-034 are missing from the implementation. Add the following items to their respective categories in `.github/skills/review-security/SKILL.md`:
   1. Category 6 (Cryptographic Practices): "FIPS 140-2 compliance where required"
   2. Category 11 (Database Security): "Stored procedures for data abstraction"
   3. Category 12 (File Management): "No user data in redirects" (also in T04-03 acceptance criteria)
@@ -256,3 +256,4 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - 2026-04-04T14:30:00Z - coder - lane=doing - Starting implementation
 - 2026-04-04T14:45:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-04T23:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-04T23:15:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
