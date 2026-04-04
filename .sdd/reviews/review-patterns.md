@@ -1,14 +1,19 @@
 # Review Patterns
 
-> Last updated: 2026-04-04T21:00:00Z
-> Last review: WP02-review-coordinator
+> Last updated: 2026-04-04T23:00:00Z
+> Last review: WP04-review-security
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
 
 ## Active Patterns
 
-(none)
+### PAT-004 [spec-adherence] Incomplete OWASP checklist item coverage
+- **First seen**: WP04 (2026-04-04)
+- **Occurrences**: 1
+- **Pattern**: When implementing a checklist from the spec, not all enumerated items are included. The spec's FR-034 lists specific items per OWASP category, but 4 of ~68 items were omitted from the implementation.
+- **Fix**: Cross-reference each category in the implementation against FR-034's category definitions line by line. Count items in both to verify none are missing.
+- **Source**: review-spec SPEC-006, review-security SEC-017/SEC-018/SEC-019/SEC-020
 
 ## Resolved
 

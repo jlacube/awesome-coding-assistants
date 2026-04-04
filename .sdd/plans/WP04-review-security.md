@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP04 - Security Review Skill (review-security)
@@ -202,8 +203,56 @@ Create `.github/skills/review-security/SKILL.md` - the security review skill. Th
 - **Risk**: Web research causes subagent to fetch untrusted URLs from code
   - Mitigation: Explicitly restrict web research to trusted domains listed in T04-05. Include NFR-006 constraint prominently.
 
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-04T23:00:00Z
+> **Verdict**: Changes Required
+> **Skills dispatched**: review-spec (FAIL), review-security (WARN), review-quality (PASS), review-tests (PASS), review-architecture (PASS), review-performance (PASS), review-docs (WARN), review-deps (PASS)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All 6 tasks have acceptance criteria checked off
+- [PASS] Activity Log: Consistent lane transitions planned -> doing -> for_review
+- [WARN] Commit granularity: Single commit (ddc0804) for entire WP rather than per-task commits
+- [PASS] Encoding: No prohibited Unicode characters found
+
+### Review Feedback
+
+> Implementers: address every FB-XX item before returning for re-review.
+
+- [ ] **FB-01**: [spec-adherence] FR-034 Partial - 4 OWASP checklist items specified in FR-034 are missing from the implementation. Add the following items to their respective categories in `.github/skills/review-security/SKILL.md`:
+  1. Category 6 (Cryptographic Practices): "FIPS 140-2 compliance where required"
+  2. Category 11 (Database Security): "Stored procedures for data abstraction"
+  3. Category 12 (File Management): "No user data in redirects" (also in T04-03 acceptance criteria)
+  4. Category 13 (Memory Management): "Null termination handling"
+  File: .github/skills/review-security/SKILL.md#L63-L113. Expected: All checklist items enumerated in FR-034 for each of the 14 categories are present.
+  Source skills: review-spec (SPEC-006), review-security (SEC-017, SEC-018, SEC-019, SEC-020)
+
+### Warnings
+- [WARN] PROC-003: Single commit for entire WP. Consider per-task commits for easier review and bisection.
+- [WARN] DOC-020: 3 of 6 standard doc files missing (api-reference.md, configuration-guide.md, deployment-guide.md). All cover domains not applicable to this project. (review-docs DOC-020)
+
+### Cross-Correlation Notes
+- Merged duplicate: review-spec SPEC-006 (FAIL: FR-034 Partial) and review-security SEC-017/SEC-018/SEC-019/SEC-020 (4 WARNs) reference the same 4 missing OWASP checklist items. Merged into composite FB-01 with FAIL severity (most severe). 4 WARNs absorbed.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 3 | 1 | 0 |
+| review-spec | 16 | 0 | 1 |
+| review-security | 7 | 4 | 0 |
+| review-quality | 6 | 0 | 0 |
+| review-tests | 0 | 0 | 0 |
+| review-architecture | 8 | 0 | 0 |
+| review-performance | 0 | 0 | 0 |
+| review-docs | 15 | 1 | 0 |
+| review-deps | 0 | 0 | 0 |
+| **Total** | **55** | **6** | **1** |
+
 ## Activity Log
 
 - 2026-04-04T11:25:00Z - planner - lane=planned - Work package created
 - 2026-04-04T14:30:00Z - coder - lane=doing - Starting implementation
 - 2026-04-04T14:45:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-04T23:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
