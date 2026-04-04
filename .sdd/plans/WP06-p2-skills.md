@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP06 - P2 Review Skills (review-tests, review-architecture)
@@ -8,7 +9,7 @@ lane: for_review
 |-------|-------|
 | Spec | `.sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md` |
 | Priority | P2 |
-| Lane | for_review |
+| Lane | to_do |
 | Depends on | WP02 |
 | Goal | Create two P2 review skills: review-tests (test quality evaluation) and review-architecture (architecture adherence), extending the coordinator's review coverage beyond MVP dimensions |
 | Status | Complete |
@@ -220,8 +221,78 @@ Create two P2 review skills that add test quality and architecture adherence rev
 - **Risk**: Scope discipline check produces false positives for utility functions needed by WP tasks
   - Mitigation: Include guidance that helper functions directly required by WP tasks are in scope. Only flag code with zero traceability to any WP task.
 
+## Review
+
+### Round 1
+
+| Field | Value |
+|-------|-------|
+| Reviewer | 5. Review Coordinator |
+| Date | 2026-04-05 |
+| Verdict | Changes Required |
+| Round | 1 |
+
+#### Aggregated Statistics
+
+| Skill | PASS | WARN | FAIL | N/A |
+|-------|------|------|------|-----|
+| review-spec | 21 | 0 | 0 | 7 |
+| review-security | 3 | 1 | 1 | 14 |
+| review-quality | 4 | 0 | 0 | 4 |
+| review-tests | 0 | 0 | 0 | 6 |
+| review-architecture | 16 | 0 | 0 | 4 |
+| review-performance | 1 | 0 | 0 | 7 |
+| review-docs | 18 | 1 | 0 | 14 |
+| review-deps | 0 | 0 | 0 | 6 |
+| **Total** | **63** | **2** | **1** | **62** |
+
+#### FAIL Findings
+
+##### FB-01: SEC-001 - NFR-004 violation: review-tests instructs code execution
+- [ ] Resolved
+- **Severity**: FAIL
+- **Source**: review-security SEC-001
+- **Requirement**: NFR-004 ("Skills SHALL NOT execute any discovered code. Review is static analysis only.")
+- **File**: `.github/skills/review-tests/SKILL.md` line 51
+- **Description**: The Coverage Thresholds dimension instructs the subagent to "run the coverage tool (e.g., `pytest --cov --cov-branch`) and report actual thresholds." Executing `pytest` runs the project's test suite and transitively the project's source code, violating the spec's static-analysis-only constraint.
+- **Required fix**: Replace the code execution instruction with a static analysis approach. The skill should instruct the subagent to: (1) check if coverage configuration exists (pytest-cov in pyproject.toml, .coveragerc, istanbul config, etc.), (2) read existing coverage reports if available (htmlcov/, coverage.xml, .coverage), (3) flag if no coverage tooling is configured. The subagent must never execute test runners or coverage tools.
+
+#### WARN Findings (Acknowledged)
+
+##### SEC-002: Neither P2 skill includes NFR-005 secret non-reproduction constraint
+- **Severity**: WARN
+- **Source**: review-security SEC-002
+- **Requirement**: NFR-005
+- **Description**: Neither review-tests nor review-architecture includes an explicit constraint against reproducing secret values in evidence snippets. This is defense-in-depth -- these skills are unlikely to encounter secrets in their review domains, but the constraint is present in review-security and would be beneficial for consistency.
+- **Action**: Recommended but not blocking. Coder may address at their discretion.
+
+##### DOC-WARN: 3 of 6 standard doc files missing
+- **Severity**: WARN
+- **Source**: review-docs
+- **Description**: api-reference.md, configuration-guide.md, deployment-guide.md do not exist. These cover domains not applicable to this markdown-only framework project.
+- **Action**: Accepted. Recurring WARN across all WPs -- project type justifies absence.
+
+#### Cross-Correlation Notes
+
+- SEC-001 is unique to review-security. No other skill flagged the coverage execution instruction, confirming review-security is the correct skill to catch NFR-004 violations.
+- No duplicate findings across skills. All findings are independent.
+- Process WARNs (single commit per WP, missing N/A doc files) are consistent with prior WP reviews and accepted.
+
+#### Findings Directory
+
+All individual skill findings are in `.sdd/reviews/WP06-p2-skills/`:
+- `review-spec-findings.md`
+- `review-security-findings.md`
+- `review-quality-findings.md`
+- `review-tests-findings.md`
+- `review-architecture-findings.md`
+- `review-performance-findings.md`
+- `review-docs-findings.md`
+- `review-deps-findings.md`
+
 ## Activity Log
 
 - 2026-04-04T11:35:00Z - planner - lane=planned - Work package created
 - 2026-04-04T16:00:00Z - coder - lane=doing - Starting WP06 implementation
 - 2026-04-04T16:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-05T00:00:00Z - reviewer - lane=to_do - Round 1 review: Changes Required (1 FAIL: SEC-001 NFR-004 violation)
