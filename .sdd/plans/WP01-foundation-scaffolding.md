@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP01 - Foundation & Scaffolding
@@ -36,9 +36,9 @@ Set up the directory structure, artifact templates, and agent references require
 - **Spec refs**: Section 9.3 Directory Structure
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Directory `.sdd/reviews/` exists in the workspace root
-  - [ ] Directory is committed to version control (not gitignored)
-  - [ ] A `.gitkeep` file is placed in `.sdd/reviews/` to ensure the empty directory is tracked by Git
+  - [x] Directory `.sdd/reviews/` exists in the workspace root
+  - [x] Directory is committed to version control (not gitignored)
+  - [x] A `.gitkeep` file is placed in `.sdd/reviews/` to ensure the empty directory is tracked by Git
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -52,11 +52,11 @@ Set up the directory structure, artifact templates, and agent references require
 - **Spec refs**: Section 9.3 Directory Structure, FR-003 (glob pattern `.github/skills/review-*/SKILL.md`)
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/review-spec/` exists
-  - [ ] Directory `.github/skills/review-security/` exists
-  - [ ] Directory `.github/skills/review-quality/` exists
-  - [ ] Each directory contains a `.gitkeep` file for Git tracking
-  - [ ] Directory names exactly match the canonical skill names from FR-004 dispatch order
+  - [x] Directory `.github/skills/review-spec/` exists
+  - [x] Directory `.github/skills/review-security/` exists
+  - [x] Directory `.github/skills/review-quality/` exists
+  - [x] Each directory contains a `.gitkeep` file for Git tracking
+  - [x] Directory names exactly match the canonical skill names from FR-004 dispatch order
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -71,12 +71,12 @@ Set up the directory structure, artifact templates, and agent references require
 - **Spec refs**: Section 7.3 (Review Patterns File), FR-018 (patterns curation), FR-019 (no patterns from WARNs)
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] File exists at `.sdd/reviews/review-patterns.md`
-  - [ ] File contains the header with `Last updated` and `Last review` fields (initially empty/placeholder)
-  - [ ] File contains the Coder instruction paragraph: "Coder: read this file before implementing any WP..."
-  - [ ] File contains `## Active Patterns` section (initially empty)
-  - [ ] File contains `## Resolved` section (initially empty)
-  - [ ] File uses only plain ASCII hyphens and straight quotes (no em dashes, smart quotes)
+  - [x] File exists at `.sdd/reviews/review-patterns.md`
+  - [x] File contains the header with `Last updated` and `Last review` fields (initially empty/placeholder)
+  - [x] File contains the Coder instruction paragraph: "Coder: read this file before implementing any WP..."
+  - [x] File contains `## Active Patterns` section (initially empty)
+  - [x] File contains `## Resolved` section (initially empty)
+  - [x] File uses only plain ASCII hyphens and straight quotes (no em dashes, smart quotes)
 - **Test requirements**: none (format verification)
 - **Depends on**: T01-01 (reviews directory must exist)
 - **Implementation Guidance**:
@@ -108,10 +108,10 @@ Set up the directory structure, artifact templates, and agent references require
 - **Spec refs**: Section 9.3 ("DEPRECATED: kept for reference, renamed to reviewer.agent.md.deprecated")
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] File `.github/agents/reviewer.agent.md` no longer exists as an active agent file
-  - [ ] File `.github/agents/reviewer.agent.md.deprecated` exists with the original content intact
-  - [ ] The rename is performed via `git mv` to preserve history
-  - [ ] No other agent files reference "5. Reviewer" by the old filename
+  - [x] File `.github/agents/reviewer.agent.md` no longer exists as an active agent file
+  - [x] File `.github/agents/reviewer.agent.md.deprecated` exists with the original content intact
+  - [x] The rename is performed via `git mv` to preserve history
+  - [x] No other agent files reference "5. Reviewer" by the old filename
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -126,10 +126,10 @@ Set up the directory structure, artifact templates, and agent references require
 - **Spec refs**: Section 7.4 (coordinator name: "5. Review Coordinator"), C-006 (pipeline contract preserved), A-004 (larger Orchestrator changes are separate)
 - **Parallel**: No (depends on understanding of T01-04)
 - **Acceptance criteria**:
-  - [ ] The Orchestrator agent file references "5. Review Coordinator" (or equivalent) where it previously referenced "5. Reviewer"
-  - [ ] The Orchestrator's `lane: for_review` routing still delegates to the review agent
-  - [ ] No other routing logic in the Orchestrator is modified (auto-continuation, next-WP scanning remain as-is)
-  - [ ] The handoff label and description are updated to match the new agent name
+  - [x] The Orchestrator agent file references "5. Review Coordinator" (or equivalent) where it previously referenced "5. Reviewer"
+  - [x] The Orchestrator's `lane: for_review` routing still delegates to the review agent
+  - [x] No other routing logic in the Orchestrator is modified (auto-continuation, next-WP scanning remain as-is)
+  - [x] The handoff label and description are updated to match the new agent name
 - **Test requirements**: none (string replacement verification)
 - **Depends on**: T01-04 (old reviewer must be deprecated first)
 - **Implementation Guidance**:
@@ -145,15 +145,15 @@ Set up the directory structure, artifact templates, and agent references require
 - **Spec refs**: Section 9.3 (full directory tree)
 - **Parallel**: No (final verification task)
 - **Acceptance criteria**:
-  - [ ] `.sdd/reviews/` exists with `.gitkeep`
-  - [ ] `.sdd/reviews/review-patterns.md` exists with correct template
-  - [ ] `.github/skills/review-spec/` exists with `.gitkeep`
-  - [ ] `.github/skills/review-security/` exists with `.gitkeep`
-  - [ ] `.github/skills/review-quality/` exists with `.gitkeep`
-  - [ ] `.github/agents/reviewer.agent.md.deprecated` exists
-  - [ ] `.github/agents/reviewer.agent.md` does NOT exist
-  - [ ] Orchestrator references "5. Review Coordinator"
-  - [ ] All files committed with explicit `git add` listing
+  - [x] `.sdd/reviews/` exists with `.gitkeep`
+  - [x] `.sdd/reviews/review-patterns.md` exists with correct template
+  - [x] `.github/skills/review-spec/` exists with `.gitkeep`
+  - [x] `.github/skills/review-security/` exists with `.gitkeep`
+  - [x] `.github/skills/review-quality/` exists with `.gitkeep`
+  - [x] `.github/agents/reviewer.agent.md.deprecated` exists
+  - [x] `.github/agents/reviewer.agent.md` does NOT exist
+  - [x] Orchestrator references "5. Review Coordinator"
+  - [x] All files committed with explicit `git add` listing
 - **Test requirements**: none (structural verification)
 - **Depends on**: T01-01, T01-02, T01-03, T01-04, T01-05
 - **Implementation Guidance**:
@@ -187,3 +187,4 @@ Set up the directory structure, artifact templates, and agent references require
 ## Activity Log
 
 - 2026-04-04T11:10:00Z - planner - lane=planned - Work package created
+- 2026-04-04T12:00:00Z - coder - lane=doing - Starting implementation

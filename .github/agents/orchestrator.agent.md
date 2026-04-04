@@ -1,5 +1,5 @@
 ---
-description: "Use when automating the full SDD development cycle end-to-end. Triggers on: orchestrate, run the pipeline, automate development, continuous cycle, build everything, implement all WPs, run full cycle, start pipeline, drive development forward. Reads .sdd/ state, determines the next action, and delegates to the appropriate agent in sequence: Ideation -> Spec Architect -> Planner -> Coder -> Reviewer, looping until all work is done."
+description: "Use when automating the full SDD development cycle end-to-end. Triggers on: orchestrate, run the pipeline, automate development, continuous cycle, build everything, implement all WPs, run full cycle, start pipeline, drive development forward. Reads .sdd/ state, determines the next action, and delegates to the appropriate agent in sequence: Ideation -> Spec Architect -> Planner -> Coder -> Review Coordinator, looping until all work is done."
 name: "0. Orchestrator"
 model: Claude Opus 4.6 (copilot)
 tools: [vscode/extensions, vscode/getProjectSetupInfo, vscode/installExtension, vscode/memory, vscode/newWorkspace, vscode/resolveMemoryFileUri, vscode/runCommand, vscode/vscodeAPI, vscode/askQuestions, execute/runNotebookCell, execute/testFailure, execute/getTerminalOutput, execute/awaitTerminal, execute/killTerminal, execute/runTask, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, read/getTaskOutput, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, web/fetch, web/githubRepo, browser/openBrowserPage, browser/readPage, browser/screenshotPage, browser/navigatePage, browser/clickElement, browser/dragElement, browser/hoverElement, browser/typeInPage, browser/runPlaywrightCode, browser/handleDialog, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
@@ -21,7 +21,7 @@ handoffs:
     prompt: "Implement the next work package"
     send: true
   - label: Review Work Package
-    agent: 5. Reviewer
+    agent: 5. Review Coordinator
     prompt: "Review the implemented work package"
     send: true
 argument-hint: "Goal or scope (e.g. 'implement all v0.1.1 WPs' or 'full cycle from ideation') or leave blank to auto-detect"
@@ -43,7 +43,7 @@ You are a state machine. You read the current state of `.sdd/`, determine what n
 - MINIMIZE context -- pass only the relevant WP ID or spec path to each agent, not the full project history
 - NEVER pre-queue or batch multiple agent invocations -- execute ONE agent at a time, then re-assess state before deciding the next action
 - NEVER assume the outcome of an agent invocation -- always read .sdd/ state after each delegation to check for feedback, failures, or lane changes before proceeding
-- NEVER modify .sdd/ file frontmatter (lane, review_status, etc.) directly -- only the delegated specialist agents (Coder, Reviewer) should update frontmatter as part of their workflow
+- NEVER modify .sdd/ file frontmatter (lane, review_status, etc.) directly -- only the delegated specialist agents (Coder, Review Coordinator) should update frontmatter as part of their workflow
 </rules>
 
 <state_machine>
@@ -75,8 +75,8 @@ Before every decision, read these files to determine current state:
 | Ideation brief exists without a matching spec | Turn brief into specification | **2. Spec Architect** |
 | Spec exists without work packages | Decompose spec into WPs | **3. Planner** |
 | WPs exist with `lane: planned` and dependencies met | Implement next WP | **4. Coder** |
-| WP has `lane: for_review` | Review the WP | **5. Reviewer** |
-| WP has `lane: to_do` (reviewer returned changes) | Fix reviewer feedback | **4. Coder** |
+| WP has `lane: for_review` | Review the WP | **5. Review Coordinator** |
+| WP has `lane: to_do` (review coordinator returned changes) | Fix review feedback | **4. Coder** |
 | WP has `lane: doing` (in progress) | Resume implementation | **4. Coder** |
 | All WPs have `lane: done` | Pipeline complete -- report to user | **None (halt)** |
 | All MVP WPs done, non-MVP WPs remain | Ask user whether to continue | **User decision** |
@@ -128,7 +128,7 @@ Invoke the appropriate agent with a precise prompt:
 - **Spec Architect**: "Turn .sdd/ideas/{file} into a specification at .sdd/specs/{file}"
 - **Planner**: "Decompose .sdd/specs/{file} into work packages"
 - **Coder**: "Implement WP{NN} - {title}. The plan is at .sdd/plans/WP{NN}-{slug}.md"
-- **Reviewer**: "Review WP{NN}. It is at lane=for_review"
+- **Review Coordinator**: "Review WP{NN}. It is at lane=for_review"
 
 ### Step 5: Process Agent Result
 
