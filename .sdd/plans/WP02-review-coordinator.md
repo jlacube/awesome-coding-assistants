@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP02 - Review Coordinator Agent
@@ -43,16 +43,16 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: Section 7.4 (Coordinator Agent File metadata), Section 8.4 (Handoff Prompt Templates)
 - **Parallel**: No (foundation for all other T02 tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/agents/review-coordinator.agent.md`
-  - [ ] YAML frontmatter `name` field is `"5. Review Coordinator"`
-  - [ ] YAML frontmatter `description` field includes trigger keywords: "review", "audit", "check adherence", "verify implementation", "quality check"
-  - [ ] YAML frontmatter `tools` array includes: `agent/runSubagent`, file operations (read/write/create), `search/*`, `web`, `vscode/askQuestions`, terminal (for git)
-  - [ ] YAML frontmatter `handoffs` array includes exactly 3 handoffs matching Section 8.4:
+  - [x] File exists at `.github/agents/review-coordinator.agent.md`
+  - [x] YAML frontmatter `name` field is `"5. Review Coordinator"`
+  - [x] YAML frontmatter `description` field includes trigger keywords: "review", "audit", "check adherence", "verify implementation", "quality check"
+  - [x] YAML frontmatter `tools` array includes: `agent/runSubagent`, file operations (read/write/create), `search/*`, `web`, `vscode/askQuestions`, terminal (for git)
+  - [x] YAML frontmatter `handoffs` array includes exactly 3 handoffs matching Section 8.4:
     - "Fix Findings" -> "4. Coder" (send: true)
     - "Update Specification" -> "2. Spec Architect" (send: false)
     - "Revise Plan" -> "3. Planner" (send: false)
-  - [ ] Each handoff `prompt` field matches the exact template from Section 8.4
-  - [ ] `argument-hint` field is present (e.g., "Work package ID to review (e.g. WP01) or leave blank to scan")
+  - [x] Each handoff `prompt` field matches the exact template from Section 8.4
+  - [x] `argument-hint` field is present (e.g., "Work package ID to review (e.g. WP01) or leave blank to scan")
 - **Test requirements**: BDD - Coordinator invocation scenarios from Section 11.2
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -80,12 +80,12 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-001 (WP selection), FR-002 (artifact chain loading)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Instructions specify: accept WP ID as argument, OR scan `.sdd/plans/WP*.md` for `lane: for_review`
-  - [ ] When no WP ID given and multiple WPs are `for_review`, coordinator asks user to choose via `askQuestions`
-  - [ ] When no WP has `lane: for_review`, coordinator informs user and halts
-  - [ ] When specified WP ID does not exist, coordinator lists available WPs and asks user to select
-  - [ ] Artifact chain loading order is specified: (1) WP plan file, (2) spec file (from WP's `Spec` field), (3) ideation brief (from spec's `Source brief` field), (4) plan index
-  - [ ] If any artifact in the chain is missing or unreadable, coordinator halts and reports which artifact is missing
+  - [x] Instructions specify: accept WP ID as argument, OR scan `.sdd/plans/WP*.md` for `lane: for_review`
+  - [x] When no WP ID given and multiple WPs are `for_review`, coordinator asks user to choose via `askQuestions`
+  - [x] When no WP has `lane: for_review`, coordinator informs user and halts
+  - [x] When specified WP ID does not exist, coordinator lists available WPs and asks user to select
+  - [x] Artifact chain loading order is specified: (1) WP plan file, (2) spec file (from WP's `Spec` field), (3) ideation brief (from spec's `Source brief` field), (4) plan index
+  - [x] If any artifact in the chain is missing or unreadable, coordinator halts and reports which artifact is missing
 - **Test requirements**: BDD - Section 11.2 "Successful initial review" scenario step 1-3
 - **Depends on**: T02-01
 - **Implementation Guidance**:
@@ -101,12 +101,12 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-003 (dynamic discovery), FR-004 (deterministic order), Section 9.4 Decision 1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator scans for directories matching glob `.github/skills/review-*/SKILL.md`
-  - [ ] Discovered skills are sorted into canonical order: review-spec, review-security, review-quality, review-tests, review-architecture, review-performance, review-docs, review-deps
-  - [ ] Skills not in the canonical list are dispatched after all known skills in alphabetical order
-  - [ ] Skills present in canonical list but not discovered are silently skipped (no error)
-  - [ ] If zero skills are discovered, coordinator halts with error: "No review skills installed"
-  - [ ] Discovery result is logged (list of discovered skill names)
+  - [x] Coordinator scans for directories matching glob `.github/skills/review-*/SKILL.md`
+  - [x] Discovered skills are sorted into canonical order: review-spec, review-security, review-quality, review-tests, review-architecture, review-performance, review-docs, review-deps
+  - [x] Skills not in the canonical list are dispatched after all known skills in alphabetical order
+  - [x] Skills present in canonical list but not discovered are silently skipped (no error)
+  - [x] If zero skills are discovered, coordinator halts with error: "No review skills installed"
+  - [x] Discovery result is logged (list of discovered skill names)
 - **Test requirements**: BDD - Section 11.2 "Dynamic skill discovery" and "Zero skills installed" scenarios
 - **Depends on**: T02-01
 - **Implementation Guidance**:
@@ -122,12 +122,12 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-005 (process compliance), FR-006 (encoding check)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Process compliance check verifies: Spec Compliance Checklist present for each task, all items checked off, Activity Log entries present and consistent, commit history shows granular commits
-  - [ ] Missing Spec Compliance Checklist produces a FAIL finding for "Process Compliance"
-  - [ ] Encoding check scans all files created/modified in the WP for: em dashes (U+2014), en dashes (U+2013), smart quotes (U+201C, U+201D, U+2018, U+2019), non-breaking spaces (U+00A0), ellipsis (U+2026), and General Punctuation block chars (U+2000-U+206F)
-  - [ ] Encoding violations produce WARN severity (not FAIL)
-  - [ ] Process compliance FAIL is included in the FB-XX list
-  - [ ] Both checks produce findings in the same format as skill findings (finding ID, severity, description)
+  - [x] Process compliance check verifies: Spec Compliance Checklist present for each task, all items checked off, Activity Log entries present and consistent, commit history shows granular commits
+  - [x] Missing Spec Compliance Checklist produces a FAIL finding for "Process Compliance"
+  - [x] Encoding check scans all files created/modified in the WP for: em dashes (U+2014), en dashes (U+2013), smart quotes (U+201C, U+201D, U+2018, U+2019), non-breaking spaces (U+00A0), ellipsis (U+2026), and General Punctuation block chars (U+2000-U+206F)
+  - [x] Encoding violations produce WARN severity (not FAIL)
+  - [x] Process compliance FAIL is included in the FB-XX list
+  - [x] Both checks produce findings in the same format as skill findings (finding ID, severity, description)
 - **Test requirements**: BDD - Section 11.2 "Process compliance FAIL" scenario
 - **Depends on**: T02-02 (must know which WP to check)
 - **Implementation Guidance**:
@@ -143,12 +143,12 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-007 (dispatch via runSubagent), FR-008 (create review directory), FR-009 (sequential execution), Section 8.3 (prompt template)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator creates directory `.sdd/reviews/<WP-id>/` before dispatching the first skill (FR-008), where `<WP-id>` is the WP filename stem (e.g., `WP01-feature-name`)
-  - [ ] If directory creation fails, coordinator halts with filesystem error
-  - [ ] Each skill is dispatched via `runSubagent` with a prompt containing: skill file path, WP identifier, spec file path, output findings file path, and instruction to read SKILL.md first
-  - [ ] The prompt matches the template from Section 8.3 exactly
-  - [ ] Skills execute sequentially - coordinator waits for each subagent to return before dispatching the next (FR-009)
-  - [ ] If a subagent invocation fails (tool error, timeout), coordinator records a WARN finding: "Skill dispatch failed: <error>" and continues with the next skill
+  - [x] Coordinator creates directory `.sdd/reviews/<WP-id>/` before dispatching the first skill (FR-008), where `<WP-id>` is the WP filename stem (e.g., `WP01-feature-name`)
+  - [x] If directory creation fails, coordinator halts with filesystem error
+  - [x] Each skill is dispatched via `runSubagent` with a prompt containing: skill file path, WP identifier, spec file path, output findings file path, and instruction to read SKILL.md first
+  - [x] The prompt matches the template from Section 8.3 exactly
+  - [x] Skills execute sequentially - coordinator waits for each subagent to return before dispatching the next (FR-009)
+  - [x] If a subagent invocation fails (tool error, timeout), coordinator records a WARN finding: "Skill dispatch failed: <error>" and continues with the next skill
 - **Test requirements**: BDD - Section 11.2 "Subagent failure is handled gracefully" scenario
 - **Depends on**: T02-03 (must have discovered and ordered skills)
 - **Implementation Guidance**:
@@ -181,12 +181,12 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-010 (read findings), FR-011 (cross-correlation), Section 7.1 (findings format)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator reads every findings file in `.sdd/reviews/<WP-id>/` after all skills complete
-  - [ ] If a findings file is missing (skill ran but produced no output), coordinator records WARN: "Skill completed but produced no findings file"
-  - [ ] Duplicate findings are detected: same code location flagged by 2+ skills for related reasons - merged into single composite finding referencing all source skills
-  - [ ] Conflicting findings are detected: one skill marks code PASS while another marks it FAIL - surfaced as composite with both perspectives, more severe verdict preserved
-  - [ ] Systemic patterns are detected: 3+ findings of same type across different files - grouped into single systemic finding with all locations listed
-  - [ ] Cross-correlation results are documented in the review report
+  - [x] Coordinator reads every findings file in `.sdd/reviews/<WP-id>/` after all skills complete
+  - [x] If a findings file is missing (skill ran but produced no output), coordinator records WARN: "Skill completed but produced no findings file"
+  - [x] Duplicate findings are detected: same code location flagged by 2+ skills for related reasons - merged into single composite finding referencing all source skills
+  - [x] Conflicting findings are detected: one skill marks code PASS while another marks it FAIL - surfaced as composite with both perspectives, more severe verdict preserved
+  - [x] Systemic patterns are detected: 3+ findings of same type across different files - grouped into single systemic finding with all locations listed
+  - [x] Cross-correlation results are documented in the review report
 - **Test requirements**: BDD - Section 11.2 "Cross-correlation merges duplicate findings" scenario
 - **Depends on**: T02-05 (findings files must exist from dispatch)
 - **Implementation Guidance**:
@@ -203,16 +203,16 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-012 (verdict), FR-013 (review summary), FR-014 (detailed findings stay in review dir), FR-050 (round tracking), Section 7.2 (report template)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Verdict logic: Approved = zero FAILs + zero WARNs; Approved with Findings = zero FAILs + 1+ WARNs; Changes Required = 1+ FAILs
-  - [ ] Review summary written under `## Review` section at end of WP file, matching Section 7.2 template exactly
-  - [ ] Summary includes: reviewer identification ("Review Coordinator (v2)"), ISO 8601 date, verdict string, skills dispatched with individual status, review round number
-  - [ ] FB-XX checklist: one actionable item per FAIL finding with file path, line reference, requirement citation, expected fix, and source skill references
-  - [ ] WARN items listed separately (not in FB-XX checklist)
-  - [ ] Statistics table with dimension-level PASS/WARN/FAIL counts
-  - [ ] Cross-correlation notes section
-  - [ ] Round number determined by counting existing `review-coordinator` Activity Log entries + 1
-  - [ ] On re-review, existing `## Review` section is OVERWRITTEN (not appended)
-  - [ ] Detailed per-skill findings remain in `.sdd/reviews/<WP-id>/` only (FR-014)
+  - [x] Verdict logic: Approved = zero FAILs + zero WARNs; Approved with Findings = zero FAILs + 1+ WARNs; Changes Required = 1+ FAILs
+  - [x] Review summary written under `## Review` section at end of WP file, matching Section 7.2 template exactly
+  - [x] Summary includes: reviewer identification ("Review Coordinator (v2)"), ISO 8601 date, verdict string, skills dispatched with individual status, review round number
+  - [x] FB-XX checklist: one actionable item per FAIL finding with file path, line reference, requirement citation, expected fix, and source skill references
+  - [x] WARN items listed separately (not in FB-XX checklist)
+  - [x] Statistics table with dimension-level PASS/WARN/FAIL counts
+  - [x] Cross-correlation notes section
+  - [x] Round number determined by counting existing `review-coordinator` Activity Log entries + 1
+  - [x] On re-review, existing `## Review` section is OVERWRITTEN (not appended)
+  - [x] Detailed per-skill findings remain in `.sdd/reviews/<WP-id>/` only (FR-014)
 - **Test requirements**: BDD - Section 11.2 "Review with failures produces Changes Required verdict" and "Successful initial review" scenarios
 - **Depends on**: T02-06 (aggregated findings must be available)
 - **Implementation Guidance**:
@@ -229,13 +229,13 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-015 (frontmatter update), FR-016 (Activity Log), FR-017 (spec status)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] On Approved/Approved with Findings: set `lane: done`, remove `review_status` field
-  - [ ] On Changes Required: set `lane: to_do`, set `review_status: has_feedback`
-  - [ ] Activity Log entry for Approved: `YYYY-MM-DDTHH:MM:SSZ - review-coordinator - lane=done - Verdict: Approved`
-  - [ ] Activity Log entry for Approved with Findings: `YYYY-MM-DDTHH:MM:SSZ - review-coordinator - lane=done - Verdict: Approved with Findings (N WARNs)`
-  - [ ] Activity Log entry for Changes Required: `YYYY-MM-DDTHH:MM:SSZ - review-coordinator - lane=to_do - Verdict: Changes Required (N FAILs) -- awaiting remediation`
-  - [ ] When all WPs referencing the same spec have `lane: done`, spec status updated from `Draft` to `Approved`
-  - [ ] Spec file included in commit when status changes (FR-017)
+  - [x] On Approved/Approved with Findings: set `lane: done`, remove `review_status` field
+  - [x] On Changes Required: set `lane: to_do`, set `review_status: has_feedback`
+  - [x] Activity Log entry for Approved: `YYYY-MM-DDTHH:MM:SSZ - review-coordinator - lane=done - Verdict: Approved`
+  - [x] Activity Log entry for Approved with Findings: `YYYY-MM-DDTHH:MM:SSZ - review-coordinator - lane=done - Verdict: Approved with Findings (N WARNs)`
+  - [x] Activity Log entry for Changes Required: `YYYY-MM-DDTHH:MM:SSZ - review-coordinator - lane=to_do - Verdict: Changes Required (N FAILs) -- awaiting remediation`
+  - [x] When all WPs referencing the same spec have `lane: done`, spec status updated from `Draft` to `Approved`
+  - [x] Spec file included in commit when status changes (FR-017)
 - **Test requirements**: BDD - Section 11.2 verdict scenarios
 - **Depends on**: T02-07 (verdict must be determined)
 - **Implementation Guidance**:
@@ -251,14 +251,14 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-018 (patterns curation), FR-019 (no patterns from WARNs), Section 7.3 (patterns format)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] For each FAIL finding, extract a concise pattern entry with: PAT-NNN ID, category tag, title, first seen WP/date, occurrences count, pattern description, fix description, source finding IDs
-  - [ ] Pattern IDs are globally unique and sequential (never reused)
-  - [ ] If a pattern from a previous review has zero occurrences in current review, move it to `## Resolved` section with resolved date
-  - [ ] Resolved patterns are NOT deleted - they are preserved in the Resolved section
-  - [ ] Active patterns that recur have their `Occurrences` count incremented
-  - [ ] WARN findings do NOT generate patterns (FR-019)
-  - [ ] If the patterns file does not exist, create it with initial structure from Section 7.3
-  - [ ] Category tags match skill domains: `security`, `spec-adherence`, `quality`, `tests`, `architecture`, `performance`, `docs`, `deps`, `process`
+  - [x] For each FAIL finding, extract a concise pattern entry with: PAT-NNN ID, category tag, title, first seen WP/date, occurrences count, pattern description, fix description, source finding IDs
+  - [x] Pattern IDs are globally unique and sequential (never reused)
+  - [x] If a pattern from a previous review has zero occurrences in current review, move it to `## Resolved` section with resolved date
+  - [x] Resolved patterns are NOT deleted - they are preserved in the Resolved section
+  - [x] Active patterns that recur have their `Occurrences` count incremented
+  - [x] WARN findings do NOT generate patterns (FR-019)
+  - [x] If the patterns file does not exist, create it with initial structure from Section 7.3
+  - [x] Category tags match skill domains: `security`, `spec-adherence`, `quality`, `tests`, `architecture`, `performance`, `docs`, `deps`, `process`
 - **Test requirements**: BDD - Section 11.2 "Patterns file updated after review" and "Pattern resolved" scenarios
 - **Depends on**: T02-06 (aggregated findings needed for pattern extraction)
 - **Implementation Guidance**:
@@ -283,15 +283,15 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - **Spec refs**: FR-020 (commit), FR-021 (re-review), FR-022 (stalled cycle), FR-023 (no auto-continuation), FR-024 (no direct agent invocation)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Re-review: identify previously FAILed skills (from findings file frontmatter `finding_counts.fail > 0`), identify modified files since last review (via `git diff`), cross-reference modified files against each skill's `files_reviewed` frontmatter, re-dispatch FAILed skills + skills whose files were modified
-  - [ ] Re-review: overwrite findings files for re-dispatched skills only; preserve findings files for non-re-dispatched skills
-  - [ ] Re-review prompt includes previous findings path so skill can check resolution
-  - [ ] Stalled cycle: after 3 rounds with same FB-XX items unresolved, set `lane: blocked`, append Activity Log with `lane=blocked - Cycle stalled`, escalate to user via `askQuestions`, halt
-  - [ ] Commit: always include WP file; conditionally include patterns file, spec file, all findings files in `.sdd/reviews/<WP-id>/`
-  - [ ] Commit: files listed explicitly in `git add` - never `git add .` or `git add -A`
-  - [ ] Commit message: `docs(review): WP<NN> verdict <Approved|Approved with Findings|Changes Required>`
-  - [ ] No auto-continuation: coordinator presents verdict and stops - does NOT scan for other WPs or invoke other agents
-  - [ ] No direct agent invocation: handoffs to Coder/Spec Architect/Planner are via handoff buttons only
+  - [x] Re-review: identify previously FAILed skills (from findings file frontmatter `finding_counts.fail > 0`), identify modified files since last review (via `git diff`), cross-reference modified files against each skill's `files_reviewed` frontmatter, re-dispatch FAILed skills + skills whose files were modified
+  - [x] Re-review: overwrite findings files for re-dispatched skills only; preserve findings files for non-re-dispatched skills
+  - [x] Re-review prompt includes previous findings path so skill can check resolution
+  - [x] Stalled cycle: after 3 rounds with same FB-XX items unresolved, set `lane: blocked`, append Activity Log with `lane=blocked - Cycle stalled`, escalate to user via `askQuestions`, halt
+  - [x] Commit: always include WP file; conditionally include patterns file, spec file, all findings files in `.sdd/reviews/<WP-id>/`
+  - [x] Commit: files listed explicitly in `git add` - never `git add .` or `git add -A`
+  - [x] Commit message: `docs(review): WP<NN> verdict <Approved|Approved with Findings|Changes Required>`
+  - [x] No auto-continuation: coordinator presents verdict and stops - does NOT scan for other WPs or invoke other agents
+  - [x] No direct agent invocation: handoffs to Coder/Spec Architect/Planner are via handoff buttons only
 - **Test requirements**: BDD - Section 11.2 "Re-review dispatches only relevant skills", "Stalled review cycle escalation" scenarios
 - **Depends on**: T02-07, T02-08, T02-09 (all post-aggregation tasks)
 - **Implementation Guidance**:
@@ -335,3 +335,4 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 ## Activity Log
 
 - 2026-04-04T11:15:00Z - planner - lane=planned - Work package created
+- 2026-04-04T13:00:00Z - coder - lane=doing - Starting implementation

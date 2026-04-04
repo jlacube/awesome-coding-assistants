@@ -7,8 +7,8 @@
 
 | ID | Title | Priority | Status | Depends On | Parallelisable |
 |----|-------|----------|--------|------------|----------------|
-| [WP01](WP01-foundation-scaffolding.md) | Foundation & Scaffolding | P0 | Not Started | none | - |
-| [WP02](WP02-review-coordinator.md) | Review Coordinator Agent | P1 | Not Started | WP01 | No |
+| [WP01](WP01-foundation-scaffolding.md) | Foundation & Scaffolding | P0 | Complete | none | - |
+| [WP02](WP02-review-coordinator.md) | Review Coordinator Agent | P1 | In Progress | WP01 | No |
 | [WP03](WP03-review-spec.md) | Spec Adherence Review Skill | P1 | Not Started | WP02 | Yes |
 | [WP04](WP04-review-security.md) | Security Review Skill | P1 | Not Started | WP02 | Yes |
 | [WP05](WP05-review-quality.md) | Code Quality Review Skill | P1 | Not Started | WP02 | Yes |

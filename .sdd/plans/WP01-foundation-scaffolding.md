@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP01 - Foundation & Scaffolding
@@ -188,3 +188,4 @@ Set up the directory structure, artifact templates, and agent references require
 
 - 2026-04-04T11:10:00Z - planner - lane=planned - Work package created
 - 2026-04-04T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-04T12:10:00Z - coder - lane=for_review - All tasks complete, submitted for review
