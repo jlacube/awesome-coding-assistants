@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
+review_status: acknowledged
 ---
 
 # WP06 - P2 Review Skills (review-tests, review-architecture)
@@ -9,7 +9,7 @@ review_status: has_feedback
 |-------|-------|
 | Spec | `.sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md` |
 | Priority | P2 |
-| Lane | to_do |
+| Lane | for_review |
 | Depends on | WP02 |
 | Goal | Create two P2 review skills: review-tests (test quality evaluation) and review-architecture (architecture adherence), extending the coordinator's review coverage beyond MVP dimensions |
 | Status | Complete |
@@ -249,7 +249,7 @@ Create two P2 review skills that add test quality and architecture adherence rev
 #### FAIL Findings
 
 ##### FB-01: SEC-001 - NFR-004 violation: review-tests instructs code execution
-- [ ] Resolved
+- [x] Resolved
 - **Severity**: FAIL
 - **Source**: review-security SEC-001
 - **Requirement**: NFR-004 ("Skills SHALL NOT execute any discovered code. Review is static analysis only.")
@@ -296,3 +296,5 @@ All individual skill findings are in `.sdd/reviews/WP06-p2-skills/`:
 - 2026-04-04T16:00:00Z - coder - lane=doing - Starting WP06 implementation
 - 2026-04-04T16:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T00:00:00Z - reviewer - lane=to_do - Round 1 review: Changes Required (1 FAIL: SEC-001 NFR-004 violation)
+- 2026-04-05T00:05:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
+- 2026-04-05T00:10:00Z - coder - lane=for_review - FB-01 resolved, resubmitted for review

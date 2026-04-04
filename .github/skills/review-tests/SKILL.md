@@ -48,7 +48,7 @@ Before evaluating, identify all test files for this WP:
 - [ ] Do all coverage exclusions have documented justification in a comment?
 - [ ] Is coverage tooling configured in the project (pytest-cov, istanbul, c8, coverage.py)?
 
-**If coverage tooling is configured**: run the coverage tool (e.g., `pytest --cov --cov-branch`) and report actual thresholds.
+**If coverage tooling is configured**: read existing coverage reports (e.g., `htmlcov/`, `coverage.xml`, `.coverage`, `lcov.info`, `coverage/lcov-report/`) and report actual thresholds found in the reports. If no reports exist, check the coverage configuration (e.g., `pytest-cov` in `pyproject.toml`, `.coveragerc`, `jest --coverage` in `package.json`, `.nycrc`) and flag as WARN - "Coverage tooling is configured but no coverage reports found. Cannot verify thresholds." Do NOT execute test runners or coverage tools (NFR-004: static analysis only).
 **If coverage tooling is NOT configured**: flag as WARN - "No coverage tooling configured. Cannot verify thresholds."
 
 ### Dimension 3: BDD Scenario Matching (FR-040.3)
