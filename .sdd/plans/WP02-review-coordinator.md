@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
+review_status: acknowledged
 ---
 
 # WP02 - Review Coordinator Agent
@@ -339,6 +339,8 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 - 2026-04-04T13:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-04T13:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-04T20:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (6 FAILs) -- awaiting remediation
+- 2026-04-04T20:15:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01, FB-02, FB-03, FB-04, FB-05, FB-06)
+- 2026-04-04T20:30:00Z - coder - lane=for_review - All FB-XX items resolved, requesting re-review
 
 ## Review
 
@@ -358,22 +360,22 @@ Create `.github/agents/review-coordinator.agent.md` - the lightweight dispatcher
 
 > Implementers: address every FB-XX item before returning for re-review.
 
-- [ ] **FB-01**: [spec-adherence] FR-002 Deviating - Coordinator treats ideation brief as optional ("record a note but continue") but spec requires halting for ANY missing artifact in the chain.
+- [x] **FB-01**: [spec-adherence] FR-002 Deviating - Coordinator treats ideation brief as optional ("record a note but continue") but spec requires halting for ANY missing artifact in the chain.
   File: .github/agents/review-coordinator.agent.md#L66-L68. Expected: Remove the exception for briefs; halt and report if brief is missing, consistent with FR-002's "any artifact" language. Alternatively, propose a spec amendment via the "Update Specification" handoff if the brief should genuinely be optional.
   Source skills: review-spec (SPEC-002)
-- [ ] **FB-02**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/architecture.md` does not exist. Coordinator is a key architectural component (Section 9.1).
+- [x] **FB-02**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/architecture.md` does not exist. Coordinator is a key architectural component (Section 9.1).
   File: (missing) .sdd/docs/architecture.md. Expected: Create architecture.md documenting coordinator role, skill-based decomposition, interaction flow.
   Source skills: review-docs (DOC-001)
-- [ ] **FB-03**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/user-guide.md` does not exist. Coordinator is user-invokable.
+- [x] **FB-03**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/user-guide.md` does not exist. Coordinator is user-invokable.
   File: (missing) .sdd/docs/user-guide.md. Expected: Create user-guide.md covering invocation, arguments, verdicts, FB-XX items, handoff buttons.
   Source skills: review-docs (DOC-005)
-- [ ] **FB-04**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/developer-guide.md` does not exist. Skill-based architecture designed for extensibility (SC-003, SC-007).
+- [x] **FB-04**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/developer-guide.md` does not exist. Skill-based architecture designed for extensibility (SC-003, SC-007).
   File: (missing) .sdd/docs/developer-guide.md. Expected: Create developer-guide.md covering how to add new review skills, skill contract, findings format.
   Source skills: review-docs (DOC-006)
-- [ ] **FB-05**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/` directory does not exist. Zero of 6 standard doc files present.
+- [x] **FB-05**: [docs] FR-046/FR-047 FAIL - `.sdd/docs/` directory does not exist. Zero of 6 standard doc files present.
   File: (missing) .sdd/docs/. Expected: Create .sdd/docs/ directory with at minimum the 3 applicable doc files (architecture.md, user-guide.md, developer-guide.md).
   Source skills: review-docs (DOC-009)
-- [ ] **FB-06**: [docs] FR-046/FR-047 FAIL - Public workflows (invocation, skill discovery, dispatch, aggregation, verdict, lifecycle) undocumented outside agent file and spec.
+- [x] **FB-06**: [docs] FR-046/FR-047 FAIL - Public workflows (invocation, skill discovery, dispatch, aggregation, verdict, lifecycle) undocumented outside agent file and spec.
   File: (missing) .sdd/docs/. Expected: Document public workflows in appropriate .sdd/docs/ files.
   Source skills: review-docs (DOC-010)
 
