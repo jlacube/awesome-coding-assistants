@@ -1,6 +1,5 @@
 ---
-lane: for_review
-review_status: acknowledged
+lane: done
 ---
 
 # WP01 - Foundation & Scaffolding
@@ -188,37 +187,33 @@ Set up the directory structure, artifact templates, and agent references require
 ## Review
 
 > **Reviewed by**: Review Coordinator (v2)
-> **Date**: 2026-04-04T18:00:00Z
-> **Verdict**: Changes Required
-> **Skills dispatched**: review-spec (FAIL), review-security (PASS), review-quality (PASS), review-tests (PASS), review-architecture (PASS), review-performance (PASS), review-docs (PASS), review-deps (PASS)
-> **Review round**: 1
+> **Date**: 2026-04-04T19:00:00Z
+> **Verdict**: Approved with Findings
+> **Skills dispatched**: review-spec (PASS), review-security (PASS), review-quality (PASS), review-tests (PASS), review-architecture (PASS), review-performance (PASS), review-docs (PASS), review-deps (PASS)
+> **Review round**: 2
 
 ### Process Compliance
 - [PASS] Spec Compliance Checklist: All acceptance criteria checked off in all 6 tasks
-- [PASS] Activity Log: Consistent lane transitions (planned -> doing -> for_review)
-- [WARN] Commit granularity: All 6 tasks committed in a single bulk commit (f77c009) instead of one commit per task
-- [WARN] Encoding: 25 em dashes (U+2014) in reviewer.agent.md.deprecated -- pre-existing in original file, not introduced by WP01
+- [PASS] Activity Log: Consistent lane transitions through remediation cycle
+- [WARN] Commit granularity: Original 6 tasks committed in a single bulk commit (f77c009). Remediation commit (ae6264e) is granular.
+- [WARN] Encoding: Pre-existing em dashes (U+2014) in reviewer.agent.md.deprecated (25) and coder.agent.md (21). Not introduced by WP01.
 
 ### Review Feedback
 
-> Implementers: address every FB-XX item before returning for re-review.
-
-- [x] **FB-01**: [spec-adherence] C-006, T01-04 acceptance criterion FAIL - Coder agent still references "5. Reviewer" in handoff configuration and invocation instruction. The deprecated agent file will not be loaded by VS Code, breaking the pipeline handoff chain.
-  File: .github/agents/coder.agent.md#L7. Expected: Update Coder agent handoff and invocation references from "5. Reviewer" to "5. Review Coordinator".
-  Source skills: review-spec (SPEC-011)
+> No feedback items -- all previous FB-XX items resolved.
 
 ### Warnings
-- [WARN] Commit granularity: All 6 WP01 tasks delivered in a single commit f77c009 instead of per-task commits (PROC-003)
-- [WARN] Encoding: 25 em dashes (U+2014) found in .github/agents/reviewer.agent.md.deprecated. These are inherited from the original file content and were not introduced by WP01 (ENC-001)
+- [WARN] Commit granularity: Original WP01 tasks delivered in a single commit f77c009 instead of per-task commits (PROC-003)
+- [WARN] Encoding: Pre-existing em dashes (U+2014) in files modified by WP01 -- inherited from original content, not introduced by this WP (ENC-001)
 
 ### Cross-Correlation Notes
-- No cross-correlation findings. The single FAIL (SPEC-011) was reported only by review-spec. No duplicates, conflicts, or systemic patterns detected.
+- No cross-correlation findings.
 
 ### Statistics
 | Dimension | Pass | Warn | Fail |
 |-----------|------|------|------|
 | Process Compliance | 2 | 2 | 0 |
-| review-spec | 11 | 0 | 1 |
+| review-spec | 12 | 0 | 0 |
 | review-security | 2 | 0 | 0 |
 | review-quality | 2 | 0 | 0 |
 | review-tests | 0 | 0 | 0 |
@@ -226,7 +221,7 @@ Set up the directory structure, artifact templates, and agent references require
 | review-performance | 0 | 0 | 0 |
 | review-docs | 0 | 0 | 0 |
 | review-deps | 0 | 0 | 0 |
-| **Total** | **20** | **2** | **1** |
+| **Total** | **21** | **2** | **0** |
 
 ## Activity Log
 
@@ -236,3 +231,4 @@ Set up the directory structure, artifact templates, and agent references require
 - 2026-04-04T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
 - 2026-04-04T18:15:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
 - 2026-04-04T18:20:00Z - coder - lane=for_review - FB-01 remediated, resubmitted for re-review
+- 2026-04-04T19:00:00Z - review-coordinator - lane=done - Verdict: Approved with Findings (2 WARNs)
