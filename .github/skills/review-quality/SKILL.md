@@ -160,7 +160,7 @@ files_reviewed:
 
 - Finding IDs use prefix `QUAL-` and are sequential: QUAL-001, QUAL-002, etc. No gaps.
 - Every FAIL/WARN finding MUST include: Checklist item, Requirement, File (with line range), Description, Expected, Evidence.
-- Every PASS finding MUST include: Checklist item, File, Description.
+- Every PASS finding MUST include: Checklist item, Requirement, File, Description.
 - Every N/A finding MUST include: Checklist item, Justification.
 - `finding_counts` MUST accurately reflect the actual findings in the file.
 - `files_reviewed` MUST list every file read and evaluated during this review.

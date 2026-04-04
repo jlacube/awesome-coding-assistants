@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: doing
+review_status: acknowledged
 ---
 
 # WP05 - Code Quality Review Skill (review-quality)
@@ -191,7 +191,7 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 
 > Implementers: address every FB-XX item before returning for re-review.
 
-- [ ] **FB-01**: [spec-adherence] FR-027 Partial - PASS findings output format omits `Requirement` field. Section 7.1 requires this field for all severities including PASS. The peer skill review-spec correctly includes it.
+- [x] **FB-01**: [spec-adherence] FR-027 Partial - PASS findings output format omits `Requirement` field. Section 7.1 requires this field for all severities including PASS. The peer skill review-spec correctly includes it.
   File: .github/skills/review-quality/SKILL.md (output format rules for PASS findings).
   Expected: Change PASS finding rule to include `Requirement` between `Checklist item` and `File`.
   Source skill: review-spec (SPEC-003)
@@ -228,3 +228,4 @@ Create `.github/skills/review-quality/SKILL.md` - the code quality review skill.
 - 2026-04-04T15:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-04T15:15:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-04T23:45:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-04T23:50:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
