@@ -13,7 +13,7 @@
 | [WP04](WP04-review-security.md) | Security Review Skill | P1 | Complete | WP02 | Yes |
 | [WP05](WP05-review-quality.md) | Code Quality Review Skill | P1 | Complete | WP02 | Yes |
 | [WP06](WP06-p2-skills.md) | P2 Skills (tests + architecture) | P2 | Done | WP02 | Yes |
-| [WP07](WP07-p3-skills.md) | P3 Skills (perf + docs + deps) | P3 | For Review | WP02 | Yes |
+| [WP07](WP07-p3-skills.md) | P3 Skills (perf + docs + deps) | P3 | Changes Required | WP02 | Yes |
 
 ## MVP Scope
 
