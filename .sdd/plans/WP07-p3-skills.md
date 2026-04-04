@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
+review_status: acknowledged
 ---
 
 # WP07 - P3 Review Skills (review-performance, review-docs, review-deps)
@@ -9,7 +9,7 @@ review_status: has_feedback
 |-------|-------|
 | Spec | `.sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md` |
 | Priority | P3 |
-| Lane | to_do |
+| Lane | for_review |
 | Depends on | WP02 |
 | Goal | Create three P3 review skills: review-performance (performance patterns), review-docs (documentation accuracy), and review-deps (dependency review), completing the full 8-skill review suite |
 | Status | Complete |
@@ -277,7 +277,7 @@ Create three P3 review skills that complete the full 8-skill review suite. These
 #### FAIL Findings
 
 ##### FB-01: SPEC-004 - review-deps omits spec file read (FR-026 step 2)
-- [ ] Resolved
+- [x] Resolved
 - **Severity**: FAIL
 - **Source**: review-spec SPEC-004
 - **Requirement**: FR-026 (common execution steps, step 2: "Read the specification file to understand what was required")
@@ -335,3 +335,5 @@ All individual skill findings are in `.sdd/reviews/WP07-p3-skills/`:
 - 2026-04-04T17:00:00Z - coder - lane=doing - Starting WP07 implementation
 - 2026-04-04T17:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T01:00:00Z - reviewer - lane=to_do - Round 1 review: Changes Required (1 FAIL: SPEC-004 missing spec read in review-deps)
+- 2026-04-05T01:05:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01)
+- 2026-04-05T01:10:00Z - coder - lane=for_review - FB-01 resolved, resubmitted for review
