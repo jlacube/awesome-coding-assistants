@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP15 - Planner Coordinator Rewrite
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | WP14 |
 | Goal | Refactor `planner.agent.md` from monolithic V1 to skill-based V2 coordinator with two-phase execution, dynamic skill discovery, auto-loop gap resolution, and post-completion validation |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Invoke the Planner with a validated spec. Verify: it lists specs, validates status, runs completeness pre-check, discovers 8 plan skills, dispatches Phase 1 then Phase 2, runs post-completion validation, presents plan, and commits |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP15-planner-coordinator.md` |
@@ -32,11 +32,11 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-020, FR-021, Section 8.1, Section 8.5
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] `name` is "3. Planner"
-  - [ ] `tools` list includes `runSubagent` for skill dispatch
-  - [ ] `tools` list includes `vscode_askQuestions` for spec selection and alignment
-  - [ ] Handoff buttons defined: "Start Implementation" (Coder) and "Clarify Specification" (Spec Architect)
-  - [ ] YAML is valid and frontmatter starts on line 1
+  - [x] `name` is "3. Planner"
+  - [x] `tools` list includes `runSubagent` for skill dispatch
+  - [x] `tools` list includes `vscode_askQuestions` for spec selection and alignment
+  - [x] Handoff buttons defined: "Start Implementation" (Coder) and "Clarify Specification" (Spec Architect)
+  - [x] YAML is valid and frontmatter starts on line 1
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -50,11 +50,11 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-001, FR-002, FR-003
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL list all files in `.sdd/specs/` and present them to the user for selection (FR-001)
-  - [ ] If only one spec exists, the coordinator SHALL confirm it before proceeding (FR-001)
-  - [ ] If `.sdd/specs/` is empty, the coordinator SHALL inform the user and halt (FR-001 error)
-  - [ ] The coordinator SHALL read the selected spec in full, including companion artifacts in `.sdd/specs/artifacts/<NNN>-<idea-name>/` (FR-002)
-  - [ ] The coordinator SHALL verify the spec's Status is "Validated" or "Final"; if "Draft", refuse and recommend Spec Architect (FR-003)
+  - [x] The coordinator SHALL list all files in `.sdd/specs/` and present them to the user for selection (FR-001)
+  - [x] If only one spec exists, the coordinator SHALL confirm it before proceeding (FR-001)
+  - [x] If `.sdd/specs/` is empty, the coordinator SHALL inform the user and halt (FR-001 error)
+  - [x] The coordinator SHALL read the selected spec in full, including companion artifacts in `.sdd/specs/artifacts/<NNN>-<idea-name>/` (FR-002)
+  - [x] The coordinator SHALL verify the spec's Status is "Validated" or "Final"; if "Draft", refuse and recommend Spec Architect (FR-003)
 - **Test requirements**: BDD (Scenario 8: spec status validation)
 - **Depends on**: T15-01
 - **Implementation Guidance**:
@@ -68,15 +68,15 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-004, FR-005, Section 7.3 (Gap Report data model)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL verify: traceability matrix has no empty cells (FR-004.1)
-  - [ ] The coordinator SHALL verify: every FR has defined error behavior (FR-004.2)
-  - [ ] The coordinator SHALL verify: every entity field has type, constraints, and validation rules (FR-004.3)
-  - [ ] The coordinator SHALL verify: every API endpoint has all applicable error codes (FR-004.4)
-  - [ ] The coordinator SHALL verify: every external integration has timeout/retry/fallback (FR-004.5)
-  - [ ] The coordinator SHALL verify: every stateful entity has explicit state transitions (FR-004.6)
-  - [ ] The coordinator SHALL verify: cross-cutting concerns are addressed (FR-004.7)
-  - [ ] The coordinator SHALL verify spec companion artifacts are consistent with the prose spec (FR-005)
-  - [ ] Gap report uses the data model from Section 7.3: Gap ID, Category, FR reference, Description, Impact
+  - [x] The coordinator SHALL verify: traceability matrix has no empty cells (FR-004.1)
+  - [x] The coordinator SHALL verify: every FR has defined error behavior (FR-004.2)
+  - [x] The coordinator SHALL verify: every entity field has type, constraints, and validation rules (FR-004.3)
+  - [x] The coordinator SHALL verify: every API endpoint has all applicable error codes (FR-004.4)
+  - [x] The coordinator SHALL verify: every external integration has timeout/retry/fallback (FR-004.5)
+  - [x] The coordinator SHALL verify: every stateful entity has explicit state transitions (FR-004.6)
+  - [x] The coordinator SHALL verify: cross-cutting concerns are addressed (FR-004.7)
+  - [x] The coordinator SHALL verify spec companion artifacts are consistent with the prose spec (FR-005)
+  - [x] Gap report uses the data model from Section 7.3: Gap ID, Category, FR reference, Description, Impact
 - **Test requirements**: BDD (Scenario 2: auto-loop resolves gaps)
 - **Depends on**: T15-02
 - **Implementation Guidance**:
@@ -89,12 +89,12 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-006, Section 8.4 (Auto-Loop Prompt Template)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL invoke Spec Architect via `runSubagent` with gap report, spec path, artifacts dir (FR-006)
-  - [ ] The coordinator SHALL retry up to 3 times if gaps remain after each attempt (FR-006)
-  - [ ] After 3 failed iterations, the coordinator SHALL escalate to the human with the full gap report (FR-006)
-  - [ ] On Spec Architect subagent failure, the coordinator SHALL escalate to human with full context (FR-006 error)
-  - [ ] After successful auto-loop, the coordinator SHALL re-read the spec and re-run the completeness pre-check (FR-006 postcondition)
-  - [ ] Auto-loop prompt SHALL match Section 8.4 template
+  - [x] The coordinator SHALL invoke Spec Architect via `runSubagent` with gap report, spec path, artifacts dir (FR-006)
+  - [x] The coordinator SHALL retry up to 3 times if gaps remain after each attempt (FR-006)
+  - [x] After 3 failed iterations, the coordinator SHALL escalate to the human with the full gap report (FR-006)
+  - [x] On Spec Architect subagent failure, the coordinator SHALL escalate to human with full context (FR-006 error)
+  - [x] After successful auto-loop, the coordinator SHALL re-read the spec and re-run the completeness pre-check (FR-006 postcondition)
+  - [x] Auto-loop prompt SHALL match Section 8.4 template
 - **Test requirements**: BDD (Scenario 2: auto-loop on first attempt, Scenario 3: escalation after 3 failures)
 - **Depends on**: T15-03
 - **Implementation Guidance**:
@@ -114,9 +114,9 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-007, FR-008
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL invoke a workspace research subagent to discover existing code, structure, build system, test frameworks, patterns, and existing plans (FR-007)
-  - [ ] The research subagent SHALL NOT draft any plan content (FR-007)
-  - [ ] The coordinator SHALL conduct web research for official docs, known gotchas, testing framework guides, and starter templates (FR-008)
+  - [x] The coordinator SHALL invoke a workspace research subagent to discover existing code, structure, build system, test frameworks, patterns, and existing plans (FR-007)
+  - [x] The research subagent SHALL NOT draft any plan content (FR-007)
+  - [x] The coordinator SHALL conduct web research for official docs, known gotchas, testing framework guides, and starter templates (FR-008)
 - **Test requirements**: none
 - **Depends on**: T15-02
 - **Implementation Guidance**:
@@ -130,10 +130,10 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-009, FR-017
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL read `.sdd/reviews/plan-patterns.md` if it exists and include active patterns in skill prompts (FR-009)
-  - [ ] The coordinator SHALL create `.sdd/plans/` if it does not exist (FR-017.1)
-  - [ ] The coordinator SHALL create `.sdd/plans/contracts/` if it does not exist (FR-017.2)
-  - [ ] The coordinator SHALL write a skeleton README at `.sdd/plans/README.md` with spec reference, target language, and plan status "In Progress" (FR-017.3)
+  - [x] The coordinator SHALL read `.sdd/reviews/plan-patterns.md` if it exists and include active patterns in skill prompts (FR-009)
+  - [x] The coordinator SHALL create `.sdd/plans/` if it does not exist (FR-017.1)
+  - [x] The coordinator SHALL create `.sdd/plans/contracts/` if it does not exist (FR-017.2)
+  - [x] The coordinator SHALL write a skeleton README at `.sdd/plans/README.md` with spec reference, target language, and plan status "In Progress" (FR-017.3)
 - **Test requirements**: none
 - **Depends on**: T15-05
 - **Implementation Guidance**:
@@ -146,12 +146,12 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-010, FR-011
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL discover planning skills by scanning `.github/skills/plan-*/SKILL.md` (FR-010)
-  - [ ] A sorted list of discovered skill names SHALL be produced (FR-010 postcondition)
-  - [ ] If zero skills are discovered, the coordinator SHALL halt and report the error (FR-010 error)
-  - [ ] Skills SHALL be dispatched in canonical order: plan-decomposition, plan-acceptance, plan-interface-contracts, plan-data-schemas, plan-api-contracts, plan-state-machines, plan-error-catalogs, plan-cross-wp-validation (FR-011)
-  - [ ] Skills present but not in the canonical list SHALL be dispatched after all known skills, in alphabetical order (FR-011)
-  - [ ] Skills not present SHALL be skipped without error (FR-011)
+  - [x] The coordinator SHALL discover planning skills by scanning `.github/skills/plan-*/SKILL.md` (FR-010)
+  - [x] A sorted list of discovered skill names SHALL be produced (FR-010 postcondition)
+  - [x] If zero skills are discovered, the coordinator SHALL halt and report the error (FR-010 error)
+  - [x] Skills SHALL be dispatched in canonical order: plan-decomposition, plan-acceptance, plan-interface-contracts, plan-data-schemas, plan-api-contracts, plan-state-machines, plan-error-catalogs, plan-cross-wp-validation (FR-011)
+  - [x] Skills present but not in the canonical list SHALL be dispatched after all known skills, in alphabetical order (FR-011)
+  - [x] Skills not present SHALL be skipped without error (FR-011)
 - **Test requirements**: BDD (Scenario 7: dynamic skill discovery)
 - **Depends on**: T15-06
 - **Implementation Guidance**:
@@ -165,15 +165,15 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-012, FR-013, FR-014, FR-015, FR-016, Section 8.2, Section 8.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Phase 1 skills execute sequentially, blocking (FR-012, FR-015)
-  - [ ] Phase 2 skills execute sequentially, skipping failed skills (FR-012, FR-015)
-  - [ ] Each skill dispatch includes all 9 inputs from FR-023 via the prompt template (FR-014)
-  - [ ] Phase 1 prompt matches Section 8.2 template (FR-014)
-  - [ ] Phase 2 prompt matches Section 8.3 template (FR-014)
-  - [ ] Phase 1 failure halts immediately (FR-014 error)
-  - [ ] Phase 2 failure logs error and continues to next skill (FR-014 error)
-  - [ ] Each skill reads current plan state before writing (FR-016)
-  - [ ] Phase 2 contracts generated in 800-line blocks per WP (FR-013)
+  - [x] Phase 1 skills execute sequentially, blocking (FR-012, FR-015)
+  - [x] Phase 2 skills execute sequentially, skipping failed skills (FR-012, FR-015)
+  - [x] Each skill dispatch includes all 9 inputs from FR-023 via the prompt template (FR-014)
+  - [x] Phase 1 prompt matches Section 8.2 template (FR-014)
+  - [x] Phase 2 prompt matches Section 8.3 template (FR-014)
+  - [x] Phase 1 failure halts immediately (FR-014 error)
+  - [x] Phase 2 failure logs error and continues to next skill (FR-014 error)
+  - [x] Each skill reads current plan state before writing (FR-016)
+  - [x] Phase 2 contracts generated in 800-line blocks per WP (FR-013)
 - **Test requirements**: BDD (Scenario 1: full plan generation, Scenario 6: Phase 2 failure tolerance)
 - **Depends on**: T15-07
 - **Implementation Guidance**:
@@ -188,19 +188,19 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-018, FR-019
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL verify data contract consistency across WPs (FR-018.1)
-  - [ ] The coordinator SHALL verify API/interface contract consistency (FR-018.2)
-  - [ ] The coordinator SHALL verify dependency integrity with no circular dependencies (FR-018.3)
-  - [ ] The coordinator SHALL verify configuration consistency (FR-018.4)
-  - [ ] The coordinator SHALL verify test consistency at 80% code, 90% branch (FR-018.5)
-  - [ ] The coordinator SHALL verify spec traceability: every FR assigned to exactly one task (FR-018.6)
-  - [ ] The coordinator SHALL verify contract files match WP task specs (FR-018.7)
-  - [ ] The coordinator SHALL verify each WP has 5-12 tasks (FR-019.1)
-  - [ ] The coordinator SHALL verify at least 3 acceptance criteria per task (FR-019.2)
-  - [ ] The coordinator SHALL verify implementation guidance with doc links per task (FR-019.3)
-  - [ ] The coordinator SHALL verify contract file references per task (FR-019.4)
-  - [ ] The coordinator SHALL verify no ambiguous language (FR-019.5)
-  - [ ] Inconsistencies found SHALL be fixed and documented in README "Consistency Notes" (FR-018)
+  - [x] The coordinator SHALL verify data contract consistency across WPs (FR-018.1)
+  - [x] The coordinator SHALL verify API/interface contract consistency (FR-018.2)
+  - [x] The coordinator SHALL verify dependency integrity with no circular dependencies (FR-018.3)
+  - [x] The coordinator SHALL verify configuration consistency (FR-018.4)
+  - [x] The coordinator SHALL verify test consistency at 80% code, 90% branch (FR-018.5)
+  - [x] The coordinator SHALL verify spec traceability: every FR assigned to exactly one task (FR-018.6)
+  - [x] The coordinator SHALL verify contract files match WP task specs (FR-018.7)
+  - [x] The coordinator SHALL verify each WP has 5-12 tasks (FR-019.1)
+  - [x] The coordinator SHALL verify at least 3 acceptance criteria per task (FR-019.2)
+  - [x] The coordinator SHALL verify implementation guidance with doc links per task (FR-019.3)
+  - [x] The coordinator SHALL verify contract file references per task (FR-019.4)
+  - [x] The coordinator SHALL verify no ambiguous language (FR-019.5)
+  - [x] Inconsistencies found SHALL be fixed and documented in README "Consistency Notes" (FR-018)
 - **Test requirements**: BDD (Scenario 4: cross-WP validation catches inconsistency)
 - **Depends on**: T15-08
 - **Implementation Guidance**:
@@ -214,14 +214,14 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: FR-020, FR-021, FR-022, Section 8.5
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL present the plan to the user in chat, not just as files (FR-020)
-  - [ ] On change requests, the coordinator SHALL revise WPs and re-validate (FR-021)
-  - [ ] On questions, the coordinator SHALL clarify or ask follow-ups (FR-021)
-  - [ ] On approval, the coordinator SHALL acknowledge and recommend Coder for WP01 (FR-021)
-  - [ ] Each WP file SHALL be committed individually with `git add` listing files explicitly (FR-022)
-  - [ ] README SHALL be committed as a standalone change (FR-022)
-  - [ ] Contract files SHALL be committed per-WP (FR-022)
-  - [ ] Handoff prompt to Coder SHALL match Section 8.5 template (FR-021)
+  - [x] The coordinator SHALL present the plan to the user in chat, not just as files (FR-020)
+  - [x] On change requests, the coordinator SHALL revise WPs and re-validate (FR-021)
+  - [x] On questions, the coordinator SHALL clarify or ask follow-ups (FR-021)
+  - [x] On approval, the coordinator SHALL acknowledge and recommend Coder for WP01 (FR-021)
+  - [x] Each WP file SHALL be committed individually with `git add` listing files explicitly (FR-022)
+  - [x] README SHALL be committed as a standalone change (FR-022)
+  - [x] Contract files SHALL be committed per-WP (FR-022)
+  - [x] Handoff prompt to Coder SHALL match Section 8.5 template (FR-021)
 - **Test requirements**: BDD (Scenario 1: full plan generation)
 - **Depends on**: T15-09
 - **Implementation Guidance**:
@@ -234,9 +234,9 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - **Spec refs**: Section 9.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] No em dashes, smart quotes, or curly apostrophes in the coordinator file
-  - [ ] Coordinator line count is between 300-500 lines (target established by Spec Architect V2 at 365 lines)
-  - [ ] All hyphens are ASCII `-` (U+002D)
+  - [x] No em dashes, smart quotes, or curly apostrophes in the coordinator file
+  - [x] Coordinator line count is between 300-500 lines (target established by Spec Architect V2 at 365 lines)
+  - [x] All hyphens are ASCII `-` (U+002D)
 - **Test requirements**: unit (encoding validation)
 - **Depends on**: T15-10
 - **Implementation Guidance**:
@@ -263,3 +263,5 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T10:20:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T10:45:00Z - coder - lane=for_review - All tasks complete, submitted for review
