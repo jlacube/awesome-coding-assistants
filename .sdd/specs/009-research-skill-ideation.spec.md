@@ -2,8 +2,8 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `009-research-skill-ideation`
-> **Status**: Draft
-> **Version**: 1.0
+> **Status**: Validated
+> **Version**: 1.1
 
 ---
 
@@ -39,7 +39,7 @@ Create a shared Research Skill that performs web search, codebase analysis, and 
   - `topic`: The subject to research (string, 1-200 characters)
   - `scope`: One or more of: `web`, `codebase`, `packages` (array of strings)
   - `questions`: Specific questions to answer (array of strings, 1-10 items)
-  - `output_file`: Path where findings should be written (string)
+  - `output_file`: Path where findings SHALL be written (string)
 
 - **FR-003**: For `web` scope, the skill SHALL:
   1. Search for the topic using `fetch_webpage` on relevant URLs
@@ -96,8 +96,10 @@ Create a shared Research Skill that performs web search, codebase analysis, and 
 ### 4.2 Ideation Agent Improvements
 
 - **FR-008**: The Ideation Agent SHALL dispatch the Research Skill with scope `[web, codebase]` after the user describes their idea, before asking clarifying questions.
+  - **Error**: If the Research Skill dispatch fails, the Ideation Agent SHALL log the failure and proceed without research, noting "Research unavailable" in the brief.
 
 - **FR-009**: The Ideation Agent SHALL include a "Research Findings" section in the brief output, sourced from the Research Skill's output file.
+  - **Error**: If the research output file is empty or missing, the section SHALL state "No research findings available" with the reason.
 
 - **FR-010**: The brief output format SHALL include these additional sections (beyond current format):
   1. **Research Findings**: Competitive landscape, analogous solutions, technology feasibility
@@ -105,6 +107,7 @@ Create a shared Research Skill that performs web search, codebase analysis, and 
   3. **Technical Feasibility**: Confirmed feasible vs needs validation, with evidence from research
 
 - **FR-011**: The Ideation Agent SHALL cite sources in the brief. Every claim about an external technology, competitor, or pattern SHALL have a source URL.
+  - **Error**: If no sources were found for a claim, the claim SHALL be prefixed with "[Unverified]" and omit the source citation.
 
 ---
 
@@ -114,10 +117,13 @@ Create a shared Research Skill that performs web search, codebase analysis, and 
   1. Exploring technology alternatives
   2. Evaluating competing approaches
   3. Validating assumptions about external systems
+  - **Error**: If the Research Skill dispatch fails, the Brainstorming Agent SHALL log the failure and continue the session without research-backed data, noting the limitation to the user.
 
 - **FR-013**: Research findings SHALL inform the brainstorming Q&A. When presenting alternatives, the agent SHALL include research-backed pros/cons.
+  - **Error**: If no alternatives were found by research, the agent SHALL present user-provided alternatives and note "No research data available for comparison."
 
 - **FR-014**: The Brainstorming Agent SHALL produce a brief with the same enriched format as the Ideation Agent (FR-010).
+  - **Error**: If no research was performed during the session, the Research Findings section SHALL state "No research performed" and the Risk Assessment section SHALL state "Not assessed."
 
 ---
 
@@ -277,6 +283,10 @@ Questions:
 
 ## 11. Test Requirements
 
+### 11.1 Test Approach
+
+Testing focuses on BDD acceptance tests verifying the Research Skill's output format and the enriched brief output from both agents. Unit-level testing is not applicable since the skill is a prompt-driven markdown file with no executable code. Validation SHALL be performed by inspecting output files for structural compliance and source citation presence.
+
 ### 11.2 BDD / Acceptance Tests
 
 ```gherkin
@@ -364,9 +374,15 @@ None remaining.
 | FR-004 | Codebase scope research | US-01 | Scenario 2 | BDD | 11.2 |
 | FR-005 | Packages scope research | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-006 | Structured output format | US-01, US-02 | All | BDD | 11.2 |
+| FR-002 | Research request parameters | US-01, US-02 | All | BDD | 11.2 |
+| FR-007 | 5-minute completion timeout | US-01, US-02 | Timeout Scenario | BDD | 11.2 |
 | FR-008 | Ideation dispatches Research Skill | US-01 | Scenario 1, 2 | BDD | 11.2 |
 | FR-009 | Brief includes Research Findings | US-01 | Brief Scenario | BDD | 11.2 |
+| FR-010 | Enriched brief format sections | US-01 | Brief Scenario | BDD | 11.2 |
+| FR-011 | Source citations in brief | US-01 | Scenario 2 | BDD | 11.2 |
 | FR-012 | Brainstorming dispatches Research Skill | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-013 | Research-backed pros/cons | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-014 | Brainstorming enriched brief format | US-02 | Brief Scenario | BDD | 11.2 |
 
 ---
 
@@ -381,3 +397,4 @@ None remaining.
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
 | 1.0 | 2026-04-05 | Spec Architect | Initial specification |
+| 1.1 | 2026-04-05 | Spec Architect | Validation pass: added error behaviors to FR-008/009/011/012/013/014, completed traceability matrix, added Section 11.1, fixed ambiguous word, created companion artifacts |
