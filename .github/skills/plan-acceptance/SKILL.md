@@ -87,7 +87,7 @@ For each task:
 
 ---
 
-## Step 3 - Add Implementation Guidance (FR-033.4)
+## Step 3 - Add Implementation Guidance (FR-033.3)
 
 For each task, replace the implementation guidance placeholder with actionable developer guidance:
 
@@ -97,6 +97,8 @@ For each task, replace the implementation guidance placeholder with actionable d
   - Patterns: <Specific design pattern or approach from the spec/architecture>
   - Known pitfalls: <Common mistakes or gotchas for this feature area>
   - Files to create/modify: <Specific paths based on the spec's directory structure>
+  - Error handling: <Exact error codes and expected failure behaviors from spec>
+  - Spec validation rules: <Copy relevant validation constraints from spec Section 7 Data Model>
 ```
 
 Source the guidance from:

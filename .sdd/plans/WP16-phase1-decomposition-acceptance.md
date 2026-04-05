@@ -1,6 +1,5 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
 ---
 
 # WP16 - Phase 1: Decomposition + Acceptance Skills
@@ -178,6 +177,7 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - 2026-04-05T12:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T11:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-05T19:30:00Z - coder - lane=for_review - Remediated FB-01 (FR-033.3 guidance template: added error codes and validation rules fields)
 
 ## Review
 
