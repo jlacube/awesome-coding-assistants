@@ -1,7 +1,7 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T16:30:00Z
-> Last review: WP12-architecture-security-skills
+> Last updated: 2026-04-05T17:00:00Z
+> Last review: WP13-test-traceability-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
