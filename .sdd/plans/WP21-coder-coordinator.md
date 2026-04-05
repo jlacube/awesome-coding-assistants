@@ -98,12 +98,12 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-005, FR-006
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL discover available coding skills by scanning for directories matching `.github/skills/code-*/SKILL.md` (FR-005)
-  - [ ] A sorted list of discovered skill names SHALL be produced (FR-005 postcondition)
-  - [ ] If zero skills are discovered, the coordinator SHALL halt and report no coding skills installed (FR-005 error)
-  - [ ] The coordinator SHALL dispatch skills in deterministic order: code-env-setup, code-implementation, code-unit-tests, code-integration-tests, code-debug (FR-006)
-  - [ ] Skills not present in the canonical list SHALL be dispatched after all known skills, in alphabetical order (FR-006)
-  - [ ] Given 5 coding skills plus a 6th `code-linting`, then 6 skills are dispatched with `code-linting` last (US-05)
+  - [x] The coordinator SHALL discover available coding skills by scanning for directories matching `.github/skills/code-*/SKILL.md` (FR-005)
+  - [x] A sorted list of discovered skill names SHALL be produced (FR-005 postcondition)
+  - [x] If zero skills are discovered, the coordinator SHALL halt and report no coding skills installed (FR-005 error)
+  - [x] The coordinator SHALL dispatch skills in deterministic order: code-env-setup, code-implementation, code-unit-tests, code-integration-tests, code-debug (FR-006)
+  - [x] Skills not present in the canonical list SHALL be dispatched after all known skills, in alphabetical order (FR-006)
+  - [x] Given 5 coding skills plus a 6th `code-linting`, then 6 skills are dispatched with `code-linting` last (US-05)
 - **Test requirements**: BDD
 - **Depends on**: T21-03
 - **Implementation Guidance**:

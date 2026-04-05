@@ -97,4 +97,23 @@ Before dispatching any skill, read the full context chain:
 3. If the file does not exist: set patterns to "No active patterns" and continue without error.
 4. Each skill dispatch (Step 6) SHALL include the active patterns so skills avoid producing code that would trigger known patterns.
 
+## Step 5 - Discover and Order Skills (FR-005, FR-006)
+
+1. Use `file_search` with glob pattern `.github/skills/code-*/SKILL.md` to discover all installed coding skills.
+2. Extract skill names from directory paths (e.g., `.github/skills/code-env-setup/SKILL.md` -> `code-env-setup`).
+3. If zero skills are discovered: halt with "No coding skills are installed. Install at least one coding skill in `.github/skills/code-*/SKILL.md`." Do not proceed.
+4. Sort discovered skills into the canonical dispatch order:
+
+| Order | Skill | Phase |
+|-------|-------|-------|
+| 1 | `code-env-setup` | Environment setup, dependency installation, baseline verification |
+| 2 | `code-implementation` | Core implementation of all tasks in the WP |
+| 3 | `code-unit-tests` | Unit test writing and execution |
+| 4 | `code-integration-tests` | Integration test writing and execution |
+| 5 | `code-debug` | Conditional: debugging and fixing if tests fail |
+
+5. Skills from the canonical list that are NOT present: skip without error.
+6. Skills present but NOT in the canonical list: dispatch AFTER all known skills, in alphabetical order.
+7. Log the discovery result: list skills found and their dispatch order.
+
 </workflow>
