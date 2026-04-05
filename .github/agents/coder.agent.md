@@ -233,4 +233,26 @@ Valid lanes: `planned` -> `doing` -> `for_review` -> `done` (set by Reviewer) | 
 
 Do NOT prepend or insert mid-list -- always append to the end.
 
+## Step 9 - Post-Completion and Coverage Verification (FR-014, FR-015)
+
+After all skills complete and all tests pass:
+
+1. **Coverage verification (FR-014.1)**: Run a final coverage report. Verify thresholds: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
+2. **Set lane (FR-014.2)**: Update the WP file's `lane:` frontmatter to `for_review`.
+3. **Activity Log**: Append: `<timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
+4. **Update plan index**: Update the WP's status in `.sdd/plans/README.md` to reflect completion.
+
+**NO SELF-REVIEW (FR-015)**: The coordinator SHALL NOT perform any self-assessment, self-review, or quality evaluation of the code. No review checklists, no quality scores, no "verified implementation quality" statements. The Reviewer agent is the sole quality gate. The Coder's job ends at "tests pass + coverage met".
+
+5. **Handoff to Reviewer (FR-014.4)**: Invoke `#agent:5. Review Coordinator` with:
+
+```
+WP<NN> implementation complete. All tests passing.
+Coverage: <code_coverage>% code, <branch_coverage>% branch.
+WP file: <wp_path>
+Lane: for_review
+```
+
+This handoff is automatic -- the coordinator does not ask the user for permission to request a review.
+
 </workflow>

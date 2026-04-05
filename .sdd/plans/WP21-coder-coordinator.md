@@ -172,11 +172,11 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-014, FR-015
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] After all tasks are complete and tests pass, the coordinator SHALL run a final coverage report and verify thresholds: 80% code coverage, 90% branch coverage (FR-014.1)
-  - [ ] The coordinator SHALL set the WP's `lane:` frontmatter to `for_review` (FR-014.2)
-  - [ ] The coordinator SHALL hand off to the Review Coordinator using the handoff prompt from Section 8.4 (FR-014.4)
-  - [ ] The coordinator SHALL NOT perform any self-assessment, self-review, or quality evaluation of the code (FR-015)
-  - [ ] Given a completed WP, when all tests pass, the WP goes directly to for_review without any review step (BDD Scenario 2)
+  - [x] After all tasks are complete and tests pass, the coordinator SHALL run a final coverage report and verify thresholds: 80% code coverage, 90% branch coverage (FR-014.1)
+  - [x] The coordinator SHALL set the WP's `lane:` frontmatter to `for_review` (FR-014.2)
+  - [x] The coordinator SHALL hand off to the Review Coordinator using the handoff prompt from Section 8.4 (FR-014.4)
+  - [x] The coordinator SHALL NOT perform any self-assessment, self-review, or quality evaluation of the code (FR-015)
+  - [x] Given a completed WP, when all tests pass, the WP goes directly to for_review without any review step (BDD Scenario 2)
 - **Test requirements**: BDD
 - **Depends on**: T21-07
 - **Implementation Guidance**:
