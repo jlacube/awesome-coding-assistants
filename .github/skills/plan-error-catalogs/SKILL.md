@@ -215,18 +215,17 @@ Internal messages:
 
 ## Step 5 - Handle Shared Error Codes (FR-050)
 
-For error codes used by 3+ WPs:
+When the same error code is used by multiple WPs, apply the first-WP-defines pattern:
 
-1. Place in `<contracts_dir>/shared/error-catalog.<ext>`
-2. All WPs import from shared
-3. Include the manifest header with `Work package: shared`
-
-For error codes used by 2 WPs:
-- First WP defines, second WP imports from first WP's contract
+1. The WP with the lowest number that introduces the error code owns the full definition in its own contracts directory
+2. All subsequent WPs that use the same error code import from the owner WP's contracts directory
+3. Do NOT write any error catalog files to `shared/` -- shared/ is reserved for config-schema files written by plan-cross-wp-validation only (Section 7.2)
 
 Import syntax by language:
-- TypeScript: `import { ErrorCodes } from '../shared/error-catalog';`
-- Python: `from ..shared.error_catalog import ErrorCode`
+- TypeScript: `import { ErrorCodes } from '../WP01-slug/error-catalog';`
+- Python: `from ..wp01_slug.error_catalog import ErrorCode`
+
+Replace `WP01-slug` / `wp01_slug` with the actual slug of the owner WP.
 
 ---
 
@@ -242,6 +241,6 @@ If a WP's error catalog file exceeds 800 lines, split generation across multiple
 - Error codes MUST match the spec exactly -- do not invent codes not in the spec
 - Do NOT include error handling logic (try/catch, middleware) -- only definitions
 - Do NOT modify WP markdown files or spec artifacts -- read only
-- Only write to `<contracts_dir>/<WP-slug>/error-catalog.<ext>` and `<contracts_dir>/shared/error-catalog.<ext>`
+- Only write to `<contracts_dir>/<WP-slug>/error-catalog.<ext>` -- do NOT write to `shared/`
 - User-facing messages MUST NOT expose internal system details
 - Use plain ASCII hyphens and straight quotes only -- no em dashes, smart quotes, or curly apostrophes

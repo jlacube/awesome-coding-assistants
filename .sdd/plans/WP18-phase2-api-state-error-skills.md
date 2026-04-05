@@ -1,6 +1,5 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
 ---
 
 # WP18 - Phase 2: API Contracts + State Machines + Error Catalogs Skills
@@ -169,6 +168,7 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T14:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-05T20:30:00Z - coder - lane=for_review - Remediated FB-01 (removed shared/ directory logic from plan-error-catalogs, deduplication now follows first-WP-defines pattern)
 
 ## Review
 
