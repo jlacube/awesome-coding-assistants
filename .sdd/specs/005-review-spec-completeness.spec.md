@@ -2,7 +2,7 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `005-review-spec-completeness`
-> **Status**: Draft
+> **Status**: Validated
 > **Version**: 1.0
 
 ---
@@ -403,6 +403,10 @@ Review Coordinator
 
 ## 11. Test Requirements
 
+### 11.1 Test Strategy Overview
+
+All functional requirements SHALL be verified through BDD acceptance tests. Each test scenario maps to one or more FRs via the traceability matrix in Section 16. Tests verify both the completeness checks (review-spec-completeness) and contract-aware checks (review-spec expansion) using synthetic spec and contract fixtures.
+
 ### 11.2 BDD / Acceptance Tests
 
 ```gherkin
@@ -481,7 +485,7 @@ Feature: review-spec - Contract-Aware Review
 
 - **Fixing spec issues**: The skill flags issues; the Spec Architect fixes them.
 - **Fixing implementation issues**: The skill flags issues; the Coder fixes them.
-- **Non-spec review dimensions**: Security, quality, performance, etc. are handled by their dedicated review skills.
+- **Non-spec review dimensions**: Security, quality, performance, and other review categories are handled by their dedicated review skills.
 
 ---
 
@@ -504,14 +508,20 @@ None remaining.
 | FR ID | Requirement Summary | User Story | Acceptance Scenario | Test Type | Test Section Ref |
 |-------|-------------------|------------|--------------------|-----------|----|
 | FR-001 | Completeness skill purpose | US-01 | Scenario 4 | BDD | 11.2 |
+| FR-002 | Read spec + artifacts as inputs | US-01 | Scenario 4 | BDD | 11.2 |
 | FR-003 | SHALL language check | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-004 | Error behavior check | US-01 | Scenario 2 | BDD | 11.2 |
 | FR-005 | Data model completeness | US-01 | Scenario 3 | BDD | 11.2 |
 | FR-006 | API endpoint completeness | US-01 | Scenario 2 | BDD | 11.2 |
 | FR-007 | State machine completeness | US-01 | Scenario 4 | BDD | 11.2 |
 | FR-008 | Traceability matrix check | US-01 | Scenario 3 | BDD | 11.2 |
+| FR-009 | Integration strategy check | US-01 | Scenario 4 | BDD | 11.2 |
 | FR-010 | Ambiguity check | US-01 | Scenario 4 | BDD | 11.2 |
 | FR-011 | Artifact consistency check | US-01 | Scenario 4 | BDD | 11.2 |
+| FR-012 | Security requirements check | US-01 | Scenario 4 | BDD | 11.2 |
+| FR-013 | Finding output format | US-01 | Scenario 1, 2, 3 | BDD | 11.2 |
+| FR-014 | Verdict format | US-01 | Scenario 4, 5 | BDD | 11.2 |
+| FR-015 | Existing review-spec behavior preserved | US-02 | Scenario 3 | BDD | 11.2 |
 | FR-016 | Contract-aware code checks | US-02 | Scenario 1, 2 | BDD | 11.2 |
 | FR-017 | Token-by-token comparison | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-018 | Contract mismatch findings | US-02 | Scenario 1, 2 | BDD | 11.2 |
@@ -532,3 +542,4 @@ None remaining.
 |---------|------|--------|--------------------|
 | 1.0 | 2026-04-05 | Spec Architect | Initial specification |
 | 1.0.1 | 2026-04-05 | Spec Architect | Self-review corrections: verified findings format consistency, confirmed traceability matrix completeness |
+| 1.1 | 2026-04-05 | Spec Architect | Validation pass: added missing FRs to traceability matrix (FR-002, FR-009, FR-012, FR-013, FR-014, FR-015), added Section 11.1, generated companion artifacts, removed ambiguous language, promoted to Validated |
