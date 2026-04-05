@@ -2,8 +2,8 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `003-planner-v2`
-> **Status**: Draft
-> **Version**: 1.0
+> **Status**: Validated
+> **Version**: 1.1
 
 ---
 
@@ -1064,19 +1064,45 @@ None remaining. All questions have been resolved:
 | FR-012 | Two-phase execution | US-01, US-02 | Scenario 1 | BDD | 11.2 |
 | FR-013 | 800-line block limit | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-014 | Skill dispatch via runSubagent | US-01 | Scenario 1, BDD Scenario 6 | BDD | 11.2 |
+| FR-015 | Phase 1 sequential, Phase 2 skip-on-fail | US-01, US-02 | BDD Scenario 6 | BDD | 11.2 |
+| FR-016 | Read plan state before writing | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-017 | Plan accumulator initialization | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-018 | Cross-WP consistency audit | US-04 | Scenario 1, 2, 3, BDD Scenario 4 | BDD | 11.2 |
 | FR-019 | WP implementation-completeness check | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-020 | Present plan to user | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-021 | User feedback handling | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-022 | Commit policy | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-023 | Skill input contract (9 inputs) | US-05 | Scenario 1 | BDD | 11.2 |
+| FR-024 | Skill execution sequence | US-05 | Scenario 1 | BDD | 11.2 |
+| FR-025 | Phase 1 output to .sdd/plans/ | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-026 | Phase 2 output to contracts/ | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-027 | No modification of prior skill files | US-04 | Scenario 1 | BDD | 11.2 |
 | FR-028 | Decomposition skill | US-01 | Scenario 1, 2, 3 | BDD | 11.2 |
+| FR-029 | Task field requirements | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-030 | 5-12 tasks per WP target | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-031 | WP metadata table header | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-032 | Foundation WP virtual env setup | US-01 | Scenario 2 | BDD | 11.2 |
 | FR-033 | Acceptance criteria skill | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-034 | FR traceability verification | US-01, US-04 | Scenario 1 | BDD | 11.2 |
+| FR-035 | BDD/TDD requirements in tasks | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-036 | README updates by acceptance skill | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-037 | Interface contracts generation | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-038 | Interface match spec artifacts | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-039 | Contract manifest header | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-040 | Data schemas generation | US-02 | Scenario 1, BDD Scenario 5 | BDD | 11.2 |
+| FR-041 | Data schemas match spec artifacts | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-042 | Shared entity deduplication | US-02 | Scenario 3 | BDD | 11.2 |
 | FR-043 | API contracts generation | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-044 | API contracts match spec artifacts | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-045 | Error response types per endpoint | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-046 | State machine generation | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-047 | State machines match spec artifacts | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-048 | Error catalog generation | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-049 | Error catalogs match spec artifacts | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-050 | Shared error code deduplication | US-02 | Scenario 3 | BDD | 11.2 |
 | FR-051 | Cross-WP validation skill | US-04 | Scenario 1, 2, 3, BDD Scenario 4 | BDD | 11.2 |
+| FR-052 | Config schema generation | US-04 | Scenario 1 | BDD | 11.2 |
+| FR-053 | Consistency fix documentation | US-04 | Scenario 1, BDD Scenario 4 | BDD | 11.2 |
 | FR-054 | 100% spec artifact coverage | US-02, US-04 | Scenario 1 | BDD | 11.2 |
 
 ---
@@ -1105,3 +1131,4 @@ None remaining. All questions have been resolved:
 |---------|------|--------|--------------------|
 | 1.0 | 2026-04-05 | Spec Architect | Initial specification |
 | 1.0.1 | 2026-04-05 | Spec Architect | Self-review corrections: ensured two-phase execution clearly documented, verified all FRs use SHALL, confirmed traceability matrix completeness, verified no ambiguous language |
+| 1.1 | 2026-04-05 | Spec Architect | Validation: completed traceability matrix (26 missing FRs added, now 54/54), encoding verified clean, no ambiguous language, no unresolved markers. Status changed to Validated |
