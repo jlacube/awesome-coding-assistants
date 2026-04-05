@@ -1,6 +1,6 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: doing
+review_status: acknowledged
 ---
 
 # WP12 - Architecture & Security Skills
@@ -343,3 +343,4 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - 2026-04-05T15:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T15:30:00Z - coder - lane=for_review - All 10 tasks complete, both skills implemented, submitted for review
 - 2026-04-05T16:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-05T16:05:00Z - coder - lane=doing - Addressing reviewer feedback (FB-01: PII -> confidential classification)

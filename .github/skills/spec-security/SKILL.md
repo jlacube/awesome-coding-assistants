@@ -107,7 +107,7 @@ Derive roles from Section 3 (Users & Roles) and Section 8 (API auth requirements
 | Entity | Field | Classification | Handling |
 |--------|-------|---------------|----------|
 | User | id | internal | No special handling |
-| User | email | PII | No plaintext logging, encrypted at rest |
+| User | email | confidential | No plaintext logging, encrypted at rest |
 | User | password_hash | restricted | Never exposed in API, bcrypt with cost 12+ |
 | User | api_key | restricted | Never logged, rotatable, hashed in DB |
 ```
@@ -115,7 +115,7 @@ Derive roles from Section 3 (Users & Roles) and Section 8 (API auth requirements
 Classification levels:
 - **public**: No restrictions
 - **internal**: Not exposed to unauthorized users
-- **PII**: Personally identifiable information; regulatory handling required
+- **confidential**: Sensitive data; regulatory handling may apply, encrypted at rest
 - **restricted**: Maximum protection; never logged, encrypted at rest and in transit
 
 ### 10.2.4 OWASP Top 10 Mitigations
