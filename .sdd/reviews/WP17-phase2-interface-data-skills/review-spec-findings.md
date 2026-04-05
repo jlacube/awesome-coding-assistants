@@ -2,12 +2,13 @@
 skill: review-spec
 wp: WP17-phase2-interface-data-skills
 spec: .sdd/specs/003-planner-v2.spec.md
-reviewed_at: 2026-04-05T14:00:00Z
+reviewed_at: 2026-04-05T20:30:00Z
 status: completed
+review_round: 2
 finding_counts:
-  pass: 18
+  pass: 20
   warn: 0
-  fail: 2
+  fail: 0
   na: 3
 files_reviewed:
   - .github/skills/plan-interface-contracts/SKILL.md
@@ -20,152 +21,137 @@ files_reviewed:
 
 ## Summary
 
-Evaluated 6 in-scope FRs (FR-037 through FR-042) plus 3 cross-cutting FRs (FR-013, FR-023, FR-024) across two implementation files: `plan-interface-contracts/SKILL.md` and `plan-data-schemas/SKILL.md`. Overall the implementation is strong -- 5 of 6 primary FRs are fully Compliant. FR-042 (shared entity deduplication) is Deviating: the core mechanism (first-WP-defines, subsequent-import) is correctly implemented, but both skills introduce a "shared directory" escape hatch for entities/interfaces spanning 3+ WPs that contradicts the spec's SHALL obligations and Section 7.2 data model.
+Re-review (round 2) after remediation of FB-01. Evaluated 6 in-scope FRs (FR-037 through FR-042) plus 3 cross-cutting FRs (FR-013, FR-023, FR-024) across two implementation files: `plan-interface-contracts/SKILL.md` and `plan-data-schemas/SKILL.md`.
 
-- **Compliant**: FR-037, FR-038, FR-039, FR-040, FR-041
-- **Deviating**: FR-042 (Step 6 in plan-data-schemas, Constraints in plan-interface-contracts)
+**Previous review**: 18 PASS, 2 FAIL, 3 N/A.
+**This review**: 20 PASS, 0 FAIL, 3 N/A.
+
+Both previous FAIL items (SPEC-016, SPEC-017) have been resolved. The `shared/` directory escape hatch has been completely removed from both skills. Entity and interface deduplication now exclusively follows the first-WP-defines pattern specified by FR-042. No regressions detected in previously-PASSing items. No new issues introduced by the fix.
+
+- **Compliant**: FR-037, FR-038, FR-039, FR-040, FR-041, FR-042
+- **Deviating**: (none)
 
 ## Findings
 
 ### SPEC-001 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-037
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L77-L130
-- **Description**: The plan-interface-contracts skill generates all three required artifact types: (1) public function/method signatures with typed parameters and return types (Step 3b, L85-L112), (2) class/module interface definitions including abstract classes, protocols, and traits (Step 3c, L114-L119), and (3) module export definitions (Step 3d, L121-L125). Output path is `<contracts_dir>/<WP-slug>/interfaces.<ext>`, matching the spec's `.sdd/plans/contracts/<WP-slug>/interfaces.<ext>`.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L79-L145
+- **Description**: The plan-interface-contracts skill generates all three required artifact types: (1) public function/method signatures with typed parameters and return types (Step 3b, L102-L131), (2) class/module interface definitions including abstract classes, protocols, and traits (Step 3c, L133-L138), and (3) module export definitions (Step 3d, L140-L145). Output path is `<contracts_dir>/<WP-slug>/interfaces.<ext>`, matching the spec's `.sdd/plans/contracts/<WP-slug>/interfaces.<ext>`. No regression from round 1.
 
 ### SPEC-002 [PASS]
 - **Checklist item**: FR classification - Preconditions enforced
 - **Requirement**: FR-037
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L42-L68
-- **Description**: Step 1 (Analyze Plan Accumulator) reads the plan README and all WP files before generating any contracts. It builds a WP-to-interface mapping and skips WPs that only modify configuration/documentation, only create test files, or do not introduce any public API surface. This satisfies the precondition that the plan accumulator must be analyzed before writing.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L42-L63
+- **Description**: Step 1 (Analyze Plan Accumulator) reads the plan README and all WP files before generating any contracts. It builds a WP-to-interface mapping and skips WPs that only modify configuration/documentation, only create test files, or do not introduce any public API surface. No regression from round 1.
 
 ### SPEC-003 [PASS]
 - **Checklist item**: FR classification - Postconditions produced
 - **Requirement**: FR-037
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L127-L142
-- **Description**: Step 4 (Scope Contracts to WP) ensures each WP's interface file contains ONLY the interfaces that WP introduces or modifies, preventing duplication across WPs. Output path correctly resolves to `<contracts_dir>/<WP-slug>/interfaces.<ext>`.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L148-L160
+- **Description**: Step 4 (Scope Contracts to WP) ensures each WP's interface file contains ONLY the interfaces that WP introduces or modifies, preventing duplication across WPs. Output path correctly resolves to `<contracts_dir>/<WP-slug>/interfaces.<ext>`. No regression from round 1.
 
 ### SPEC-004 [PASS]
 - **Checklist item**: FR classification - Edge cases covered
 - **Requirement**: FR-037
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L56-L59
-- **Description**: The skill explicitly addresses edge cases: WPs that only modify configuration or documentation are skipped, WPs that only create test files are skipped, and WPs without public API surface are skipped. Step 4 addresses the cross-WP scoping edge case where a WP extends an interface from a prior WP (import base, re-export extended).
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L53-L63
+- **Description**: The skill explicitly addresses edge cases: WPs that only modify configuration or documentation are skipped, WPs that only create test files are skipped, and WPs without public API surface are skipped. Step 4 addresses the cross-WP scoping edge case where a WP extends an interface from a prior WP (import base, re-export extended). No regression from round 1.
 
 ### SPEC-005 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-038
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L70-L82
-- **Description**: Step 2 (Read Spec Companion Artifact) implements FR-038 by checking for `interfaces.<ext>` in `spec_artifacts_dir`, parsing spec-level interface definitions, treating them as canonical signatures that WP-level contracts MUST match, and extending (not modifying) the spec artifact with WP-specific internal helpers.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L65-L77
+- **Description**: Step 2 (Read Spec Companion Artifact) implements FR-038 by checking for `interfaces.<ext>` in `spec_artifacts_dir`, parsing spec-level interface definitions, treating them as canonical signatures that WP-level contracts MUST match, and extending (not modifying) the spec artifact with WP-specific internal helpers. No regression from round 1.
 
 ### SPEC-006 [PASS]
 - **Checklist item**: FR classification - Error paths handled
 - **Requirement**: FR-038
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L78-L82
-- **Description**: When the spec companion artifact does not exist, the skill falls back to generating interfaces from spec prose (FR descriptions, API contracts, data model) and notes in a comment that interfaces were derived from spec prose rather than a companion artifact. This gracefully handles the missing-artifact error path.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L73-L77
+- **Description**: When the spec companion artifact does not exist, the skill falls back to generating interfaces from spec prose (FR descriptions, API contracts, data model) and notes in a comment that interfaces were derived from spec prose rather than a companion artifact. No regression from round 1.
 
 ### SPEC-007 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-039
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L85-L104
-- **Description**: Step 3a defines the manifest header with all 5 required fields: (1) `Generated by: plan-interface-contracts skill`, (2) `Source spec: <spec_path>`, (3) `Work package: WP<NN>-<slug>`, (4) `Target language: <target_language>`, (5) `DO NOT EDIT MANUALLY -- regenerated on plan revision`. Comment syntax adjustment is provided for 5 languages (TypeScript/JavaScript, Python, Go, Java, Rust).
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L83-L100
+- **Description**: Step 3a defines the manifest header with all 5 required fields: (1) `Generated by: plan-interface-contracts skill`, (2) `Source spec: <spec_path>`, (3) `Work package: WP<NN>-<slug>`, (4) `Target language: <target_language>`, (5) `DO NOT EDIT MANUALLY -- regenerated on plan revision`. Comment syntax adjustment is provided for 5 languages. No regression from round 1.
 
 ### SPEC-008 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-039
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L86-L96
-- **Description**: Step 4a in plan-data-schemas also includes the manifest header with all 5 required fields. The `Generated by` field correctly reads `plan-data-schemas skill` (adapted from the FR-039 template which uses `plan-interface-contracts skill` as the example). The instruction to adjust comment syntax for the target language is present.
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L100-L112
+- **Description**: Step 4a in plan-data-schemas includes the manifest header with all 5 required fields. The `Generated by` field correctly reads `plan-data-schemas skill`. The instruction to adjust comment syntax for the target language is present. No regression from round 1.
 
 ### SPEC-009 [PASS]
 - **Checklist item**: FR classification - Postconditions produced
 - **Requirement**: FR-039
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L88-L94
-- **Description**: The manifest header template matches the FR-039 format exactly: 5 lines, same field order, same field labels. Template variables (`<spec_path>`, `<target_language>`) are parameterized equivalents of the spec's placeholders (`.sdd/specs/<NNN>-<name>.spec.md`, `<language>`). Both resolve identically at runtime.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L87-L93
+- **Description**: The manifest header template matches the FR-039 format exactly: 5 lines, same field order, same field labels. Template variables (`<spec_path>`, `<target_language>`) are parameterized equivalents of the spec's placeholders. No regression from round 1.
 
 ### SPEC-010 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-040
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L98-L173
-- **Description**: The plan-data-schemas skill generates all three required artifact types: (1) entity type definitions with all fields typed (Step 4b, L98-L122), (2) field validation rules as code using decorators/validators/constraints with zod and pydantic examples (Step 4c, L124-L155), and (3) relationship definitions with FK annotations, collection types, and cardinality comments (Step 4d, L157-L173). Output path is `<contracts_dir>/<WP-slug>/data-schemas.<ext>`.
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L98-L200
+- **Description**: The plan-data-schemas skill generates all three required artifact types: (1) entity type definitions with all fields typed (Step 4b, L114-L148), (2) field validation rules as code using decorators/validators/constraints with zod and pydantic examples (Step 4c, L150-L181), and (3) relationship definitions with FK annotations, collection types, and cardinality comments (Step 4d, L183-L200). Output path is `<contracts_dir>/<WP-slug>/data-schemas.<ext>`. No regression from round 1.
 
 ### SPEC-011 [PASS]
 - **Checklist item**: FR classification - Preconditions enforced
 - **Requirement**: FR-040
 - **File**: .github/skills/plan-data-schemas/SKILL.md#L42-L65
-- **Description**: Step 1 (Analyze Plan Accumulator) reads the plan README and all WP files, checking if each WP creates new entities, modifies existing fields, introduces relationships, or adds validation rules. WPs that don't touch data entities are skipped. An entity-to-WP ownership map is built before any generation.
+- **Description**: Step 1 (Analyze Plan Accumulator) reads the plan README and all WP files, checking if each WP creates new entities, modifies existing fields, introduces relationships, or adds validation rules. WPs that don't touch data entities are skipped. An entity-to-WP ownership map is built before any generation. No regression from round 1.
 
 ### SPEC-012 [PASS]
 - **Checklist item**: FR classification - Edge cases covered
 - **Requirement**: FR-040
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L56-L59
-- **Description**: Skip conditions cover: WPs that do not create or modify data entities, WPs that only interact through existing interfaces (read-only consumers), and pure infrastructure/tooling/documentation WPs. The Constraints section (L234) reiterates: "Do NOT generate schema files for WPs that do not touch the data model." This matches US-02 Scenario 2.
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L53-L57
+- **Description**: Skip conditions cover: WPs that do not create or modify data entities, WPs that only interact through existing interfaces (read-only consumers), and pure infrastructure/tooling/documentation WPs. The Constraints section (L258) reiterates: "Do NOT generate schema files for WPs that do not touch the data model." Matches US-02 Scenario 2. No regression from round 1.
 
 ### SPEC-013 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-041
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L67-L82
-- **Description**: Step 2 (Read Spec Companion Artifact) checks for `data-models.<ext>` in `spec_artifacts_dir`, parses spec-level entity definitions with all fields/types/constraints, treats them as canonical schemas that WP-level contracts MUST match by field name and type, and scopes each WP's schema to only the entities that WP creates or modifies. Fallback to spec prose is provided when no artifact exists.
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L67-L79
+- **Description**: Step 2 (Read Spec Companion Artifact) checks for `data-models.<ext>` in `spec_artifacts_dir`, parses spec-level entity definitions with all fields/types/constraints, treats them as canonical schemas that WP-level contracts MUST match by field name and type, and scopes each WP's schema to only the entities that WP creates or modifies. No regression from round 1.
 
 ### SPEC-014 [PASS]
 - **Checklist item**: FR classification - Error paths handled
 - **Requirement**: FR-041
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L78-L82
-- **Description**: When the spec companion artifact does not exist, the skill generates schemas from spec prose (data model section, FR descriptions) and notes in a comment that schemas were derived from spec prose. This mirrors the FR-038 fallback pattern in plan-interface-contracts.
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L75-L79
+- **Description**: When the spec companion artifact does not exist, the skill generates schemas from spec prose (data model section, FR descriptions) and notes in a comment that schemas were derived from spec prose. No regression from round 1.
 
 ### SPEC-015 [PASS]
-- **Checklist item**: FR classification - SHALL obligation (partial)
+- **Checklist item**: FR classification - SHALL obligation (core mechanism)
 - **Requirement**: FR-042
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L84-L100
-- **Description**: Steps 3 and 5 correctly implement the core FR-042 mechanism. Step 3 (Resolve Entity Ownership) processes WPs in numerical order -- the WP with the lowest number that creates an entity owns the full definition; later WPs import from the original owner and extend it. Step 5 (Handle Entity Extensions) provides concrete import/extend examples for TypeScript and Python, importing `BaseUser` from the owner WP's contracts. This correctly implements "first WP SHALL include the full definition" and "subsequent WPs SHALL import or reference."
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L81-L96
+- **Description**: Step 3 (Resolve Entity Ownership) processes WPs in numerical order -- the WP with the lowest number that creates an entity owns the full definition; later WPs import from the original owner and extend it. This correctly implements "first WP SHALL include the full definition." No regression from round 1.
 
-### SPEC-016 [FAIL]
-- **Checklist item**: FR classification - SHALL obligation (deviation)
+### SPEC-016 [PASS]
+- **Checklist item**: FR classification - SHALL obligation (deduplication for 3+ WPs)
 - **Requirement**: FR-042
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L209-L215
-- **Description**: Step 6 (Handle Shared Entities) introduces behavior that contradicts FR-042. When an entity is used by 3 or more WPs, the full definition is moved to `<contracts_dir>/shared/data-schemas.<ext>` and "All WPs import from shared instead of from another WP's contract." This violates two SHALLs in FR-042: (1) "the first WP to define it SHALL include the full definition" -- the first WP no longer includes it; and (2) "Subsequent WPs SHALL import or reference the definition from the first WP's contracts" -- they import from shared/, not from the first WP's contracts.
-- **Expected**: For any number of sharing WPs (2, 3, or more), the first WP (lowest number) includes the full entity definition and all subsequent WPs import from the first WP's contracts directory, per FR-042.
-- **Evidence**:
-  ```markdown
-  ## Step 6 - Handle Shared Entities
+- **File**: .github/skills/plan-data-schemas/SKILL.md#L204-L241, .github/skills/plan-interface-contracts/SKILL.md#L148-L160
+- **Description**: **Previously FAIL (round 1)**. The old Step 6 "Handle Shared Entities" that moved entities to `<contracts_dir>/shared/data-schemas.<ext>` for 3+ WPs has been completely removed. Step 6 is now "800-Line Block Compliance (FR-013)." The Constraints section (L257) explicitly restricts output to `<contracts_dir>/<WP-slug>/data-schemas.<ext>` only -- no shared/ directory. Step 5 (Handle Entity Extensions, L204-L241) correctly follows the first-WP-defines pattern: import from the owner WP's contracts directory and extend, regardless of how many WPs share the entity. Similarly, plan-interface-contracts Step 4 (L154) states: "If an interface is shared across WPs, the first WP (lowest number) defines it; subsequent WPs import from the first WP's contracts directory." Both skills now fully comply with FR-042's two SHALL obligations for any number of sharing WPs.
 
-  If an entity is used by 3 or more WPs:
-
-  1. Place the full definition in `<contracts_dir>/shared/data-schemas.<ext>`
-  2. All WPs import from shared instead of from another WP's contract
-  3. Include the manifest header with `Work package: shared`
-  ```
-
-### SPEC-017 [FAIL]
+### SPEC-017 [PASS]
 - **Checklist item**: Data model match (Section 7.2)
 - **Requirement**: FR-042, Section 7.2
-- **File**: .github/skills/plan-data-schemas/SKILL.md#L209-L215, .github/skills/plan-interface-contracts/SKILL.md#L155
-- **Description**: Both skills introduce files to `contracts/shared/` beyond what Section 7.2 defines. The spec's Section 7.2 data model specifies the shared directory contains only `config-schema.<ext>`. The plan-data-schemas skill adds `shared/data-schemas.<ext>` (Step 6), and plan-interface-contracts adds `shared/interfaces.<ext>` (Constraints section: "Shared interfaces go to `<contracts_dir>/shared/interfaces.<ext>` if they span 3+ WPs"). These outputs are not part of the spec's defined data model.
-- **Expected**: The shared directory (`contracts/shared/`) should only contain `config-schema.<ext>` per Section 7.2. Interface and data schema contracts should remain in per-WP directories as specified by FR-037 and FR-040.
-- **Evidence**:
-  ```markdown
-  # plan-data-schemas Step 6:
-  1. Place the full definition in `<contracts_dir>/shared/data-schemas.<ext>`
-
-  # plan-interface-contracts Constraints:
-  Shared interfaces go to `<contracts_dir>/shared/interfaces.<ext>` if they span 3+ WPs
-  ```
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L174-L180, .github/skills/plan-data-schemas/SKILL.md#L253-L261
+- **Description**: **Previously FAIL (round 1)**. Both skills no longer introduce files to `contracts/shared/`. The plan-interface-contracts Constraints section (L179) restricts output to `<contracts_dir>/<WP-slug>/interfaces.<ext>`. The plan-data-schemas Constraints section (L257) restricts output to `<contracts_dir>/<WP-slug>/data-schemas.<ext>`. The `contracts/shared/` directory is now correctly reserved for `config-schema.<ext>` only (per FR-052, implemented by a different skill). Both skills' output models align with the Section 7.2 data model.
 
 ### SPEC-018 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-013
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L147-L153, .github/skills/plan-data-schemas/SKILL.md#L221-L227
-- **Description**: Both skills include sections for 800-line block compliance. plan-interface-contracts Step 5 and plan-data-schemas Step 7 both instruct: split into multiple write operations if output exceeds 800 lines, read prior output between blocks, and ensure the final file is valid syntax. This satisfies FR-013.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L162-L170, .github/skills/plan-data-schemas/SKILL.md#L243-L249
+- **Description**: Both skills include sections for 800-line block compliance. plan-interface-contracts Step 5 (L162) and plan-data-schemas Step 6 (L243) both instruct: split into multiple write operations if output exceeds 800 lines, read prior output between blocks, and ensure the final file is valid syntax. No regression from round 1.
 
 ### SPEC-019 [PASS]
 - **Checklist item**: FR classification - Preconditions enforced
 - **Requirement**: FR-023
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L19-L30, .github/skills/plan-data-schemas/SKILL.md#L19-L30
-- **Description**: Both skills define the 9-input contract from FR-023 in their Input Contract tables: skill_path, plan_dir, contracts_dir, spec_path, spec_artifacts_dir, research_summary, target_language, patterns, and phase. All 9 inputs match the spec.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L15-L27, .github/skills/plan-data-schemas/SKILL.md#L15-L27
+- **Description**: Both skills define the 9-input contract from FR-023 in their Input Contract tables: skill_path, plan_dir, contracts_dir, spec_path, spec_artifacts_dir, research_summary, target_language, patterns, and phase. All 9 inputs match the spec. No regression from round 1.
 
 ### SPEC-020 [PASS]
 - **Checklist item**: FR classification - Preconditions enforced
 - **Requirement**: FR-024
-- **File**: .github/skills/plan-interface-contracts/SKILL.md#L34-L39, .github/skills/plan-data-schemas/SKILL.md#L34-L39
-- **Description**: Both skills define the execution sequence from FR-024: (1) read SKILL.md, (2) read plan state (README + WP files), (3) read spec + companion artifacts, (4) write contract files. This matches the 4-step execution sequence specified in FR-024.
+- **File**: .github/skills/plan-interface-contracts/SKILL.md#L31-L36, .github/skills/plan-data-schemas/SKILL.md#L31-L36
+- **Description**: Both skills define the execution sequence from FR-024: (1) read SKILL.md, (2) read plan state, (3) read spec + companion artifacts, (4) write contract files. This matches the 4-step execution sequence specified in FR-024. No regression from round 1.
 
 ### SPEC-021 [N/A]
 - **Checklist item**: API contract match
