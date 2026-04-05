@@ -1,7 +1,7 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T17:00:00Z
-> Last review: WP13-test-traceability-skills
+> Last updated: 2026-04-05T13:30:00Z
+> Last review: WP09-spec-architect-coordinator
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
