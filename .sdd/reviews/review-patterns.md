@@ -1,7 +1,7 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T22:30:00Z
-> Last review: WP18-phase2-api-state-error-skills
+> Last updated: 2026-04-05T15:00:00Z
+> Last review: WP22-env-setup-implementation-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
