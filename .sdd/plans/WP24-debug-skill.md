@@ -119,10 +119,10 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - **Spec refs**: FR-005, FR-010, FR-017, FR-019
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill is discovered by `file_search` with glob `.github/skills/code-*/SKILL.md`
-  - [ ] Input contract fields match the debug prompt template from Section 8.3
-  - [ ] Output format enables the coordinator to determine: all-pass (done), still-failing (retry), or cannot-diagnose (escalate)
-  - [ ] No files contain em dashes, smart quotes, or curly apostrophes
+  - [x] The skill is discovered by `file_search` with glob `.github/skills/code-*/SKILL.md`
+  - [x] Input contract fields match the debug prompt template from Section 8.3
+  - [x] Output format enables the coordinator to determine: all-pass (done), still-failing (retry), or cannot-diagnose (escalate)
+  - [x] No files contain em dashes, smart quotes, or curly apostrophes
 - **Test requirements**: none
 - **Depends on**: T24-05
 - **Implementation Guidance**:
@@ -157,3 +157,4 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - 2026-04-05T12:03:00Z - coder - T24-03 - completed - Fix prioritization and safety constraints (FR-035, FR-036)
 - 2026-04-05T12:04:00Z - coder - T24-04 - completed - Re-run verification and regression detection (FR-037)
 - 2026-04-05T12:05:00Z - coder - T24-05 - completed - Escalation reporting format with full context for human review
+- 2026-04-05T12:06:00Z - coder - T24-06 - completed - Integration verification: glob discovery, prompt template match, encoding compliance
