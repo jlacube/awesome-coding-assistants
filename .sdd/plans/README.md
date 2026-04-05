@@ -295,3 +295,183 @@ Cross-WP consistency audit performed. No inconsistencies found:
 - **Configuration**: Glob patterns (`spec-*/SKILL.md`), file paths, directory names, and artifact naming conventions are consistent across coordinator (WP09) and all skill WPs (WP10-WP13).
 - **Test consistency**: All WPs use manual invocation testing. Coverage thresholds (80% code, 90% branch) are consistent in WP13 test strategy.
 - **Spec traceability**: All 55 FRs (FR-001 through FR-055) are assigned. No orphan FRs, no duplicate assignments (except FR-023-028 which apply to all skills by design).
+
+---
+
+## Spec 003 -- Planner V2
+
+> **Spec**: `.sdd/specs/003-planner-v2.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP14](WP14-foundation-plan-skills.md) | Foundation & Plan Skill Scaffolding | P0 | Not Started | none | - |
+| [WP15](WP15-planner-coordinator.md) | Planner Coordinator Rewrite | P1 | Not Started | WP14 | No |
+| [WP16](WP16-phase1-decomposition-acceptance.md) | Phase 1: Decomposition & Acceptance Skills | P1 | Not Started | WP14, WP15 | No |
+| [WP17](WP17-phase2-interface-data-skills.md) | Phase 2: Interface Contracts & Data Schemas Skills | P1 | Not Started | WP14, WP15 | Yes |
+| [WP18](WP18-phase2-api-state-error-skills.md) | Phase 2: API Contracts, State Machines & Error Catalogs Skills | P1 | Not Started | WP14, WP15 | Yes |
+| [WP19](WP19-phase2-cross-wp-validation.md) | Phase 2: Cross-WP Validation Skill | P1 | Not Started | WP14, WP15, WP16, WP17, WP18 | No |
+
+### MVP Scope
+
+The following work packages constitute the minimum releasable increment: **WP14, WP15, WP16**.
+
+- WP14 (P0) creates the directory scaffolding, stub skill files for all 8 plan skills, and the common contract (PLAN-SKILL-CONTRACT.md)
+- WP15 (P1) rewrites the Planner coordinator from monolithic to skill-based dispatch with auto-loop gap resolution
+- WP16 (P1) implements Phase 1 skills (plan-decomposition + plan-acceptance) that produce the core WP decomposition
+
+WP17-WP19 are post-MVP enhancements that add Phase 2 contract generation (interfaces, data schemas, API contracts, state machines, error catalogs, cross-WP validation). The coordinator dispatches Phase 2 skills only when they are installed, so the planner works without them.
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP14 -> WP15 -> WP16 -> {WP17, WP18} -> WP19
+- **Parallelization**: WP17 and WP18 can run in parallel after WP15 completes. WP19 must run after WP17 + WP18 (it validates their outputs).
+- **Critical path**: WP14 -> WP15 -> WP16 -> WP17 or WP18 (whichever finishes last) -> WP19
+
+### Sequencing Notes
+
+WP14 creates the directory structure and stub SKILL.md files that the coordinator's dynamic discovery depends on (FR-009). Without the directories, the coordinator cannot discover plan skills.
+
+WP15 is the critical bottleneck: it rewrites the entire planner.agent.md from V1 monolithic to V2 skill-based coordinator with two-phase dispatch, auto-loop gap resolution, and skill manifest support. All skill WPs depend on the coordinator being in place.
+
+WP16 (Phase 1: plan-decomposition + plan-acceptance) must be implemented before Phase 2 skills because Phase 2 skills read the plan accumulator produced by Phase 1. WP16 also establishes the reference pattern for all subsequent plan skills.
+
+WP17 and WP18 (Phase 2 contract generation skills) are fully parallelizable because each creates independent skill files. WP17 covers interface contracts and data schemas; WP18 covers API contracts, state machines, and error catalogs.
+
+WP19 (cross-WP validation) must run last because it audits ALL preceding skill outputs for consistency.
+
+All implementation artifacts are markdown files (.agent.md, SKILL.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the coordinator against a validated spec and verifying output.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T14-01 | Create plan skill directory structure | WP14 | Yes |
+| T14-02 | Create stub SKILL.md files for all 8 plan skills | WP14 | Yes |
+| T14-03 | Create PLAN-SKILL-CONTRACT.md common contract | WP14 | No |
+| T14-04 | Define contracts directory structure | WP14 | Yes |
+| T14-05 | Create plan-patterns.md placeholder | WP14 | Yes |
+| T14-06 | Define manifest header format | WP14 | No |
+| T14-07 | Verify encoding compliance | WP14 | No |
+| T15-01 | Refactor planner.agent.md YAML frontmatter | WP15 | No |
+| T15-02 | Write spec selection and confirmation logic | WP15 | No |
+| T15-03 | Write spec validation (status check) | WP15 | No |
+| T15-04 | Write companion artifact loading | WP15 | No |
+| T15-05 | Write spec completeness pre-check | WP15 | No |
+| T15-06 | Write auto-loop to Spec Architect | WP15 | No |
+| T15-07 | Write research phase instructions | WP15 | No |
+| T15-08 | Write dynamic skill discovery | WP15 | No |
+| T15-09 | Write two-phase skill dispatch | WP15 | No |
+| T15-10 | Write plan presentation and human gate | WP15 | No |
+| T15-11 | Write commit and handoff instructions | WP15 | No |
+| T15-12 | Verify encoding compliance | WP15 | No |
+| T16-01 | Implement plan-decomposition SKILL.md structure | WP16 | No |
+| T16-02 | Implement WP identification logic | WP16 | No |
+| T16-03 | Implement task decomposition logic | WP16 | No |
+| T16-04 | Implement WP file generation | WP16 | No |
+| T16-05 | Implement README index generation | WP16 | No |
+| T16-06 | Implement plan-acceptance SKILL.md structure | WP16 | No |
+| T16-07 | Implement acceptance criteria extraction | WP16 | No |
+| T16-08 | Implement BDD scenario mapping | WP16 | No |
+| T16-09 | Verify encoding compliance | WP16 | No |
+| T17-01 | Implement plan-interface-contracts SKILL.md | WP17 | No |
+| T17-02 | Implement interface contract generation | WP17 | No |
+| T17-03 | Implement shared interface deduplication | WP17 | No |
+| T17-04 | Implement plan-data-schemas SKILL.md | WP17 | Yes |
+| T17-05 | Implement data schema generation | WP17 | No |
+| T17-06 | Implement shared entity deduplication | WP17 | No |
+| T17-07 | Implement manifest headers and 800-line compliance | WP17 | No |
+| T17-08 | Verify encoding compliance | WP17 | No |
+| T18-01 | Implement plan-api-contracts SKILL.md structure | WP18 | No |
+| T18-02 | Implement API contract generation logic | WP18 | No |
+| T18-03 | Implement error response types per endpoint | WP18 | No |
+| T18-04 | Implement plan-state-machines SKILL.md | WP18 | Yes |
+| T18-05 | Implement plan-error-catalogs SKILL.md | WP18 | Yes |
+| T18-06 | Implement manifest headers and 800-line compliance | WP18 | No |
+| T18-07 | Verify encoding compliance | WP18 | No |
+| T19-01 | Implement plan-cross-wp-validation SKILL.md structure | WP19 | No |
+| T19-02 | Implement data contract consistency check | WP19 | Yes |
+| T19-03 | Implement API/interface contract consistency check | WP19 | Yes |
+| T19-04 | Implement dependency integrity check | WP19 | Yes |
+| T19-05 | Implement configuration consistency and config schema generation | WP19 | Yes |
+| T19-06 | Implement test consistency and spec traceability checks | WP19 | Yes |
+| T19-07 | Implement contract-to-task alignment check | WP19 | Yes |
+| T19-08 | Implement inconsistency fix and documentation | WP19 | No |
+| T19-09 | Implement 100% spec artifact coverage verification | WP19 | No |
+| T19-10 | Verify encoding compliance | WP19 | No |
+
+**Total**: 6 work packages, 54 tasks
+
+### FR Traceability
+
+Every FR from Spec 003 is assigned to exactly one task:
+
+| FR Range | Assignment | WP |
+|----------|------------|-----|
+| FR-001 | T15-02 | WP15 |
+| FR-002 | T15-04 | WP15 |
+| FR-003 | T15-03 | WP15 |
+| FR-004 | T15-05 | WP15 |
+| FR-005 | T15-04 | WP15 |
+| FR-006 | T15-06 | WP15 |
+| FR-007 | T15-07 | WP15 |
+| FR-008 | T15-07 | WP15 |
+| FR-009 | T15-08 | WP15 |
+| FR-010 | T15-08 | WP15 |
+| FR-011 | T15-09 | WP15 |
+| FR-012 | T15-09 | WP15 |
+| FR-013 | T15-09, T17-07, T18-06 | WP15, WP17, WP18 |
+| FR-014 | T15-09 | WP15 |
+| FR-015 | T15-09 | WP15 |
+| FR-016 | T15-09 | WP15 |
+| FR-017 | T15-10 | WP15 |
+| FR-018 | T15-10 | WP15 |
+| FR-019 | T15-11 | WP15 |
+| FR-020 | T15-11 | WP15 |
+| FR-021 | T15-11 | WP15 |
+| FR-022 | T15-11 | WP15 |
+| FR-023 | T14-03, all skill WPs (common contract) | WP14, WP16-19 |
+| FR-024 | T14-03, all skill WPs (common contract) | WP14, WP16-19 |
+| FR-025 | T14-01 | WP14 |
+| FR-026 | T14-02 | WP14 |
+| FR-027 | T14-04 | WP14 |
+| FR-028 | T16-01 | WP16 |
+| FR-029 | T16-02 | WP16 |
+| FR-030 | T16-03 | WP16 |
+| FR-031 | T16-03 | WP16 |
+| FR-032 | T16-04 | WP16 |
+| FR-033 | T16-05 | WP16 |
+| FR-034 | T16-06 | WP16 |
+| FR-035 | T16-07 | WP16 |
+| FR-036 | T16-08 | WP16 |
+| FR-037 | T17-01 | WP17 |
+| FR-038 | T17-02 | WP17 |
+| FR-039 | T14-06, T17-07, T18-06 | WP14, WP17, WP18 |
+| FR-040 | T17-03 | WP17 |
+| FR-041 | T17-04, T17-05 | WP17 |
+| FR-042 | T17-06 | WP17 |
+| FR-043 | T18-01, T18-02 | WP18 |
+| FR-044 | T18-02 | WP18 |
+| FR-045 | T18-03 | WP18 |
+| FR-046 | T18-04 | WP18 |
+| FR-047 | T18-04 | WP18 |
+| FR-048 | T18-05 | WP18 |
+| FR-049 | T18-05 | WP18 |
+| FR-050 | T18-05 | WP18 |
+| FR-051 | T19-02 through T19-07 | WP19 |
+| FR-052 | T19-05 | WP19 |
+| FR-053 | T19-08 | WP19 |
+| FR-054 | T19-09 | WP19 |
+
+### Consistency Notes
+
+Cross-WP consistency audit performed before plan submission. Findings:
+
+- **Data contracts**: All WPs reference the same plan accumulator format. Contract output paths follow consistent pattern: `.sdd/plans/contracts/<WP-slug>/<artifact-type>.<ext>`. Shared contracts go to `.sdd/plans/contracts/shared/`.
+- **Skill contract**: Common plan-skill contract (FR-023, FR-024) defined in WP14 (PLAN-SKILL-CONTRACT.md) and referenced identically in all skill WPs (WP16-WP19).
+- **Dependency graph**: No circular dependencies. WP14 -> WP15 -> WP16 -> {WP17 || WP18} -> WP19. All `Depends on` declarations verified valid.
+- **Configuration**: Glob patterns (`plan-*/SKILL.md`), file paths, directory names, manifest header format, and 800-line block limit are consistent across coordinator (WP15) and all skill WPs.
+- **Test consistency**: All WPs use manual invocation testing. Coverage thresholds (80% code, 90% branch) are referenced consistently in WP16 (plan-acceptance) and WP19 (cross-validation).
+- **Spec traceability**: All 54 FRs (FR-001 through FR-054) are assigned. FR-013 (800-line blocks), FR-023/FR-024 (common contract), and FR-039 (manifest headers) are shared across multiple WPs by design.
+- **Phase ordering**: Phase 1 skills (WP16) populate the plan accumulator that Phase 2 skills (WP17-WP19) consume. This ordering is enforced by the coordinator's two-phase dispatch (FR-011, FR-012).
