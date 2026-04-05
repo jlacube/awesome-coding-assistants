@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP12 - Architecture & Security Skills
@@ -294,8 +295,51 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 
 **Scope discipline**: Only two files modified. No unrelated changes.
 
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-05T16:00:00Z
+> **Verdict**: Changes Required
+> **Skills dispatched**: review-spec (FAIL), review-security (N/A), review-quality (PASS), review-tests (N/A), review-architecture (PASS), review-performance (N/A), review-docs (N/A), review-deps (N/A)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All 10 tasks have acceptance criteria checked off
+- [PASS] Activity Log: Consistent lane transitions (planned -> doing -> for_review)
+- [WARN] Commit granularity: Single commit (4433a68) covers all 10 tasks across 2 files. Acceptable for this WP size but noted.
+- [PASS] Encoding: No prohibited Unicode characters found
+
+### Review Feedback
+
+> Implementers: address every FB-XX item before returning for re-review.
+
+- [ ] **FB-01**: [spec-adherence] FR-047 item 3 Deviating - Data classification levels deviate from spec. Spec prescribes "(public, internal, confidential, restricted)" but implementation uses "(public, internal, PII, restricted)", substituting "PII" for "confidential".
+  File: .github/skills/spec-security/SKILL.md#L105-L112. Expected: Change classification level from "PII" to "confidential" or propose a spec amendment.
+  Source skills: review-spec (SPEC-012)
+
+### Warnings
+- [WARN] Single commit covers all 10 tasks (PROC-003)
+
+### Cross-Correlation Notes
+- No cross-correlation findings. Only one FAIL finding from a single skill.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 3 | 1 | 0 |
+| review-spec | 11 | 0 | 1 |
+| review-security | 0 | 0 | 0 |
+| review-quality | 4 | 0 | 0 |
+| review-tests | 0 | 0 | 0 |
+| review-architecture | 2 | 0 | 0 |
+| review-performance | 0 | 0 | 0 |
+| review-docs | 0 | 0 | 0 |
+| review-deps | 0 | 0 | 0 |
+| **Total** | **20** | **1** | **1** |
+
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-05T15:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T15:30:00Z - coder - lane=for_review - All 10 tasks complete, both skills implemented, submitted for review
+- 2026-04-05T16:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
