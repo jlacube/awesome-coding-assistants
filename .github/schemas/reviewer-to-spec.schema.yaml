@@ -1,0 +1,35 @@
+# Handoff Schema: Review Coordinator -> Spec Architect (spec gaps)
+#
+# Maintenance (FR-006): When the Review Coordinator or Spec Architect interface
+# changes, update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "5. Review Coordinator"
+target_agent: "2. Spec Architect"
+description: "Handoff from Review Coordinator to Spec Architect when spec gaps are found during review"
+
+required_artifacts:
+  - path: ".sdd/specs/{NNN}-{name}.spec.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "spec gaps identified during review"
+    error: "Review must identify spec gaps before escalating to Spec Architect"
+
+context_fields:
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the spec file with identified gaps"
+
+  - name: "gap_report"
+    type: "string"
+    required: true
+    description: "Description of spec gaps found during review"
+
+validation_rules:
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Spec file does not exist at {spec_path}"

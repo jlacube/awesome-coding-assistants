@@ -1,0 +1,48 @@
+# Handoff Schema: Spec Architect -> Planner
+# Reference schema (FR-003 example). All other schemas follow this structure.
+#
+# Maintenance (FR-006): When the Spec Architect or Planner interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "2. Spec Architect"
+target_agent: "3. Planner"
+description: "Handoff from Spec Architect to Planner after spec validation"
+
+required_artifacts:
+  - path: ".sdd/specs/{NNN}-{name}.spec.md"
+    validation:
+      - field: "Status"
+        value: "Validated"
+      - exists: true
+
+  - path: ".sdd/specs/artifacts/{NNN}-{name}/"
+    validation:
+      - min_files: 1
+
+required_state:
+  - condition: "spec.status == 'Validated'"
+    error: "Spec must be Validated before planning"
+
+context_fields:
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the validated spec file"
+
+  - name: "artifacts_dir"
+    type: "string"
+    required: true
+    description: "Path to companion artifacts directory"
+
+validation_rules:
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Spec file does not exist at {spec_path}"
+
+  - check: "field_value"
+    target: "spec_path"
+    field: "Status"
+    expected: "Validated"
+    error: "Spec status is not Validated"

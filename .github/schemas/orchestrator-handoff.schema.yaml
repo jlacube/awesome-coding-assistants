@@ -1,0 +1,36 @@
+# Handoff Schema: Orchestrator -> any agent (generic delegation)
+#
+# Maintenance (FR-006): When the Orchestrator interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "0. Orchestrator"
+target_agent: "*"
+description: "Generic handoff from Orchestrator when delegating to any pipeline agent"
+
+required_artifacts: []
+
+required_state:
+  - condition: "user request received"
+    error: "Orchestrator must have a user request before delegating"
+
+context_fields:
+  - name: "target_agent"
+    type: "string"
+    required: true
+    description: "Name of the agent being delegated to"
+
+  - name: "user_request"
+    type: "string"
+    required: true
+    description: "The user request or task being delegated"
+
+validation_rules:
+  - check: "field_not_empty"
+    target: "target_agent"
+    error: "Target agent must be specified"
+
+  - check: "field_not_empty"
+    target: "user_request"
+    error: "User request must not be empty"

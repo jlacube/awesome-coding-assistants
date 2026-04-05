@@ -1,0 +1,35 @@
+# Handoff Schema: Planner -> Spec Architect (auto-loop for spec gaps)
+#
+# Maintenance (FR-006): When the Planner or Spec Architect interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "3. Planner"
+target_agent: "2. Spec Architect"
+description: "Handoff from Planner to Spec Architect when spec completeness gaps are found during planning"
+
+required_artifacts:
+  - path: ".sdd/specs/{NNN}-{name}.spec.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "spec completeness gaps identified during planning"
+    error: "Planner must identify spec gaps before escalating to Spec Architect"
+
+context_fields:
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the spec file with identified gaps"
+
+  - name: "gap_report"
+    type: "string"
+    required: true
+    description: "Description of spec completeness gaps found during planning pre-check"
+
+validation_rules:
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Spec file does not exist at {spec_path}"

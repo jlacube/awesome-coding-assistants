@@ -1,0 +1,45 @@
+# Handoff Schema: Review Coordinator -> Coder (rework)
+#
+# Maintenance (FR-006): When the Review Coordinator or Coder interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "5. Review Coordinator"
+target_agent: "4. Coder"
+description: "Handoff from Review Coordinator to Coder with review findings for rework"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+      - field: "lane"
+        value: "to_do"
+
+required_state:
+  - condition: "wp.lane == 'to_do'"
+    error: "WP must have lane=to_do for rework"
+  - condition: "review findings exist in WP file"
+    error: "Review findings must be present in the WP file"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the work package file with review findings"
+
+  - name: "review_report_path"
+    type: "string"
+    required: false
+    description: "Path to the review report (if separate from WP)"
+
+validation_rules:
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+  - check: "field_value"
+    target: "wp_path"
+    field: "lane"
+    expected: "to_do"
+    error: "WP lane is not 'to_do'"
