@@ -255,4 +255,78 @@ Lane: for_review
 
 This handoff is automatic -- the coordinator does not ask the user for permission to request a review.
 
+## Step 10 - Commit Per Task and Handle Reviewer Feedback (FR-016)
+
+### 10a. Per-Task Commits
+
+Each task SHALL be committed individually after the skill that implements it completes. The coordinator instructs each skill to commit per task using:
+
+```
+git add <explicit file list>
+git commit -m "<type>(<scope>): <description> (WP<NN> T<NN>-XX)"
+```
+
+**Commit rules**:
+- Files SHALL be listed explicitly in `git add` -- never `git add .` or `git add -A`
+- Types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`
+- Scope: the module or feature area touched
+- Task ID always included at the end in parentheses
+- Keep messages under 72 characters, imperative mood
+
+### 10b. WP Completion Commit
+
+When the WP is marked complete (Step 9), commit the plan file changes:
+```
+git add .sdd/plans/WP<NN>-<slug>.md .sdd/plans/README.md
+git commit -m "docs(plan): mark WP<NN> complete, submit for review"
+```
+
+### 10c. Handle Reviewer Feedback
+
+If the Reviewer returns the WP with `lane: to_do` (verdict: Changes Required):
+
+1. Read the full review report in the WP file under `## Review`.
+2. Address every FB-XX item flagged by the reviewer -- do not skip, defer, or partially fix.
+3. Update `review_status: acknowledged` in the WP frontmatter.
+4. Set `lane: doing` and append an Activity Log entry: `<timestamp> - coder - lane=doing - Addressing reviewer feedback (FB-XX, FB-XX, ...)`
+5. Re-dispatch the appropriate skill(s) to fix each FB-XX item, re-running tests after each fix.
+6. For each fixed FB-XX item, commit immediately:
+   ```
+   git add <only the files changed to fix this FB-XX item>
+   git commit -m "fix(<scope>): address FB-<NN> <brief description> (WP<NN>)"
+   ```
+7. When all feedback items are resolved, return to Step 9 -- set `lane: for_review` and request a re-review.
+
+## Step 11 - Propose Next Steps
+
+At the end of every interaction, check the current state of ALL work packages by reading `.sdd/plans/README.md`.
+
+| Condition | Next Agent | Reason |
+|-----------|------------|--------|
+| WP complete and submitted for review | **Reviewer** | Audits implementation against spec, plan, and docs |
+| Reviewer returned findings (lane=to_do) | Stay in **Coder** | Address every FB-XX item before re-review |
+| Blocked by a spec ambiguity | **Spec Architect** | Clarify or extend the spec |
+| Current WP done, next WP needs planning | **Planner** | Add or refine tasks for the next WP |
+| All WPs lane=done, no remaining work | **Hand off to user** | All planned work complete |
+| Stuck after multiple attempts | **Hand off to user** | Surface the blocker clearly |
+
+### Handoff Templates
+
+**Request Review** (to `#agent:5. Review Coordinator`):
+```
+WP<NN> implementation complete. All tests passing.
+Coverage: <code_coverage>% code, <branch_coverage>% branch.
+WP file: <wp_path>
+Lane: for_review
+```
+
+**Clarify Specification** (to `#agent:2. Spec Architect`):
+```
+Spec ambiguity blocking implementation of task T<NN>-XX.
+Issue: <description>
+Spec ref: <FR-XXX>
+```
+
+Always use the handoff buttons when available. Default to recommending **Reviewer** once a WP reaches `lane: for_review`.
+
 </workflow>

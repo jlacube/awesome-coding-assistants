@@ -190,12 +190,12 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-016, Section 8.4
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each task SHALL be committed individually with `git add <explicit file list>` followed by `git commit -m "<type>(<scope>): <description> (WP<NN> T<NN>-XX)"` (FR-016)
-  - [ ] Commit types SHALL be one of: feat, fix, refactor, test, docs, chore (FR-016)
-  - [ ] Task ID SHALL always be included at the end of the commit message (FR-016)
-  - [ ] Files SHALL be listed explicitly in `git add` -- never `git add .` or `git add -A` (FR-016)
-  - [ ] The "Request Review" handoff template from Section 8.4 SHALL be included
-  - [ ] The "Clarify Specification" handoff template from Section 8.4 SHALL be included
+  - [x] Each task SHALL be committed individually with `git add <explicit file list>` followed by `git commit -m "<type>(<scope>): <description> (WP<NN> T<NN>-XX)"` (FR-016)
+  - [x] Commit types SHALL be one of: feat, fix, refactor, test, docs, chore (FR-016)
+  - [x] Task ID SHALL always be included at the end of the commit message (FR-016)
+  - [x] Files SHALL be listed explicitly in `git add` -- never `git add .` or `git add -A` (FR-016)
+  - [x] The "Request Review" handoff template from Section 8.4 SHALL be included
+  - [x] The "Clarify Specification" handoff template from Section 8.4 SHALL be included
 - **Test requirements**: none
 - **Depends on**: T21-09
 - **Implementation Guidance**:
