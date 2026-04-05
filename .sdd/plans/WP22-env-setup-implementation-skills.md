@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP22 - Environment Setup & Core Implementation Skills
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/004-coder-v2.spec.md` |
 | Priority | P1 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP20, WP21 |
 | Goal | Implement the code-env-setup and code-implementation SKILL.md files that handle environment verification/setup and contract-first task implementation |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Invoke the Coder on a WP with contract files. Verify: code-env-setup creates/verifies the environment and installs dependencies; code-implementation reads contracts and implements all tasks with matching signatures, fields, and error codes |
 | Parallelisable | Yes |
 | Prompt | `.sdd/plans/WP22-env-setup-implementation-skills.md` |
@@ -32,11 +32,11 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-017, FR-018, FR-019, Section 8.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md has valid YAML frontmatter with name `code-env-setup` and description matching FR-006
-  - [ ] Input contract table lists all 8 inputs from FR-017: skill_path, wp_path, contracts_dir, spec_path, patterns, target_language, target_framework, task_list
-  - [ ] Execution sequence follows FR-018: read SKILL.md, read WP + contracts, read spec sections, execute work, report results
-  - [ ] Output format matches FR-019: status, files_modified, tasks_completed, test_results, issues, failure_reason
-  - [ ] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
+  - [x] SKILL.md has valid YAML frontmatter with name `code-env-setup` and description matching FR-006
+  - [x] Input contract table lists all 8 inputs from FR-017: skill_path, wp_path, contracts_dir, spec_path, patterns, target_language, target_framework, task_list
+  - [x] Execution sequence follows FR-018: read SKILL.md, read WP + contracts, read spec sections, execute work, report results
+  - [x] Output format matches FR-019: status, files_modified, tasks_completed, test_results, issues, failure_reason
+  - [x] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,10 +49,10 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-020
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL check for an existing virtual environment (venv, .venv, pyproject.toml, package.json, etc.) (FR-020.1)
-  - [ ] The skill SHALL create a virtual environment if none exists: Python via `python -m venv .venv`; Node via `npm install` or `yarn install` (FR-020.2)
-  - [ ] The skill SHALL install project dependencies from the dependency manifest (requirements.txt, pyproject.toml, package.json) (FR-020.3)
-  - [ ] Given the project requires Python 3.11 but only 3.8 is available, the skill reports the incompatibility (BDD Scenario 7)
+  - [x] The skill SHALL check for an existing virtual environment (venv, .venv, pyproject.toml, package.json, etc.) (FR-020.1)
+  - [x] The skill SHALL create a virtual environment if none exists: Python via `python -m venv .venv`; Node via `npm install` or `yarn install` (FR-020.2)
+  - [x] The skill SHALL install project dependencies from the dependency manifest (requirements.txt, pyproject.toml, package.json) (FR-020.3)
+  - [x] Given the project requires Python 3.11 but only 3.8 is available, the skill reports the incompatibility (BDD Scenario 7)
 - **Test requirements**: BDD
 - **Depends on**: T22-01
 - **Implementation Guidance**:
@@ -66,9 +66,9 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-020.3, FR-022
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL install the coverage tooling specified in the WP's foundation task (pytest-cov, istanbul/nyc, etc.) (FR-022)
-  - [ ] The skill SHALL configure minimum thresholds: 80% code coverage, 90% branch coverage (FR-022)
-  - [ ] Coverage configuration SHALL be written to the project's test configuration file (pytest.ini, .nycrc, jest.config.js, etc.)
+  - [x] The skill SHALL install the coverage tooling specified in the WP's foundation task (pytest-cov, istanbul/nyc, etc.) (FR-022)
+  - [x] The skill SHALL configure minimum thresholds: 80% code coverage, 90% branch coverage (FR-022)
+  - [x] Coverage configuration SHALL be written to the project's test configuration file (pytest.ini, .nycrc, jest.config.js, etc.)
 - **Test requirements**: none
 - **Depends on**: T22-02
 - **Implementation Guidance**:
@@ -82,10 +82,10 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-020.4, FR-020.5, FR-020.6, FR-021
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL run existing tests to verify the baseline is green (FR-020.4)
-  - [ ] The skill SHALL verify the application launches without errors if applicable (FR-020.5)
-  - [ ] The skill SHALL document environment state in the WP Activity Log (FR-020.6)
-  - [ ] If the environment cannot be established (missing tools, dependency conflicts, service requirements), the skill SHALL document what failed and why, report failure to the coordinator, and the coordinator SHALL escalate to the human (FR-021)
+  - [x] The skill SHALL run existing tests to verify the baseline is green (FR-020.4)
+  - [x] The skill SHALL verify the application launches without errors if applicable (FR-020.5)
+  - [x] The skill SHALL document environment state in the WP Activity Log (FR-020.6)
+  - [x] If the environment cannot be established (missing tools, dependency conflicts, service requirements), the skill SHALL document what failed and why, report failure to the coordinator, and the coordinator SHALL escalate to the human (FR-021)
 - **Test requirements**: BDD
 - **Depends on**: T22-03
 - **Implementation Guidance**:
@@ -99,11 +99,11 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-017, FR-018, FR-019, Section 8.2
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] SKILL.md has valid YAML frontmatter with name `code-implementation` and description matching FR-006
-  - [ ] Input contract table lists all 8 inputs from FR-017
-  - [ ] Execution sequence follows FR-018
-  - [ ] Output format matches FR-019
-  - [ ] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
+  - [x] SKILL.md has valid YAML frontmatter with name `code-implementation` and description matching FR-006
+  - [x] Input contract table lists all 8 inputs from FR-017
+  - [x] Execution sequence follows FR-018
+  - [x] Output format matches FR-019
+  - [x] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -116,13 +116,13 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-023, FR-024
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL implement all tasks in dependency order; for each task: read spec refs, read contract files, implement code satisfying every acceptance criterion, copy interface/type definitions verbatim, implement all error paths, follow codebase conventions, check off acceptance criteria (FR-023)
-  - [ ] Function signatures SHALL match the contract's `interfaces.<ext>` exactly (parameter names, types, return types) (FR-024.1)
-  - [ ] Data entity fields SHALL match the contract's `data-schemas.<ext>` exactly (field names, types, defaults, validation) (FR-024.2)
-  - [ ] API endpoint paths, methods, request/response types SHALL match `api-contracts.<ext>` exactly (FR-024.3)
-  - [ ] State transitions SHALL match `state-machines.<ext>` exactly (valid states, guards, transitions) (FR-024.4)
-  - [ ] Error codes and messages SHALL match `error-catalog.<ext>` exactly (FR-024.5)
-  - [ ] Given a contract defining `createUser(input: CreateUserInput): Promise<User>`, the implemented function has exactly that signature (US-01 Scenario 1)
+  - [x] The skill SHALL implement all tasks in dependency order; for each task: read spec refs, read contract files, implement code satisfying every acceptance criterion, copy interface/type definitions verbatim, implement all error paths, follow codebase conventions, check off acceptance criteria (FR-023)
+  - [x] Function signatures SHALL match the contract's `interfaces.<ext>` exactly (parameter names, types, return types) (FR-024.1)
+  - [x] Data entity fields SHALL match the contract's `data-schemas.<ext>` exactly (field names, types, defaults, validation) (FR-024.2)
+  - [x] API endpoint paths, methods, request/response types SHALL match `api-contracts.<ext>` exactly (FR-024.3)
+  - [x] State transitions SHALL match `state-machines.<ext>` exactly (valid states, guards, transitions) (FR-024.4)
+  - [x] Error codes and messages SHALL match `error-catalog.<ext>` exactly (FR-024.5)
+  - [x] Given a contract defining `createUser(input: CreateUserInput): Promise<User>`, the implemented function has exactly that signature (US-01 Scenario 1)
 - **Test requirements**: BDD
 - **Depends on**: T22-05
 - **Implementation Guidance**:
@@ -136,11 +136,11 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-025, FR-026
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL NOT add features, abstraction layers, or configuration not specified in the spec or contracts (FR-025.1)
-  - [ ] The skill SHALL NOT refactor unrelated code outside the task's scope (FR-025.2)
-  - [ ] The skill SHALL NOT change contract definitions -- contracts are read-only (FR-025.3)
-  - [ ] The skill SHALL NOT implement self-review or quality assessment (FR-025.4)
-  - [ ] One `code-implementation` skill invocation SHALL handle all tasks in one WP; tasks are processed sequentially in dependency order (FR-026)
+  - [x] The skill SHALL NOT add features, abstraction layers, or configuration not specified in the spec or contracts (FR-025.1)
+  - [x] The skill SHALL NOT refactor unrelated code outside the task's scope (FR-025.2)
+  - [x] The skill SHALL NOT change contract definitions -- contracts are read-only (FR-025.3)
+  - [x] The skill SHALL NOT implement self-review or quality assessment (FR-025.4)
+  - [x] One `code-implementation` skill invocation SHALL handle all tasks in one WP; tasks are processed sequentially in dependency order (FR-026)
 - **Test requirements**: none
 - **Depends on**: T22-06
 - **Implementation Guidance**:
@@ -154,10 +154,10 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 - **Spec refs**: FR-005, FR-007, FR-017, FR-019
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Both skills are discovered by `file_search` with glob `.github/skills/code-*/SKILL.md`
-  - [ ] Input contract fields match the coordinator's dispatch template from Section 8.2
-  - [ ] Output contract fields match the coordinator's expected result format from FR-019 and Section 7.4
-  - [ ] No files contain em dashes, smart quotes, or curly apostrophes
+  - [x] Both skills are discovered by `file_search` with glob `.github/skills/code-*/SKILL.md`
+  - [x] Input contract fields match the coordinator's dispatch template from Section 8.2
+  - [x] Output contract fields match the coordinator's expected result format from FR-019 and Section 7.4
+  - [x] No files contain em dashes, smart quotes, or curly apostrophes
 - **Test requirements**: none
 - **Depends on**: T22-07
 - **Implementation Guidance**:
@@ -185,3 +185,13 @@ FR-020, FR-021, FR-022 (code-env-setup), FR-023, FR-024, FR-025, FR-026 (code-im
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T14:10:00Z - coder - T22-01 - completed - code-env-setup SKILL.md structure with frontmatter, input/output contracts, execution sequence
+- 2026-04-05T14:15:00Z - coder - T22-02 - completed - Environment detection (Python, Node, Go, Rust) and creation logic with version checks
+- 2026-04-05T14:20:00Z - coder - T22-03 - completed - Dependency installation and coverage tooling (pytest-cov, istanbul, c8) with 80/90 thresholds
+- 2026-04-05T14:25:00Z - coder - T22-04 - completed - Baseline verification, app launch check, env state documentation, 3-part failure protocol
+- 2026-04-05T14:30:00Z - coder - T22-05 - completed - code-implementation SKILL.md structure with frontmatter, input/output contracts, execution sequence
+- 2026-04-05T14:35:00Z - coder - T22-06 - completed - Contract-first implementation logic with verbatim copy, all 5 contract types, IMPL ISSUE markers
+- 2026-04-05T14:40:00Z - coder - T22-07 - completed - Constraints: no over-engineering, no scope creep, read-only contracts, no self-review, single invocation
+- 2026-04-05T14:45:00Z - coder - T22-08 - completed - Integration verified: glob discovery, input/output contract match, zero prohibited characters
+- 2026-04-05T14:45:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria checked
