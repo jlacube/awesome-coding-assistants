@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP24 - Debug Skill
@@ -32,11 +32,11 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - **Spec refs**: FR-017, FR-018, FR-019, Section 8.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md has valid YAML frontmatter with name `code-debug` and description matching FR-006
-  - [ ] Input contract includes the standard 8 inputs from FR-017 plus debug-specific inputs: failing test output, source file list, and debug attempt number
-  - [ ] The debug skill prompt template from Section 8.3 is incorporated into the skill's execution instructions
-  - [ ] Output format matches FR-019 with additional debug fields: previously-failing tests now passing, tests still failing, new regressions
-  - [ ] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
+  - [x] SKILL.md has valid YAML frontmatter with name `code-debug` and description matching FR-006
+  - [x] Input contract includes the standard 8 inputs from FR-017 plus debug-specific inputs: failing test output, source file list, and debug attempt number
+  - [x] The debug skill prompt template from Section 8.3 is incorporated into the skill's execution instructions
+  - [x] Output format matches FR-019 with additional debug fields: previously-failing tests now passing, tests still failing, new regressions
+  - [x] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -151,3 +151,5 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T12:01:00Z - coder - T24-01 - completed - SKILL.md structure with frontmatter, input/output contracts, execution sequence
