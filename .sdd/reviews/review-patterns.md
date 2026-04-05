@@ -1,14 +1,33 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T13:30:00Z
-> Last review: WP09-spec-architect-coordinator
+> Last updated: 2026-04-05T18:00:00Z
+> Last review: WP18-phase2-api-state-error-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
 
 ## Active Patterns
 
-(none)
+### PAT-006 [spec-adherence] Shared directory misuse for entity deduplication
+- **First seen**: WP17 (2026-04-05)
+- **Occurrences**: 3
+- **Pattern**: Phase 2 skills (plan-data-schemas, plan-interface-contracts, plan-error-catalogs) move entities/interfaces/errors to a shared/ directory when used by 3+ WPs. The spec requires the first WP to define the entity fully and subsequent WPs to import from the first WP's contracts. Section 7.2 reserves shared/ for config-schema only.
+- **Fix**: Remove all move-to-shared logic. All deduplication must follow the first-WP-defines pattern regardless of how many WPs share the entity. Only plan-cross-wp-validation may write to shared/ (for config-schema).
+- **Source**: review-spec SPEC-016, SPEC-017 (WP17), SPEC-008 (WP18)
+
+### PAT-007 [spec-adherence] Spec literal text deviation in coordinator
+- **First seen**: WP15 (2026-04-05)
+- **Occurrences**: 2
+- **Pattern**: Coordinator implementation substitutes different terms than the spec prescribes. FR-008 specifies "Starter templates or boilerplate repos" but implementation uses "CI/CD best practices". FR-019 specifies "should, appropriate, reasonable" but implementation omits "should" and adds unlisted terms.
+- **Fix**: Copy exact terms from spec FRs. Additional terms may be added but spec-prescribed terms must not be omitted.
+- **Source**: review-spec SPEC-013, SPEC-025 (WP15)
+
+### PAT-008 [spec-adherence] Implementation guidance template incomplete
+- **First seen**: WP16 (2026-04-05)
+- **Occurrences**: 1
+- **Pattern**: plan-acceptance skill's implementation guidance template omits "error codes" and "validation rules" fields explicitly required by FR-033.3.
+- **Fix**: Add "Error handling" and "Spec validation rules" fields to the implementation guidance template, matching the complete list from FR-033.3.
+- **Source**: review-spec SPEC-008 (WP16)
 
 ## Resolved
 

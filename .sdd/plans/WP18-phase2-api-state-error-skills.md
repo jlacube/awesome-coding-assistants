@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP18 - Phase 2: API Contracts + State Machines + Error Catalogs Skills
@@ -167,3 +168,39 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T14:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-05T18:00:00Z
+> **Verdict**: Changes Required
+> **Skills dispatched**: review-spec (FAIL)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All acceptance criteria checked
+- [PASS] Activity Log: Consistent lane transitions
+- [WARN] Commit granularity: Single bulk commit (efcfb9a) for all 7 tasks
+- [PASS] Encoding: No violations found
+
+### Review Feedback
+
+> Implementers: address every FB-XX item before returning for re-review.
+
+- [ ] **FB-01**: [spec-adherence] FR-050 shared/ directory deviation - plan-error-catalogs introduces `shared/error-catalog.<ext>` for error codes used by 3+ WPs. FR-050 requires the first WP to define it fully and subsequent WPs to import from the first WP. Section 7.2 defines shared/ as containing only config-schema.<ext>. Remove the move-to-shared logic.
+  File: .github/skills/plan-error-catalogs/SKILL.md. Expected: All deduplication follows first-WP-defines pattern. No error-catalog files written to shared/.
+  Source skills: review-spec (SPEC-008)
+
+### Warnings
+- [WARN] PROC-003: Single bulk commit for all tasks.
+
+### Cross-Correlation Notes
+- Systemic pattern: shared/ directory deduplication deviation also appears in WP17 (plan-data-schemas, plan-interface-contracts). Same root cause across 3 skills.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 3 | 1 | 0 |
+| review-spec | 16 | 0 | 1 |
+| **Total** | **19** | **1** | **1** |
