@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP21 - Coder Coordinator
@@ -8,10 +8,10 @@ lane: doing
 |-------|-------|
 | Spec | `.sdd/specs/004-coder-v2.spec.md` |
 | Priority | P1 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP20 |
 | Goal | Rewrite coder.agent.md from monolithic single-pass implementation to a lightweight coordinator that dispatches 5 sequential coding skills with contract-first enforcement, debug retry logic, and no self-review |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Invoke the Coder with a WP. Verify: it reads WP + contracts + spec, validates dependencies, discovers 5 coding skills, dispatches them sequentially, handles debug retries, sets lane to for_review, commits per task, and hands off to Reviewer without self-review |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP21-coder-coordinator.md` |
@@ -228,3 +228,4 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation of coordinator rewrite
+- 2026-04-05T16:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
