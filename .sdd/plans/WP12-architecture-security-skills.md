@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP12 - Architecture & Security Skills
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | WP08, WP09 |
 | Goal | Implement the spec-architecture and spec-security skills that produce system design, tech stack, directory structure, config schema artifact, and expanded security requirements |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Dispatch spec-architecture and spec-security against a test accumulator with sections 1-8. Verify: sections 9 and 10.2 written; config-schema artifact created; OWASP mitigations present for the system's threat surface |
 | Parallelisable | Yes (with WP10, WP11, WP13 after WP09 completes) |
 | Prompt | `.sdd/plans/WP12-architecture-security-skills.md` |
@@ -36,14 +36,14 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-043
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md contains instructions for Section 9 with subsections:
+  - [x] SKILL.md contains instructions for Section 9 with subsections:
     - 9.1 System Design: component description and interaction diagram (Mermaid or prose)
     - 9.2 Technology Stack: table with Layer, Technology, Version, Rationale columns
     - 9.3 Directory & Module Structure: proposed folder structure with one-line descriptions
     - 9.4 Key Design Decisions: for each decision: decision, rationale, alternatives considered, consequences, source references
     - 9.5 External Integrations: for each external system: purpose, auth method, key operations, timeout/retry/fallback strategy
-  - [ ] Skill reads accumulator (sections 1-8) to understand entities, APIs, and requirements
-  - [ ] Skill reads the source brief for architecture preferences
+  - [x] Skill reads accumulator (sections 1-8) to understand entities, APIs, and requirements
+  - [x] Skill reads the source brief for architecture preferences
 - **Test requirements**: BDD (Scenario 1 from Section 11.2)
 - **Depends on**: T08-02 (stub exists)
 - **Implementation Guidance**:
@@ -71,11 +71,11 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-044, FR-028
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill produces `config-schema.<ext>` in the artifacts directory
-  - [ ] Every environment variable referenced in Section 9 has a definition in the artifact
-  - [ ] Each config entry has: name, type, default value, validation rules, description
-  - [ ] Artifact includes the manifest comment header (FR-028)
-  - [ ] Artifact contains type definitions only -- no I/O code
+  - [x] Skill produces `config-schema.<ext>` in the artifacts directory
+  - [x] Every environment variable referenced in Section 9 has a definition in the artifact
+  - [x] Each config entry has: name, type, default value, validation rules, description
+  - [x] Artifact includes the manifest comment header (FR-028)
+  - [x] Artifact contains type definitions only -- no I/O code
 - **Test requirements**: BDD (Scenario 1 from Section 11.2 -- artifact exists)
 - **Depends on**: T12-01
 - **Implementation Guidance**:
@@ -101,9 +101,9 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-045
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill verifies that every entity from Section 7 has a plausible home in the directory structure (e.g., `models/user.ts` for User entity)
-  - [ ] Skill verifies that every API endpoint from Section 8 has a plausible home (e.g., `routes/users.ts` for /users endpoints)
-  - [ ] If the directory structure doesn't accommodate an entity or endpoint, skill adds a note or adjusts the structure
+  - [x] Skill verifies that every entity from Section 7 has a plausible home in the directory structure (e.g., `models/user.ts` for User entity)
+  - [x] Skill verifies that every API endpoint from Section 8 has a plausible home (e.g., `routes/users.ts` for /users endpoints)
+  - [x] If the directory structure doesn't accommodate an entity or endpoint, skill adds a note or adjusts the structure
 - **Test requirements**: none (validation step within skill)
 - **Depends on**: T12-01
 - **Implementation Guidance**:
@@ -122,11 +122,11 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-046
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill instructions require that Section 9.2 or 9.3 specifies virtual environment approach
-  - [ ] Python projects: must use venv, poetry, or conda
-  - [ ] Node projects: must use local node_modules (not global -g installs)
-  - [ ] Other languages: equivalent isolation mechanism
-  - [ ] Global package installation is explicitly prohibited
+  - [x] Skill instructions require that Section 9.2 or 9.3 specifies virtual environment approach
+  - [x] Python projects: must use venv, poetry, or conda
+  - [x] Node projects: must use local node_modules (not global -g installs)
+  - [x] Other languages: equivalent isolation mechanism
+  - [x] Global package installation is explicitly prohibited
 - **Test requirements**: none (content requirement)
 - **Depends on**: T12-01
 - **Implementation Guidance**:
@@ -144,8 +144,8 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027, FR-028
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Input contract, execution sequence, output format, modification constraints, manifest comments
-  - [ ] Same criteria as T10-03/T11-03 applied to spec-architecture SKILL.md
+  - [x] Input contract, execution sequence, output format, modification constraints, manifest comments
+  - [x] Same criteria as T10-03/T11-03 applied to spec-architecture SKILL.md
 - **Test requirements**: none (contract compliance)
 - **Depends on**: T12-01
 - **Implementation Guidance**:
@@ -157,7 +157,7 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-047
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md contains instructions for Section 10.2 expansion with:
+  - [x] SKILL.md contains instructions for Section 10.2 expansion with:
     - Authentication mechanism details: protocol, token format, expiry, refresh
     - Authorization model (RBAC/ABAC) with roles and permissions matrix
     - Data sensitivity classification per entity (public, internal, confidential, restricted)
@@ -165,8 +165,8 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
     - Per-component security requirements
     - Input validation strategy (allow-list vs deny-list, centralized vs per-endpoint)
     - Secrets management approach (env vars, vault, key management)
-  - [ ] Skill reads accumulator (sections 1-9) including architecture decisions
-  - [ ] Security requirements are specific to the system being specified, not generic boilerplate
+  - [x] Skill reads accumulator (sections 1-9) including architecture decisions
+  - [x] Security requirements are specific to the system being specified, not generic boilerplate
 - **Test requirements**: BDD (Scenario 1 from Section 11.2)
 - **Depends on**: T08-02 (stub exists)
 - **Implementation Guidance**:
@@ -192,9 +192,9 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-048
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill cross-references Section 7 entities: every entity with sensitive fields (passwords, tokens, PII) has explicit handling rules
-  - [ ] Handling rules cover: encryption at rest, masking in logs, access control
-  - [ ] If a sensitive field is missing handling rules, add a `[CROSS-REF ISSUE]` marker
+  - [x] Skill cross-references Section 7 entities: every entity with sensitive fields (passwords, tokens, PII) has explicit handling rules
+  - [x] Handling rules cover: encryption at rest, masking in logs, access control
+  - [x] If a sensitive field is missing handling rules, add a `[CROSS-REF ISSUE]` marker
 - **Test requirements**: BDD (Scenario 1 from Section 11.2)
 - **Depends on**: T12-06
 - **Implementation Guidance**:
@@ -213,9 +213,9 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-049
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill instructions require fetching current OWASP Top 10 before writing mitigations
-  - [ ] Skill instructions require fetching framework-specific security docs (e.g., Express security best practices, Django security)
-  - [ ] Research findings inform the specific mitigations written, not generic advice
+  - [x] Skill instructions require fetching current OWASP Top 10 before writing mitigations
+  - [x] Skill instructions require fetching framework-specific security docs (e.g., Express security best practices, Django security)
+  - [x] Research findings inform the specific mitigations written, not generic advice
 - **Test requirements**: none (process requirement)
 - **Depends on**: T12-06
 - **Implementation Guidance**:
@@ -235,8 +235,8 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Same contract compliance criteria as previous WPs
-  - [ ] This skill produces no artifacts; step 5 of execution sequence is "N/A"
+  - [x] Same contract compliance criteria as previous WPs
+  - [x] This skill produces no artifacts; step 5 of execution sequence is "N/A"
 - **Test requirements**: none (contract compliance)
 - **Depends on**: T12-06
 - **Implementation Guidance**:
@@ -249,12 +249,12 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Spec refs**: All FR-043 through FR-049
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Dispatch spec-architecture: verify Section 9 with all 5 subsections
-  - [ ] Verify config-schema artifact created with all env vars
-  - [ ] Dispatch spec-security: verify Section 10.2 expanded with OWASP mitigations
-  - [ ] Verify data model cross-reference: sensitive fields have handling rules
-  - [ ] Verify no prior sections modified
-  - [ ] Verify virtual environment requirement is present
+  - [x] Dispatch spec-architecture: verify Section 9 with all 5 subsections
+  - [x] Verify config-schema artifact created with all env vars
+  - [x] Dispatch spec-security: verify Section 10.2 expanded with OWASP mitigations
+  - [x] Verify data model cross-reference: sensitive fields have handling rules
+  - [x] Verify no prior sections modified
+  - [x] Verify virtual environment requirement is present
 - **Test requirements**: integration (manual invocation)
 - **Depends on**: T12-01 through T12-09
 - **Implementation Guidance**:
@@ -284,6 +284,18 @@ Implement two skills: spec-architecture (system design, tech stack, directory st
 - **Risk**: Security section is generic boilerplate instead of system-specific analysis.
   - **Mitigation**: Skill instructions emphasize "for THIS system's threat surface" and require cross-referencing the data model.
 
+## Self-Review
+
+**Spec Compliance**: Both skills implement all FRs (FR-043 through FR-049). spec-architecture covers all 5 subsections (9.1-9.5) plus config-schema artifact, directory validation (FR-045), and virtual environment requirement (FR-046). spec-security covers all 7 subsections (10.2.1-10.2.7) plus data model cross-reference (FR-048) and mandatory web research (FR-049).
+
+**Correctness**: Architecture skill produces Section 9 with system design, tech stack, directory structure, design decisions, and external integrations. Config-schema artifact has typed definitions with defaults and validation. Security skill expands Section 10.2 with authentication, authorization, data classification, OWASP mitigations, per-component security, input validation, and secrets management.
+
+**Code quality**: Both files encoding-clean. spec-architecture: 247 lines, spec-security: 212 lines.
+
+**Scope discipline**: Only two files modified. No unrelated changes.
+
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T15:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T15:30:00Z - coder - lane=for_review - All 10 tasks complete, both skills implemented, submitted for review
