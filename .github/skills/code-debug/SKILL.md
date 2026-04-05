@@ -289,3 +289,95 @@ tests_still_failing:
     diagnosis: <why this test still fails>
 regressions: [<list of test names that were passing but now fail>]
 ```
+
+---
+
+## Step 5 -- Report Results to Coordinator
+
+### 5a. Success Report
+
+If all tests pass (`fail_count == 0` and `regressions` is empty):
+
+```
+status: success
+files_modified: [<list of files changed during debugging>]
+tasks_completed: [<tasks whose tests are now fixed>]
+test_results:
+  pass_count: <N>
+  fail_count: 0
+  coverage_pct: <N>
+tests_fixed: [<previously-failing test names>]
+tests_still_failing: []
+regressions: []
+issues: []
+failure_reason: null
+```
+
+### 5b. Partial Fix Report
+
+If some tests are fixed but others still fail (`fail_count > 0`):
+
+```
+status: failure
+files_modified: [<list of files changed>]
+tasks_completed: [<tasks whose tests all pass now>]
+test_results:
+  pass_count: <N>
+  fail_count: <N>
+  coverage_pct: <N>
+tests_fixed: [<tests that were fixed>]
+tests_still_failing:
+  - name: <test name>
+    error: <error message>
+    diagnosis: <root cause analysis>
+regressions: [<any regressions introduced>]
+issues: [<context about remaining failures>]
+failure_reason: "<N> tests still failing after debug attempt <attempt_number>"
+```
+
+The coordinator will use `tests_still_failing` to provide context in the next debug attempt's `test_output` input.
+
+### 5c. Escalation Report (Cannot Diagnose)
+
+If the skill cannot diagnose the root cause of one or more failures, report with full context for human escalation:
+
+```
+status: failure
+files_modified: []
+tasks_completed: []
+test_results:
+  pass_count: <N>
+  fail_count: <N>
+  coverage_pct: <N>
+tests_fixed: []
+tests_still_failing:
+  - name: <test name>
+    error: <full error message and stack trace>
+    diagnosis: "Unable to determine root cause"
+regressions: []
+issues:
+  - "Cannot diagnose failure in <test_name>"
+  - "Relevant source file: <path>"
+  - "Contract reference: <contract file and section>"
+  - "Spec reference: <FR-XXX, Section N.X>"
+  - "Attempted fixes: <description of what was tried, if anything>"
+failure_reason: "Cannot diagnose root cause of <N> test failure(s). Recommend human review."
+```
+
+The escalation report SHALL include sufficient context for the coordinator to present the full picture to a human:
+
+| Required Context | Source | Purpose |
+|-----------------|--------|---------|
+| Failing test names | `test_output` | Identify what fails |
+| Error messages and stack traces | `test_output` | Show the symptoms |
+| Relevant source files | Stack trace analysis | Show where the problem is |
+| Contract file references | `contracts_dir` | Show expected behavior |
+| Spec references | Task spec refs | Show requirements |
+| Attempted fixes (if any) | Debug actions taken | Show what was tried |
+| Debug attempt number | `debug_attempt` | Show how many tries remain |
+
+---
+
+## Active Patterns
+
+Before debugging, review the `patterns` input. These are mistakes caught in prior code reviews. Avoid repeating them during fixes. If the patterns list is empty ("No active patterns"), proceed normally.

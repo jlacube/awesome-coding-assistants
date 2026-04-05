@@ -105,9 +105,9 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - **Spec refs**: FR-034 (error: cannot diagnose), FR-010.4
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] If the skill cannot diagnose a failure, it SHALL report to the coordinator with full context for human escalation (FR-034 error)
-  - [ ] The escalation report SHALL include: failing test names, error messages, stack traces, relevant source files, contract references, spec refs, and attempted fixes
-  - [ ] The report format SHALL allow the coordinator to present all context to the human (FR-010.4)
+  - [x] If the skill cannot diagnose a failure, it SHALL report to the coordinator with full context for human escalation (FR-034 error)
+  - [x] The escalation report SHALL include: failing test names, error messages, stack traces, relevant source files, contract references, spec refs, and attempted fixes
+  - [x] The report format SHALL allow the coordinator to present all context to the human (FR-010.4)
 - **Test requirements**: none
 - **Depends on**: T24-01
 - **Implementation Guidance**:
@@ -156,3 +156,4 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - 2026-04-05T12:02:00Z - coder - T24-02 - completed - Failure diagnosis logic with categorization, source code reading, diagnosis decision tree
 - 2026-04-05T12:03:00Z - coder - T24-03 - completed - Fix prioritization and safety constraints (FR-035, FR-036)
 - 2026-04-05T12:04:00Z - coder - T24-04 - completed - Re-run verification and regression detection (FR-037)
+- 2026-04-05T12:05:00Z - coder - T24-05 - completed - Escalation reporting format with full context for human review
