@@ -1,7 +1,7 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T18:00:00Z
-> Last review: WP18-phase2-api-state-error-skills
+> Last updated: 2026-04-05T20:45:00Z
+> Last review: WP15-planner-coordinator
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
@@ -15,13 +15,6 @@ mistakes caught in previous reviews. Avoid repeating them.
 - **Fix**: Remove all move-to-shared logic. All deduplication must follow the first-WP-defines pattern regardless of how many WPs share the entity. Only plan-cross-wp-validation may write to shared/ (for config-schema).
 - **Source**: review-spec SPEC-016, SPEC-017 (WP17), SPEC-008 (WP18)
 
-### PAT-007 [spec-adherence] Spec literal text deviation in coordinator
-- **First seen**: WP15 (2026-04-05)
-- **Occurrences**: 2
-- **Pattern**: Coordinator implementation substitutes different terms than the spec prescribes. FR-008 specifies "Starter templates or boilerplate repos" but implementation uses "CI/CD best practices". FR-019 specifies "should, appropriate, reasonable" but implementation omits "should" and adds unlisted terms.
-- **Fix**: Copy exact terms from spec FRs. Additional terms may be added but spec-prescribed terms must not be omitted.
-- **Source**: review-spec SPEC-013, SPEC-025 (WP15)
-
 ### PAT-008 [spec-adherence] Implementation guidance template incomplete
 - **First seen**: WP16 (2026-04-05)
 - **Occurrences**: 1
@@ -30,6 +23,14 @@ mistakes caught in previous reviews. Avoid repeating them.
 - **Source**: review-spec SPEC-008 (WP16)
 
 ## Resolved
+
+### PAT-007 [spec-adherence] Spec literal text deviation in coordinator
+- **First seen**: WP15 (2026-04-05)
+- **Resolved**: WP15 (2026-04-05)
+- **Occurrences**: 2
+- **Pattern**: Coordinator implementation substitutes different terms than the spec prescribes. FR-008 specifies "Starter templates or boilerplate repos" but implementation uses "CI/CD best practices". FR-019 specifies "should, appropriate, reasonable" but implementation omits "should" and adds unlisted terms.
+- **Fix**: Copy exact terms from spec FRs. Additional terms may be added but spec-prescribed terms must not be omitted.
+- **Source**: review-spec SPEC-013, SPEC-025 (WP15)
 
 ### PAT-005 [spec-adherence] Classification level deviation from spec
 - **First seen**: WP12 (2026-04-05)

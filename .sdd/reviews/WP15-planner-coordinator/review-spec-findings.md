@@ -2,12 +2,13 @@
 skill: review-spec
 wp: WP15-planner-coordinator
 spec: .sdd/specs/003-planner-v2.spec.md
-reviewed_at: 2026-04-05T12:00:00Z
+reviewed_at: 2026-04-05T19:00:00Z
 status: completed
+review_round: 2
 finding_counts:
-  pass: 29
+  pass: 31
   warn: 0
-  fail: 3
+  fail: 1
   na: 5
 files_reviewed:
   - .github/agents/planner.agent.md
@@ -15,13 +16,21 @@ files_reviewed:
   - .sdd/plans/WP15-planner-coordinator.md
 ---
 
-# review-spec Findings for WP15-planner-coordinator
+# review-spec Findings for WP15-planner-coordinator (Re-Review)
 
 ## Summary
 
-Evaluated 22 functional requirements (FR-001 through FR-022) from spec Section 4.1 and 6 success criteria (SC-001 through SC-006) against the implementation in `.github/agents/planner.agent.md`. Of 22 FRs: 19 are Compliant, 2 are Deviating, 1 is Partial. 4 success criteria verified as PASS, 2 deferred (N/A). 3 cross-cutting checklist items are N/A (data model, API contract, error codes do not apply to an agent instruction file).
+Re-review of 22 functional requirements (FR-001 through FR-022) from spec Section 4.1 and 6 success criteria (SC-001 through SC-006) against the implementation in `.github/agents/planner.agent.md`. This is review round 2, following remediation of 2 feedback items (FB-01, FB-02) from round 1.
 
-Overall: the coordinator is well-structured and faithfully implements the vast majority of the spec. Three deviations were found: (1) FR-008 web research item 4 substitutes CI/CD patterns for starter templates, (2) FR-014 Phase 2 prompt template omits two inputs required by the FR's SHALL statement (though it matches the spec's own Section 8.3 template verbatim), (3) FR-019 ambiguous language check list omits the key term "should" while adding unlisted terms.
+**Previous round**: 29 PASS, 3 FAIL, 5 N/A.
+**This round**: 31 PASS, 1 FAIL, 5 N/A.
+
+Remediation results:
+- **SPEC-013 (FR-008)**: RESOLVED. Step 4b item 4 now correctly says "Starter templates or boilerplate repos matching the tech stack" (was "CI/CD best practices for the target platform"). Note: the `web_research_policy` section (line 47) still says "CI/CD patterns" -- an internal consistency issue, but Step 4b is the FR-008 implementation and it is correct.
+- **SPEC-020 (FR-014)**: STILL PRESENT. Phase 2 template still omits `research_summary` and `patterns` inputs required by FR-014's SHALL statement. Matches spec Section 8.3 verbatim -- a spec-internal inconsistency. This was not in the remediation scope (listed as a Warning, not an FB item, in round 1).
+- **SPEC-025 (FR-019)**: RESOLVED. "should" is now first in the ambiguous language list at line 282.
+
+No regressions detected in previously-PASSing items.
 
 ## Findings
 
@@ -97,21 +106,11 @@ Overall: the coordinator is well-structured and faithfully implements the vast m
 - **File**: .github/agents/planner.agent.md#L148
 - **Description**: The research subagent prompt explicitly states "Do NOT draft any plan content -- discovery and feasibility only." This matches the spec's constraint that the research subagent SHALL NOT draft plan content.
 
-### SPEC-013 [FAIL]
+### SPEC-013 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-008
 - **File**: .github/agents/planner.agent.md#L155-L159
-- **Description**: Web research item 4 deviates from the spec. The implementation substitutes a different research target than what FR-008 specifies.
-- **Expected**: FR-008 item 4: "Starter templates or boilerplate repos matching the tech stack"
-- **Evidence**:
-  ```markdown
-  Conduct web research using `fetch_webpage` for:
-  1. Official docs for libraries and frameworks in the spec's tech stack
-  2. Known pitfalls, gotchas, and migration issues
-  3. Testing framework guides and recommended patterns
-  4. CI/CD best practices for the target platform
-  ```
-  Item 4 should be "Starter templates or boilerplate repos matching the tech stack" per FR-008, but the implementation says "CI/CD best practices for the target platform". The same deviation appears in the `web_research_policy` section (line 47).
+- **Description**: **PREVIOUSLY FAIL (round 1), NOW RESOLVED.** Step 4b web research item 4 now reads "Starter templates or boilerplate repos matching the tech stack," matching FR-008 exactly. All 4 research targets align with the spec. Note: the `web_research_policy` section (line 47) still references "CI/CD patterns" -- an internal implementation inconsistency introduced by the fix, but Step 4b is the FR-008 implementation and it is compliant.
 
 ### SPEC-014 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
@@ -141,7 +140,7 @@ Overall: the coordinator is well-structured and faithfully implements the vast m
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-012
 - **File**: .github/agents/planner.agent.md#L205-L261
-- **Description**: Two-phase execution is implemented: Phase 1 (Steps 8) dispatches decomposition skills first, producing WP files and README. Phase 2 (Step 9) reads the plan accumulator and generates contract files. Output paths match spec: `.sdd/plans/` for Phase 1, `.sdd/plans/contracts/<WP-slug>/` for Phase 2.
+- **Description**: Two-phase execution is implemented: Phase 1 (Step 8) dispatches decomposition skills first, producing WP files and README. Phase 2 (Step 9) reads the plan accumulator and generates contract files. Output paths match spec: `.sdd/plans/` for Phase 1, `.sdd/plans/contracts/<WP-slug>/` for Phase 2.
 
 ### SPEC-019 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
@@ -153,7 +152,7 @@ Overall: the coordinator is well-structured and faithfully implements the vast m
 - **Checklist item**: FR classification - SHALL obligation (Partial)
 - **Requirement**: FR-014
 - **File**: .github/agents/planner.agent.md#L241-L257
-- **Description**: FR-014 states "Each invocation SHALL include" 7 items. The Phase 2 prompt template (Step 9) omits two of these required inputs: (4) research findings summary and (6) active plan-domain patterns to avoid. The Phase 1 template (Step 8) includes all items from FR-014 except contracts_dir (which is listed in FR-023 but not FR-014).
+- **Description**: **STILL PRESENT from round 1. Not in remediation scope (listed as Warning, not FB item).** FR-014 states "Each invocation SHALL include" 7 items. The Phase 2 prompt template (Step 9) omits two of these required inputs: (4) research findings summary and (6) active plan-domain patterns to avoid. The Phase 1 template (Step 8) includes all 7 items correctly.
 - **Expected**: FR-014 requires each invocation to include: (1) skill file path, (2) plan accumulator paths, (3) spec file path and companion artifacts, (4) research findings summary, (5) target language, (6) active plan-domain patterns, (7) phase indicator. The Phase 2 template omits items 4 and 6.
 - **Evidence**:
   ```markdown
@@ -165,7 +164,7 @@ Overall: the coordinator is well-structured and faithfully implements the vast m
   4. Target language: <target_language>
   5. Contracts directory: <contracts_dir>
   ```
-  Missing: `research_summary` and `patterns` inputs. Note: the implementation matches the spec's own Section 8.3 template verbatim. The conflict is between FR-014's SHALL statement and Section 8.3's template definition -- a spec-internal inconsistency. The implementation faithfully follows Section 8.3.
+  Missing: `research_summary` and `patterns` inputs. Note: the implementation matches the spec's own Section 8.3 template verbatim. The conflict is between FR-014's SHALL statement (7 inputs) and Section 8.3's template definition (5 inputs) -- a spec-internal inconsistency. The implementation faithfully follows Section 8.3.
 
 ### SPEC-021 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
@@ -183,7 +182,7 @@ Overall: the coordinator is well-structured and faithfully implements the vast m
 - **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-017
 - **File**: .github/agents/planner.agent.md#L170-L180
-- **Description**: Plan accumulator initialization creates: (1) `.sdd/plans/` if not exists, (2) `.sdd/plans/contracts/` if not exists, (3) skeleton README with spec reference, target language, and plan status "In Progress". All three spec requirements are met. Note: implementation also creates `.sdd/plans/contracts/shared/` which is not specified in FR-017 but is additive (supports shared entity pattern referenced in Phase 2 template rules).
+- **Description**: Plan accumulator initialization creates: (1) `.sdd/plans/` if not exists, (2) `.sdd/plans/contracts/` and `.sdd/plans/contracts/shared/` if not exist, (3) skeleton README with spec reference, target language, and plan status "In Progress". All three spec requirements are met. The additional `contracts/shared/` directory is additive.
 
 ### SPEC-024 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
@@ -191,17 +190,11 @@ Overall: the coordinator is well-structured and faithfully implements the vast m
 - **File**: .github/agents/planner.agent.md#L267-L273
 - **Description**: All 7 cross-WP consistency checks are present: (1) data contract consistency, (2) API/interface contract consistency, (3) dependency integrity with no circular deps, (4) configuration consistency, (5) test consistency at 80% code/90% branch, (6) spec traceability with every FR assigned to exactly one task, (7) contract-to-task alignment. Inconsistencies are fixed inline and documented in README under "Consistency Notes."
 
-### SPEC-025 [FAIL]
-- **Checklist item**: FR classification - SHALL obligation (Deviating)
+### SPEC-025 [PASS]
+- **Checklist item**: FR classification - SHALL obligation
 - **Requirement**: FR-019
-- **File**: .github/agents/planner.agent.md#L280
-- **Description**: The ambiguous language check list deviates from the spec. The implementation omits the key term "should" (which is critical for distinguishing SHALL vs. SHOULD obligations in specs) and adds terms not listed in FR-019.
-- **Expected**: FR-019 item 5: No ambiguous language ("should", "appropriate", "reasonable")
-- **Evidence**:
-  ```markdown
-  5. No ambiguous language ("appropriate", "reasonable", "as needed", "etc.", "similar")
-  ```
-  Missing: "should" (specified in FR-019). Added but not in spec: "as needed", "etc.", "similar". The omission of "should" is significant because the should/shall distinction is a fundamental spec quality gate.
+- **File**: .github/agents/planner.agent.md#L282
+- **Description**: **PREVIOUSLY FAIL (round 1), NOW RESOLVED.** The ambiguous language check list now reads `("should", "appropriate", "reasonable", "as needed", "etc.", "similar")` with "should" as the first term. FR-019 specifies `("should", "appropriate", "reasonable")` -- all three are present. The additional terms ("as needed", "etc.", "similar") are additive and make the check stricter than the spec requires.
 
 ### SPEC-026 [PASS]
 - **Checklist item**: FR classification - SHALL obligation

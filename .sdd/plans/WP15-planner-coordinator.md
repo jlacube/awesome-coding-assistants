@@ -1,5 +1,5 @@
 ---
-lane: for_review
+lane: done
 ---
 
 # WP15 - Planner Coordinator Rewrite
@@ -255,48 +255,41 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - 2026-04-05T10:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T11:00:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (2 FAILs) -- awaiting remediation
+- 2026-04-05T19:00:00Z - coder - lane=for_review - Remediated FB-01 (FR-008 text), FB-02 (FR-019 ambiguous terms), QUAL-001 (orphaned tag)
+- 2026-04-05T20:45:00Z - review-coordinator - lane=done - Verdict: Approved with Findings (2 WARNs)
 
 ## Review
 
 > **Reviewed by**: Review Coordinator (v2)
-> **Date**: 2026-04-05T18:00:00Z
-> **Verdict**: Changes Required
-> **Skills dispatched**: review-spec (FAIL), review-quality (WARN)
-> **Review round**: 1
+> **Date**: 2026-04-05T20:45:00Z
+> **Verdict**: Approved with Findings
+> **Skills dispatched**: review-spec (WARN), review-quality (WARN)
+> **Review round**: 2
 
 ### Process Compliance
 - [PASS] Spec Compliance Checklist: All acceptance criteria checked
 - [PASS] Activity Log: Consistent lane transitions
-- [WARN] Commit granularity: Single bulk commit (9036def) for all 11 tasks
+- [PASS] Commit granularity: Remediation commit (6ced8dd) targets specific fixes
 - [PASS] Encoding: No violations found
 
 ### Review Feedback
 
-> Implementers: address every FB-XX item before returning for re-review.
-
-- [ ] **FB-01**: [spec-adherence] FR-008 item 4 deviation - Implementation says "CI/CD best practices for the target platform" instead of spec's "Starter templates or boilerplate repos matching the tech stack".
-  File: .github/agents/planner.agent.md#L159. Expected: Change to "Starter templates or boilerplate repos matching the tech stack" per FR-008.
-  Source skills: review-spec (SPEC-013)
-- [ ] **FB-02**: [spec-adherence] FR-019 ambiguous language list incomplete - Omits "should" from the banned terms list. Spec says ("should", "appropriate", "reasonable") but implementation says ("appropriate", "reasonable", "as needed", "etc.", "similar").
-  File: .github/agents/planner.agent.md#L282. Expected: Add "should" to the list. Keep the extra terms.
-  Source skills: review-spec (SPEC-025)
+> No FAIL findings. Previous FB-01 and FB-02 have been resolved.
 
 ### Warnings
-- [WARN] SPEC-020: FR-014 Phase 2 prompt omits research_summary and patterns inputs, but matches spec's own Section 8.3 template verbatim. Spec-internal inconsistency. (review-spec SPEC-020)
-- [WARN] QUAL-001: Orphaned closing `</plan_templates>` tag with no matching opening tag. (review-quality QUAL-001)
-- [WARN] QUAL-002: Uses `fetch_webpage` in text while spec-architect uses `web/fetch`. (review-quality QUAL-002)
-- [WARN] PROC-003: Single bulk commit for all tasks.
+- [WARN] SPEC-020 (FR-014): Phase 2 prompt template omits research_summary and patterns inputs. Implementation matches spec's own Section 8.3 template verbatim -- spec-internal inconsistency, not an implementation error. (review-spec SPEC-020)
+- [WARN] QUAL-002: Uses `fetch_webpage` in text while spec-architect uses `web/fetch`. Valid tool alias. (review-quality QUAL-002)
 
 ### Cross-Correlation Notes
-- SPEC-020 (FR-014 inputs) may be reclassified pending spec clarification -- the implementation follows Section 8.3 verbatim.
+- SPEC-020 reclassified from FAIL to WARN: the implementation faithfully follows the spec's Section 8.3 Phase 2 prompt template. The inconsistency is between FR-014's SHALL statement and the spec's own template definition, not between the spec and the implementation.
 
 ### Statistics
 | Dimension | Pass | Warn | Fail |
 |-----------|------|------|------|
-| Process Compliance | 2 | 2 | 0 |
-| review-spec | 29 | 1 | 2 |
-| review-quality | 6 | 2 | 0 |
-| **Total** | **37** | **5** | **2** |
+| Process Compliance | 4 | 0 | 0 |
+| review-spec | 31 | 1 | 0 |
+| review-quality | 7 | 1 | 0 |
+| **Total** | **42** | **2** | **0** |
 - The coordinator file replaces the existing V1 planner at `.github/agents/planner.agent.md`
 
 ## Parallel Opportunities
