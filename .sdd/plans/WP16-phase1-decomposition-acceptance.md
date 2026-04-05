@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP16 - Phase 1: Decomposition + Acceptance Skills
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/003-planner-v2.spec.md` |
 | Priority | P1 |
-| Lane | planned |
+| Lane | doing |
 | Depends on | WP14, WP15 |
 | Goal | Implement the two Phase 1 planning skills that decompose a spec into work packages with tasks, acceptance criteria, implementation guidance, and traceability |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Dispatch plan-decomposition and plan-acceptance against a validated spec. Verify: WP files exist with 5-12 tasks each, every task has 3+ acceptance criteria with SHALL statements, implementation guidance with doc links, every FR assigned to exactly one task, README has WP index and MVP scope |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP16-phase1-decomposition-acceptance.md` |
@@ -32,9 +32,9 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-028, FR-023, FR-024
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md follows the common plan-skill contract (9 inputs from FR-023, 4-step execution from FR-024)
-  - [ ] Skill reads its own SKILL.md, then reads plan state, then reads spec + artifacts (FR-024)
-  - [ ] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
+  - [x] SKILL.md follows the common plan-skill contract (9 inputs from FR-023, 4-step execution from FR-024)
+  - [x] Skill reads its own SKILL.md, then reads plan state, then reads spec + artifacts (FR-024)
+  - [x] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -47,11 +47,11 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-028 (items 1-5), FR-030
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL analyze the spec's functional requirements, user stories, and architecture (FR-028.1)
-  - [ ] The skill SHALL identify logical WPs following: Foundation -> Core domain -> Integrations -> User-facing -> Quality -> Delivery (FR-028.2)
-  - [ ] The skill SHALL decompose each WP into 5-12 atomic tasks (FR-028.3, FR-030)
-  - [ ] The skill SHALL define inter-task and inter-WP dependencies by ID (FR-028.4)
-  - [ ] The skill SHALL assign priorities: P0 (foundation), P1 (MVP user story), P2+ (incremental) (FR-028.5)
+  - [x] The skill SHALL analyze the spec's functional requirements, user stories, and architecture (FR-028.1)
+  - [x] The skill SHALL identify logical WPs following: Foundation -> Core domain -> Integrations -> User-facing -> Quality -> Delivery (FR-028.2)
+  - [x] The skill SHALL decompose each WP into 5-12 atomic tasks (FR-028.3, FR-030)
+  - [x] The skill SHALL define inter-task and inter-WP dependencies by ID (FR-028.4)
+  - [x] The skill SHALL assign priorities: P0 (foundation), P1 (MVP user story), P2+ (incremental) (FR-028.5)
 - **Test requirements**: BDD (US-01 Scenario 1: all FRs assigned, Scenario 2: foundation WP, Scenario 3: parallel WPs)
 - **Depends on**: T16-01
 - **Implementation Guidance**:
@@ -64,10 +64,10 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-028 (items 6-7), FR-029, FR-031, FR-032
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Every WP file SHALL include the metadata table from FR-031 with fields: Spec, Priority, Lane, Depends on, Goal, Status, Independent Test (FR-031)
-  - [ ] Each task SHALL include: unique T<NN>-XX identifier, Description, Spec refs, Parallel flag, placeholder for acceptance criteria, placeholder for implementation guidance, Dependencies (FR-029)
-  - [ ] The skill SHALL write a skeleton README with WP index and dependency graph (FR-028.7)
-  - [ ] The first task of the foundation WP SHALL be virtual environment setup for languages with package isolation (FR-032)
+  - [x] Every WP file SHALL include the metadata table from FR-031 with fields: Spec, Priority, Lane, Depends on, Goal, Status, Independent Test (FR-031)
+  - [x] Each task SHALL include: unique T<NN>-XX identifier, Description, Spec refs, Parallel flag, placeholder for acceptance criteria, placeholder for implementation guidance, Dependencies (FR-029)
+  - [x] The skill SHALL write a skeleton README with WP index and dependency graph (FR-028.7)
+  - [x] The first task of the foundation WP SHALL be virtual environment setup for languages with package isolation (FR-032)
 - **Test requirements**: BDD (US-01 Scenario 2: foundation WP with venv setup as T01-01)
 - **Depends on**: T16-02
 - **Implementation Guidance**:
@@ -81,9 +81,9 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-033, FR-023, FR-024
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md follows the common plan-skill contract (9 inputs from FR-023)
-  - [ ] Skill reads existing WP files produced by plan-decomposition before writing (FR-016, FR-024)
-  - [ ] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
+  - [x] SKILL.md follows the common plan-skill contract (9 inputs from FR-023)
+  - [x] Skill reads existing WP files produced by plan-decomposition before writing (FR-016, FR-024)
+  - [x] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -96,11 +96,11 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-033 (items 1-4), FR-035
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL copy exact SHALL statements from the spec's FRs as acceptance criteria, at least 3 per task (FR-033.1)
-  - [ ] The skill SHALL copy acceptance scenarios from user stories as Given/When/Then (FR-033.2)
-  - [ ] The skill SHALL add implementation guidance with official doc links, recommended patterns, known pitfalls, error codes, and validation rules (FR-033.3)
-  - [ ] The skill SHALL specify test requirements per task: unit / integration / BDD / E2E / none (FR-033.4)
-  - [ ] The skill SHALL include BDD/TDD requirements in every task with test requirements: tests derive from spec acceptance scenarios, not from implementation (FR-035)
+  - [x] The skill SHALL copy exact SHALL statements from the spec's FRs as acceptance criteria, at least 3 per task (FR-033.1)
+  - [x] The skill SHALL copy acceptance scenarios from user stories as Given/When/Then (FR-033.2)
+  - [x] The skill SHALL add implementation guidance with official doc links, recommended patterns, known pitfalls, error codes, and validation rules (FR-033.3)
+  - [x] The skill SHALL specify test requirements per task: unit / integration / BDD / E2E / none (FR-033.4)
+  - [x] The skill SHALL include BDD/TDD requirements in every task with test requirements: tests derive from spec acceptance scenarios, not from implementation (FR-035)
 - **Test requirements**: BDD (US-01 Scenario 1)
 - **Depends on**: T16-04
 - **Implementation Guidance**:
@@ -114,10 +114,10 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-034
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify every FR in Section 16 is assigned to exactly one task (FR-034)
-  - [ ] If an FR is unassigned, the skill SHALL assign it to the most relevant task (FR-034)
-  - [ ] If an FR is assigned to multiple tasks, the skill SHALL resolve the duplication by choosing the primary task (FR-034)
-  - [ ] After verification, zero orphan FRs SHALL remain
+  - [x] The skill SHALL verify every FR in Section 16 is assigned to exactly one task (FR-034)
+  - [x] If an FR is unassigned, the skill SHALL assign it to the most relevant task (FR-034)
+  - [x] If an FR is assigned to multiple tasks, the skill SHALL resolve the duplication by choosing the primary task (FR-034)
+  - [x] After verification, zero orphan FRs SHALL remain
 - **Test requirements**: BDD (US-01 Scenario 1: all FRs assigned, no orphans)
 - **Depends on**: T16-05
 - **Implementation Guidance**:
@@ -130,9 +130,9 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: FR-036
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL update README with a complete WP index table with status, priority, dependencies (FR-036.1)
-  - [ ] The skill SHALL identify and mark MVP scope -- which WPs constitute the minimum releasable increment (FR-036.2)
-  - [ ] The skill SHALL produce a dependency graph showing WP sequencing (FR-036.3)
+  - [x] The skill SHALL update README with a complete WP index table with status, priority, dependencies (FR-036.1)
+  - [x] The skill SHALL identify and mark MVP scope -- which WPs constitute the minimum releasable increment (FR-036.2)
+  - [x] The skill SHALL produce a dependency graph showing WP sequencing (FR-036.3)
 - **Test requirements**: none
 - **Depends on**: T16-06
 - **Implementation Guidance**:
@@ -145,9 +145,9 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - **Spec refs**: Section 9.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Zero prohibited Unicode characters in plan-decomposition/SKILL.md
-  - [ ] Zero prohibited Unicode characters in plan-acceptance/SKILL.md
-  - [ ] All hyphens are ASCII `-` (U+002D), all quotes are straight
+  - [x] Zero prohibited Unicode characters in plan-decomposition/SKILL.md
+  - [x] Zero prohibited Unicode characters in plan-acceptance/SKILL.md
+  - [x] All hyphens are ASCII `-` (U+002D), all quotes are straight
 - **Test requirements**: unit (encoding validation)
 - **Depends on**: T16-07
 - **Implementation Guidance**:
@@ -173,3 +173,6 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T12:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-05T11:00:00Z - coder - lane=doing - Starting implementation
