@@ -630,7 +630,7 @@ Cross-WP consistency audit performed before plan submission. No inconsistencies 
 | ID | Title | Priority | Status | Depends On | Parallelisable |
 |----|-------|----------|--------|------------|----------------|
 | [WP25](WP25-review-spec-completeness.md) | review-spec-completeness Skill | P1 | Not Started | none | Yes |
-| [WP26](WP26-review-spec-contract-aware.md) | review-spec Contract-Aware Expansion | P1 | Not Started | none | Yes |
+| [WP26](WP26-review-spec-contract-aware.md) | review-spec Contract-Aware Expansion | P1 | Complete | none | Yes |
 
 ### MVP Scope
 

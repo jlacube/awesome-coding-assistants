@@ -178,3 +178,271 @@ files_reviewed:
 - `finding_counts` MUST accurately reflect the actual findings in the file.
 - `files_reviewed` MUST list every file that was read and evaluated during this review.
 - `warn` count is always 0 for this skill (spec adherence has no WARN level).
+
+---
+
+## 7. Contract-Aware Review
+
+After completing all prose-based checks (Sections 1-6 above), check whether formal contract files exist for the work package. Contract-aware checks are additive -- they run AFTER prose-based checks and produce additional findings that are combined into one unified output.
+
+### 7.1 Discover Contract Files
+
+1. Determine the WP slug from the WP filename (e.g., `WP03-review-spec.md` has slug `review-spec`).
+2. Check for a contracts directory at `.sdd/plans/contracts/<WP-slug>/`.
+3. If the contracts directory exists, scan for these contract file types:
+   - `interfaces.<ext>` -- function/method signatures
+   - `data-schemas.<ext>` -- entity/model definitions
+   - `api-contracts.<ext>` -- API endpoint definitions
+   - `state-machines.<ext>` -- state enums and transitions
+   - `error-catalog.<ext>` -- error codes and messages
+4. The `<ext>` matches the target language (e.g., `.ts`, `.py`, `.go`).
+5. If the contracts directory does not exist or contains no contract files, fall back to prose-only review (see Section 13).
+
+### 7.2 Contract File Loading
+
+For each contract file found:
+
+1. Read the file contents in full.
+2. If the file has syntax errors (cannot be parsed as valid source in its language), flag a HIGH finding:
+   ```
+   ### Finding: SPEC-CONTRACT-XXX [FAIL]
+   - **Severity**: HIGH
+   - **Category**: <contract-type>-mismatch
+   - **Contract file**: <path>
+   - **Issue**: Contract file has syntax errors and cannot be parsed
+   - **Recommendation**: Fix syntax errors in the contract file before review
+   ```
+   Skip all contract checks for that file and continue with remaining contract files.
+3. If the file is empty, treat it the same as a syntax error (HIGH finding, skip checks for that file).
+
+---
+
+## 8. Interface Contract Check
+
+Compare every public function/method signature in the implementation against `interfaces.<ext>`. This check validates FR-016.1 and FR-017.
+
+### 8.1 Scope
+
+- Only public/exported functions are checked. Private/internal functions are excluded:
+  - Python: functions prefixed with `_` are excluded
+  - TypeScript/JavaScript: functions not exported are excluded
+  - Go: unexported functions (lowercase first letter) are excluded
+- Every function/method defined in `interfaces.<ext>` MUST have a corresponding implementation.
+
+### 8.2 Token-Level Comparison
+
+For each function/method in `interfaces.<ext>`, compare against the implementation:
+
+| Token | Comparison | Example |
+|-------|-----------|---------|
+| Function/method name | Exact match | `createUser` not `addUser` |
+| Parameter names | Exact match, in order | `input` not `data` |
+| Parameter types | Exact match, including generics and nullability | `CreateUserInput` not `UserInput`, `string \| null` not `string` |
+| Return type | Exact match, including generics and nullability | `Promise<User>` not `Promise<any>` |
+
+### 8.3 Findings
+
+- **Missing function**: A function defined in the contract but absent from the implementation is a HIGH finding (category: `interface-mismatch`).
+- **Name mismatch**: A function name that differs between contract and implementation is a HIGH finding.
+- **Parameter name mismatch**: A parameter name that differs is a HIGH finding.
+- **Parameter type mismatch**: A parameter type that differs is a HIGH finding.
+- **Return type mismatch**: A return type that differs is a HIGH finding.
+- **Extra public function**: A public function in the implementation that is NOT in the contract is a MEDIUM finding.
+
+---
+
+## 9. Data Schema Contract Check
+
+Compare every entity/model class in the implementation against `data-schemas.<ext>`. This check validates FR-016.2 and FR-017.
+
+### 9.1 Scope
+
+- Every entity/model defined in `data-schemas.<ext>` MUST have a corresponding implementation.
+- Compare field-by-field within each entity.
+
+### 9.2 Token-Level Comparison
+
+For each entity in `data-schemas.<ext>`, compare against the implementation:
+
+| Token | Comparison | Example |
+|-------|-----------|---------|
+| Entity/class name | Exact match (case-sensitive) | `User` not `UserModel` |
+| Field names | Exact match (case-sensitive) | `email` not `emailAddress` |
+| Field types | Exact match, including generics and nullability | `string` not `string \| undefined` |
+| Constraints | Match if specified in contract | `required`, `unique`, `maxLength` |
+| Defaults | Match if specified in contract | `status = 'active'` |
+
+### 9.3 Findings
+
+- **Missing entity**: An entity defined in the contract but absent from the implementation is a HIGH finding (category: `schema-mismatch`).
+- **Missing field**: A field present in the contract but absent in the implementation is a HIGH finding.
+- **Extra field**: A field present in the implementation but absent from the contract is a MEDIUM finding (may be a computed/derived field).
+- **Field name mismatch**: A field name that differs is a HIGH finding.
+- **Field type mismatch**: A field type that differs is a HIGH finding.
+
+---
+
+## 10. API Contract Check
+
+Compare every API endpoint in the implementation against `api-contracts.<ext>`. This check validates FR-016.3 and FR-017.
+
+### 10.1 Scope
+
+- Every endpoint defined in `api-contracts.<ext>` MUST have a corresponding implementation.
+- Compare: HTTP method, URL path, request schema, response schema, and error responses.
+
+### 10.2 Token-Level Comparison
+
+For each endpoint in `api-contracts.<ext>`, compare against the implementation:
+
+| Token | Comparison | Example |
+|-------|-----------|---------|
+| HTTP method | Exact match | `POST` not `PUT` |
+| URL path | Exact match | `/api/users` not `/users` |
+| Request body fields | Exact match per field (names and types) | Field `name: string` not `fullName: string` |
+| Response body fields | Exact match per field (names and types) | Field `id: string` not `userId: string` |
+| Error response codes | All error codes from contract must be handled | `400`, `401`, `404` each present |
+
+### 10.3 Findings
+
+- **Missing endpoint**: An endpoint defined in the contract but absent from the implementation is a HIGH finding (category: `api-mismatch`).
+- **Method mismatch**: A different HTTP method is a HIGH finding.
+- **Path mismatch**: A different URL path is a HIGH finding.
+- **Request schema mismatch**: Request body fields that differ are HIGH findings.
+- **Response schema mismatch**: Response body fields that differ are HIGH findings.
+- **Missing error response**: An error response in the contract but not handled in the implementation is a HIGH finding.
+
+---
+
+## 11. State Machine Contract Check
+
+Compare every state transition in the implementation against `state-machines.<ext>`. This check validates FR-016.4 and FR-017.
+
+### 11.1 Scope
+
+- Every state enum and transition defined in `state-machines.<ext>` MUST have a corresponding implementation.
+- The implementation SHALL NOT allow transitions not defined in the contract.
+
+### 11.2 Token-Level Comparison
+
+For each state machine in `state-machines.<ext>`, compare against the implementation:
+
+| Token | Comparison | Example |
+|-------|-----------|---------|
+| State enum values | Exact match | `'active'` not `'ACTIVE'` |
+| Valid transitions | Every from->to pair in contract must exist in implementation | `pending -> active` |
+| Guards | Guard conditions from contract must be enforced | `isEmailVerified` check present |
+| Invalid transitions | Implementation must NOT allow transitions absent from contract | No `active -> pending` if not in contract |
+
+### 11.3 Findings
+
+- **Missing state**: A state defined in the contract but absent from the implementation is a HIGH finding (category: `state-mismatch`).
+- **Extra state**: A state in the implementation but absent from the contract is a HIGH finding.
+- **Missing transition**: A valid transition from the contract not implemented is a HIGH finding.
+- **Extra transition**: A transition allowed by the implementation but not in the contract is a HIGH finding.
+- **Missing guard**: A guard condition from the contract not enforced in the implementation is a HIGH finding.
+
+---
+
+## 12. Error Catalog Contract Check
+
+Compare every error code and message in the implementation against `error-catalog.<ext>`. This check validates FR-016.5 and FR-017.
+
+### 12.1 Scope
+
+- Every error code defined in `error-catalog.<ext>` MUST be handled in the implementation.
+- Error codes, HTTP status codes, and message templates must match exactly.
+
+### 12.2 Token-Level Comparison
+
+For each error in `error-catalog.<ext>`, compare against the implementation:
+
+| Token | Comparison | Example |
+|-------|-----------|---------|
+| Error code string | Exact match | `'USR-001'` not `'USER-001'` |
+| HTTP status code | Exact match | `404` not `400` |
+| Message template | Exact match | `'User not found'` not `'No user found'` |
+
+### 12.3 Findings
+
+- **Missing error code**: An error code in the contract but not handled in the implementation is a HIGH finding (category: `error-mismatch`).
+- **Error code mismatch**: An error code string that differs is a HIGH finding.
+- **HTTP status mismatch**: An HTTP status code that differs is a HIGH finding.
+- **Message mismatch**: A message template that differs is a HIGH finding.
+
+---
+
+## 13. Fallback to Prose-Only Review
+
+If contract files do not exist for the WP (e.g., the WP was planned by Planner V1 which does not produce contracts):
+
+1. The skill SHALL fall back to prose-only review using Sections 1-6 above with no degradation in quality.
+2. The absence of contracts SHALL be noted as an informational finding:
+   ```
+   ### Finding: SPEC-CONTRACT-001 [INFO]
+   - **Severity**: INFO
+   - **Category**: no-contracts
+   - **Issue**: No contract files found at .sdd/plans/contracts/<WP-slug>/. Falling back to prose-only review.
+   - **Recommendation**: Generate contract files via the Planner for stricter implementation validation.
+   ```
+3. INFO findings do NOT affect the PASS/FAIL verdict.
+4. Continue with prose-based review only -- do NOT report contract mismatch findings.
+
+---
+
+## 14. Contract Finding Format
+
+Contract-based findings use the `SPEC-CONTRACT-` prefix and follow this format (FR-018):
+
+```markdown
+### Finding: SPEC-CONTRACT-XXX [FAIL]
+- **Severity**: HIGH
+- **Category**: interface-mismatch | schema-mismatch | api-mismatch | state-mismatch | error-mismatch
+- **Contract file**: <path to contract file>
+- **Implementation file**: <path>:<line>
+- **Expected**: <what the contract defines>
+- **Actual**: <what the implementation has>
+- **Recommendation**: <specific action to align implementation with contract, 1-500 chars>
+```
+
+### Rules
+
+- Contract finding IDs are sequential within a review run, starting from SPEC-CONTRACT-001.
+- The `Expected` field shows the exact definition from the contract file.
+- The `Actual` field shows the exact definition from the implementation.
+- Default severity for all contract mismatches is HIGH.
+- Extra public functions not in the contract are MEDIUM.
+- The five mismatch categories are:
+  1. `interface-mismatch` -- function/method signature deviations
+  2. `schema-mismatch` -- entity/model field deviations
+  3. `api-mismatch` -- API endpoint deviations
+  4. `state-mismatch` -- state transition deviations
+  5. `error-mismatch` -- error code/message deviations
+- Contract findings are combined with prose-based findings in the final output. The skill produces one unified findings file.
+- All combined finding counts (prose + contract) are reflected in the YAML frontmatter `finding_counts`.
+
+### Extended YAML Frontmatter
+
+When contract files are present, include `contract_files_reviewed` in the YAML frontmatter:
+
+```yaml
+---
+skill: review-spec
+wp: <WP-id>
+spec: <spec_path>
+reviewed_at: <ISO 8601 timestamp>
+status: completed
+finding_counts:
+  pass: <count>
+  warn: 0
+  fail: <count>
+  na: <count>
+  info: <count>
+files_reviewed:
+  - <file1>
+  - <file2>
+contract_files_reviewed:
+  - <contract_file1>
+  - <contract_file2>
+---
+```

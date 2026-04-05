@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP26 - review-spec Contract-Aware Expansion
@@ -32,11 +32,11 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: FR-015, FR-019, Section 8.3
 - **Parallel**: No (foundation for all T26 tasks)
 - **Acceptance criteria**:
-  - [ ] Existing review-spec behavior is fully preserved: FR classification, adherence checklist, stub detection, success criteria verification, severity rules, output format all remain unchanged (FR-015)
-  - [ ] A new section is added for contract-aware checks, clearly separated from the existing prose-based checks
-  - [ ] The section instructs: after completing prose-based review, check for contract files at `.sdd/plans/contracts/<WP-slug>/`
-  - [ ] If contract files exist, perform contract-based checks (FR-016)
-  - [ ] The dispatch prompt from spec Section 8.3 is compatible with the expanded skill
+  - [x] Existing review-spec behavior is fully preserved: FR classification, adherence checklist, stub detection, success criteria verification, severity rules, output format all remain unchanged (FR-015)
+  - [x] A new section is added for contract-aware checks, clearly separated from the existing prose-based checks
+  - [x] The section instructs: after completing prose-based review, check for contract files at `.sdd/plans/contracts/<WP-slug>/`
+  - [x] If contract files exist, perform contract-based checks (FR-016)
+  - [x] The dispatch prompt from spec Section 8.3 is compatible with the expanded skill
 - **Test requirements**: BDD - Section 11.2 "Fallback to prose-only when no contracts" scenario
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -51,11 +51,11 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: FR-016.1, FR-017
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Check instructs: every function/method signature in the implementation SHALL match the corresponding signature in `interfaces.<ext>` (FR-016.1)
-  - [ ] Comparison is token-by-token per FR-017: function/method names (exact match), parameter names (exact match), type annotations (exact match including generics and nullability)
-  - [ ] Mismatches are flagged as findings with category interface-mismatch
-  - [ ] BDD scenario covered: "Given contract defines createUser(input: CreateUserInput) and implementation has createUser(data: CreateUserInput), When review-spec runs with contract files, Then SPEC-CONTRACT finding for interface-mismatch is reported with expected 'input' and actual 'data'"
-  - [ ] Extra public functions not in the contract are flagged as MEDIUM findings (edge case from spec Section 5)
+  - [x] Check instructs: every function/method signature in the implementation SHALL match the corresponding signature in `interfaces.<ext>` (FR-016.1)
+  - [x] Comparison is token-by-token per FR-017: function/method names (exact match), parameter names (exact match), type annotations (exact match including generics and nullability)
+  - [x] Mismatches are flagged as findings with category interface-mismatch
+  - [x] BDD scenario covered: "Given contract defines createUser(input: CreateUserInput) and implementation has createUser(data: CreateUserInput), When review-spec runs with contract files, Then SPEC-CONTRACT finding for interface-mismatch is reported with expected 'input' and actual 'data'"
+  - [x] Extra public functions not in the contract are flagged as MEDIUM findings (edge case from spec Section 5)
 - **Test requirements**: BDD - Section 11.2 "Detect function signature mismatch" scenario
 - **Depends on**: T26-01
 - **Implementation Guidance**:
@@ -70,10 +70,10 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: FR-016.2, FR-017
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Check instructs: every entity/model class in the implementation SHALL match the corresponding definition in `data-schemas.<ext>` (FR-016.2)
-  - [ ] Comparison is token-by-token per FR-017: field names (exact match, case-sensitive), type annotations (exact match including generics and nullability)
-  - [ ] Mismatches are flagged as findings with category schema-mismatch
-  - [ ] BDD scenario covered: "Given contract defines User.email: string and implementation has User.emailAddress: string, When review-spec runs, Then SPEC-CONTRACT finding for schema-mismatch is reported"
+  - [x] Check instructs: every entity/model class in the implementation SHALL match the corresponding definition in `data-schemas.<ext>` (FR-016.2)
+  - [x] Comparison is token-by-token per FR-017: field names (exact match, case-sensitive), type annotations (exact match including generics and nullability)
+  - [x] Mismatches are flagged as findings with category schema-mismatch
+  - [x] BDD scenario covered: "Given contract defines User.email: string and implementation has User.emailAddress: string, When review-spec runs, Then SPEC-CONTRACT finding for schema-mismatch is reported"
 - **Test requirements**: BDD - Section 11.2 "Detect field name mismatch" scenario
 - **Depends on**: T26-01
 - **Implementation Guidance**:
@@ -88,12 +88,12 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: FR-016.3, FR-016.4, FR-016.5, FR-017
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] API contract check: every API endpoint in the implementation SHALL match `api-contracts.<ext>` -- method, path, request schema, response schema, error responses (FR-016.3)
-  - [ ] State machine check: every state transition in the implementation SHALL match `state-machines.<ext>` -- valid states, valid transitions, guards (FR-016.4)
-  - [ ] Error catalog check: every error code/message in the implementation SHALL match `error-catalog.<ext>` -- code value (exact match), HTTP status, message template (FR-016.5, FR-017)
-  - [ ] State enum values are compared with exact match per FR-017
-  - [ ] Error code string values are compared with exact match per FR-017
-  - [ ] BDD scenario covered: "Given contract error catalog has USR-001 and USR-002, and implementation only handles USR-001, When review-spec runs, Then SPEC-CONTRACT finding for error-mismatch is reported for USR-002"
+  - [x] API contract check: every API endpoint in the implementation SHALL match `api-contracts.<ext>` -- method, path, request schema, response schema, error responses (FR-016.3)
+  - [x] State machine check: every state transition in the implementation SHALL match `state-machines.<ext>` -- valid states, valid transitions, guards (FR-016.4)
+  - [x] Error catalog check: every error code/message in the implementation SHALL match `error-catalog.<ext>` -- code value (exact match), HTTP status, message template (FR-016.5, FR-017)
+  - [x] State enum values are compared with exact match per FR-017
+  - [x] Error code string values are compared with exact match per FR-017
+  - [x] BDD scenario covered: "Given contract error catalog has USR-001 and USR-002, and implementation only handles USR-001, When review-spec runs, Then SPEC-CONTRACT finding for error-mismatch is reported for USR-002"
 - **Test requirements**: BDD - Section 11.2 "Detect missing error code" scenario
 - **Depends on**: T26-01
 - **Implementation Guidance**:
@@ -108,11 +108,11 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: FR-018, Section 7.2 (Contract Finding)
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Finding format matches FR-018 exactly: id (SPEC-CONTRACT-XXX), severity (HIGH), category (interface-mismatch | schema-mismatch | api-mismatch | state-mismatch | error-mismatch), contract_file, impl_file (path:line), expected, actual, recommendation
-  - [ ] All 5 mismatch categories are listed
-  - [ ] The expected field shows the contract definition; the actual field shows the implementation definition
-  - [ ] Default severity for mismatches is HIGH per FR-018
-  - [ ] Contract finding field constraints match Section 7.2: recommendation is 1-500 chars
+  - [x] Finding format matches FR-018 exactly: id (SPEC-CONTRACT-XXX), severity (HIGH), category (interface-mismatch | schema-mismatch | api-mismatch | state-mismatch | error-mismatch), contract_file, impl_file (path:line), expected, actual, recommendation
+  - [x] All 5 mismatch categories are listed
+  - [x] The expected field shows the contract definition; the actual field shows the implementation definition
+  - [x] Default severity for mismatches is HIGH per FR-018
+  - [x] Contract finding field constraints match Section 7.2: recommendation is 1-500 chars
 - **Test requirements**: BDD - covered by scenarios in T26-02, T26-03, T26-04
 - **Depends on**: T26-01
 - **Implementation Guidance**:
@@ -127,10 +127,10 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: FR-019
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] If contract files do not exist for the WP, the skill SHALL fall back to prose-only review (FR-019)
-  - [ ] The absence of contracts SHALL be noted as an informational (INFO) finding, not a failure
-  - [ ] Prose-only review uses the existing behavior (FR-015) with no degradation
-  - [ ] BDD scenario covered: "Given no contract files exist for the WP, When review-spec runs, Then it performs prose-only review and reports an INFO finding about missing contracts"
+  - [x] If contract files do not exist for the WP, the skill SHALL fall back to prose-only review (FR-019)
+  - [x] The absence of contracts SHALL be noted as an informational (INFO) finding, not a failure
+  - [x] Prose-only review uses the existing behavior (FR-015) with no degradation
+  - [x] BDD scenario covered: "Given no contract files exist for the WP, When review-spec runs, Then it performs prose-only review and reports an INFO finding about missing contracts"
 - **Test requirements**: BDD - Section 11.2 "Fallback to prose-only when no contracts" scenario
 - **Depends on**: T26-01
 - **Implementation Guidance**:
@@ -145,11 +145,11 @@ FR-015, FR-016, FR-017, FR-018, FR-019, Section 5 US-02, Section 7.2 (Contract F
 - **Spec refs**: SC-003, FR-015, Section 9.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The expanded skill file is still discoverable via `review-*/SKILL.md` glob (SC-003)
-  - [ ] The coordinator's existing dispatch prompt for review-spec still works (backwards compatible)
-  - [ ] The expanded dispatch prompt from spec Section 8.3 provides contract file paths to the skill
-  - [ ] Combined findings (prose + contract) are aggregated correctly by the coordinator
-  - [ ] No Review Coordinator file changes are needed
+  - [x] The expanded skill file is still discoverable via `review-*/SKILL.md` glob (SC-003)
+  - [x] The coordinator's existing dispatch prompt for review-spec still works (backwards compatible)
+  - [x] The expanded dispatch prompt from spec Section 8.3 provides contract file paths to the skill
+  - [x] Combined findings (prose + contract) are aggregated correctly by the coordinator
+  - [x] No Review Coordinator file changes are needed
 - **Test requirements**: BDD - manual invocation via coordinator with and without contract files
 - **Depends on**: T26-01 through T26-06
 - **Implementation Guidance**:
@@ -178,3 +178,12 @@ WP26 is parallelizable with WP25 since they modify different files. Within WP26,
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T00:01:00Z - coder - T26-01 - completed - Added contract-aware overview section (Section 7) with discovery and loading
+- 2026-04-06T00:02:00Z - coder - T26-02 - completed - Added interface contract check (Section 8) with token-level comparison
+- 2026-04-06T00:03:00Z - coder - T26-03 - completed - Added data schema contract check (Section 9)
+- 2026-04-06T00:04:00Z - coder - T26-04 - completed - Added API (Section 10), state machine (Section 11), error catalog (Section 12) checks
+- 2026-04-06T00:05:00Z - coder - T26-05 - completed - Added contract finding format (Section 14)
+- 2026-04-06T00:06:00Z - coder - T26-06 - completed - Added fallback to prose-only handling (Section 13)
+- 2026-04-06T00:07:00Z - coder - T26-07 - completed - Verified integration with Review Coordinator (glob discovery, backwards compat)
+- 2026-04-06T00:08:00Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
