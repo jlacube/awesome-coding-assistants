@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP28 - Domain-Specific Pattern Files & Migration
@@ -127,9 +127,9 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-016
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The migration SHALL be idempotent: running it when domain files already exist does not duplicate patterns
-  - [ ] Pattern count in each domain file remains the same after a second migration run
-  - [ ] No pattern ID appears more than once in any domain file
+  - [x] The migration SHALL be idempotent: running it when domain files already exist does not duplicate patterns
+  - [x] Pattern count in each domain file remains the same after a second migration run
+  - [x] No pattern ID appears more than once in any domain file
 - **Test requirements**: none
 - **Depends on**: T28-05
 - **Implementation Guidance**:
@@ -143,11 +143,11 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-010
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Every pattern in `spec-patterns.md` has an ID matching `PAT-SPEC-XXX`
-  - [ ] Every pattern in `plan-patterns.md` has an ID matching `PAT-PLAN-XXX`
-  - [ ] Every pattern in `code-patterns.md` has an ID matching `PAT-CODE-XXX`
-  - [ ] Every pattern in `doc-patterns.md` has an ID matching `PAT-DOC-XXX`
-  - [ ] No pattern files contain executable code or template expressions (NFR-003)
+  - [x] Every pattern in `spec-patterns.md` has an ID matching `PAT-SPEC-XXX`
+  - [x] Every pattern in `plan-patterns.md` has an ID matching `PAT-PLAN-XXX`
+  - [x] Every pattern in `code-patterns.md` has an ID matching `PAT-CODE-XXX`
+  - [x] Every pattern in `doc-patterns.md` has an ID matching `PAT-DOC-XXX`
+  - [x] No pattern files contain executable code or template expressions (NFR-003)
 - **Test requirements**: none
 - **Depends on**: T28-05
 - **Implementation Guidance**:
@@ -176,3 +176,12 @@ T28-01, T28-02, T28-03, and T28-04 can all run in parallel. T28-05 through T28-0
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T00:01:00Z - coder - T28-01 - completed - Created plan-patterns.md with FR-009 structure
+- 2026-04-06T00:01:00Z - coder - T28-02 - completed - Created doc-patterns.md with FR-009 structure
+- 2026-04-06T00:01:00Z - coder - T28-03 - completed - Updated spec-patterns.md to FR-009 format (renamed header, Resolved->Retired Patterns)
+- 2026-04-06T00:01:00Z - coder - T28-04 - completed - Updated code-patterns.md to FR-009 format (renamed header, Resolved->Retired Patterns)
+- 2026-04-06T00:02:00Z - coder - T28-05 - completed - Migrated 8 patterns: 7 to code-patterns.md (PAT-CODE-001..007), 1 to doc-patterns.md (PAT-DOC-001). Renamed review-patterns.md to .bak.
+- 2026-04-06T00:03:00Z - coder - T28-06 - completed - Verified idempotency: no duplicate IDs in any domain file, legacy file renamed to .bak
+- 2026-04-06T00:03:00Z - coder - T28-07 - completed - Verified all 8 pattern IDs match PAT-{DOMAIN}-XXX format, no executable code in any pattern file
+- 2026-04-06T00:04:00Z - coder - lane=for_review - All tasks complete, verification passed
