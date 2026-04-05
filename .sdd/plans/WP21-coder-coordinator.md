@@ -67,9 +67,9 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-003
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL verify all contract files referenced by the WP's tasks exist and contain valid syntax (FR-003)
-  - [ ] If any contract file is missing, the coordinator SHALL halt and recommend re-running the Planner (FR-003 error)
-  - [ ] Given a WP references `interfaces.ts` but it does not exist in the contracts directory, the coordinator halts with a recommendation to re-run the Planner
+  - [x] The coordinator SHALL verify all contract files referenced by the WP's tasks exist and contain valid syntax (FR-003)
+  - [x] If any contract file is missing, the coordinator SHALL halt and recommend re-running the Planner (FR-003 error)
+  - [x] Given a WP references `interfaces.ts` but it does not exist in the contracts directory, the coordinator halts with a recommendation to re-run the Planner
 - **Test requirements**: BDD
 - **Depends on**: T21-02
 - **Implementation Guidance**:

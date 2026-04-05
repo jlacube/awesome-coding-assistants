@@ -82,4 +82,12 @@ Before dispatching any skill, read the full context chain:
 4. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
 5. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
 
+## Step 3 - Validate Contract Files (FR-003)
+
+1. Parse each task in the WP for contract file references (files in `.sdd/plans/contracts/<WP-slug>/` such as `interfaces.<ext>`, `data-schemas.<ext>`, `api-contracts.<ext>`, `state-machines.<ext>`, `error-catalog.<ext>`).
+2. Use `list_dir` on the contracts directory to get the list of files present.
+3. For each referenced contract file, verify it exists. If any contract file is missing, halt with: "Contract file `<path>` referenced by task T<NN>-XX is missing. Re-run the Planner to generate contracts."
+4. Read each contract file using `read_file` to verify it contains valid syntax (not empty, not corrupted).
+5. If the contracts directory does not exist or is empty but the WP's tasks reference no contracts, proceed without error.
+
 </workflow>
