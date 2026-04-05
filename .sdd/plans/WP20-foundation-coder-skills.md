@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP20 - Foundation: Coder Skill Scaffolding
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/004-coder-v2.spec.md` |
 | Priority | P0 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | none |
 | Goal | Create the directory structure, stub skill files, common skill contract, and code-patterns placeholder so all Coder V2 skills can be implemented |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Verify: 5 coding skill directories exist under `.github/skills/code-*/`, each contains a stub `SKILL.md` with valid YAML frontmatter, `CODER-SKILL-CONTRACT.md` defines the 8-input contract, and `code-patterns.md` exists |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP20-foundation-coder-skills.md` |
@@ -32,9 +32,9 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 - **Spec refs**: FR-005, FR-006, Section 9.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] All 5 directories exist under `.github/skills/`: `code-env-setup/`, `code-implementation/`, `code-unit-tests/`, `code-integration-tests/`, `code-debug/`
-  - [ ] Directory names match the canonical names from FR-006 exactly
-  - [ ] No extra directories created beyond the 5 specified
+  - [x] All 5 directories exist under `.github/skills/`: `code-env-setup/`, `code-implementation/`, `code-unit-tests/`, `code-integration-tests/`, `code-debug/`
+  - [x] Directory names match the canonical names from FR-006 exactly
+  - [x] No extra directories created beyond the 5 specified
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,11 +49,11 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 - **Spec refs**: FR-005, Section 9.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each of the 5 directories contains a `SKILL.md` file
-  - [ ] Each `SKILL.md` has valid YAML frontmatter with `name`, `description`, and `argument-hint`
-  - [ ] `argument-hint` reads "Invoked by Coder Coordinator - do not call directly"
-  - [ ] The `name` field matches the directory name (e.g., `code-env-setup`)
-  - [ ] The `description` field matches the canonical purpose from FR-006
+  - [x] Each of the 5 directories contains a `SKILL.md` file
+  - [x] Each `SKILL.md` has valid YAML frontmatter with `name`, `description`, and `argument-hint`
+  - [x] `argument-hint` reads "Invoked by Coder Coordinator - do not call directly"
+  - [x] The `name` field matches the directory name (e.g., `code-env-setup`)
+  - [x] The `description` field matches the canonical purpose from FR-006
 - **Test requirements**: none
 - **Depends on**: T20-01
 - **Implementation Guidance**:
@@ -73,11 +73,11 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 - **Spec refs**: FR-017, FR-018, FR-019, Section 8.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/CODER-SKILL-CONTRACT.md`
-  - [ ] Contract specifies all 8 inputs from FR-017: skill_path, wp_path, contracts_dir, spec_path, patterns, target_language, target_framework, task_list
-  - [ ] Contract specifies the 5-step execution sequence from FR-018: read SKILL.md, read WP + contracts, read spec sections, execute implementation work, report results
-  - [ ] Contract specifies the output fields from FR-019: status, files_modified, tasks_completed, test_results, issues, failure_reason
-  - [ ] Contract includes the skill subagent prompt template from Section 8.2 verbatim
+  - [x] File exists at `.github/skills/CODER-SKILL-CONTRACT.md`
+  - [x] Contract specifies all 8 inputs from FR-017: skill_path, wp_path, contracts_dir, spec_path, patterns, target_language, target_framework, task_list
+  - [x] Contract specifies the 5-step execution sequence from FR-018: read SKILL.md, read WP + contracts, read spec sections, execute implementation work, report results
+  - [x] Contract specifies the output fields from FR-019: status, files_modified, tasks_completed, test_results, issues, failure_reason
+  - [x] Contract includes the skill subagent prompt template from Section 8.2 verbatim
 - **Test requirements**: none
 - **Depends on**: T20-02
 - **Implementation Guidance**:
@@ -91,10 +91,10 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 - **Spec refs**: FR-004, Section 9.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] File exists at `.sdd/reviews/code-patterns.md`
-  - [ ] File has a header and "Active Patterns" and "Resolved" sections
-  - [ ] "Active Patterns" section is initially empty with "(none)" placeholder
-  - [ ] File follows the same format as `.sdd/reviews/review-patterns.md`
+  - [x] File exists at `.sdd/reviews/code-patterns.md`
+  - [x] File has a header and "Active Patterns" and "Resolved" sections
+  - [x] "Active Patterns" section is initially empty with "(none)" placeholder
+  - [x] File follows the same format as `.sdd/reviews/review-patterns.md`
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -107,12 +107,12 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 - **Spec refs**: FR-007, Section 8.1, Section 8.4, Section 9.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] `coder.agent.md` has valid YAML frontmatter starting on line 1
-  - [ ] `tools` list includes `runSubagent` for skill dispatch (FR-007)
-  - [ ] `tools` list includes `vscode_askQuestions` for WP selection (FR-001)
-  - [ ] `tools` list includes `manage_todo_list` for task tracking (FR-012)
-  - [ ] Handoff buttons defined: "Request Review" (Reviewer) and "Clarify Specification" (Spec Architect) per Section 8.4
-  - [ ] Existing coordinator body content is preserved (not deleted)
+  - [x] `coder.agent.md` has valid YAML frontmatter starting on line 1
+  - [x] `tools` list includes `runSubagent` for skill dispatch (FR-007)
+  - [x] `tools` list includes `vscode_askQuestions` for WP selection (FR-001)
+  - [x] `tools` list includes `manage_todo_list` for task tracking (FR-012)
+  - [x] Handoff buttons defined: "Request Review" (Reviewer) and "Clarify Specification" (Spec Architect) per Section 8.4
+  - [x] Existing coordinator body content is preserved (not deleted)
 - **Test requirements**: none
 - **Depends on**: T20-03
 - **Implementation Guidance**:
@@ -127,11 +127,11 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 - **Spec refs**: Section 9.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] All 5 skill directories exist and each contains a SKILL.md
-  - [ ] CODER-SKILL-CONTRACT.md exists at `.github/skills/CODER-SKILL-CONTRACT.md`
-  - [ ] code-patterns.md exists at `.sdd/reviews/code-patterns.md`
-  - [ ] coder.agent.md has updated YAML frontmatter
-  - [ ] No files contain em dashes, smart quotes, or curly apostrophes
+  - [x] All 5 skill directories exist and each contains a SKILL.md
+  - [x] CODER-SKILL-CONTRACT.md exists at `.github/skills/CODER-SKILL-CONTRACT.md`
+  - [x] code-patterns.md exists at `.sdd/reviews/code-patterns.md`
+  - [x] coder.agent.md has updated YAML frontmatter
+  - [x] No files contain em dashes, smart quotes, or curly apostrophes
 - **Test requirements**: none
 - **Depends on**: T20-05
 - **Implementation Guidance**:
@@ -158,3 +158,5 @@ FR-005, FR-017, FR-018, FR-019, Section 9.3 (Directory Structure), Section 9.2 (
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T12:00:00Z - coder - lane=doing - Starting implementation, markdown-only WP, no env setup needed
+- 2026-04-05T12:15:00Z - coder - lane=for_review - All tasks complete, submitted for review
