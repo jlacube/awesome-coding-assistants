@@ -1,6 +1,5 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
 ---
 
 # WP17 - Phase 2: Interface Contracts + Data Schemas Skills
@@ -180,6 +179,7 @@ FR-037 through FR-042, Section 4.5, Section 4.6, Section 7.2 (Contract Files dat
 - 2026-04-05T13:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T13:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+- 2026-04-05T20:00:00Z - coder - lane=for_review - Remediated FB-01 (removed shared/ directory logic from both skills, all deduplication now follows first-WP-defines pattern)
 
 ## Review
 

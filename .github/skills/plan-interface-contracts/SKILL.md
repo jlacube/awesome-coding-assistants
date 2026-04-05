@@ -151,7 +151,7 @@ Each WP's interface file MUST contain ONLY the interfaces that WP introduces or 
 
 - Do NOT duplicate interfaces from other WPs
 - If a WP extends an interface from a prior WP, import the base interface and re-export the extended version
-- If an interface is shared across WPs, the first WP (lowest number) defines it; subsequent WPs import it
+- If an interface is shared across WPs, the first WP (lowest number) defines it; subsequent WPs import from the first WP's contracts directory
 
 Import syntax by language:
 - TypeScript: `import { UserService } from '../WP01-user-management/interfaces';`
@@ -178,5 +178,4 @@ For most WPs, interface files will be well under 800 lines.
 - Do NOT modify WP markdown files -- read only
 - Do NOT modify spec artifacts -- read only
 - Only write to `<contracts_dir>/<WP-slug>/interfaces.<ext>`
-- Shared interfaces go to `<contracts_dir>/shared/interfaces.<ext>` if they span 3+ WPs
 - Use plain ASCII hyphens and straight quotes only -- no em dashes, smart quotes, or curly apostrophes

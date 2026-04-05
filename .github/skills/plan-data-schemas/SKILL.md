@@ -240,17 +240,7 @@ Rules:
 
 ---
 
-## Step 6 - Handle Shared Entities
-
-If an entity is used by 3 or more WPs:
-
-1. Place the full definition in `<contracts_dir>/shared/data-schemas.<ext>`
-2. All WPs import from shared instead of from another WP's contract
-3. Include the manifest header with `Work package: shared`
-
----
-
-## Step 7 - 800-Line Block Compliance (FR-013)
+## Step 6 - 800-Line Block Compliance (FR-013)
 
 If a WP's data schema file exceeds 800 lines:
 
@@ -266,7 +256,7 @@ If a WP's data schema file exceeds 800 lines:
 - Do NOT include business logic, service methods, or test code in schema files
 - Do NOT modify WP markdown files -- read only
 - Do NOT modify spec artifacts -- read only
-- Only write to `<contracts_dir>/<WP-slug>/data-schemas.<ext>` and `<contracts_dir>/shared/data-schemas.<ext>`
+- Only write to `<contracts_dir>/<WP-slug>/data-schemas.<ext>`
 - Do NOT generate schema files for WPs that do not touch the data model
 - Entity field names MUST match the spec data model exactly -- no renaming
 - Use plain ASCII hyphens and straight quotes only -- no em dashes, smart quotes, or curly apostrophes
