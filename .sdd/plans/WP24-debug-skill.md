@@ -50,11 +50,11 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - **Spec refs**: FR-034
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL read failing test output (test names, error messages, stack traces) (FR-034.1)
-  - [ ] The skill SHALL read the corresponding source code (FR-034.2)
-  - [ ] The skill SHALL read the relevant contract files and spec sections (FR-034.3)
-  - [ ] The skill SHALL diagnose the root cause of each failure (FR-034.4)
-  - [ ] Given a unit test fails with a type mismatch, the debug skill diagnoses the mismatch (BDD Scenario 3)
+  - [x] The skill SHALL read failing test output (test names, error messages, stack traces) (FR-034.1)
+  - [x] The skill SHALL read the corresponding source code (FR-034.2)
+  - [x] The skill SHALL read the relevant contract files and spec sections (FR-034.3)
+  - [x] The skill SHALL diagnose the root cause of each failure (FR-034.4)
+  - [x] Given a unit test fails with a type mismatch, the debug skill diagnoses the mismatch (BDD Scenario 3)
 - **Test requirements**: BDD
 - **Depends on**: T24-01
 - **Implementation Guidance**:
@@ -153,3 +153,4 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-05T12:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T12:01:00Z - coder - T24-01 - completed - SKILL.md structure with frontmatter, input/output contracts, execution sequence
+- 2026-04-05T12:02:00Z - coder - T24-02 - completed - Failure diagnosis logic with categorization, source code reading, diagnosis decision tree

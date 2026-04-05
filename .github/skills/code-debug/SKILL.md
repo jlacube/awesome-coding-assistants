@@ -79,3 +79,87 @@ The coordinator uses these fields to decide:
 - **Tests still failing** (`fail_count > 0`, `debug_attempt < 3`): Retry with incremented attempt counter.
 - **Cannot diagnose** (`status == failure`, `failure_reason` set): Escalate to human immediately.
 - **3 attempts exhausted** (`debug_attempt == 3`, `fail_count > 0`): Coordinator escalates to human.
+
+---
+
+## Step 1 -- Read and Categorize Failing Tests (FR-034.1)
+
+Parse the `test_output` input to extract every failing test. For each failure, record:
+
+| Field | Source | Example |
+|-------|--------|---------|
+| Test name | Test runner output | `test_create_user_returns_hashed_password` |
+| Error type | Exception/assertion class | `AssertionError`, `TypeError`, `AttributeError` |
+| Error message | Assertion diff or exception message | `expected 'string' but got 'number'` |
+| Stack trace | Full traceback | File, line number, function name |
+| Test file | Stack trace or test runner | `tests/unit/test_user.py:42` |
+
+### 1a. Group Failures by Root Cause
+
+Multiple test failures often share a single root cause. Group failures that:
+- Reference the same source file and function
+- Produce the same error type
+- Fail on the same assertion pattern (e.g., all get a `TypeError` from the same function)
+
+Fixing the shared root cause should resolve all tests in the group. Prioritize groups with the most failures first.
+
+### 1b. Identify the Relevant Source Code (FR-034.2)
+
+For each failure group, locate the source code under test:
+
+1. Read the stack trace to find the source file and line number where the error originates
+2. Read the test file to identify which function/class/module is being tested
+3. Read the source file containing the function under test
+4. Read enough surrounding context (the full function, class, or module) to understand the logic
+
+### 1c. Read Contract and Spec Context (FR-034.3)
+
+For each failure group, load the relevant contracts and spec sections:
+
+1. Read contract files from `contracts_dir` that define the interface, data schema, or error catalog for the failing code
+2. Read the spec sections referenced by the task that owns the failing tests
+3. Identify the expected behavior according to the spec and contracts -- this is the source of truth for determining whether the source code or test code is wrong
+
+---
+
+## Step 2 -- Diagnose Root Causes (FR-034.4)
+
+For each failure group, determine the root cause by answering these questions in order:
+
+### 2a. Diagnosis Decision Tree
+
+```
+1. Does the source code match the contract file signatures exactly?
+   - Function names, parameter names, types, return types
+   - Data entity field names, types, defaults, validation rules
+   - Error codes, messages, HTTP status codes
+   If NO --> Root cause: contract deviation in source code
+
+2. Does the source code implement the spec's SHALL obligations?
+   - All preconditions checked
+   - All postconditions produced
+   - All error paths handled
+   If NO --> Root cause: missing or incorrect spec implementation
+
+3. Does the test correctly reflect the spec's expected behavior?
+   - Test assertions match spec acceptance scenarios
+   - Test inputs match spec preconditions
+   - Expected outputs match spec postconditions
+   If NO --> Root cause: incorrect test (test does not match spec)
+
+4. Is there a logic error in the source code?
+   - Off-by-one errors, wrong operator, missing null check
+   - Incorrect control flow (wrong branch, missing case)
+   - Data transformation error (wrong field, wrong format)
+   If YES --> Root cause: implementation bug
+```
+
+### 2b. Document Each Diagnosis
+
+For each failure group, record:
+
+- **Root cause**: One-sentence description of what is wrong
+- **Evidence**: The specific code, contract, or spec text that proves the diagnosis
+- **Category**: `contract-deviation`, `missing-implementation`, `incorrect-test`, `logic-error`, or `unknown`
+- **Fix location**: Whether the source code or test code needs to change
+- **Spec justification**: The FR or acceptance scenario that defines the correct behavior
