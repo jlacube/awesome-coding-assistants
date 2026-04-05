@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP13 - Test Strategy & Traceability Skills
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | WP08, WP09 |
 | Goal | Implement the spec-test-strategy and spec-traceability skills that produce BDD scenarios, test requirements, traceability matrix, glossary, and version history |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Dispatch spec-test-strategy and spec-traceability against a full accumulator (sections 1-10.2). Verify: Section 11 has BDD scenarios for every acceptance criterion from Section 5; sections 14-18 written; traceability matrix has no empty cells; no orphan FRs or USes |
 | Parallelisable | Yes (with WP10, WP11, WP12 after WP09 completes) |
 | Prompt | `.sdd/plans/WP13-test-traceability-skills.md` |
@@ -36,15 +36,15 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-050
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md contains instructions for Section 11 with subsections:
+  - [x] SKILL.md contains instructions for Section 11 with subsections:
     - 11.1 Unit Tests: modules requiring coverage, minimum thresholds (80% code, 90% branch), specific edge cases
     - 11.2 BDD / Acceptance Tests: Gherkin scenarios for every acceptance criterion from Section 5
     - 11.3 Integration Tests: component boundaries, external dependency mocking, data setup/teardown
     - 11.4 End-to-End Tests: critical user journeys, target environments, tools
     - 11.5 Performance Tests: scenarios, thresholds
     - 11.6 Security Tests: OWASP checks, auth/authz test cases
-  - [ ] Skill reads accumulator (sections 1-10.2) to derive test scenarios from requirements, stories, data model, API, architecture, and security
-  - [ ] Coverage thresholds specified: 80% code coverage, 90% branch coverage minimum
+  - [x] Skill reads accumulator (sections 1-10.2) to derive test scenarios from requirements, stories, data model, API, architecture, and security
+  - [x] Coverage thresholds specified: 80% code coverage, 90% branch coverage minimum
 - **Test requirements**: BDD (Scenario 1 from Section 11.2)
 - **Depends on**: T08-02 (stub exists)
 - **Implementation Guidance**:
@@ -69,10 +69,10 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-051
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill instructions mandate: every acceptance scenario in every US from Section 5 has exactly one Gherkin scenario in Section 11.2
-  - [ ] After writing Section 11.2, the skill reports any missing mappings
-  - [ ] Edge cases from Section 5 also have corresponding test scenarios
-  - [ ] Format: each Gherkin scenario references its source US (e.g., "# Source: US-01 Scenario 2")
+  - [x] Skill instructions mandate: every acceptance scenario in every US from Section 5 has exactly one Gherkin scenario in Section 11.2
+  - [x] After writing Section 11.2, the skill reports any missing mappings
+  - [x] Edge cases from Section 5 also have corresponding test scenarios
+  - [x] Format: each Gherkin scenario references its source US (e.g., "# Source: US-01 Scenario 2")
 - **Test requirements**: BDD (verification step within skill)
 - **Depends on**: T13-01
 - **Implementation Guidance**:
@@ -92,10 +92,10 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-052
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill instructions state: "Tests derive from acceptance scenarios (Section 5), NOT from implementation"
-  - [ ] Test descriptions reference spec behavior, not internal function names
-  - [ ] Coverage thresholds are stated explicitly (80% code, 90% branch)
-  - [ ] Test design principle: "Write the test an acceptance scenario describes, not the test an implementation suggests"
+  - [x] Skill instructions state: "Tests derive from acceptance scenarios (Section 5), NOT from implementation"
+  - [x] Test descriptions reference spec behavior, not internal function names
+  - [x] Coverage thresholds are stated explicitly (80% code, 90% branch)
+  - [x] Test design principle: "Write the test an acceptance scenario describes, not the test an implementation suggests"
 - **Test requirements**: none (process requirement)
 - **Depends on**: T13-01
 - **Implementation Guidance**:
@@ -116,8 +116,8 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Input contract, execution sequence, output format, modification constraints
-  - [ ] This skill produces no artifacts; step 5 is "N/A"
+  - [x] Input contract, execution sequence, output format, modification constraints
+  - [x] This skill produces no artifacts; step 5 is "N/A"
 - **Test requirements**: none (contract compliance)
 - **Depends on**: T13-01
 - **Implementation Guidance**:
@@ -129,14 +129,14 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-053
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md contains instructions for:
+  - [x] SKILL.md contains instructions for:
     - Section 14 (Open Questions): unresolved decisions with impact and owner
     - Section 15 (Glossary): key terms, acronyms, domain concepts defined
     - Section 16 (Traceability Matrix): table mapping FR -> US -> Acceptance Scenario -> Test Type -> Test Section Ref
     - Section 17 (Technical References): sources grouped by topic with URLs and dates
     - Section 18 (Version History): initial version entry
-  - [ ] Skill reads the ENTIRE accumulator (all sections 1-11) to build the matrix
-  - [ ] Skill builds the matrix by scanning: Section 4 for FRs, Section 5 for USes, Section 11 for tests
+  - [x] Skill reads the ENTIRE accumulator (all sections 1-11) to build the matrix
+  - [x] Skill builds the matrix by scanning: Section 4 for FRs, Section 5 for USes, Section 11 for tests
 - **Test requirements**: BDD (Scenario 1 from Section 11.2)
 - **Depends on**: T08-02 (stub exists)
 - **Implementation Guidance**:
@@ -156,10 +156,10 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-054
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill instructions mandate: NO empty cells in the traceability matrix
-  - [ ] For every FR: at least one US mapping, one acceptance scenario, one test type, one test section ref
-  - [ ] If any cell is empty, skill attempts to fill by cross-referencing sections
-  - [ ] If unable to fill, skill adds a `[TRACEABILITY GAP]` marker (not an empty cell)
+  - [x] Skill instructions mandate: NO empty cells in the traceability matrix
+  - [x] For every FR: at least one US mapping, one acceptance scenario, one test type, one test section ref
+  - [x] If any cell is empty, skill attempts to fill by cross-referencing sections
+  - [x] If unable to fill, skill adds a `[TRACEABILITY GAP]` marker (not an empty cell)
 - **Test requirements**: BDD (Scenario 2 from Section 11.2 -- no empty cells in matrix)
 - **Depends on**: T13-05
 - **Implementation Guidance**:
@@ -181,11 +181,11 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-055
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill validates: every FR-XXX in Section 4 is referenced by at least one entry in the traceability matrix
-  - [ ] Skill validates: every US-XX in Section 5 is referenced by at least one entry in the matrix
-  - [ ] Skill validates: every Gherkin scenario in Section 11.2 maps to an acceptance scenario in Section 5
-  - [ ] Orphan items reported with `[TRACEABILITY GAP: <description>]` markers
-  - [ ] No duplicate assignments (one FR should not appear in two unrelated US mappings without justification)
+  - [x] Skill validates: every FR-XXX in Section 4 is referenced by at least one entry in the traceability matrix
+  - [x] Skill validates: every US-XX in Section 5 is referenced by at least one entry in the matrix
+  - [x] Skill validates: every Gherkin scenario in Section 11.2 maps to an acceptance scenario in Section 5
+  - [x] Orphan items reported with `[TRACEABILITY GAP: <description>]` markers
+  - [x] No duplicate assignments (one FR should not appear in two unrelated US mappings without justification)
 - **Test requirements**: BDD (verification within skill output)
 - **Depends on**: T13-05
 - **Implementation Guidance**:
@@ -207,9 +207,9 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Input contract, execution sequence, output format, modification constraints
-  - [ ] This skill produces no artifacts; step 5 is "N/A"
-  - [ ] This skill reads the entire accumulator (all sections 1-11) -- documented as most
+  - [x] Input contract, execution sequence, output format, modification constraints
+  - [x] This skill produces no artifacts; step 5 is "N/A"
+  - [x] This skill reads the entire accumulator (all sections 1-11) -- documented as most
 - **Test requirements**: none (contract compliance)
 - **Depends on**: T13-05
 - **Implementation Guidance**:
@@ -221,13 +221,13 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Spec refs**: All FR-050 through FR-055
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Dispatch spec-test-strategy: verify Section 11 with all 6 subsections
-  - [ ] Verify 1:1 Gherkin-to-acceptance-scenario mapping
-  - [ ] Verify coverage thresholds stated (80% code, 90% branch)
-  - [ ] Dispatch spec-traceability: verify sections 14-18
-  - [ ] Verify traceability matrix has no empty cells
-  - [ ] Verify no orphan FRs or USes
-  - [ ] Verify no prior sections modified
+  - [x] Dispatch spec-test-strategy: verify Section 11 with all 6 subsections
+  - [x] Verify 1:1 Gherkin-to-acceptance-scenario mapping
+  - [x] Verify coverage thresholds stated (80% code, 90% branch)
+  - [x] Dispatch spec-traceability: verify sections 14-18
+  - [x] Verify traceability matrix has no empty cells
+  - [x] Verify no orphan FRs or USes
+  - [x] Verify no prior sections modified
 - **Test requirements**: integration (manual invocation)
 - **Depends on**: T13-01 through T13-08
 - **Implementation Guidance**:
@@ -259,6 +259,18 @@ Implement the final two skills in the canonical order. spec-test-strategy produc
 - **Risk**: Orphan detection misses FRs hidden in nested subsections.
   - **Mitigation**: Skill scans for the regex pattern `FR-\d{3}` across the entire Section 4, not just top-level items.
 
+## Self-Review
+
+**Spec Compliance**: Both skills implement all FRs (FR-050 through FR-055). spec-test-strategy covers all 6 subsections (11.1-11.6), 1:1 BDD mapping (FR-051), BDD/TDD emphasis (FR-052), and coverage thresholds. spec-traceability covers all 5 sections (14-18), no-empty-cells rule (FR-054), and orphan detection (FR-055).
+
+**Correctness**: spec-test-strategy produces Section 11 with unit tests, BDD scenarios (1:1 mapped to acceptance criteria), integration tests, E2E tests, performance tests, and security tests. spec-traceability produces sections 14-18 with open questions, glossary, traceability matrix (no empty cells), technical references, and version history with mandatory orphan detection.
+
+**Code quality**: Both files encoding-clean. spec-test-strategy: 211 lines, spec-traceability: 220 lines.
+
+**Scope discipline**: Only two files modified. No unrelated changes.
+
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T16:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T16:30:00Z - coder - lane=for_review - All 9 tasks complete, both skills implemented, submitted for review
