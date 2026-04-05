@@ -1,6 +1,5 @@
 ---
-lane: to_do
-review_status: has_feedback
+lane: for_review
 ---
 
 # WP15 - Planner Coordinator Rewrite
@@ -315,3 +314,4 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-05T10:20:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T10:45:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-05T19:00:00Z - coder - lane=for_review - Remediated FB-01 (FR-008 text), FB-02 (FR-019 ambiguous terms), QUAL-001 (orphaned tag)

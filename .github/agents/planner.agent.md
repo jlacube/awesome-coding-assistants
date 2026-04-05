@@ -156,7 +156,7 @@ Conduct web research using `fetch_webpage` for:
 1. Official docs for libraries and frameworks in the spec's tech stack
 2. Known pitfalls, gotchas, and migration issues
 3. Testing framework guides and recommended patterns
-4. CI/CD best practices for the target platform
+4. Starter templates or boilerplate repos matching the tech stack
 
 Summarize all findings into a compact research summary (500-1000 words). This summary is passed to every skill during dispatch.
 
@@ -279,7 +279,7 @@ After all skills have completed, validate the plan:
 2. At least 3 acceptance criteria per task
 3. Implementation guidance with doc links per task
 4. Contract file references per task (Phase 2 only)
-5. No ambiguous language ("appropriate", "reasonable", "as needed", "etc.", "similar")
+5. No ambiguous language ("should", "appropriate", "reasonable", "as needed", "etc.", "similar")
 
 Fix any issues found inline. Document corrections in README under "Consistency Notes".
 
@@ -410,4 +410,3 @@ Narrative explanation of the critical path and any parallel tracks that can run 
 | T01-01 | Example | WP01 | No |
 | T01-02 | Example | WP01 | Yes |
 ```
-</plan_templates>
