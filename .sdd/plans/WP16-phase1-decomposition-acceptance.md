@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP16 - Phase 1: Decomposition + Acceptance Skills
@@ -176,3 +177,40 @@ FR-028 through FR-036, Section 4.3, Section 4.4, Section 7.1 (Plan Accumulator d
 - 2026-04-05T12:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T12:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
 - 2026-04-05T11:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (1 FAIL) -- awaiting remediation
+
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-05T18:00:00Z
+> **Verdict**: Changes Required
+> **Skills dispatched**: review-spec (FAIL)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All acceptance criteria checked
+- [WARN] Activity Log: Duplicate "lane=doing" entry at inconsistent timestamps (12:00 and 11:00)
+- [WARN] Commit granularity: Single bulk commit (99d695c) for all 8 tasks
+- [PASS] Encoding: No violations found
+
+### Review Feedback
+
+> Implementers: address every FB-XX item before returning for re-review.
+
+- [ ] **FB-01**: [spec-adherence] FR-033.3 implementation guidance template incomplete - The plan-acceptance skill's guidance template is missing "error codes" and "validation rules" fields required by FR-033.3. Currently has: doc links, patterns, pitfalls, "files to create/modify". Must add: error codes, validation rules (from spec Section 7 Data Model).
+  File: .github/skills/plan-acceptance/SKILL.md. Expected: Add "Error handling: [error codes and validation rules from spec]" and "Spec validation rules: [constraints from spec data model]" to the implementation guidance template.
+  Source skills: review-spec (SPEC-008, SPEC-009)
+
+### Warnings
+- [WARN] PROC-002: Activity Log has duplicate/inconsistent "lane=doing" entries (12:00Z and 11:00Z).
+- [WARN] PROC-003: Single bulk commit for all tasks.
+
+### Cross-Correlation Notes
+- SPEC-008 and SPEC-009 address the same FR-033.3 gap from different angles (template fields vs data model constraints). Merged into FB-01.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 2 | 2 | 0 |
+| review-spec | 10 | 0 | 2 |
+| **Total** | **12** | **2** | **2** |
