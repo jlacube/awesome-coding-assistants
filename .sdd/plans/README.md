@@ -1,7 +1,13 @@
-# Plan Index - Reviewer V2 Skill-Based Architecture
+# Plan Index
+
+> **Generated**: 2026-04-04
+> **Updated**: 2026-04-05
+
+---
+
+## Spec 001 - Reviewer V2 Skill-Based Architecture
 
 > **Spec**: `.sdd/specs/001-reviewer-v2-skill-based-architecture.spec.md`
-> **Generated**: 2026-04-04
 
 ## Work Packages
 
@@ -140,3 +146,152 @@ Cross-WP consistency audit performed before plan submission. No inconsistencies 
 - **Dependency graph**: Verified no circular dependencies. All `Depends on` declarations are valid.
 - **Configuration**: Glob patterns, file paths, and directory names are consistent across coordinator (WP02) and all skill WPs.
 - **Sequencing note**: WP03 is recommended before WP04/WP05 to establish the reference skill pattern, though technically all three can run in parallel (they share no code dependencies). Integration verification tasks in WP06/WP07 require earlier skills to be installed.
+
+---
+
+## Spec 002 -- Spec Architect V2
+
+> **Spec**: `.sdd/specs/002-spec-architect-v2.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP08](WP08-foundation-spec-architect.md) | Foundation & Skill Directories | P0 | Not Started | none | - |
+| [WP09](WP09-spec-architect-coordinator.md) | Spec Architect Coordinator | P1 | Not Started | WP08 | No |
+| [WP10](WP10-requirements-user-stories-skills.md) | Requirements & User Stories Skills | P1 | Not Started | WP08, WP09 | Yes |
+| [WP11](WP11-data-model-api-design-skills.md) | Data Model & API Design Skills | P1 | Not Started | WP08, WP09 | Yes |
+| [WP12](WP12-architecture-security-skills.md) | Architecture & Security Skills | P1 | Not Started | WP08, WP09 | Yes |
+| [WP13](WP13-test-traceability-skills.md) | Test Strategy & Traceability Skills | P2 | Not Started | WP08, WP09 | Yes |
+
+### MVP Scope
+
+The following work packages constitute the minimum releasable increment: **WP08, WP09, WP10, WP11, WP12**.
+
+- WP08 (P0) creates the directory scaffolding and stub skill files for all 8 spec skills
+- WP09 (P1) rewrites the Spec Architect coordinator from monolithic to skill-based dispatch
+- WP10-WP12 (P1) implement the 6 core spec skills (requirements, user stories, data model, API design, architecture, security)
+
+WP13 (P2) adds test strategy and traceability skills. These are valuable for spec quality but the coordinator can produce specs without them.
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP08 -> WP09 -> {WP10, WP11, WP12, WP13}
+- **Parallelization**: WP10, WP11, WP12, WP13 can all run in parallel after WP09 completes. Each creates independent skill files.
+- **Critical path**: WP08 -> WP09 -> WP12 (longest content, 10 tasks)
+
+### Sequencing Notes
+
+WP08 creates the directory structure and stub SKILL.md files that the coordinator's dynamic discovery depends on (FR-009). Without the directories, the coordinator halts with "no spec skills installed."
+
+WP09 is the critical bottleneck: it rewrites the entire spec-architect.agent.md from V1 monolithic to V2 coordinator pattern. All skill WPs (WP10-WP13) depend on the coordinator being in place to dispatch them.
+
+After WP09 completes, WP10-WP13 are fully parallelizable because each creates independent skill files (`.github/skills/spec-*/SKILL.md`). However, WP10 (requirements + user stories) is recommended first because it establishes the reference pattern that other skills follow.
+
+All implementation artifacts are markdown files (.agent.md, SKILL.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the coordinator against a brief and verifying output.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T08-01 | Create spec skill directory structure | WP08 | Yes |
+| T08-02 | Create stub SKILL.md files | WP08 | Yes |
+| T08-03 | Create spec-patterns.md placeholder | WP08 | Yes |
+| T08-04 | Document artifact directory convention | WP08 | Yes |
+| T08-05 | Define common skill contract template | WP08 | Yes |
+| T09-01 | Refactor agent file YAML frontmatter | WP09 | No |
+| T09-02 | Write brief selection logic | WP09 | No |
+| T09-03 | Write research phase instructions | WP09 | No |
+| T09-04 | Write gap analysis flow | WP09 | No |
+| T09-05 | Write accumulator initialization | WP09 | No |
+| T09-06 | Write dynamic skill discovery | WP09 | No |
+| T09-07 | Write skill dispatch loop | WP09 | No |
+| T09-08 | Write companion artifact management | WP09 | Yes |
+| T09-09 | Write post-completion validation | WP09 | No |
+| T09-10 | Write patterns consumption | WP09 | Yes |
+| T09-11 | Write presentation, approval, and commit | WP09 | No |
+| T10-01 | Implement spec-requirements SKILL.md | WP10 | No |
+| T10-02 | Add Implementation Contract subsections | WP10 | No |
+| T10-03 | Add common skill contract compliance | WP10 | No |
+| T10-04 | Implement spec-user-stories SKILL.md | WP10 | No |
+| T10-05 | Add contract compliance to user-stories | WP10 | Yes |
+| T10-06 | Test both skills with sample brief | WP10 | No |
+| T11-01 | Implement spec-data-model SKILL.md | WP11 | No |
+| T11-02 | Add companion artifact generation (data) | WP11 | No |
+| T11-03 | Add contract compliance to data-model | WP11 | Yes |
+| T11-04 | Implement spec-api-design SKILL.md | WP11 | No |
+| T11-05 | Add companion artifact generation (API) | WP11 | No |
+| T11-06 | Add cross-reference validation (API-data) | WP11 | Yes |
+| T11-07 | Add contract compliance to api-design | WP11 | Yes |
+| T11-08 | Test both skills with partial accumulator | WP11 | No |
+| T12-01 | Implement spec-architecture SKILL.md | WP12 | No |
+| T12-02 | Add config-schema companion artifact | WP12 | No |
+| T12-03 | Add directory structure validation | WP12 | Yes |
+| T12-04 | Add virtual environment requirement | WP12 | Yes |
+| T12-05 | Add contract compliance to architecture | WP12 | Yes |
+| T12-06 | Implement spec-security SKILL.md | WP12 | No |
+| T12-07 | Add cross-reference for security | WP12 | Yes |
+| T12-08 | Add web research requirement (OWASP) | WP12 | Yes |
+| T12-09 | Add contract compliance to security | WP12 | Yes |
+| T12-10 | Test both skills with partial accumulator | WP12 | No |
+| T13-01 | Implement spec-test-strategy SKILL.md | WP13 | No |
+| T13-02 | Add 1:1 BDD scenario mapping | WP13 | No |
+| T13-03 | Add BDD/TDD emphasis | WP13 | Yes |
+| T13-04 | Add contract compliance to test-strategy | WP13 | Yes |
+| T13-05 | Implement spec-traceability SKILL.md | WP13 | No |
+| T13-06 | Add traceability matrix validation | WP13 | No |
+| T13-07 | Add orphan FR/US detection | WP13 | Yes |
+| T13-08 | Add contract compliance to traceability | WP13 | Yes |
+| T13-09 | Test both skills with full accumulator | WP13 | No |
+
+**Total**: 6 work packages, 49 tasks
+
+### FR Traceability
+
+Every FR from Spec 002 is assigned to exactly one task:
+
+| FR Range | Assignment | WP |
+|----------|------------|-----|
+| FR-001 to FR-002 | T09-02 | WP09 |
+| FR-003 to FR-004 | T09-03 | WP09 |
+| FR-005 to FR-006 | T09-04 | WP09 |
+| FR-007 to FR-008 | T09-05 | WP09 |
+| FR-009 to FR-010 | T09-06 | WP09 |
+| FR-011 to FR-013 | T09-07 | WP09 |
+| FR-014 to FR-016 | T09-08 | WP09 |
+| FR-017 to FR-018 | T09-09 | WP09 |
+| FR-019 | T09-10 | WP09 |
+| FR-020 to FR-022 | T09-11 | WP09 |
+| FR-023 to FR-028 | T10-03, T10-05, T11-03, T11-07, T12-05, T12-09, T13-04, T13-08 (common contract per skill) | WP10-13 |
+| FR-029 to FR-031 | T10-01 | WP10 |
+| FR-032 | T10-02 | WP10 |
+| FR-033 to FR-035 | T10-04 | WP10 |
+| FR-036 | T11-01 | WP11 |
+| FR-037 to FR-038 | T11-02 | WP11 |
+| FR-039 | T11-04 | WP11 |
+| FR-040 to FR-041 | T11-05 | WP11 |
+| FR-042 | T11-06 | WP11 |
+| FR-043 | T12-01 | WP12 |
+| FR-044 | T12-02 | WP12 |
+| FR-045 | T12-03 | WP12 |
+| FR-046 | T12-04 | WP12 |
+| FR-047 | T12-06 | WP12 |
+| FR-048 | T12-07 | WP12 |
+| FR-049 | T12-08 | WP12 |
+| FR-050 | T13-01 | WP13 |
+| FR-051 | T13-02 | WP13 |
+| FR-052 | T13-03 | WP13 |
+| FR-053 | T13-05 | WP13 |
+| FR-054 | T13-06 | WP13 |
+| FR-055 | T13-07 | WP13 |
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **Data contracts**: All WPs reference identical accumulator file format (Section 7.1). Skills read/write to the same accumulator path.
+- **Skill contract**: Common input/output contract (FR-023-028) is implemented identically in each skill WP. Coordinator dispatch prompt template (Section 8.2) matches skill input expectations.
+- **Dependency graph**: Verified no circular dependencies. WP08 -> WP09 -> {WP10 || WP11 || WP12 || WP13}. All `Depends on` declarations are valid.
+- **Configuration**: Glob patterns (`spec-*/SKILL.md`), file paths, directory names, and artifact naming conventions are consistent across coordinator (WP09) and all skill WPs (WP10-WP13).
+- **Test consistency**: All WPs use manual invocation testing. Coverage thresholds (80% code, 90% branch) are consistent in WP13 test strategy.
+- **Spec traceability**: All 55 FRs (FR-001 through FR-055) are assigned. No orphan FRs, no duplicate assignments (except FR-023-028 which apply to all skills by design).
