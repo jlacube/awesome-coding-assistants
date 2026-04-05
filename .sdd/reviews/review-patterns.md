@@ -1,7 +1,7 @@
 # Review Patterns
 
 > Last updated: 2026-04-05T15:00:00Z
-> Last review: WP22-env-setup-implementation-skills
+> Last review: WP23-test-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
