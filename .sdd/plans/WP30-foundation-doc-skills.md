@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP30 - Foundation & Doc Skill Scaffolding
@@ -144,3 +144,4 @@ The project does not use a language with package isolation (Python venv, Node.js
 - 2026-04-06T12:02:00Z - coder - T30-04 - completed - Created api-reference.md and CHANGELOG.md placeholders
 - 2026-04-06T12:02:00Z - coder - T30-05 - completed - Created docs-agent.agent.md placeholder
 - 2026-04-06T12:03:00Z - coder - T30-06 - completed - Verified structure and encoding compliance
+- 2026-04-06T12:04:00Z - coder - lane=for_review - All tasks complete, verification passed
