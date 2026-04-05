@@ -104,12 +104,12 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-016
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The system SHALL read all patterns from `.sdd/reviews/review-patterns.md`
-  - [ ] Each pattern SHALL be categorized into one of: spec, plan, code, doc based on content and trigger
-  - [ ] Each categorized pattern SHALL be written to the correct domain-specific file
-  - [ ] The legacy file SHALL be renamed to `review-patterns.md.bak`
-  - [ ] If a pattern cannot be categorized, it SHALL be placed in `code-patterns.md` as the default domain with a note for manual review
-  - [ ] If a pattern with the same ID already exists in the target domain file, the duplicate SHALL be skipped
+  - [x] The system SHALL read all patterns from `.sdd/reviews/review-patterns.md`
+  - [x] Each pattern SHALL be categorized into one of: spec, plan, code, doc based on content and trigger
+  - [x] Each categorized pattern SHALL be written to the correct domain-specific file
+  - [x] The legacy file SHALL be renamed to `review-patterns.md.bak`
+  - [x] If a pattern cannot be categorized, it SHALL be placed in `code-patterns.md` as the default domain with a note for manual review
+  - [x] If a pattern with the same ID already exists in the target domain file, the duplicate SHALL be skipped
 - **Test requirements**: BDD (migration verification)
 - **Depends on**: T28-01, T28-02, T28-03, T28-04
 - **Implementation Guidance**:
