@@ -67,13 +67,13 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - **Spec refs**: FR-035, FR-036
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL prioritize source code fixes over test code fixes (FR-035)
-  - [ ] A test should only be modified if it genuinely tests the wrong behavior (not matching the spec) (FR-035)
-  - [ ] If the test correctly reflects the spec but the code is wrong, the code SHALL be fixed (FR-035)
-  - [ ] The skill SHALL NOT delete or skip failing tests (FR-036.1)
-  - [ ] The skill SHALL NOT weaken assertions to make tests pass (FR-036.2)
-  - [ ] The skill SHALL NOT add broad exception handlers to suppress errors (FR-036.3)
-  - [ ] The skill SHALL NOT modify contract files (FR-036.4)
+  - [x] The skill SHALL prioritize source code fixes over test code fixes (FR-035)
+  - [x] A test should only be modified if it genuinely tests the wrong behavior (not matching the spec) (FR-035)
+  - [x] If the test correctly reflects the spec but the code is wrong, the code SHALL be fixed (FR-035)
+  - [x] The skill SHALL NOT delete or skip failing tests (FR-036.1)
+  - [x] The skill SHALL NOT weaken assertions to make tests pass (FR-036.2)
+  - [x] The skill SHALL NOT add broad exception handlers to suppress errors (FR-036.3)
+  - [x] The skill SHALL NOT modify contract files (FR-036.4)
 - **Test requirements**: BDD
 - **Depends on**: T24-02
 - **Implementation Guidance**:
@@ -154,3 +154,4 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - 2026-04-05T12:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-05T12:01:00Z - coder - T24-01 - completed - SKILL.md structure with frontmatter, input/output contracts, execution sequence
 - 2026-04-05T12:02:00Z - coder - T24-02 - completed - Failure diagnosis logic with categorization, source code reading, diagnosis decision tree
+- 2026-04-05T12:03:00Z - coder - T24-03 - completed - Fix prioritization and safety constraints (FR-035, FR-036)

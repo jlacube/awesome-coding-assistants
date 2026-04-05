@@ -163,3 +163,70 @@ For each failure group, record:
 - **Category**: `contract-deviation`, `missing-implementation`, `incorrect-test`, `logic-error`, or `unknown`
 - **Fix location**: Whether the source code or test code needs to change
 - **Spec justification**: The FR or acceptance scenario that defines the correct behavior
+
+---
+
+## Step 3 -- Apply Fixes with Prioritization (FR-035)
+
+### 3a. Fix Priority: Source Code First
+
+The skill SHALL prioritize source code fixes over test code fixes. Use this decision flow:
+
+1. **Is the test correct per the spec?** Read the spec FR and acceptance scenario that the test is derived from.
+   - If the test correctly reflects the spec's expected behavior but the source code produces wrong results --> **Fix the source code**
+   - If the test does NOT match the spec's expected behavior (wrong assertion, wrong expected value, wrong precondition) --> **Fix the test**
+
+2. **When fixing source code**: Change the implementation to produce the behavior described in the spec and contracts. Cite the FR that defines the correct behavior.
+
+3. **When fixing test code**: Change the test to match the spec. Only do this when the test genuinely tests the wrong behavior. Always cite the spec FR or acceptance scenario that justifies the test change.
+
+### 3b. Fix Scope
+
+- Fix only the code necessary to resolve the diagnosed root cause
+- Do NOT refactor surrounding code while fixing a bug
+- Do NOT add features or "improvements" alongside bug fixes
+- Do NOT change code unrelated to the failing tests
+- If multiple failure groups share a root cause, apply one fix that resolves all of them
+
+---
+
+## Safety Constraints (FR-036)
+
+These constraints are absolute. Violating any of them is a skill failure.
+
+### SHALL NOT: Delete or Skip Failing Tests (FR-036.1)
+
+- Do NOT delete test functions or test files
+- Do NOT comment out failing tests
+- Do NOT add `@skip`, `@pytest.mark.skip`, `xit()`, `test.skip()`, or equivalent decorators
+- Do NOT rename tests to remove them from the test runner's discovery pattern
+- Every test that existed before debugging must still exist and run after debugging
+
+### SHALL NOT: Weaken Assertions (FR-036.2)
+
+The following patterns are FORBIDDEN:
+
+| Forbidden Pattern | Why It Is Wrong |
+|-------------------|----------------|
+| Changing `assertEqual(x, 42)` to `assertTrue(x > 0)` | Weakens the precision of the check |
+| Changing `toEqual(expected)` to `toBeDefined()` | Removes value verification |
+| Changing `assert x == "exact"` to `assert "exact" in x` | Weakens exact match to substring |
+| Adding `try/except` around assertions | Suppresses assertion failures |
+| Changing `assert len(items) == 3` to `assert len(items) > 0` | Weakens count verification |
+| Wrapping assertions in conditional checks | Makes assertions optional |
+
+If a test's assertion is genuinely wrong per the spec, change it to the correct assertion -- do NOT weaken it. The new assertion must be at least as strong as the original.
+
+### SHALL NOT: Add Broad Exception Handlers (FR-036.3)
+
+- Do NOT add `except Exception`, `catch(e)`, or similar broad handlers to suppress errors
+- Do NOT add `try/except: pass` blocks
+- Do NOT add error handlers that silently swallow exceptions
+- Specific, narrow exception handling is acceptable only when the spec requires it (e.g., "catch ValueError and return error code USR-001")
+
+### SHALL NOT: Modify Contract Files (FR-036.4)
+
+- Do NOT modify any file in `.sdd/plans/contracts/`
+- Contracts are read-only -- they are the Planner's output and the spec's derivative
+- If a contract appears wrong, report the discrepancy in the `issues` output field
+- The coordinator will escalate contract issues to the Planner or Spec Architect
