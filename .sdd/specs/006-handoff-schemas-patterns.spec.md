@@ -2,8 +2,8 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `006-handoff-schemas-patterns`
-> **Status**: Draft
-> **Version**: 1.0
+> **Status**: Validated
+> **Version**: 1.1
 
 ---
 
@@ -45,6 +45,7 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
   6. `reviewer-to-spec.schema.yaml` - Review Coordinator -> Spec Architect (spec gaps)
   7. `planner-to-spec.schema.yaml` - Planner -> Spec Architect (auto-loop)
   8. `orchestrator-handoff.schema.yaml` - Orchestrator -> any agent
+  - Error: If any listed schema file is missing from `.github/schemas/`, the system SHALL report the missing file(s) at startup.
 
 - **FR-002**: Each schema file SHALL define:
   1. `source_agent`: The producing agent name (string)
@@ -53,6 +54,7 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
   4. `required_state`: Conditions that must be true (e.g., spec status = Validated, WP lane = for_review)
   5. `context_fields`: Key-value pairs that must be present in the handoff prompt (e.g., spec_path, wp_id)
   6. `validation_rules`: Checks the target agent runs before accepting the handoff
+  - Error: If a schema file omits any required field, the coordinator SHALL halt with a validation error listing the missing fields.
 
 #### 4.1.2 Schema Format
 
@@ -100,6 +102,7 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
       expected: "Validated"
       error: "Spec status is not Validated"
   ```
+  - Error: If a schema file fails YAML parsing or lacks required top-level keys (`schema`, `source_agent`, `target_agent`, `required_artifacts`, `context_fields`), the coordinator SHALL halt and report the file path and parse error.
 
 #### 4.1.3 Schema Validation at Handoff
 
@@ -111,12 +114,15 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
   - Error: If any validation fails, the coordinator SHALL halt and report which checks failed with the schema's error messages.
 
 - **FR-005**: Schema validation SHALL be the FIRST action a coordinator performs after receiving a handoff, before any research or skill dispatch.
+  - Error: If a coordinator performs research or skill dispatch before schema validation completes, the handoff is non-compliant and all output SHALL be discarded.
 
 #### 4.1.4 Schema Maintenance
 
 - **FR-006**: When an agent's interface changes (e.g., new required artifacts, new context fields), the corresponding schema file SHALL be updated. Schema changes SHALL be committed with the agent changes.
+  - Error: If schema and agent interface diverge, downstream handoff validation SHALL fail with stale contract errors.
 
 - **FR-007**: Schemas SHALL be versioned via the `schema: handoff/v1` header. Future incompatible changes SHALL increment the version (v2, v3).
+  - Error: If a coordinator encounters an unrecognized schema version, it SHALL halt with "Unsupported schema version: {version}".
 
 #### Implementation Contract -- Handoff Schemas
 
@@ -136,6 +142,7 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
   3. `code-patterns.md` - Patterns for implementation (consumed by Coder)
   4. `doc-patterns.md` - Patterns for documentation (consumed by Docs Agent)
   - Each file replaces the domain-relevant entries from the former single `review-patterns.md`.
+  - Error: If a domain pattern file does not exist, the consuming agent SHALL proceed without patterns and log a warning.
 
 #### 4.2.2 Pattern Format
 
@@ -157,18 +164,22 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
 
   [Patterns that no longer apply, kept for historical reference]
   ```
+  - Error: If a pattern entry lacks any required field (id, title, status, added, source, trigger, prevention), the consuming agent SHALL skip that entry and log a warning.
 
 - **FR-010**: Pattern IDs SHALL use domain prefixes:
   - `PAT-SPEC-XXX` for spec patterns
   - `PAT-PLAN-XXX` for plan patterns
   - `PAT-CODE-XXX` for code patterns
   - `PAT-DOC-XXX` for doc patterns
+  - Error: If a pattern ID does not match the required `PAT-{DOMAIN}-XXX` format, the consuming agent SHALL skip the entry and log a warning.
 
 #### 4.2.3 Pattern Consumption
 
 - **FR-011**: Each agent coordinator SHALL read its domain-specific patterns file at startup (before any skill dispatch). Active patterns SHALL be included in the prompt for every skill that agent dispatches.
+  - Error: If the patterns file cannot be parsed, the agent SHALL proceed without patterns and log the parse error.
 
-- **FR-012**: Patterns from other domains SHALL NOT be included. The Spec Architect reads only `spec-patterns.md`, the Planner reads only `plan-patterns.md`, etc.
+- **FR-012**: Patterns from other domains SHALL NOT be included. The Spec Architect reads only `spec-patterns.md`, the Planner reads only `plan-patterns.md`, the Coder reads only `code-patterns.md`, and the Docs Agent reads only `doc-patterns.md`.
+  - Error: If cross-domain patterns are detected in an agent's prompt, the coordinator SHALL strip them before skill dispatch.
 
 #### 4.2.4 Pattern Curation
 
@@ -176,17 +187,20 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
   1. Create a new pattern entry in the relevant domain-specific file
   2. Set status to "active"
   3. Include the trigger, prevention, and example from the recurring findings
+  - Error: If the Review Coordinator cannot determine the target domain for a recurring finding, it SHALL place the pattern in the closest-matching domain file with a `[NEEDS REVIEW]` tag.
 
 - **FR-014**: The Review Coordinator SHALL retire patterns that have not been triggered in 10 consecutive reviews:
   1. Move the pattern to the "Retired Patterns" section
   2. Set status to "retired"
   3. Add a retirement date
+  - Error: If review count tracking is unavailable, retirement processing SHALL be deferred until tracking data is restored.
 
 - **FR-015**: Pattern curation SHALL be committed:
   ```
   git add .sdd/reviews/<domain>-patterns.md
   git commit -m "docs(patterns): add PAT-<DOMAIN>-XXX <pattern title>"
   ```
+  - Error: If the commit fails, the coordinator SHALL retry once and report the failure if it persists.
 
 #### Implementation Contract -- Domain-Specific Patterns
 
@@ -201,9 +215,10 @@ Formalize agent-to-agent handoff contracts as schema files in `.github/schemas/`
 - **FR-016**: If `.sdd/reviews/review-patterns.md` exists (legacy single file), the system SHALL:
   1. Read all patterns from the legacy file
   2. Categorize each pattern into its domain (spec, plan, code, doc) based on the pattern's content and trigger
-  3. Write each pattern to the appropriate domain-specific file
+  3. Write each pattern to its categorized domain-specific file
   4. Rename the legacy file to `review-patterns.md.bak`
   - The migration SHALL be idempotent: running it when domain files already exist does not duplicate patterns.
+  - Error: If the legacy file cannot be parsed, the migration SHALL halt and report the parse error. If a pattern with the same ID already exists in the target domain file, the duplicate SHALL be skipped.
 
 ---
 
@@ -362,12 +377,23 @@ Schemas and patterns are file-based. No runtime API.
 
 ## 10. Non-Functional Requirements
 
+### 10.1 Performance
+
 - **NFR-001**: Schema validation SHALL complete in under 5 seconds (file existence checks + field parsing).
 - **NFR-002**: Pattern files SHALL remain under 200 entries per domain to avoid context bloat.
+
+### 10.2 Security
+
+- **NFR-003**: Schema files and pattern files SHALL NOT contain executable code or template expressions. Agents SHALL treat these files as declarative configuration only.
+  - Error: If a schema or pattern file contains executable expressions, the coordinator SHALL halt and report "Untrusted content detected in {file_path}".
 
 ---
 
 ## 11. Test Requirements
+
+### 11.1 Test Coverage
+
+All schema validation logic and pattern file parsing SHALL have unit tests covering valid inputs, invalid inputs, and edge cases. BDD scenarios below cover acceptance-level behavior.
 
 ### 11.2 BDD / Acceptance Tests
 
@@ -447,10 +473,17 @@ None remaining.
 | FR-002 | Schema structure definition | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-003 | Schema YAML format | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-004 | Schema validation at handoff | US-01 | Scenario 1, 2, 3 | BDD | 11.2 |
+| FR-005 | Validation before any other action | US-01 | Scenario 2 | BDD | 11.2 |
+| FR-006 | Schema updates with interface changes | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-007 | Schema versioning | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-008 | Domain-specific pattern files | US-02 | Scenario 1, 2 | BDD | 11.2 |
+| FR-009 | Pattern file format | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-010 | Pattern ID domain prefixes | US-02 | Scenario 1 | BDD | 11.2 |
 | FR-011 | Pattern consumption at startup | US-02 | Scenario 1, 3 | BDD | 11.2 |
+| FR-012 | No cross-domain patterns | US-02 | Scenario 2 | BDD | 11.2 |
 | FR-013 | Automated pattern curation | US-03 | Scenario 1 | BDD | 11.2 |
 | FR-014 | Pattern retirement | US-03 | Scenario 2 | BDD | 11.2 |
+| FR-015 | Pattern curation commit format | US-03 | Scenario 1 | BDD | 11.2 |
 | FR-016 | Legacy patterns migration | US-02 | Scenario 1 | BDD | 11.2 |
 
 ---
@@ -467,3 +500,4 @@ None remaining.
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
 | 1.0 | 2026-04-05 | Spec Architect | Initial specification |
+| 1.1 | 2026-04-05 | Spec Architect | Add error behaviors to all FRs; complete traceability matrix; add security NFRs; add companion artifacts; promote to Validated |
