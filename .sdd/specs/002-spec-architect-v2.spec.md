@@ -2,7 +2,7 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `002-spec-architect-v2`
-> **Status**: Draft
+> **Status**: Validated
 > **Version**: 1.0
 
 ---
