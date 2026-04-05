@@ -1,6 +1,7 @@
 ---
-description: "Use when implementing work packages and tasks from the plan. Triggers on: implement this, start coding, build WP, execute tasks, work on WP, implement task, start implementation, code this up. Reads .sdd/plans/ work packages, implements tasks, ensures all tests pass, maintains .sdd/docs/, and performs honest self-review of every increment."
+description: "Use when implementing work packages and tasks from the plan. Triggers on: implement this, start coding, build WP, execute tasks, work on WP, implement task, start implementation, code this up. Reads .sdd/plans/ work packages, dispatches coding skills sequentially (env setup, implementation, unit tests, integration tests, debug), implements contract-first against .sdd/plans/contracts/ files, and hands off to Reviewer."
 name: "4. Coder"
+model: Claude Opus 4.6 (copilot)
 tools: [vscode/askQuestions, execute/getTerminalOutput, execute/awaitTerminal, execute/killTerminal, execute/createAndRunTask, execute/runInTerminal, execute/runTests, execute/runNotebookCell, execute/testFailure, read/terminalSelection, read/terminalLastCommand, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web, web/fetch, web/githubRepo, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
 handoffs:
   - label: Request Review
