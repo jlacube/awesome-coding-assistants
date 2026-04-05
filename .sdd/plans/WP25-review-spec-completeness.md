@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP25 - review-spec-completeness Skill
@@ -32,12 +32,12 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-001, FR-002, Section 7.5, Section 9.3
 - **Parallel**: No (foundation for all T25 tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/review-spec-completeness/SKILL.md`
-  - [ ] YAML frontmatter `name` is `review-spec-completeness`
-  - [ ] YAML frontmatter `description` explains the skill validates spec completeness before planning
-  - [ ] Purpose section states the skill SHALL validate that a specification is implementation-complete before planning begins (FR-001)
-  - [ ] Input contract states the skill SHALL read the spec file and its companion artifacts directory as inputs (FR-002)
-  - [ ] The skill is discoverable via the Review Coordinator's `review-*/SKILL.md` glob pattern (SC-003)
+  - [x] File exists at `.github/skills/review-spec-completeness/SKILL.md`
+  - [x] YAML frontmatter `name` is `review-spec-completeness`
+  - [x] YAML frontmatter `description` explains the skill validates spec completeness before planning
+  - [x] Purpose section states the skill SHALL validate that a specification is implementation-complete before planning begins (FR-001)
+  - [x] Input contract states the skill SHALL read the spec file and its companion artifacts directory as inputs (FR-002)
+  - [x] The skill is discoverable via the Review Coordinator's `review-*/SKILL.md` glob pattern (SC-003)
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -59,11 +59,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-013, FR-014, Section 7.1 (Completeness Finding), Section 7.3 (Verdict)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Finding format matches FR-013 exactly: id (SPEC-COMP-XXX), severity (HIGH/MEDIUM/LOW), category (10 categories from FR-013), location, issue, recommendation
-  - [ ] All 10 categories are listed: obligation-language, error-behavior, data-model, api-contract, state-machine, traceability, integration, ambiguity, artifact-consistency, security
-  - [ ] Verdict rule states PASS when zero HIGH findings and FAIL when one or more HIGH findings (FR-014)
-  - [ ] Output includes finding counts by severity (high_count, medium_count, low_count)
-  - [ ] Finding field constraints match Section 7.1: issue and recommendation are 1-500 chars
+  - [x] Finding format matches FR-013 exactly: id (SPEC-COMP-XXX), severity (HIGH/MEDIUM/LOW), category (10 categories from FR-013), location, issue, recommendation
+  - [x] All 10 categories are listed: obligation-language, error-behavior, data-model, api-contract, state-machine, traceability, integration, ambiguity, artifact-consistency, security
+  - [x] Verdict rule states PASS when zero HIGH findings and FAIL when one or more HIGH findings (FR-014)
+  - [x] Output includes finding counts by severity (high_count, medium_count, low_count)
+  - [x] Finding field constraints match Section 7.1: issue and recommendation are 1-500 chars
 - **Test requirements**: BDD - Section 11.2 "Pass a complete spec" scenario
 - **Depends on**: T25-01
 - **Implementation Guidance**:
@@ -77,10 +77,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-003, FR-010
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] SHALL language check instructs: every FR using "should", "could", "might", "may", or "can" (as obligation, not permission) SHALL be flagged with severity HIGH, category obligation-language (FR-003)
-  - [ ] Ambiguity check instructs: any occurrence of "appropriate", "reasonable", "as needed", "etc.", "similar", "relevant" in FR or NFR text SHALL be flagged with severity MEDIUM, category ambiguity (FR-010)
-  - [ ] Both checks specify the exact words to scan for
-  - [ ] BDD scenario covered: "Given a spec where FR-003 uses 'should', When review-spec-completeness runs, Then finding SPEC-COMP-001 is reported with severity HIGH and category obligation-language"
+  - [x] SHALL language check instructs: every FR using "should", "could", "might", "may", or "can" (as obligation, not permission) SHALL be flagged with severity HIGH, category obligation-language (FR-003)
+  - [x] Ambiguity check instructs: any occurrence of "appropriate", "reasonable", "as needed", "etc.", "similar", "relevant" in FR or NFR text SHALL be flagged with severity MEDIUM, category ambiguity (FR-010)
+  - [x] Both checks specify the exact words to scan for
+  - [x] BDD scenario covered: "Given a spec where FR-003 uses 'should', When review-spec-completeness runs, Then finding SPEC-COMP-001 is reported with severity HIGH and category obligation-language"
 - **Test requirements**: BDD - Section 11.2 "Flag FRs with weak obligation language" scenario
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -94,10 +94,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-004
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Check instructs: every FR SHALL have defined error behavior (FR-004)
-  - [ ] FRs without error paths SHALL be flagged with severity HIGH, category error-behavior
-  - [ ] The recommendation SHALL suggest adding error behavior
-  - [ ] BDD scenario covered: "Given a spec where FR-005 has no error behavior defined, When the skill runs, Then a HIGH finding for missing error behavior is reported and the recommendation suggests adding error behavior"
+  - [x] Check instructs: every FR SHALL have defined error behavior (FR-004)
+  - [x] FRs without error paths SHALL be flagged with severity HIGH, category error-behavior
+  - [x] The recommendation SHALL suggest adding error behavior
+  - [x] BDD scenario covered: "Given a spec where FR-005 has no error behavior defined, When the skill runs, Then a HIGH finding for missing error behavior is reported and the recommendation suggests adding error behavior"
 - **Test requirements**: BDD - Section 11.2 "Flag missing error behavior" scenario
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -111,14 +111,14 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-005, Section 7 Data Model
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Check instructs: every entity in Section 7 SHALL have all 5 properties per field (FR-005):
+  - [x] Check instructs: every entity in Section 7 SHALL have all 5 properties per field (FR-005):
     1. All fields with explicit types (no untyped fields)
     2. Nullability declared for every field
     3. Constraints (required, unique, max length, format, min/max)
     4. Validation rules beyond type constraints
     5. Default values (or explicit "no default")
-  - [ ] Missing items SHALL be flagged with severity HIGH, category data-model
-  - [ ] BDD scenario covered: "Given a spec where entity User has field 'role' with no type, When the skill runs, Then a HIGH finding for untyped field is reported"
+  - [x] Missing items SHALL be flagged with severity HIGH, category data-model
+  - [x] BDD scenario covered: "Given a spec where entity User has field 'role' with no type, When the skill runs, Then a HIGH finding for untyped field is reported"
 - **Test requirements**: BDD - Section 11.2 "Flag incomplete data model" scenario
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -132,13 +132,13 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-006, Section 8 API/Interface Design
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Check instructs: every API endpoint in Section 8 SHALL have all 4 properties (FR-006):
+  - [x] Check instructs: every API endpoint in Section 8 SHALL have all 4 properties (FR-006):
     1. All applicable HTTP error codes (400, 401, 403, 404, 409, 422, 500) with meanings and response bodies
     2. Request schema with all fields typed
     3. Response schema with all fields typed
     4. Auth requirements stated
-  - [ ] Missing items SHALL be flagged with severity HIGH, category api-contract
-  - [ ] The check lists all 7 HTTP error codes explicitly (400, 401, 403, 404, 409, 422, 500)
+  - [x] Missing items SHALL be flagged with severity HIGH, category api-contract
+  - [x] The check lists all 7 HTTP error codes explicitly (400, 401, 403, 404, 409, 422, 500)
 - **Test requirements**: BDD - Section 11.2 "Flag missing error behavior" scenario (API variant)
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -152,13 +152,13 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-007
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Check instructs: every entity with a status/state field SHALL have all 4 properties (FR-007):
+  - [x] Check instructs: every entity with a status/state field SHALL have all 4 properties (FR-007):
     1. All valid states listed as an enum
     2. All valid transitions defined (from-state, to-state)
     3. Guards/conditions on each transition
     4. Side effects per transition
-  - [ ] Missing items SHALL be flagged with severity MEDIUM, category state-machine
-  - [ ] Note: severity is MEDIUM (not HIGH) per FR-007
+  - [x] Missing items SHALL be flagged with severity MEDIUM, category state-machine
+  - [x] Note: severity is MEDIUM (not HIGH) per FR-007
 - **Test requirements**: BDD - Section 11.2 "Pass a complete spec" scenario (absence of state machine findings)
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -172,13 +172,13 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-008, Section 16 Traceability Matrix
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Check instructs: the traceability matrix SHALL have no empty cells (FR-008):
+  - [x] Check instructs: the traceability matrix SHALL have no empty cells (FR-008):
     1. Every FR maps to at least one US
     2. Every US maps to at least one acceptance scenario
     3. Every acceptance scenario maps to at least one test type
     4. Every test type maps to a test section reference
-  - [ ] Empty cells SHALL be flagged with severity HIGH, category traceability
-  - [ ] BDD scenario covered: "Given Section 16 has FR-012 with no US mapping, When the skill runs, Then a HIGH finding for empty traceability cell is reported"
+  - [x] Empty cells SHALL be flagged with severity HIGH, category traceability
+  - [x] BDD scenario covered: "Given Section 16 has FR-012 with no US mapping, When the skill runs, Then a HIGH finding for empty traceability cell is reported"
 - **Test requirements**: BDD - Section 11.2 "Flag empty traceability cell" scenario
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -192,11 +192,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-009, FR-012, Section 9.5, Section 10.2
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Integration check instructs: every external integration in Section 9.5 SHALL have timeout, retry strategy, fallback behavior, and circuit breaker threshold if applicable (FR-009)
-  - [ ] Missing integration items SHALL be flagged with severity MEDIUM, category integration
-  - [ ] Security check instructs: security requirements SHALL include per-component security requirements, OWASP mitigation references, and data sensitivity classification per entity (FR-012)
-  - [ ] Missing security items SHALL be flagged with severity MEDIUM, category security
-  - [ ] If no external integrations exist, integration check produces no findings (N/A)
+  - [x] Integration check instructs: every external integration in Section 9.5 SHALL have timeout, retry strategy, fallback behavior, and circuit breaker threshold if applicable (FR-009)
+  - [x] Missing integration items SHALL be flagged with severity MEDIUM, category integration
+  - [x] Security check instructs: security requirements SHALL include per-component security requirements, OWASP mitigation references, and data sensitivity classification per entity (FR-012)
+  - [x] Missing security items SHALL be flagged with severity MEDIUM, category security
+  - [x] If no external integrations exist, integration check produces no findings (N/A)
 - **Test requirements**: BDD - Section 11.2 "Pass a complete spec" scenario (all checks passing)
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -211,13 +211,13 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: FR-011, Section 7, Section 8, Section 4
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Check instructs: companion artifacts SHALL exist and be consistent with the prose spec (FR-011):
+  - [x] Check instructs: companion artifacts SHALL exist and be consistent with the prose spec (FR-011):
     1. Every entity in Section 7 has a corresponding type definition in `data-models.<ext>`
     2. Every API endpoint in Section 8 has corresponding request/response types in `api-contracts.<ext>`
     3. Every error code in Section 4 has a corresponding entry in `error-catalog.<ext>`
     4. Field names and types match between prose and artifacts
-  - [ ] Missing or inconsistent artifacts SHALL be flagged with severity HIGH, category artifact-consistency
-  - [ ] If the artifacts directory does not exist, flag as HIGH finding (artifacts expected for V2 specs) but do not halt
+  - [x] Missing or inconsistent artifacts SHALL be flagged with severity HIGH, category artifact-consistency
+  - [x] If the artifacts directory does not exist, flag as HIGH finding (artifacts expected for V2 specs) but do not halt
 - **Test requirements**: BDD - Section 11.2 "Pass a complete spec" scenario
 - **Depends on**: T25-02
 - **Implementation Guidance**:
@@ -232,10 +232,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, 
 - **Spec refs**: SC-003, Section 9.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill directory name `review-spec-completeness` matches the Review Coordinator's glob pattern `review-*/SKILL.md`
-  - [ ] The skill's YAML frontmatter is parseable by the coordinator
-  - [ ] No Review Coordinator changes are needed to discover and dispatch this skill (SC-003)
-  - [ ] The dispatch prompt from Section 8.2 is compatible with the skill's input contract
+  - [x] The skill directory name `review-spec-completeness` matches the Review Coordinator's glob pattern `review-*/SKILL.md`
+  - [x] The skill's YAML frontmatter is parseable by the coordinator
+  - [x] No Review Coordinator changes are needed to discover and dispatch this skill (SC-003)
+  - [x] The dispatch prompt from Section 8.2 is compatible with the skill's input contract
 - **Test requirements**: BDD - manual invocation via coordinator
 - **Depends on**: T25-01 through T25-10
 - **Implementation Guidance**:
@@ -264,3 +264,16 @@ Tasks T25-03 through T25-10 write independent checklist sections and can concept
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T00:00:00Z - coder - T25-01 - completed - Created SKILL.md with YAML frontmatter and purpose section
+- 2026-04-06T00:00:00Z - coder - T25-02 - completed - Finding format (SPEC-COMP-XXX) and verdict (PASS/FAIL) sections
+- 2026-04-06T00:00:00Z - coder - T25-03 - completed - Obligation language (Check 1) and ambiguity (Check 7) sections
+- 2026-04-06T00:00:00Z - coder - T25-04 - completed - Error behavior check (Check 2)
+- 2026-04-06T00:00:00Z - coder - T25-05 - completed - Data model completeness check (Check 3)
+- 2026-04-06T00:00:00Z - coder - T25-06 - completed - API endpoint completeness check (Check 4)
+- 2026-04-06T00:00:00Z - coder - T25-07 - completed - State machine completeness check (Check 5)
+- 2026-04-06T00:00:00Z - coder - T25-08 - completed - Traceability matrix check (Check 6)
+- 2026-04-06T00:00:00Z - coder - T25-09 - completed - Integration strategy (Check 8) and security requirements (Check 10)
+- 2026-04-06T00:00:00Z - coder - T25-10 - completed - Artifact consistency check (Check 9)
+- 2026-04-06T00:00:00Z - coder - T25-11 - completed - Integration verification with Review Coordinator glob pattern
+- 2026-04-06T00:00:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria met
