@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP35 - Orchestrator V2: State File Management & Verification
@@ -32,10 +32,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-001, Section 7.1, Section 7.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL maintain a persistent state file at `.sdd/state.md` with YAML frontmatter containing: pipeline_stage, current_spec, current_wp, last_agent, last_result, retry_count, error_log, updated_at (FR-001)
-  - [ ] pipeline_stage SHALL be one of: idle, ideation, specification, planning, implementation, review, documentation, complete (FR-001)
-  - [ ] error_log SHALL be an array of ErrorEntry objects, each with: agent (string), wp (string or null), error_summary (string, 1-500 chars), timestamp (ISO 8601) (Section 7.2)
-  - [ ] error_log SHALL contain max 50 entries with oldest pruned when exceeded (Section 7.1)
+  - [x] The Orchestrator SHALL maintain a persistent state file at `.sdd/state.md` with YAML frontmatter containing: pipeline_stage, current_spec, current_wp, last_agent, last_result, retry_count, error_log, updated_at (FR-001)
+  - [x] pipeline_stage SHALL be one of: idle, ideation, specification, planning, implementation, review, documentation, complete (FR-001)
+  - [x] error_log SHALL be an array of ErrorEntry objects, each with: agent (string), wp (string or null), error_summary (string, 1-500 chars), timestamp (ISO 8601) (Section 7.2)
+  - [x] error_log SHALL contain max 50 entries with oldest pruned when exceeded (Section 7.1)
 - **Test requirements**: BDD (US-01 Scenario 1)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -50,9 +50,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-002
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL create `.sdd/state.md` if it does not exist, initializing all fields to their defaults (FR-002)
-  - [ ] If the file cannot be created (e.g., filesystem permission error), halt and report "Cannot create state file at .sdd/state.md" (FR-002)
-  - [ ] Default values: pipeline_stage=idle, current_spec=null, current_wp=null, last_agent=null, last_result=null, retry_count=0, error_log=[], updated_at=creation time (Section 7.1)
+  - [x] The Orchestrator SHALL create `.sdd/state.md` if it does not exist, initializing all fields to their defaults (FR-002)
+  - [x] If the file cannot be created (e.g., filesystem permission error), halt and report "Cannot create state file at .sdd/state.md" (FR-002)
+  - [x] Default values: pipeline_stage=idle, current_spec=null, current_wp=null, last_agent=null, last_result=null, retry_count=0, error_log=[], updated_at=creation time (Section 7.1)
 - **Test requirements**: BDD (US-01 Scenario 1)
 - **Depends on**: T35-01
 - **Implementation Guidance**:
@@ -67,9 +67,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-003
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL update `.sdd/state.md` after every agent invocation, recording the result before deciding the next action (FR-003)
-  - [ ] If the state file cannot be updated, halt and report with the last known state and the update that failed (FR-003)
-  - [ ] updated_at SHALL be set to current ISO 8601 timestamp on every update (Section 7.1)
+  - [x] The Orchestrator SHALL update `.sdd/state.md` after every agent invocation, recording the result before deciding the next action (FR-003)
+  - [x] If the state file cannot be updated, halt and report with the last known state and the update that failed (FR-003)
+  - [x] updated_at SHALL be set to current ISO 8601 timestamp on every update (Section 7.1)
 - **Test requirements**: BDD (US-01 Scenario 1)
 - **Depends on**: T35-01
 - **Implementation Guidance**:
@@ -84,11 +84,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-004, Section 9.2 (Decision 1)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] On startup, the Orchestrator SHALL cross-verify `.sdd/state.md` against actual WP frontmatter (FR-004)
-  - [ ] Read state file's current_wp and pipeline_stage, read all WP files' lane values (FR-004 step 1-2)
-  - [ ] If state file claims current_wp: WP03 with pipeline_stage: review but WP03's lane is done, trust WP frontmatter and update state file accordingly (FR-004 step 3)
-  - [ ] Log any discrepancy found (FR-004 step 4)
-  - [ ] Given .sdd/state.md says current_wp=WP03 and pipeline_stage=review, and WP03 frontmatter has lane=done, when the Orchestrator starts, then it updates state.md to reflect lane=done and proceeds to documentation for WP03 (US-01 Scenario 2)
+  - [x] On startup, the Orchestrator SHALL cross-verify `.sdd/state.md` against actual WP frontmatter (FR-004)
+  - [x] Read state file's current_wp and pipeline_stage, read all WP files' lane values (FR-004 step 1-2)
+  - [x] If state file claims current_wp: WP03 with pipeline_stage: review but WP03's lane is done, trust WP frontmatter and update state file accordingly (FR-004 step 3)
+  - [x] Log any discrepancy found (FR-004 step 4)
+  - [x] Given .sdd/state.md says current_wp=WP03 and pipeline_stage=review, and WP03 frontmatter has lane=done, when the Orchestrator starts, then it updates state.md to reflect lane=done and proceeds to documentation for WP03 (US-01 Scenario 2)
 - **Test requirements**: BDD (US-01 Scenario 1, 2)
 - **Depends on**: T35-01, T35-02
 - **Implementation Guidance**:
@@ -103,10 +103,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-001 (transitions), Section 7.0
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL NOT set pipeline_stage to a value that is not reachable from the current value (Section 7.0)
-  - [ ] Valid transitions match the state transition table in Section 7.0 exactly (13 valid transitions)
-  - [ ] Any transition not in the table is invalid (Section 7.0)
-  - [ ] Transitions match VALID_PIPELINE_TRANSITIONS in companion artifact state-machines.ts
+  - [x] The Orchestrator SHALL NOT set pipeline_stage to a value that is not reachable from the current value (Section 7.0)
+  - [x] Valid transitions match the state transition table in Section 7.0 exactly (13 valid transitions)
+  - [x] Any transition not in the table is invalid (Section 7.0)
+  - [x] Transitions match VALID_PIPELINE_TRANSITIONS in companion artifact state-machines.ts
 - **Test requirements**: BDD
 - **Depends on**: T35-01
 - **Implementation Guidance**:
@@ -121,9 +121,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-005
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL NOT modify WP frontmatter directly (FR-005)
-  - [ ] Only Coder (sets lane=doing, for_review) and Review Coordinator (sets lane=done, to_do) modify WP frontmatter (FR-005)
-  - [ ] This constraint is documented in the Orchestrator's rules section
+  - [x] The Orchestrator SHALL NOT modify WP frontmatter directly (FR-005)
+  - [x] Only Coder (sets lane=doing, for_review) and Review Coordinator (sets lane=done, to_do) modify WP frontmatter (FR-005)
+  - [x] This constraint is documented in the Orchestrator's rules section
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -137,11 +137,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 - **Spec refs**: FR-001, FR-004, Section 7.0, Section 7.1, Section 7.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] State file schema in orchestrator.agent.md matches PipelineState interface in data-models.ts (all 8 fields, identical names and types)
-  - [ ] PipelineStage enum values match between orchestrator prompt and data-models.ts
-  - [ ] State transitions in orchestrator prompt match VALID_PIPELINE_TRANSITIONS in state-machines.ts
-  - [ ] ErrorEntry fields in orchestrator prompt match ErrorEntry interface in data-models.ts
-  - [ ] MAX_RETRY_COUNT (2) and MAX_REVIEW_CYCLES (3) match between orchestrator prompt and state-machines.ts
+  - [x] State file schema in orchestrator.agent.md matches PipelineState interface in data-models.ts (all 8 fields, identical names and types)
+  - [x] PipelineStage enum values match between orchestrator prompt and data-models.ts
+  - [x] State transitions in orchestrator prompt match VALID_PIPELINE_TRANSITIONS in state-machines.ts
+  - [x] ErrorEntry fields in orchestrator prompt match ErrorEntry interface in data-models.ts
+  - [x] MAX_RETRY_COUNT (2) and MAX_REVIEW_CYCLES (3) match between orchestrator prompt and state-machines.ts
 - **Test requirements**: none
 - **Depends on**: T35-01, T35-05
 - **Implementation Guidance**:
@@ -170,3 +170,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, Section 7.0 (State Transitions), Section
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:01:00Z - coder - T35-06 - completed - Updated rules section with specific WP frontmatter read-only constraint per FR-005
+- 2026-04-06T12:02:00Z - coder - T35-01 - completed - Added state_schema section with all 8 fields, ErrorEntry schema, and constraints
+- 2026-04-06T12:03:00Z - coder - T35-05 - completed - Added valid state transition table with all 13 transitions matching state-machines.ts
+- 2026-04-06T12:04:00Z - coder - T35-04 - completed - Added state verification protocol to state_machine section
+- 2026-04-06T12:05:00Z - coder - T35-02 - completed - Added state file creation logic in workflow Step 1
+- 2026-04-06T12:06:00Z - coder - T35-03 - completed - Added state file update protocol in workflow Step 7
+- 2026-04-06T12:07:00Z - coder - T35-07 - completed - Cross-verified schema against data-models.ts and state-machines.ts, all fields match
