@@ -136,13 +136,13 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-010
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] After unit and integration test skills complete, the coordinator SHALL check test results (FR-010)
-  - [ ] If any tests fail, the coordinator SHALL dispatch `code-debug` with failing test output, relevant source files, contract files, and spec refs (FR-010.1)
-  - [ ] The debug skill SHALL diagnose failures, fix the code, and re-run tests (FR-010.2)
-  - [ ] If tests still fail after the debug skill, the coordinator SHALL retry up to 2 more times (max 3 debug attempts total) (FR-010.3)
-  - [ ] If tests still fail after 3 debug attempts, the coordinator SHALL escalate to the human with full error context (FR-010.4)
-  - [ ] If all tests pass after the test skills, the debug skill SHALL NOT be dispatched (FR-010)
-  - [ ] Given tests fail due to a fundamental issue, when code-debug fails after 3 attempts, then the coordinator escalates to the human and does not mark the WP as for_review (BDD Scenario 4)
+  - [x] After unit and integration test skills complete, the coordinator SHALL check test results (FR-010)
+  - [x] If any tests fail, the coordinator SHALL dispatch `code-debug` with failing test output, relevant source files, contract files, and spec refs (FR-010.1)
+  - [x] The debug skill SHALL diagnose failures, fix the code, and re-run tests (FR-010.2)
+  - [x] If tests still fail after the debug skill, the coordinator SHALL retry up to 2 more times (max 3 debug attempts total) (FR-010.3)
+  - [x] If tests still fail after 3 debug attempts, the coordinator SHALL escalate to the human with full error context (FR-010.4)
+  - [x] If all tests pass after the test skills, the debug skill SHALL NOT be dispatched (FR-010)
+  - [x] Given tests fail due to a fundamental issue, when code-debug fails after 3 attempts, then the coordinator escalates to the human and does not mark the WP as for_review (BDD Scenario 4)
 - **Test requirements**: BDD
 - **Depends on**: T21-06
 - **Implementation Guidance**:

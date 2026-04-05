@@ -157,4 +157,43 @@ Rules:
 
 **Failure handling**: If any skill reports failure (environment setup or implementation), halt the WP immediately. Do NOT dispatch remaining skills. Report the failure with full context to the user via `vscode_askQuestions`.
 
+## Step 7 - Check Test Results and Conditional Debug (FR-010)
+
+After `code-unit-tests` and `code-integration-tests` complete, check test results.
+
+**If all tests pass**: Skip the debug skill entirely. Proceed to Step 8.
+
+**If any tests fail**: Dispatch `code-debug` with retry logic:
+
+1. Set `debug_attempt = 1`.
+2. Dispatch `code-debug` using this prompt template:
+
+```
+Debug failing tests.
+
+1. Read the skill instructions at: <skill_path>
+2. Failing test output:
+<test_output>
+3. Source files: <file_list>
+4. Contract files at: <contracts_dir>
+5. Spec refs: <spec_refs>
+
+Diagnose root causes. Fix source code (prefer) or tests (only if test is wrong per spec).
+Re-run ALL tests (unit + integration) after fixes.
+Do NOT delete tests, weaken assertions, or add broad exception handlers.
+Do NOT modify contract files -- they are read-only.
+Report: fixed tests, still-failing tests, regressions.
+Debug attempt: <N> of 3.
+```
+
+3. After the debug skill completes, check test results again.
+4. If tests still fail and `debug_attempt < 3`: increment `debug_attempt`, dispatch `code-debug` again with updated test output.
+5. If tests still fail after `debug_attempt = 3`: escalate to the human with full error context:
+   - Failing test names and error messages
+   - Relevant source files
+   - Contract files
+   - Spec references
+   - Summary of all 3 debug attempt outcomes
+   - Do NOT mark the WP as `for_review`. Halt.
+
 </workflow>
