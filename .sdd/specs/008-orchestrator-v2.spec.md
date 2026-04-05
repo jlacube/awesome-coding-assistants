@@ -2,8 +2,8 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `008-orchestrator-v2`
-> **Status**: Draft
-> **Version**: 1.0
+> **Status**: Validated
+> **Version**: 1.1
 
 ---
 
@@ -48,8 +48,10 @@ Upgrade the SDD Pipeline Orchestrator with three improvements: (1) a persistent 
   Error: If `.sdd/state.md` cannot be written, halt and report.
 
 - **FR-002**: The Orchestrator SHALL create `.sdd/state.md` if it does not exist, initializing all fields to their defaults.
+  Error: If the file cannot be created (e.g., filesystem permission error), halt and report "Cannot create state file at .sdd/state.md".
 
 - **FR-003**: The Orchestrator SHALL update `.sdd/state.md` after every agent invocation, recording the result before deciding the next action.
+  Error: If the state file cannot be updated, halt and report with the last known state and the update that failed.
 
 #### Implementation Contract -- State File
 
@@ -264,7 +266,7 @@ Human-readable summary of current state for cross-session continuity.
 3. Orchestrator cross-verifies state against WP frontmatter.
 4. Orchestrator updates todo list with pipeline stages.
 5. Orchestrator determines next action from Decision Table.
-6. Orchestrator invokes appropriate agent with specific prompt.
+6. Orchestrator invokes the agent selected by the Decision Table with its prompt template.
 7. Agent completes. Orchestrator re-reads state.
 8. Orchestrator updates `.sdd/state.md` and todo list.
 9. Orchestrator displays status report.
@@ -297,6 +299,28 @@ Human-readable summary of current state for cross-session continuity.
 ---
 
 ## 7. Data Model
+
+### 7.0 State Transitions for `pipeline_stage`
+
+The `pipeline_stage` field SHALL follow these valid transitions:
+
+| From | To | Trigger |
+|------|----|---------|
+| idle | ideation | User provides an idea description |
+| idle | specification | Existing brief found without a spec |
+| idle | planning | Existing spec found without WPs |
+| idle | implementation | Existing WPs found with lane=planned |
+| ideation | specification | Ideation agent completes brief |
+| specification | planning | Spec status set to Validated |
+| planning | implementation | Planner produces WP files |
+| implementation | review | Coder sets WP lane=for_review |
+| review | documentation | Review Coordinator sets WP lane=done |
+| review | implementation | Review Coordinator sets WP lane=to_do |
+| documentation | implementation | Docs Agent completes and next WP exists |
+| documentation | complete | Docs Agent completes and no WPs remain |
+| implementation | complete | All WPs lane=done and documented |
+
+Any transition not in this table is invalid. The Orchestrator SHALL NOT set `pipeline_stage` to a value that is not reachable from the current value.
 
 ### 7.1 State File Entity
 
@@ -388,6 +412,10 @@ The Orchestrator is a state machine. It reads state, makes a decision, delegates
 ---
 
 ## 11. Test Requirements
+
+### 11.1 Test Strategy
+
+All requirements SHALL be verified through BDD acceptance scenarios. Since the Orchestrator is an agent mode prompt (not compiled code), tests are defined as behavioral scenarios verified by manual walkthrough or integration testing against the agent framework.
 
 ### 11.2 BDD / Acceptance Tests
 
@@ -491,14 +519,23 @@ None remaining.
 
 | FR ID | Requirement Summary | User Story | Acceptance Scenario | Test Type | Test Section Ref |
 |-------|-------------------|------------|--------------------|-----------|----|
-| FR-001 | State file with YAML frontmatter | US-01 | Scenario 1 | BDD | 11.2 |
-| FR-004 | State vs frontmatter verification | US-01 | Scenario 1, 2 | BDD | 11.2 |
-| FR-007 | Docs Agent after WP approval | US-03 | Scenario 1 | BDD | 11.2 |
-| FR-008 | No Docs on unapproved WPs | US-03 | Scenario 2 | BDD | 11.2 |
+| FR-001 | State file with YAML frontmatter | US-01 | US-01 Scenario 1 | BDD | 11.2 |
+| FR-002 | Create state file if missing | US-01 | US-01 Scenario 1 | BDD | 11.2 |
+| FR-003 | Update state file after invocation | US-01 | US-01 Scenario 1 | BDD | 11.2 |
+| FR-004 | State vs frontmatter verification | US-01 | US-01 Scenario 1, 2 | BDD | 11.2 |
+| FR-005 | Orchestrator does not modify WP frontmatter | US-01 | US-01 Scenario 1, 2 | BDD | 11.2 |
+| FR-006 | Updated pipeline sequence with Docs Agent | US-03 | US-03 Scenario 1 | BDD | 11.2 |
+| FR-007 | Docs Agent after WP approval | US-03 | US-03 Scenario 1 | BDD | 11.2 |
+| FR-008 | No Docs on unapproved WPs | US-03 | US-03 Scenario 2 | BDD | 11.2 |
 | FR-009 | Strict sequential execution | US-01, US-02 | Sequential Scenario | BDD | 11.2 |
-| FR-011 | Error recovery with retry | US-02 | Scenario 1, 2 | BDD | 11.2 |
-| FR-012 | Review fail 3x halt | US-02 | Edge case | BDD | 11.2 |
-| FR-014 | Universal escalation | US-02 | Edge case | BDD | 11.2 |
+| FR-010 | No pre-queuing or parallelization | US-01 | Sequential Scenario | BDD | 11.2 |
+| FR-011 | Error recovery with retry | US-02 | US-02 Scenario 1, 2 | BDD | 11.2 |
+| FR-012 | Review fail 3x halt | US-02 | US-02 Edge case | BDD | 11.2 |
+| FR-013 | Reset retry_count on success | US-02 | US-02 Scenario 1 | BDD | 11.2 |
+| FR-014 | Universal escalation support | US-02 | US-02 Edge case | BDD | 11.2 |
+| FR-015 | Re-invoke after escalation resolution | US-02 | US-02 Edge case | BDD | 11.2 |
+| FR-016 | Status report after every agent | US-01, US-03 | US-01 Scenario 1 | BDD | 11.2 |
+| FR-017 | Todo list pipeline tracker | US-01 | US-01 Scenario 1 | BDD | 11.2 |
 
 ---
 
@@ -513,3 +550,4 @@ None remaining.
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
 | 1.0 | 2026-04-05 | Spec Architect | Initial specification |
+| 1.1 | 2026-04-05 | Spec Architect | Validation: added error behavior to FR-002/FR-003, state transitions table, completed traceability matrix (all 17 FRs), fixed ambiguous language, added section 11.1, generated companion artifacts |
