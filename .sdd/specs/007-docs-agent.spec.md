@@ -2,7 +2,7 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `007-docs-agent`
-> **Status**: Draft
+> **Status**: Validated
 > **Version**: 1.0
 
 ---
@@ -42,6 +42,7 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
   2. The spec file path
   3. The contract files directory for the WP
   4. The implementation source files modified by the WP
+  - Error: If no WP path is provided, the coordinator SHALL halt with a descriptive error message.
 
 - **FR-002**: The coordinator SHALL read:
   1. The approved WP file and its task list
@@ -49,6 +50,7 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
   3. Contract files in `.sdd/plans/contracts/<WP-slug>/`
   4. Implementation source files (from git diff of the WP's commits)
   5. Existing documentation in `.sdd/docs/` (to update, not recreate)
+  - Error: If a referenced file does not exist, the coordinator SHALL log a warning and proceed with available files. If the WP file itself is missing, the coordinator SHALL halt.
 
 #### 4.1.2 Dynamic Skill Discovery
 
@@ -88,6 +90,7 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
   git add .sdd/docs/ <modified source files for inline docs>
   git commit -m "docs(docs): update documentation for WP<NN>"
   ```
+  - Error: If no documentation files were modified (all skills produced no output), the coordinator SHALL skip the commit and log that no updates were needed. If the git commit fails, the coordinator SHALL report the error to the invoker.
 
 #### Implementation Contract -- Docs Agent Coordinator
 
@@ -98,6 +101,8 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
 ---
 
 ### 4.2 Documentation Skills
+
+> All skill FRs (FR-010 through FR-020) inherit the error behavior of FR-007: if a skill fails, the coordinator logs the failure and continues to the next skill.
 
 #### 4.2.1 Architecture Docs Skill (doc-architecture)
 
@@ -123,6 +128,7 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
   7. Example request/response (generated from schemas)
 
 - **FR-013**: API docs SHALL be generated from contract files (`api-contracts.<ext>`, `error-catalog.<ext>`), NOT from prose interpretation. If contracts exist, they are the source of truth.
+  - Error: If no contract files exist for the WP, the skill SHALL skip API doc generation and log that no contracts were found.
 
 #### 4.2.3 User Guide Skill (doc-user-guide)
 
@@ -163,7 +169,7 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
 
 - **FR-019**: The skill SHALL NOT modify implementation logic; only add documentary content.
 
-- **FR-020**: The skill SHALL follow the project's existing docstring convention (if one exists). If none exists, use the language's standard (Python: Google style, TypeScript: JSDoc, etc.).
+- **FR-020**: The skill SHALL follow the project's existing docstring convention (if one exists). If none exists, use the language's standard (Python: Google style, TypeScript: JSDoc, Go: godoc, Rust: rustdoc).
 
 ---
 
@@ -234,7 +240,7 @@ Introduce a new Docs Agent to the SDD pipeline: a skill-based coordinator that d
 | `.sdd/docs/user-guide.md` | doc-user-guide | Feature usage instructions |
 | `.sdd/docs/developer-guide.md` | doc-developer-guide | Dev setup, conventions |
 | `.sdd/docs/CHANGELOG.md` | doc-changelog | Version history entries |
-| Source files (*.ts, *.py, etc.) | doc-inline-code | Docstrings and comments |
+| Source files (*.ts, *.py, *.go, *.rs) | doc-inline-code | Docstrings and comments |
 
 ---
 
@@ -370,13 +376,25 @@ None remaining.
 | FR ID | Requirement Summary | User Story | Acceptance Scenario | Test Type | Test Section Ref |
 |-------|-------------------|------------|--------------------|-----------|----|
 | FR-001 | Trigger after WP approval | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-002 | Read WP, spec, contracts, source, existing docs | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-003 | Dynamic skill discovery | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-004 | Dispatch skills in canonical order | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-005 | Skill dispatch parameters | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-006 | Sequential skill dispatch | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-007 | Skill failure tolerance | US-01 | BDD Scenario 3 | BDD | 11.2 |
+| FR-008 | Read doc-patterns before dispatch | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-009 | Commit after all skills complete | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-010 | Architecture docs generation | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-011 | Incremental section updates | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-012 | API reference from contracts | US-02 | Scenario 1, BDD Scenario 2 | BDD | 11.2 |
 | FR-013 | Contract-based API docs | US-02 | Scenario 1 | BDD | 11.2 |
+| FR-014 | User guide generation | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-015 | Developer guide generation | US-01 | Scenario 1 | BDD | 11.2 |
 | FR-016 | Changelog entries | US-01 | BDD Scenario 1 | BDD | 11.2 |
+| FR-017 | Changelog prepend ordering | US-01 | BDD Scenario 1 | BDD | 11.2 |
 | FR-018 | Inline code docs | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-019 | No logic modification constraint | US-01 | Scenario 1 | BDD | 11.2 |
+| FR-020 | Docstring convention adherence | US-01 | Scenario 1 | BDD | 11.2 |
 
 ---
 
@@ -391,3 +409,4 @@ None remaining.
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
 | 1.0 | 2026-04-05 | Spec Architect | Initial specification |
+| 1.1 | 2026-04-05 | Spec Architect | Validation: added error behaviors, completed traceability matrix, removed ambiguous terms |
