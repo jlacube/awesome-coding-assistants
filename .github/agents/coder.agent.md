@@ -90,4 +90,11 @@ Before dispatching any skill, read the full context chain:
 4. Read each contract file using `read_file` to verify it contains valid syntax (not empty, not corrupted).
 5. If the contracts directory does not exist or is empty but the WP's tasks reference no contracts, proceed without error.
 
+## Step 4 - Consume Patterns (FR-004)
+
+1. Read `.sdd/reviews/code-patterns.md` using `read_file`.
+2. If the file exists: extract the "Active Patterns" section. These are mistakes from prior code reviews to avoid. Store the active patterns text for inclusion in every skill dispatch prompt.
+3. If the file does not exist: set patterns to "No active patterns" and continue without error.
+4. Each skill dispatch (Step 6) SHALL include the active patterns so skills avoid producing code that would trigger known patterns.
+
 </workflow>

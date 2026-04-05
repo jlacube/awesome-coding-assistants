@@ -82,10 +82,10 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-004
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL read `.sdd/reviews/code-patterns.md` if it exists before dispatching any skill (FR-004)
-  - [ ] Active pattern summaries SHALL be included in the prompt for each skill (FR-004)
-  - [ ] Skills SHALL avoid producing code that would trigger known patterns (FR-004)
-  - [ ] If `code-patterns.md` does not exist, the coordinator SHALL proceed without error
+  - [x] The coordinator SHALL read `.sdd/reviews/code-patterns.md` if it exists before dispatching any skill (FR-004)
+  - [x] Active pattern summaries SHALL be included in the prompt for each skill (FR-004)
+  - [x] Skills SHALL avoid producing code that would trigger known patterns (FR-004)
+  - [x] If `code-patterns.md` does not exist, the coordinator SHALL proceed without error
 - **Test requirements**: none
 - **Depends on**: T21-02
 - **Implementation Guidance**:
