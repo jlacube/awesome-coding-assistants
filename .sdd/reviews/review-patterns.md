@@ -1,21 +1,24 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T21:00:00Z
-> Last review: WP16-phase1-decomposition-acceptance
+> Last updated: 2026-04-05T22:30:00Z
+> Last review: WP18-phase2-api-state-error-skills
 
 Coder: read this file before implementing any WP. These patterns document
 mistakes caught in previous reviews. Avoid repeating them.
 
 ## Active Patterns
 
+(none)
+
+## Resolved
+
 ### PAT-006 [spec-adherence] Shared directory misuse for entity deduplication
 - **First seen**: WP17 (2026-04-05)
+- **Resolved**: WP18 (2026-04-05)
 - **Occurrences**: 3
 - **Pattern**: Phase 2 skills (plan-data-schemas, plan-interface-contracts, plan-error-catalogs) move entities/interfaces/errors to a shared/ directory when used by 3+ WPs. The spec requires the first WP to define the entity fully and subsequent WPs to import from the first WP's contracts. Section 7.2 reserves shared/ for config-schema only.
 - **Fix**: Remove all move-to-shared logic. All deduplication must follow the first-WP-defines pattern regardless of how many WPs share the entity. Only plan-cross-wp-validation may write to shared/ (for config-schema).
 - **Source**: review-spec SPEC-016, SPEC-017 (WP17), SPEC-008 (WP18)
-
-## Resolved
 
 ### PAT-008 [spec-adherence] Implementation guidance template incomplete
 - **First seen**: WP16 (2026-04-05)
