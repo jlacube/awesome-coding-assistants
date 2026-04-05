@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP23 - Test Skills
@@ -32,11 +32,11 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-017, FR-018, FR-019, Section 8.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md has valid YAML frontmatter with name `code-unit-tests` and description matching FR-006
-  - [ ] Input contract table lists all 8 inputs from FR-017
-  - [ ] Execution sequence follows FR-018
-  - [ ] Output format matches FR-019: status, files_modified, tasks_completed, test_results (pass_count, fail_count, coverage_pct), issues, failure_reason
-  - [ ] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
+  - [x] SKILL.md has valid YAML frontmatter with name `code-unit-tests` and description matching FR-006
+  - [x] Input contract table lists all 8 inputs from FR-017
+  - [x] Execution sequence follows FR-018
+  - [x] Output format matches FR-019: status, files_modified, tasks_completed, test_results (pass_count, fail_count, coverage_pct), issues, failure_reason
+  - [x] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,11 +49,11 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-027
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Tests SHALL derive from spec acceptance scenarios (BDD approach), not from implementation details (FR-027.1)
-  - [ ] Tests SHALL cover happy path + error paths + edge cases per task (FR-027.2)
-  - [ ] Tests SHALL test real behavior through real code paths -- no vacuous assertions (FR-027.3)
-  - [ ] Tests SHALL mock only external dependencies, never the subject under test (FR-027.4)
-  - [ ] Tests SHALL use the project's test framework (pytest, Jest, etc.) (FR-027.5)
+  - [x] Tests SHALL derive from spec acceptance scenarios (BDD approach), not from implementation details (FR-027.1)
+  - [x] Tests SHALL cover happy path + error paths + edge cases per task (FR-027.2)
+  - [x] Tests SHALL test real behavior through real code paths -- no vacuous assertions (FR-027.3)
+  - [x] Tests SHALL mock only external dependencies, never the subject under test (FR-027.4)
+  - [x] Tests SHALL use the project's test framework (pytest, Jest, etc.) (FR-027.5)
 - **Test requirements**: BDD
 - **Depends on**: T23-01
 - **Implementation Guidance**:
@@ -67,10 +67,10 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-028
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] The skill SHALL NOT produce `assert True` or equivalent trivial assertions (FR-028.1)
-  - [ ] The skill SHALL NOT produce empty test bodies or `pass` stubs (FR-028.2)
-  - [ ] The skill SHALL NOT produce tests that merely confirm a mock's return value (FR-028.3)
-  - [ ] Every test SHALL be capable of failing
+  - [x] The skill SHALL NOT produce `assert True` or equivalent trivial assertions (FR-028.1)
+  - [x] The skill SHALL NOT produce empty test bodies or `pass` stubs (FR-028.2)
+  - [x] The skill SHALL NOT produce tests that merely confirm a mock's return value (FR-028.3)
+  - [x] Every test SHALL be capable of failing
 - **Test requirements**: none
 - **Depends on**: T23-01
 - **Implementation Guidance**:
@@ -83,11 +83,11 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-029, FR-030
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL run all unit tests after writing them and report results (pass/fail counts, coverage percentage) (FR-029)
-  - [ ] The skill SHALL verify code coverage is at least 80% (FR-030.1)
-  - [ ] The skill SHALL verify branch coverage is at least 90% (FR-030.2)
-  - [ ] If coverage is below thresholds, the skill SHALL add more tests targeting uncovered lines/branches (FR-030)
-  - [ ] Given unit tests pass but coverage is 72% (below 80%), the skill adds more tests and re-checks until coverage meets thresholds (BDD Scenario 8)
+  - [x] The skill SHALL run all unit tests after writing them and report results (pass/fail counts, coverage percentage) (FR-029)
+  - [x] The skill SHALL verify code coverage is at least 80% (FR-030.1)
+  - [x] The skill SHALL verify branch coverage is at least 90% (FR-030.2)
+  - [x] If coverage is below thresholds, the skill SHALL add more tests targeting uncovered lines/branches (FR-030)
+  - [x] Given unit tests pass but coverage is 72% (below 80%), the skill adds more tests and re-checks until coverage meets thresholds (BDD Scenario 8)
 - **Test requirements**: BDD
 - **Depends on**: T23-02
 - **Implementation Guidance**:
@@ -101,11 +101,11 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-017, FR-018, FR-019, Section 8.2
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] SKILL.md has valid YAML frontmatter with name `code-integration-tests` and description matching FR-006
-  - [ ] Input contract table lists all 8 inputs from FR-017
-  - [ ] Execution sequence follows FR-018
-  - [ ] Output format matches FR-019
-  - [ ] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
+  - [x] SKILL.md has valid YAML frontmatter with name `code-integration-tests` and description matching FR-006
+  - [x] Input contract table lists all 8 inputs from FR-017
+  - [x] Execution sequence follows FR-018
+  - [x] Output format matches FR-019
+  - [x] Common contract reference to `.github/skills/CODER-SKILL-CONTRACT.md` is included
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -118,13 +118,13 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-031, FR-032
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL write tests across module boundaries within the WP's scope (FR-031.1)
-  - [ ] The skill SHALL write tests against real database/storage if the WP sets up data persistence (FR-031.2)
-  - [ ] The skill SHALL write tests against external API mocks using contract definitions for mock responses (FR-031.3)
-  - [ ] The skill SHALL include data setup and teardown for each test (FR-031.4)
-  - [ ] For external dependencies, the skill SHALL use contract files to generate mock responses that match exact schemas (FR-032.1)
-  - [ ] The skill SHALL test timeout, retry, and error handling paths (FR-032.2)
-  - [ ] The skill SHALL verify integration points match the API contract schemas (FR-032.3)
+  - [x] The skill SHALL write tests across module boundaries within the WP's scope (FR-031.1)
+  - [x] The skill SHALL write tests against real database/storage if the WP sets up data persistence (FR-031.2)
+  - [x] The skill SHALL write tests against external API mocks using contract definitions for mock responses (FR-031.3)
+  - [x] The skill SHALL include data setup and teardown for each test (FR-031.4)
+  - [x] For external dependencies, the skill SHALL use contract files to generate mock responses that match exact schemas (FR-032.1)
+  - [x] The skill SHALL test timeout, retry, and error handling paths (FR-032.2)
+  - [x] The skill SHALL verify integration points match the API contract schemas (FR-032.3)
 - **Test requirements**: BDD
 - **Depends on**: T23-05
 - **Implementation Guidance**:
@@ -137,9 +137,9 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-033
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL run all integration tests after writing them and report results (FR-033)
-  - [ ] Results SHALL include pass/fail counts and any error details
-  - [ ] Failed tests SHALL be reported to the coordinator for debug skill dispatch
+  - [x] The skill SHALL run all integration tests after writing them and report results (FR-033)
+  - [x] Results SHALL include pass/fail counts and any error details
+  - [x] Failed tests SHALL be reported to the coordinator for debug skill dispatch
 - **Test requirements**: none
 - **Depends on**: T23-06
 - **Implementation Guidance**:
@@ -152,10 +152,10 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 - **Spec refs**: FR-005, FR-010, FR-017, FR-019
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Both skills are discovered by `file_search` with glob `.github/skills/code-*/SKILL.md`
-  - [ ] Input contract fields match the coordinator's dispatch template from Section 8.2
-  - [ ] Output contract fields match the coordinator's expected result format -- specifically test_results.fail_count drives debug dispatch (FR-010)
-  - [ ] No files contain em dashes, smart quotes, or curly apostrophes
+  - [x] Both skills are discovered by `file_search` with glob `.github/skills/code-*/SKILL.md`
+  - [x] Input contract fields match the coordinator's dispatch template from Section 8.2
+  - [x] Output contract fields match the coordinator's expected result format -- specifically test_results.fail_count drives debug dispatch (FR-010)
+  - [x] No files contain em dashes, smart quotes, or curly apostrophes
 - **Test requirements**: none
 - **Depends on**: T23-07
 - **Implementation Guidance**:
@@ -185,3 +185,13 @@ FR-027, FR-028, FR-029, FR-030 (code-unit-tests), FR-031, FR-032, FR-033 (code-i
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T14:10:00Z - coder - T23-01 - completed - code-unit-tests SKILL.md structure with frontmatter, input contract, execution sequence, output format
+- 2026-04-05T14:15:00Z - coder - T23-02 - completed - BDD-derived test generation logic with scenario mapping
+- 2026-04-05T14:18:00Z - coder - T23-03 - completed - Test validity rules with forbidden patterns and examples
+- 2026-04-05T14:22:00Z - coder - T23-04 - completed - Test execution and coverage threshold enforcement (80% code, 90% branch)
+- 2026-04-05T14:25:00Z - coder - T23-05 - completed - code-integration-tests SKILL.md structure with frontmatter, input contract, execution sequence, output format
+- 2026-04-05T14:30:00Z - coder - T23-06 - completed - Integration test generation logic with boundary identification and contract-based mocking
+- 2026-04-05T14:33:00Z - coder - T23-07 - completed - Integration test execution and reporting with prerequisite handling
+- 2026-04-05T14:35:00Z - coder - T23-08 - completed - Integration verification: glob discovery, contract compliance, encoding compliance
+- 2026-04-05T14:36:00Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
