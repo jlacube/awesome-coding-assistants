@@ -2,8 +2,8 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `004-coder-v2`
-> **Status**: Validated
-> **Version**: 1.0
+> **Status**: Approved
+> **Version**: 1.1
 
 ---
 
