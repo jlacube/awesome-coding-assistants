@@ -1,0 +1,309 @@
+---
+lane: planned
+---
+
+# WP11 - Data Model & API Design Skills
+
+| Field | Value |
+|-------|-------|
+| Spec | `.sdd/specs/002-spec-architect-v2.spec.md` |
+| Priority | P1 |
+| Lane | planned |
+| Depends on | WP08, WP09 |
+| Goal | Implement the spec-data-model and spec-api-design skills that produce typed entity definitions, API endpoint specs, and companion artifact files |
+| Status | Not Started |
+| Independent Test | Dispatch spec-data-model and spec-api-design against a test accumulator with sections 1-6. Verify: sections 7-8 written with typed fields and error codes; companion artifacts (data-models, state-machines, api-contracts, error-catalog) created with matching field names |
+| Parallelisable | Yes (with WP10, WP12, WP13 after WP09 completes) |
+| Prompt | `.sdd/plans/WP11-data-model-api-design-skills.md` |
+
+## Objective
+
+Implement the first two artifact-producing spec skills. spec-data-model produces Section 7 (Data Model) with typed entities, relationships, validation rules, and state machines, plus companion artifacts `data-models.<ext>` and `state-machines.<ext>`. spec-api-design produces Section 8 (API / Interface Design) with endpoint definitions, request/response schemas, and error codes, plus companion artifacts `api-contracts.<ext>` and `error-catalog.<ext>`. These skills produce the formal technical definitions that downstream agents (Planner, Coder) rely on most.
+
+## Spec References
+
+- FR-023 through FR-028 (common skill contract)
+- FR-036 through FR-038 (spec-data-model skill)
+- FR-039 through FR-042 (spec-api-design skill)
+- Section 4.5 (Data Model Skill specification)
+- Section 4.6 (API Design Skill specification)
+- Section 7.2 (companion artifact files listing)
+
+## Tasks
+
+### T11-01 - Implement spec-data-model SKILL.md
+
+- **Description**: Replace the stub SKILL.md in `.github/skills/spec-data-model/` with the full skill implementation. The skill produces Section 7 (Data Model) defining all entities.
+- **Spec refs**: FR-036
+- **Parallel**: No (establishes artifact pattern for T11-04)
+- **Acceptance criteria**:
+  - [ ] SKILL.md contains instructions for Section 7 where each entity has:
+    - Entity name
+    - Fields table: name, type (with nullability), constraints (required, unique, max length, format regex, enum values, min/max), default value
+    - Relationships to other entities with cardinality (1:1, 1:N, N:M)
+    - Validation rules (cross-field validation, business rules)
+    - State machine definition (if entity has status/state field): valid states, valid transitions, guards, side effects
+  - [ ] Skill reads accumulator (sections 1-6) to derive entities from FRs and user stories
+  - [ ] Skill reads the source brief for domain context
+  - [ ] Entity field definitions are precise enough to generate code verbatim
+- **Test requirements**: BDD (Scenario 2 from Section 11.2 -- data model used by API skill)
+- **Depends on**: T08-02 (stub exists)
+- **Implementation Guidance**:
+  - Entity field table format:
+    ```markdown
+    | Field | Type | Required | Constraints | Default | Description |
+    |-------|------|----------|-------------|---------|-------------|
+    | id | UUID | yes | primary key | generated | Unique identifier |
+    | email | string | yes | unique, max 255, email format | - | User email |
+    ```
+  - State machine format:
+    ```markdown
+    #### State Machine: <Entity> Status
+
+    | From State | To State | Guard | Side Effects |
+    |-----------|----------|-------|-------------|
+    | draft | published | author is owner | Send notification |
+    ```
+  - The skill should derive entities from FRs (Section 4) and user stories (Section 5) read from the accumulator
+  - Key principle: field names, types, and constraints in prose must be reproducible in code
+
+### T11-02 - Add companion artifact generation for data model
+
+- **Description**: Extend the spec-data-model skill to produce companion artifact files: `data-models.<ext>` and `state-machines.<ext>` (if applicable).
+- **Spec refs**: FR-037, FR-038, FR-028
+- **Parallel**: No
+- **Acceptance criteria**:
+  - [ ] Skill produces `data-models.<ext>` in the artifacts directory with typed entity definitions in the target language
+  - [ ] Every entity in Section 7 prose has a corresponding definition in the artifact file (FR-037)
+  - [ ] Field names, types, constraints, and defaults in the artifact match Section 7 prose exactly (FR-038)
+  - [ ] Skill produces `state-machines.<ext>` if any entity has state fields: state enums and transition validation functions
+  - [ ] Each artifact file includes the manifest comment header (FR-028)
+  - [ ] Artifacts contain type definitions ONLY -- no I/O, network, or filesystem operations (NFR-005)
+- **Test requirements**: BDD (Scenario 1 from Section 11.2 -- artifacts exist; Scenario 4 -- consistency)
+- **Depends on**: T11-01
+- **Implementation Guidance**:
+  - TypeScript data model artifact example:
+    ```typescript
+    // Generated by: spec-data-model skill
+    // Source spec: .sdd/specs/002-spec-architect-v2.spec.md, Section 7
+    // Target language: TypeScript
+    // DO NOT EDIT MANUALLY -- regenerated on spec revision
+
+    export interface User {
+      id: string;        // UUID, primary key
+      email: string;     // unique, max 255, email format
+      role: UserRole;    // enum
+    }
+
+    export enum UserRole {
+      ADMIN = "admin",
+      USER = "user",
+    }
+    ```
+  - Python data model artifact example:
+    ```python
+    # Generated by: spec-data-model skill
+    # Source spec: .sdd/specs/<NNN>-<name>.spec.md, Section 7
+    # Target language: Python
+    # DO NOT EDIT MANUALLY -- regenerated on spec revision
+
+    from dataclasses import dataclass
+    from enum import Enum
+
+    class UserRole(Enum):
+        ADMIN = "admin"
+        USER = "user"
+
+    @dataclass
+    class User:
+        id: str         # UUID, primary key
+        email: str      # unique, max 255, email format
+        role: UserRole  # enum
+    ```
+  - State machine artifact: export a validation function that checks if a transition is valid
+
+### T11-03 - Add common skill contract compliance to data-model skill
+
+- **Description**: Ensure spec-data-model fully complies with the common skill contract (FR-023 through FR-028).
+- **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027, FR-028
+- **Parallel**: Yes
+- **Acceptance criteria**:
+  - [ ] Input contract documented at top of SKILL.md (8 inputs)
+  - [ ] Execution sequence specified (5 steps including artifact production)
+  - [ ] Output format: numbered headings, typed fields, implementation contracts
+  - [ ] Constraint: no modification of prior sections; use `[CROSS-REF ISSUE]` markers
+  - [ ] Constraint: no modification of coordinator sections 1-3
+  - [ ] Manifest comment required on all artifact files
+- **Test requirements**: none (contract compliance)
+- **Depends on**: T11-01
+- **Implementation Guidance**:
+  - Same pattern as T10-03 but with additional step 5: "Produce companion artifact files in artifacts_dir"
+  - This skill reads more of the accumulator than requirements/user-stories (sections 1-6)
+
+### T11-04 - Implement spec-api-design SKILL.md
+
+- **Description**: Replace the stub SKILL.md in `.github/skills/spec-api-design/` with the full skill implementation. The skill produces Section 8 (API / Interface Design).
+- **Spec refs**: FR-039
+- **Parallel**: No
+- **Acceptance criteria**:
+  - [ ] SKILL.md contains instructions for Section 8 where each endpoint/interface has:
+    - Method + path (or function signature for libraries/CLIs)
+    - Purpose (one line)
+    - Request: parameters, body schema with all fields typed, validation rules
+    - Response: success schema with all fields typed
+    - Every applicable error code (400, 401, 403, 404, 409, 422, 500) with meaning and response body
+    - Auth requirements
+    - Rate limits (if applicable)
+  - [ ] Skill reads accumulator including Section 7 (Data Model) to reference entity definitions
+  - [ ] Endpoints use the same entity field names and types defined in Section 7
+- **Test requirements**: BDD (Scenario 2 from Section 11.2 -- API references data model fields)
+- **Depends on**: T08-02 (stub exists)
+- **Implementation Guidance**:
+  - Endpoint documentation format:
+    ```markdown
+    ### POST /users
+
+    **Purpose**: Create a new user account.
+
+    **Request**:
+    - Body: `CreateUserInput`
+      - `email` (string, required): User email, max 255, email format
+      - `name` (string, required): Full name, max 100
+      - `role` (UserRole, optional): Default "user"
+
+    **Response** (201):
+    - Body: `User` entity (see Section 7)
+
+    **Errors**:
+    | Code | Meaning | Response Body |
+    |------|---------|---------------|
+    | 400 | Invalid input | `{ error: "VALIDATION_ERROR", details: [...] }` |
+    | 409 | Email already registered | `{ error: "DUPLICATE_EMAIL" }` |
+    | 500 | Internal server error | `{ error: "INTERNAL_ERROR" }` |
+    ```
+  - Key principle: response schemas MUST reference data model entities (Section 7), not re-define fields
+
+### T11-05 - Add companion artifact generation for API design
+
+- **Description**: Extend the spec-api-design skill to produce companion artifact files: `api-contracts.<ext>` and `error-catalog.<ext>`.
+- **Spec refs**: FR-040, FR-041, FR-028
+- **Parallel**: No
+- **Acceptance criteria**:
+  - [ ] Skill produces `api-contracts.<ext>` with request/response type definitions per endpoint
+  - [ ] Every endpoint's request and response types have corresponding definitions in the artifact (FR-040)
+  - [ ] Field names and types match Section 8 prose exactly (FR-041)
+  - [ ] Skill produces `error-catalog.<ext>` with error code constants/enums, HTTP status codes, message templates
+  - [ ] Error codes in the catalog match Section 4 error behaviors (FR-041)
+  - [ ] Each artifact file includes the manifest comment header (FR-028)
+- **Test requirements**: BDD (Scenario 2 from Section 11.2 -- artifact consistency)
+- **Depends on**: T11-04
+- **Implementation Guidance**:
+  - TypeScript API contract artifact example:
+    ```typescript
+    // Generated by: spec-api-design skill
+    // Source spec: .sdd/specs/<NNN>.spec.md, Section 8
+    // Target language: TypeScript
+    // DO NOT EDIT MANUALLY -- regenerated on spec revision
+
+    export interface CreateUserInput {
+      email: string;
+      name: string;
+      role?: UserRole;
+    }
+
+    export interface CreateUserResponse extends User {}
+    ```
+  - Error catalog artifact example:
+    ```typescript
+    export const ErrorCodes = {
+      VALIDATION_ERROR: { status: 400, message: "Invalid input" },
+      DUPLICATE_EMAIL: { status: 409, message: "Email already registered" },
+      INTERNAL_ERROR: { status: 500, message: "Internal server error" },
+    } as const;
+    ```
+  - API contracts should reference data model types (import from data-models file) where possible
+
+### T11-06 - Add cross-reference validation against data model
+
+- **Description**: Add instructions in spec-api-design to cross-reference API endpoints against Section 7 (Data Model) entities, verifying field name and type consistency.
+- **Spec refs**: FR-042
+- **Parallel**: Yes
+- **Acceptance criteria**:
+  - [ ] Skill instructions include a cross-reference step: after writing Section 8, compare response schemas against Section 7 entities
+  - [ ] If an API response references a field not defined in the data model, add a `[CROSS-REF ISSUE: field X in endpoint Y not defined in data model]` marker
+  - [ ] If field types differ between API schema and data model, add a `[CROSS-REF ISSUE]` marker
+  - [ ] Cross-reference covers: field names, field types, enum values, nullability
+- **Test requirements**: BDD (Scenario 2 from Section 11.2)
+- **Depends on**: T11-04
+- **Implementation Guidance**:
+  - Add a "Cross-Reference Validation" section at the end of the SKILL.md:
+    ```markdown
+    ## Cross-Reference Validation
+
+    After completing Section 8, verify consistency with Section 7:
+    1. For each endpoint response schema, confirm every field exists in the corresponding data model entity
+    2. Verify field types match exactly (string, number, boolean, enum values)
+    3. Verify nullability/optionality aligns
+    4. If mismatches found, add [CROSS-REF ISSUE: <description>] markers
+    ```
+
+### T11-07 - Add common skill contract compliance to api-design skill
+
+- **Description**: Ensure spec-api-design fully complies with the common skill contract.
+- **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027, FR-028
+- **Parallel**: Yes
+- **Acceptance criteria**:
+  - [ ] Same contract compliance criteria as T11-03
+  - [ ] Input contract, execution sequence, output format, modification constraints, manifest comments
+- **Test requirements**: none (contract compliance)
+- **Depends on**: T11-04
+- **Implementation Guidance**:
+  - Same pattern as T11-03 applied to spec-api-design SKILL.md
+
+### T11-08 - Test both skills with partial accumulator
+
+- **Description**: Manually test both skills by dispatching them against a test accumulator containing sections 1-6. Verify correct output and artifact generation.
+- **Spec refs**: All FR-036 through FR-042
+- **Parallel**: No
+- **Acceptance criteria**:
+  - [ ] Dispatch spec-data-model: verify Section 7 appended with typed entities
+  - [ ] Verify companion artifacts: `data-models.<ext>` contains all entities; field names match prose
+  - [ ] Verify `state-machines.<ext>` created if entities have state fields
+  - [ ] Dispatch spec-api-design: verify Section 8 appended with all endpoints
+  - [ ] Verify companion artifacts: `api-contracts.<ext>` and `error-catalog.<ext>` generated
+  - [ ] Verify cross-reference: API response fields match data model entity fields
+  - [ ] Verify manifest comments present on all artifact files
+  - [ ] Verify no prior sections (1-6) were modified
+- **Test requirements**: integration (manual invocation)
+- **Depends on**: T11-01 through T11-07
+- **Implementation Guidance**:
+  - Create a test accumulator with sections 1-6 (can reuse output from WP10 testing)
+  - Focus verification on prose-artifact consistency: every field in prose must appear in artifact with same name and type
+  - Verify artifacts are valid syntax in the target language
+
+## Implementation Notes
+
+- These are the first ARTIFACT-PRODUCING skills. They establish the pattern for how companion artifacts are generated alongside prose.
+- spec-data-model reads sections 1-6 from the accumulator (written by coordinator + WP10 skills).
+- spec-api-design reads sections 1-7 from the accumulator (including data model from spec-data-model).
+- Both skills write to the artifacts directory alongside the accumulator.
+- Field consistency between prose and artifacts is critical (FR-038, FR-041). The coordinator's post-completion validation (WP09 T09-09) provides a second check.
+
+## Parallel Opportunities
+
+- T11-01 (data model) and T11-04 (api design) are separate skill files and COULD be developed in parallel, but T11-01 should go first to establish the artifact generation pattern.
+- T11-03 and T11-07 (contract compliance) can be developed in parallel.
+- T11-06 (cross-reference) can be developed in parallel with T11-05 (artifacts).
+
+## Risks & Mitigations
+
+- **Risk**: LLM generates companion artifacts with field names that don't match the prose.
+  - **Mitigation**: Skill instructions emphasize exact name matching. Post-completion validation catches mismatches.
+- **Risk**: Artifact file syntax is invalid in the target language.
+  - **Mitigation**: Skill provides concrete examples for TypeScript and Python. Artifacts contain only type definitions, minimizing syntax complexity.
+- **Risk**: Cross-reference between API and data model misses edge cases (e.g., computed fields).
+  - **Mitigation**: CROSS-REF ISSUE markers catch issues; coordinator resolves them post-completion.
+
+## Activity Log
+
+- 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
