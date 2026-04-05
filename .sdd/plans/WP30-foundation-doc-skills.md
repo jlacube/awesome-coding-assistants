@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP30 - Foundation & Doc Skill Scaffolding
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | none |
 | Goal | Establish directory structure and stub files enabling doc skill discovery |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Run `ls .github/skills/doc-*/SKILL.md` and verify 6 stub files exist |
 | Parallelisable | - |
 | Prompt | `.sdd/plans/WP30-foundation-doc-skills.md` |
@@ -32,9 +32,9 @@ FR-003 (dynamic skill discovery), FR-005 (skill dispatch parameters), Section 9.
 - **Spec refs**: FR-003, Section 9.1
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] All 6 directories exist under `.github/skills/`
-  - [ ] Directory names match the canonical skill names from FR-004 exactly
-  - [ ] No extraneous directories are created
+  - [x] All 6 directories exist under `.github/skills/`
+  - [x] Directory names match the canonical skill names from FR-004 exactly
+  - [x] No extraneous directories are created
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -48,9 +48,9 @@ FR-003 (dynamic skill discovery), FR-005 (skill dispatch parameters), Section 9.
 - **Spec refs**: FR-003, Section 9.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each of the 6 directories has a SKILL.md file
-  - [ ] Each SKILL.md has valid YAML frontmatter with `name` matching the directory name
-  - [ ] The glob pattern `doc-*/SKILL.md` returns all 6 files
+  - [x] Each of the 6 directories has a SKILL.md file
+  - [x] Each SKILL.md has valid YAML frontmatter with `name` matching the directory name
+  - [x] The glob pattern `doc-*/SKILL.md` returns all 6 files
 - **Test requirements**: none
 - **Depends on**: T30-01
 - **Implementation Guidance**:
@@ -64,9 +64,9 @@ FR-003 (dynamic skill discovery), FR-005 (skill dispatch parameters), Section 9.
 - **Spec refs**: FR-005, FR-006
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] DOC-SKILL-CONTRACT.md exists at `.github/skills/DOC-SKILL-CONTRACT.md`
-  - [ ] Input contract lists all 6 context items from FR-005: skill file path, WP file path and task list, spec path and contract files, implementation source files, existing docs directory, active doc-domain patterns
-  - [ ] Output contract defines what each skill SHALL produce: updated documentation files in `.sdd/docs/` or updated source files (for doc-inline-code)
+  - [x] DOC-SKILL-CONTRACT.md exists at `.github/skills/DOC-SKILL-CONTRACT.md`
+  - [x] Input contract lists all 6 context items from FR-005: skill file path, WP file path and task list, spec path and contract files, implementation source files, existing docs directory, active doc-domain patterns
+  - [x] Output contract defines what each skill SHALL produce: updated documentation files in `.sdd/docs/` or updated source files (for doc-inline-code)
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -80,9 +80,9 @@ FR-003 (dynamic skill discovery), FR-005 (skill dispatch parameters), Section 9.
 - **Spec refs**: Section 7.1, Section 9.1
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] `.sdd/docs/api-reference.md` exists with a placeholder header
-  - [ ] `.sdd/docs/CHANGELOG.md` exists with a placeholder header
-  - [ ] Existing files (`architecture.md`, `developer-guide.md`, `user-guide.md`) are not modified
+  - [x] `.sdd/docs/api-reference.md` exists with a placeholder header
+  - [x] `.sdd/docs/CHANGELOG.md` exists with a placeholder header
+  - [x] Existing files (`architecture.md`, `developer-guide.md`, `user-guide.md`) are not modified
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -96,9 +96,9 @@ FR-003 (dynamic skill discovery), FR-005 (skill dispatch parameters), Section 9.
 - **Spec refs**: Section 9.1, FR-001
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] `.github/agents/docs-agent.agent.md` exists
-  - [ ] YAML frontmatter includes `name`, `description`, `model`, and `tools` fields
-  - [ ] The agent is discoverable by the Orchestrator
+  - [x] `.github/agents/docs-agent.agent.md` exists
+  - [x] YAML frontmatter includes `name`, `description`, `model`, and `tools` fields
+  - [x] The agent is discoverable by the Orchestrator
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -112,11 +112,11 @@ FR-003 (dynamic skill discovery), FR-005 (skill dispatch parameters), Section 9.
 - **Spec refs**: Section 9.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] `ls .github/skills/doc-*/SKILL.md` returns exactly 6 files
-  - [ ] `.github/skills/DOC-SKILL-CONTRACT.md` exists
-  - [ ] `.github/agents/docs-agent.agent.md` exists
-  - [ ] `.sdd/docs/api-reference.md` and `.sdd/docs/CHANGELOG.md` exist
-  - [ ] All files are UTF-8 encoded with no BOM, LF line endings, no em dashes or smart quotes
+  - [x] `ls .github/skills/doc-*/SKILL.md` returns exactly 6 files
+  - [x] `.github/skills/DOC-SKILL-CONTRACT.md` exists
+  - [x] `.github/agents/docs-agent.agent.md` exists
+  - [x] `.sdd/docs/api-reference.md` and `.sdd/docs/CHANGELOG.md` exist
+  - [x] All files are UTF-8 encoded with no BOM, LF line endings, no em dashes or smart quotes
 - **Test requirements**: none
 - **Depends on**: T30-01, T30-02, T30-03, T30-04, T30-05
 - **Implementation Guidance**:
@@ -137,3 +137,10 @@ The project does not use a language with package isolation (Python venv, Node.js
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:01:00Z - coder - T30-01 - completed - Created 6 doc skill directories
+- 2026-04-06T12:01:00Z - coder - T30-02 - completed - Created 6 stub SKILL.md files with YAML frontmatter
+- 2026-04-06T12:02:00Z - coder - T30-03 - completed - Created DOC-SKILL-CONTRACT.md
+- 2026-04-06T12:02:00Z - coder - T30-04 - completed - Created api-reference.md and CHANGELOG.md placeholders
+- 2026-04-06T12:02:00Z - coder - T30-05 - completed - Created docs-agent.agent.md placeholder
+- 2026-04-06T12:03:00Z - coder - T30-06 - completed - Verified structure and encoding compliance
