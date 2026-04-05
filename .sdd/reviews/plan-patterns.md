@@ -1,4 +1,4 @@
-# Code Patterns
+# Plan Patterns
 
 ## Active Patterns
 

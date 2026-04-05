@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP28 - Domain-Specific Pattern Files & Migration
@@ -32,10 +32,10 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-008 (item 2), FR-009
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] File exists at `.sdd/reviews/plan-patterns.md`
-  - [ ] File follows the exact structure from FR-009: title, "Active Patterns" section, "Retired Patterns" section
-  - [ ] File header is `# Plan Patterns`
-  - [ ] File contains at least the structural template (may be empty of actual patterns initially)
+  - [x] File exists at `.sdd/reviews/plan-patterns.md`
+  - [x] File follows the exact structure from FR-009: title, "Active Patterns" section, "Retired Patterns" section
+  - [x] File header is `# Plan Patterns`
+  - [x] File contains at least the structural template (may be empty of actual patterns initially)
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -50,10 +50,10 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-008 (item 4), FR-009
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] File exists at `.sdd/reviews/doc-patterns.md`
-  - [ ] File follows the exact structure from FR-009: title, "Active Patterns" section, "Retired Patterns" section
-  - [ ] File header is `# Doc Patterns`
-  - [ ] File contains at least the structural template
+  - [x] File exists at `.sdd/reviews/doc-patterns.md`
+  - [x] File follows the exact structure from FR-009: title, "Active Patterns" section, "Retired Patterns" section
+  - [x] File header is `# Doc Patterns`
+  - [x] File contains at least the structural template
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -67,10 +67,10 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-008 (item 1), FR-009, FR-010
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] `.sdd/reviews/spec-patterns.md` exists and follows FR-009 structure
-  - [ ] Every existing pattern entry has all required fields: id (PAT-SPEC-XXX), title, status, added, source, trigger, prevention
-  - [ ] Pattern IDs use the `PAT-SPEC-XXX` format per FR-010
-  - [ ] File has "Active Patterns" and "Retired Patterns" sections
+  - [x] `.sdd/reviews/spec-patterns.md` exists and follows FR-009 structure
+  - [x] Every existing pattern entry has all required fields: id (PAT-SPEC-XXX), title, status, added, source, trigger, prevention
+  - [x] Pattern IDs use the `PAT-SPEC-XXX` format per FR-010
+  - [x] File has "Active Patterns" and "Retired Patterns" sections
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -86,10 +86,10 @@ FR-008, FR-009, FR-010, FR-016, Section 7.2, Section 9.1
 - **Spec refs**: FR-008 (item 3), FR-009, FR-010
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] `.sdd/reviews/code-patterns.md` exists and follows FR-009 structure
-  - [ ] Every existing pattern entry has all required fields: id (PAT-CODE-XXX), title, status, added, source, trigger, prevention
-  - [ ] Pattern IDs use the `PAT-CODE-XXX` format per FR-010
-  - [ ] File has "Active Patterns" and "Retired Patterns" sections
+  - [x] `.sdd/reviews/code-patterns.md` exists and follows FR-009 structure
+  - [x] Every existing pattern entry has all required fields: id (PAT-CODE-XXX), title, status, added, source, trigger, prevention
+  - [x] Pattern IDs use the `PAT-CODE-XXX` format per FR-010
+  - [x] File has "Active Patterns" and "Retired Patterns" sections
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:

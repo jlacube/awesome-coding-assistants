@@ -1,4 +1,4 @@
-# Code Patterns
+# Doc Patterns
 
 ## Active Patterns
 
