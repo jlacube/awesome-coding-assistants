@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP24 - Debug Skill
@@ -11,7 +11,7 @@ lane: doing
 | Lane | planned |
 | Depends on | WP20, WP21 |
 | Goal | Implement the code-debug SKILL.md that diagnoses test failures, fixes source or test code, re-runs tests, and reports results including regression detection |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Introduce a deliberate bug in implementation code. Run the Coder through tests. Verify: code-debug diagnoses the root cause, fixes the source code, re-runs all tests, and reports previously-failing tests now pass. Also verify: debug does not delete tests, weaken assertions, or add broad exception handlers |
 | Parallelisable | Yes |
 | Prompt | `.sdd/plans/WP24-debug-skill.md` |
@@ -158,3 +158,4 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - 2026-04-05T12:04:00Z - coder - T24-04 - completed - Re-run verification and regression detection (FR-037)
 - 2026-04-05T12:05:00Z - coder - T24-05 - completed - Escalation reporting format with full context for human review
 - 2026-04-05T12:06:00Z - coder - T24-06 - completed - Integration verification: glob discovery, prompt template match, encoding compliance
+- 2026-04-05T12:07:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria met
