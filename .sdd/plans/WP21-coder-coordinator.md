@@ -1,5 +1,5 @@
 ---
-lane: for_review
+lane: done
 ---
 
 # WP21 - Coder Coordinator
@@ -224,8 +224,51 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Risk**: Debug retry state management becomes fragile. **Mitigation**: Use simple counter pattern with explicit max (3); escalate on any unexpected state.
 - **Risk**: Handoff target names mismatch with other agents. **Mitigation**: Cross-reference existing agent handoff buttons before writing.
 
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-05T18:00:00Z
+> **Verdict**: Approved with Findings
+> **Skills dispatched**: review-spec (WARN)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All 10 tasks have all acceptance criteria checked off
+- [PASS] Activity Log: Consistent lane transitions (planned -> doing -> for_review)
+- [PASS] Commit granularity: 10 per-task commits plus 1 completion commit
+- [PASS] Encoding: No violations found
+
+### Review Feedback
+
+> No FAIL items. No remediation required.
+
+### Warnings
+- [WARN] Template deviation in Section 8.2: Skill prompt template adds an extra rule line ("Contract files are READ-ONLY -- do NOT modify any file in .sdd/plans/contracts/") not present in the spec template. This reinforces Decision 5 and FR-003 but deviates from the verbatim Section 8.2 template. Reclassified from FAIL: additive reinforcement of existing spec decisions, no spec content removed or substituted. (review-spec SPEC-021)
+- [WARN] Template deviation in Section 8.3: Debug prompt template adds "(unit + integration)" clarification after "Re-run ALL tests" and adds "Do NOT modify contract files -- they are read-only." rule line. Both additions reinforce established spec requirements but deviate from the verbatim Section 8.3 template. Reclassified from FAIL: additive reinforcement, no spec content removed. (review-spec SPEC-022)
+
+### Reclassification Rationale
+
+SPEC-021 and SPEC-022 were reported as FAIL by the review-spec skill because the implementation adds extra lines to spec-defined templates (Sections 8.2 and 8.3). These are reclassified to WARN because:
+
+1. Both additions reinforce established spec decisions: Decision 5 (contracts read-only) and FR-003 (contract validation)
+2. No spec-prescribed content was removed, changed, or substituted -- the additions are purely additive
+3. The spec templates define required structure and content but do not mandate verbatim-only reproduction
+4. This is distinct from PAT-007 (resolved) which involved substituting different terms for spec-prescribed terms
+5. Removing these additions would weaken the implementation's defensive posture against contract modification by skills
+
+### Cross-Correlation Notes
+- No cross-correlation findings.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 4 | 0 | 0 |
+| review-spec | 27 | 2 | 0 |
+| **Total** | **31** | **2** | **0** |
+
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation of coordinator rewrite
 - 2026-04-05T16:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-05T18:00:00Z - review-coordinator - lane=done - Verdict: Approved with Findings (2 WARNs)

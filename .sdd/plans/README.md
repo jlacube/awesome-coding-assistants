@@ -487,7 +487,7 @@ Cross-WP consistency audit performed before plan submission. Findings:
 | ID | Title | Priority | Status | Depends On | Parallelisable |
 |----|-------|----------|--------|------------|----------------|
 | [WP20](WP20-foundation-coder-skills.md) | Foundation: Coder Skill Scaffolding | P0 | Complete | none | - |
-| [WP21](WP21-coder-coordinator.md) | Coder Coordinator | P1 | Complete | WP20 | No |
+| [WP21](WP21-coder-coordinator.md) | Coder Coordinator | P1 | Done | WP20 | No |
 | [WP22](WP22-env-setup-implementation-skills.md) | Environment Setup & Core Implementation Skills | P1 | Not Started | WP20, WP21 | Yes |
 | [WP23](WP23-test-skills.md) | Test Skills | P1 | Not Started | WP20, WP21 | Yes |
 | [WP24](WP24-debug-skill.md) | Debug Skill | P1 | Not Started | WP20, WP21 | Yes |
