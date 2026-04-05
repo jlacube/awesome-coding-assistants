@@ -87,11 +87,11 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - **Spec refs**: FR-037
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] After fixes, the skill SHALL re-run all tests (unit + integration) (FR-037)
-  - [ ] The skill SHALL report: previously failing tests that now pass (FR-037.1)
-  - [ ] The skill SHALL report: tests still failing with diagnosis (FR-037.2)
-  - [ ] The skill SHALL report: new failures introduced by fixes (regressions) (FR-037.3)
-  - [ ] Given the debug skill fixes a type mismatch, re-runs all tests successfully (BDD Scenario 3)
+  - [x] After fixes, the skill SHALL re-run all tests (unit + integration) (FR-037)
+  - [x] The skill SHALL report: previously failing tests that now pass (FR-037.1)
+  - [x] The skill SHALL report: tests still failing with diagnosis (FR-037.2)
+  - [x] The skill SHALL report: new failures introduced by fixes (regressions) (FR-037.3)
+  - [x] Given the debug skill fixes a type mismatch, re-runs all tests successfully (BDD Scenario 3)
 - **Test requirements**: BDD
 - **Depends on**: T24-03
 - **Implementation Guidance**:
@@ -155,3 +155,4 @@ FR-034, FR-035, FR-036, FR-037 (code-debug), FR-017, FR-018, FR-019 (common skil
 - 2026-04-05T12:01:00Z - coder - T24-01 - completed - SKILL.md structure with frontmatter, input/output contracts, execution sequence
 - 2026-04-05T12:02:00Z - coder - T24-02 - completed - Failure diagnosis logic with categorization, source code reading, diagnosis decision tree
 - 2026-04-05T12:03:00Z - coder - T24-03 - completed - Fix prioritization and safety constraints (FR-035, FR-036)
+- 2026-04-05T12:04:00Z - coder - T24-04 - completed - Re-run verification and regression detection (FR-037)

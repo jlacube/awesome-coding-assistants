@@ -230,3 +230,62 @@ If a test's assertion is genuinely wrong per the spec, change it to the correct 
 - Contracts are read-only -- they are the Planner's output and the spec's derivative
 - If a contract appears wrong, report the discrepancy in the `issues` output field
 - The coordinator will escalate contract issues to the Planner or Spec Architect
+
+---
+
+## Step 4 -- Re-Run All Tests and Detect Regressions (FR-037)
+
+After applying fixes, re-run ALL tests -- both unit and integration. Do NOT re-run only the previously-failing tests. The full test suite must pass to confirm fixes and catch regressions.
+
+### 4a. Run the Full Test Suite
+
+Use the project's test runner to execute all tests:
+
+| Language | Command | Coverage |
+|----------|---------|----------|
+| Python | `pytest --tb=short -q` | `pytest --cov` |
+| TypeScript | `npx jest` or `npm test` | `npx jest --coverage` |
+| Go | `go test ./...` | `go test -cover ./...` |
+| Rust | `cargo test` | `cargo tarpaulin` |
+
+Run both unit and integration test suites. If they use separate commands or directories, run both.
+
+### 4b. Categorize Results (FR-037.1, FR-037.2, FR-037.3)
+
+Compare the post-fix test results against the pre-fix `test_output` to categorize every test:
+
+| Category | Definition | Report Field |
+|----------|------------|--------------|
+| **Fixed** | Was failing in `test_output`, now passes | `tests_fixed` |
+| **Still failing** | Was failing in `test_output`, still fails | `tests_still_failing` |
+| **Regression** | Was NOT failing in `test_output`, now fails | `regressions` |
+| **Unchanged pass** | Was passing, still passes | (not reported -- this is expected) |
+
+### 4c. Handle Regressions
+
+If any regression is detected (`regressions` is non-empty):
+
+1. The fix introduced a new failure. This is a critical signal.
+2. Attempt to resolve the regression without breaking the original fix:
+   - Read the regressed test to understand what behavior changed
+   - Determine if the fix needs adjustment to preserve both behaviors
+   - Apply a corrected fix and re-run all tests again
+3. If the regression cannot be resolved without breaking the original fix, report both the regression and the original failure as `tests_still_failing` and revert the fix that caused the regression.
+
+### 4d. Populate Test Results
+
+After the final test run, populate the output fields:
+
+```
+test_results:
+  pass_count: <number of passing tests>
+  fail_count: <number of failing tests>
+  coverage_pct: <code coverage percentage>
+
+tests_fixed: [<list of test names that were failing and now pass>]
+tests_still_failing:
+  - name: <test name>
+    error: <error message>
+    diagnosis: <why this test still fails>
+regressions: [<list of test names that were passing but now fail>]
+```
