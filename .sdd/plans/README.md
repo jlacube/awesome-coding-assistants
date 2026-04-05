@@ -1,7 +1,7 @@
 # Plan Index
 
 > **Generated**: 2026-04-04
-> **Updated**: 2026-04-05
+> **Updated**: 2026-04-05T00:00:00Z
 
 ---
 
@@ -475,3 +475,146 @@ Cross-WP consistency audit performed before plan submission. Findings:
 - **Test consistency**: All WPs use manual invocation testing. Coverage thresholds (80% code, 90% branch) are referenced consistently in WP16 (plan-acceptance) and WP19 (cross-validation).
 - **Spec traceability**: All 54 FRs (FR-001 through FR-054) are assigned. FR-013 (800-line blocks), FR-023/FR-024 (common contract), and FR-039 (manifest headers) are shared across multiple WPs by design.
 - **Phase ordering**: Phase 1 skills (WP16) populate the plan accumulator that Phase 2 skills (WP17-WP19) consume. This ordering is enforced by the coordinator's two-phase dispatch (FR-011, FR-012).
+
+---
+
+## Spec 004 -- Coder V2
+
+> **Spec**: `.sdd/specs/004-coder-v2.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP20](WP20-foundation-coder-skills.md) | Foundation: Coder Skill Scaffolding | P0 | Not Started | none | - |
+| [WP21](WP21-coder-coordinator.md) | Coder Coordinator | P1 | Not Started | WP20 | No |
+| [WP22](WP22-env-setup-implementation-skills.md) | Environment Setup & Core Implementation Skills | P1 | Not Started | WP20, WP21 | Yes |
+| [WP23](WP23-test-skills.md) | Test Skills | P1 | Not Started | WP20, WP21 | Yes |
+| [WP24](WP24-debug-skill.md) | Debug Skill | P1 | Not Started | WP20, WP21 | Yes |
+
+### MVP Scope
+
+All work packages are MVP. The Coder V2 requires all 5 components to function:
+
+- WP20 (P0) creates the directory scaffolding, stub skill files, common skill contract, and code-patterns.md
+- WP21 (P1) rewrites the Coder coordinator from monolithic to skill-based dispatch with debug retry logic
+- WP22 (P1) implements the environment setup and core implementation skills (code-env-setup, code-implementation)
+- WP23 (P1) implements the testing skills (code-unit-tests, code-integration-tests)
+- WP24 (P1) implements the conditional debug skill (code-debug)
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP20 -> WP21 -> {WP22, WP23, WP24}
+- **Parallelization**: WP22, WP23, and WP24 can all run in parallel after WP21 completes. Each creates independent SKILL.md files.
+- **Critical path**: WP20 -> WP21 -> WP22 (longest content, 8 tasks)
+
+### Sequencing Notes
+
+WP20 creates the directory structure and stub SKILL.md files that the coordinator's dynamic discovery depends on (FR-005). Without the directories and the glob pattern `.github/skills/code-*/SKILL.md`, the coordinator halts with "no coding skills installed."
+
+WP21 is the critical bottleneck: it rewrites coder.agent.md from monolithic single-pass implementation to a coordinator that dispatches 5 sequential coding skills. It contains the most complex state management (debug retry logic, task tracking, coverage verification). All skill WPs depend on the coordinator being in place.
+
+After WP21 completes, WP22-WP24 are fully parallelizable because each creates independent SKILL.md files. However, WP22 (env-setup + implementation) is recommended first because these are the "producing" skills that the testing and debug skills depend on at runtime. WP23 (test skills) is recommended second, and WP24 (debug) last, mirroring the canonical skill dispatch order from FR-006.
+
+All implementation artifacts are markdown files (.agent.md, SKILL.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the Coder coordinator against a WP with contract files and verifying the output matches BDD scenarios from the spec.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T20-01 | Create 5 coding skill directories | WP20 | No |
+| T20-02 | Create stub SKILL.md files with YAML frontmatter | WP20 | No |
+| T20-03 | Create CODER-SKILL-CONTRACT.md | WP20 | No |
+| T20-04 | Create code-patterns.md placeholder | WP20 | Yes |
+| T20-05 | Refactor coder.agent.md YAML frontmatter | WP20 | No |
+| T20-06 | Verify directory structure and encoding compliance | WP20 | No |
+| T21-01 | Write WP selection and user interaction | WP21 | No |
+| T21-02 | Write artifact chain loading | WP21 | No |
+| T21-03 | Write contract file validation | WP21 | No |
+| T21-04 | Write patterns consumption | WP21 | No |
+| T21-05 | Write dynamic skill discovery and ordering | WP21 | No |
+| T21-06 | Write skill dispatch via runSubagent | WP21 | No |
+| T21-07 | Write conditional debug dispatch with retry logic | WP21 | No |
+| T21-08 | Write task state tracking and WP lifecycle | WP21 | No |
+| T21-09 | Write post-completion handoff and coverage verification | WP21 | No |
+| T21-10 | Write commit policy and handoff prompts | WP21 | No |
+| T22-01 | Create code-env-setup SKILL.md structure | WP22 | No |
+| T22-02 | Write environment detection and creation logic | WP22 | No |
+| T22-03 | Write dependency installation and coverage tooling setup | WP22 | No |
+| T22-04 | Write baseline verification and failure handling | WP22 | No |
+| T22-05 | Create code-implementation SKILL.md structure | WP22 | Yes |
+| T22-06 | Write contract-first implementation logic | WP22 | No |
+| T22-07 | Write implementation constraints and scope rules | WP22 | No |
+| T22-08 | Integration verification of both skills with coordinator | WP22 | No |
+| T23-01 | Create code-unit-tests SKILL.md structure | WP23 | No |
+| T23-02 | Write unit test generation logic | WP23 | No |
+| T23-03 | Write test validity rules | WP23 | Yes |
+| T23-04 | Write test execution and coverage threshold enforcement | WP23 | No |
+| T23-05 | Create code-integration-tests SKILL.md structure | WP23 | Yes |
+| T23-06 | Write integration test generation logic | WP23 | No |
+| T23-07 | Write integration test execution and reporting | WP23 | No |
+| T23-08 | Integration verification of both test skills with coordinator | WP23 | No |
+| T24-01 | Create code-debug SKILL.md structure | WP24 | No |
+| T24-02 | Write failure diagnosis logic | WP24 | No |
+| T24-03 | Write fix prioritization and safety constraints | WP24 | No |
+| T24-04 | Write re-run verification and regression detection | WP24 | No |
+| T24-05 | Write escalation reporting format | WP24 | Yes |
+| T24-06 | Integration verification with coordinator | WP24 | No |
+
+**Total**: 5 work packages, 38 tasks
+
+### FR Traceability
+
+Every FR from Spec 004 is assigned to exactly one task:
+
+| FR Range | Assignment | WP |
+|----------|------------|-----|
+| FR-001 | T21-01 | WP21 |
+| FR-002 | T21-02 | WP21 |
+| FR-003 | T21-03 | WP21 |
+| FR-004 | T21-04 | WP21 |
+| FR-005 | T20-01, T20-02, T21-05 | WP20, WP21 |
+| FR-006 | T21-05 | WP21 |
+| FR-007 | T21-06 | WP21 |
+| FR-008 | T21-06 | WP21 |
+| FR-009 | T21-06 | WP21 |
+| FR-010 | T21-07 | WP21 |
+| FR-011 | T21-08 | WP21 |
+| FR-012 | T21-08 | WP21 |
+| FR-013 | T21-08 | WP21 |
+| FR-014 | T21-09 | WP21 |
+| FR-015 | T21-09 | WP21 |
+| FR-016 | T21-10 | WP21 |
+| FR-017 | T20-03, T22-01, T22-05, T23-01, T23-05, T24-01 (common contract per skill) | WP20, WP22-24 |
+| FR-018 | T20-03, T22-01, T22-05, T23-01, T23-05, T24-01 (common contract per skill) | WP20, WP22-24 |
+| FR-019 | T20-03, T22-01, T22-05, T23-01, T23-05, T24-01 (common contract per skill) | WP20, WP22-24 |
+| FR-020 | T22-02, T22-03, T22-04 | WP22 |
+| FR-021 | T22-04 | WP22 |
+| FR-022 | T22-03 | WP22 |
+| FR-023 | T22-06 | WP22 |
+| FR-024 | T22-06 | WP22 |
+| FR-025 | T22-07 | WP22 |
+| FR-026 | T22-07 | WP22 |
+| FR-027 | T23-02 | WP23 |
+| FR-028 | T23-03 | WP23 |
+| FR-029 | T23-04 | WP23 |
+| FR-030 | T23-04 | WP23 |
+| FR-031 | T23-06 | WP23 |
+| FR-032 | T23-06 | WP23 |
+| FR-033 | T23-07 | WP23 |
+| FR-034 | T24-02 | WP24 |
+| FR-035 | T24-03 | WP24 |
+| FR-036 | T24-03 | WP24 |
+| FR-037 | T24-04 | WP24 |
+
+### Consistency Notes
+
+Cross-WP consistency audit performed before plan submission. No inconsistencies found:
+
+- **Skill contract**: Common coder-skill contract (FR-017, FR-018, FR-019) defined in WP20 (CODER-SKILL-CONTRACT.md) and referenced identically in all skill WPs (WP22-WP24). Input contract has 8 fields. Output contract has 6 fields.
+- **Dependency graph**: No circular dependencies. WP20 -> WP21 -> {WP22 || WP23 || WP24}. All `Depends on` declarations verified valid.
+- **Configuration**: Glob patterns (`code-*/SKILL.md`), file paths, directory names consistent across coordinator (WP21) and all skill WPs (WP22-WP24).
+- **Test consistency**: All WPs use manual invocation testing. Coverage thresholds (80% code, 90% branch) are referenced consistently in WP23 (test skills) and WP21 (coordinator coverage verification).
+- **Spec traceability**: All 37 FRs (FR-001 through FR-037) are assigned. FR-005 (discovery), FR-017/FR-018/FR-019 (common contract) are shared across multiple WPs by design.
+- **Phase ordering**: Skills are dispatched in canonical order: code-env-setup -> code-implementation -> code-unit-tests -> code-integration-tests -> code-debug (conditional). This ordering is enforced by the coordinator (FR-006).
+- **Debug coordination**: Test skills (WP23) report test_results in FR-019 format. Coordinator (WP21) reads test_results.fail_count to decide debug dispatch. Debug skill (WP24) receives failing test output and attempt counter. All three WPs use consistent data contracts.
