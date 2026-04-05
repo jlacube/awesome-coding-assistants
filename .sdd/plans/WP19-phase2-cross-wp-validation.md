@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP19 - Phase 2: Cross-WP Validation Skill
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/003-planner-v2.spec.md` |
 | Priority | P1 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP14, WP15, WP16, WP17, WP18 |
 | Goal | Implement the plan-cross-wp-validation skill that audits all WPs and contracts for consistency, generates a shared config schema, fixes inconsistencies, and verifies 100% spec artifact coverage |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Dispatch plan-cross-wp-validation against a plan accumulator with known inconsistencies. Verify: inconsistencies are fixed, config-schema file is generated in contracts/shared/, README includes Consistency Notes, no orphan FRs remain |
 | Parallelisable | No (must run after all other Phase 2 skills) |
 | Prompt | `.sdd/plans/WP19-phase2-cross-wp-validation.md` |
@@ -32,10 +32,10 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051, FR-023, FR-024
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
-  - [ ] Skill reads ALL plan files and ALL contract files as input (FR-051)
-  - [ ] Skill reads the spec and companion artifacts as input (FR-054)
-  - [ ] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
+  - [x] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
+  - [x] Skill reads ALL plan files and ALL contract files as input (FR-051)
+  - [x] Skill reads the spec and companion artifacts as input (FR-054)
+  - [x] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -48,10 +48,10 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051.1
 - **Parallel**: Yes (with T19-03, T19-04, T19-05, T19-06, T19-07)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify entity fields match across WPs (FR-051.1)
-  - [ ] If WP-A defines field `userId: string` and WP-B defines `userId: number`, the skill SHALL flag it and fix to the canonical type from the spec data model
-  - [ ] Shared data formats (dates, IDs, enums) SHALL be consistent across all WPs
-  - [ ] Fixes are applied directly to the contract files, not just reported
+  - [x] The skill SHALL verify entity fields match across WPs (FR-051.1)
+  - [x] If WP-A defines field `userId: string` and WP-B defines `userId: number`, the skill SHALL flag it and fix to the canonical type from the spec data model
+  - [x] Shared data formats (dates, IDs, enums) SHALL be consistent across all WPs
+  - [x] Fixes are applied directly to the contract files, not just reported
 - **Test requirements**: BDD (US-04 Scenario 1)
 - **Depends on**: T19-01
 - **Implementation Guidance**:
@@ -64,10 +64,10 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051.2
 - **Parallel**: Yes (with T19-02, T19-04, T19-05, T19-06, T19-07)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify every API endpoint defined in one WP matches its consumers in other WPs (FR-051.2)
-  - [ ] The skill SHALL check: HTTP method, path, parameters, return type, error response schemas
-  - [ ] If WP-A defines `GET /api/users` returning `User[]` and WP-B expects `UserResponse[]`, the skill SHALL flag and fix
-  - [ ] Interface contracts defined in one WP and implemented in another SHALL be identical
+  - [x] The skill SHALL verify every API endpoint defined in one WP matches its consumers in other WPs (FR-051.2)
+  - [x] The skill SHALL check: HTTP method, path, parameters, return type, error response schemas
+  - [x] If WP-A defines `GET /api/users` returning `User[]` and WP-B expects `UserResponse[]`, the skill SHALL flag and fix
+  - [x] Interface contracts defined in one WP and implemented in another SHALL be identical
 - **Test requirements**: BDD (US-04 Scenario 2)
 - **Depends on**: T19-01
 - **Implementation Guidance**:
@@ -80,10 +80,10 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051.3
 - **Parallel**: Yes (with T19-02, T19-03, T19-05, T19-06, T19-07)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify no circular dependencies exist (FR-051.3)
-  - [ ] The skill SHALL verify all `Depends on` WP IDs are valid (FR-051.3)
-  - [ ] The skill SHALL verify WPs marked `Parallelisable: Yes` have no shared mutable state
-  - [ ] The dependency graph in README.md SHALL match individual WP declarations
+  - [x] The skill SHALL verify no circular dependencies exist (FR-051.3)
+  - [x] The skill SHALL verify all `Depends on` WP IDs are valid (FR-051.3)
+  - [x] The skill SHALL verify WPs marked `Parallelisable: Yes` have no shared mutable state
+  - [x] The dependency graph in README.md SHALL match individual WP declarations
 - **Test requirements**: BDD (US-04 Scenario 3)
 - **Depends on**: T19-01
 - **Implementation Guidance**:
@@ -96,10 +96,10 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051.4, FR-052
 - **Parallel**: Yes (with T19-02, T19-03, T19-04, T19-06, T19-07)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify environment variables and config keys use identical names/types across WPs (FR-051.4)
-  - [ ] Default values SHALL be consistent -- WP-A does not assume a different default than WP-B for the same config key (FR-051.4)
-  - [ ] The skill SHALL generate `config-schema.<ext>` in `.sdd/plans/contracts/shared/` (FR-052)
-  - [ ] Config schema SHALL include: name, type, default, validation rule, description for each env var (FR-052)
+  - [x] The skill SHALL verify environment variables and config keys use identical names/types across WPs (FR-051.4)
+  - [x] Default values SHALL be consistent -- WP-A does not assume a different default than WP-B for the same config key (FR-051.4)
+  - [x] The skill SHALL generate `config-schema.<ext>` in `.sdd/plans/contracts/shared/` (FR-052)
+  - [x] Config schema SHALL include: name, type, default, validation rule, description for each env var (FR-052)
 - **Test requirements**: BDD (US-04 Scenario 1)
 - **Depends on**: T19-01
 - **Implementation Guidance**:
@@ -113,10 +113,10 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051.5, FR-051.6
 - **Parallel**: Yes (with T19-02, T19-03, T19-04, T19-05, T19-07)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify coverage requirements (80% code, 90% branch) are stated consistently in all WPs that reference testing (FR-051.5)
-  - [ ] The skill SHALL verify every FR in the spec's traceability matrix is assigned to exactly one task across all WPs (FR-051.6)
-  - [ ] No orphan FRs (FR in spec but not in any WP task)
-  - [ ] No duplicate FR assignments (same FR in multiple WP tasks without explicit justification)
+  - [x] The skill SHALL verify coverage requirements (80% code, 90% branch) are stated consistently in all WPs that reference testing (FR-051.5)
+  - [x] The skill SHALL verify every FR in the spec's traceability matrix is assigned to exactly one task across all WPs (FR-051.6)
+  - [x] No orphan FRs (FR in spec but not in any WP task)
+  - [x] No duplicate FR assignments (same FR in multiple WP tasks without explicit justification)
 - **Test requirements**: BDD (US-04 Scenario 1)
 - **Depends on**: T19-01
 - **Implementation Guidance**:
@@ -130,9 +130,9 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-051.7
 - **Parallel**: Yes (with T19-02, T19-03, T19-04, T19-05, T19-06)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify every contract file in `.sdd/plans/contracts/` is referenced by at least one task (FR-051.7)
-  - [ ] Orphan contract files (generated but not referenced by any task) SHALL be flagged
-  - [ ] Missing contract references (task references a contract that does not exist) SHALL be flagged
+  - [x] The skill SHALL verify every contract file in `.sdd/plans/contracts/` is referenced by at least one task (FR-051.7)
+  - [x] Orphan contract files (generated but not referenced by any task) SHALL be flagged
+  - [x] Missing contract references (task references a contract that does not exist) SHALL be flagged
 - **Test requirements**: BDD (US-04 Scenario 1)
 - **Depends on**: T19-01
 - **Implementation Guidance**:
@@ -146,9 +146,9 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-053
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL fix inconsistencies directly in WP and contract files (FR-053)
-  - [ ] The skill SHALL document all corrections in README under "Consistency Notes" (FR-053)
-  - [ ] Each correction entry SHALL include: what was inconsistent, which files were affected, what was changed
+  - [x] The skill SHALL fix inconsistencies directly in WP and contract files (FR-053)
+  - [x] The skill SHALL document all corrections in README under "Consistency Notes" (FR-053)
+  - [x] Each correction entry SHALL include: what was inconsistent, which files were affected, what was changed
 - **Test requirements**: BDD (BDD Scenario 4 from US-04)
 - **Depends on**: T19-02, T19-03, T19-04, T19-05, T19-06, T19-07
 - **Implementation Guidance**:
@@ -161,11 +161,11 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: FR-054
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL verify 100% coverage of spec companion artifacts (FR-054)
-  - [ ] No spec artifact entity may be missing from the plan's contracts
-  - [ ] No spec artifact endpoint may be missing from the plan's contracts
-  - [ ] No spec artifact error code may be missing from the plan's contracts
-  - [ ] No spec artifact state machine may be missing from the plan's contracts
+  - [x] The skill SHALL verify 100% coverage of spec companion artifacts (FR-054)
+  - [x] No spec artifact entity may be missing from the plan's contracts
+  - [x] No spec artifact endpoint may be missing from the plan's contracts
+  - [x] No spec artifact error code may be missing from the plan's contracts
+  - [x] No spec artifact state machine may be missing from the plan's contracts
 - **Test requirements**: BDD (US-02 Scenario 1, US-04 Scenario 1)
 - **Depends on**: T19-08
 - **Implementation Guidance**:
@@ -178,9 +178,9 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 - **Spec refs**: Section 9.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Zero prohibited Unicode characters in SKILL.md
-  - [ ] All hyphens are ASCII `-`, all quotes are straight
-  - [ ] Python validation script confirms clean results
+  - [x] Zero prohibited Unicode characters in SKILL.md
+  - [x] All hyphens are ASCII `-`, all quotes are straight
+  - [x] Python validation script confirms clean results
 - **Test requirements**: unit (encoding validation)
 - **Depends on**: T19-09
 - **Implementation Guidance**:
@@ -206,3 +206,5 @@ FR-051, FR-052, FR-053, FR-054, Section 4.10, Section 7.2
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T15:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T15:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
