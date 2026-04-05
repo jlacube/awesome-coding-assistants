@@ -1,6 +1,6 @@
 # Review Patterns
 
-> Last updated: 2026-04-05T16:00:00Z
+> Last updated: 2026-04-05T16:30:00Z
 > Last review: WP12-architecture-security-skills
 
 Coder: read this file before implementing any WP. These patterns document
@@ -8,14 +8,17 @@ mistakes caught in previous reviews. Avoid repeating them.
 
 ## Active Patterns
 
+(none)
+
+## Resolved
+
 ### PAT-005 [spec-adherence] Classification level deviation from spec
 - **First seen**: WP12 (2026-04-05)
+- **Resolved**: WP12 (2026-04-05)
 - **Occurrences**: 1
 - **Pattern**: Spec prescribes specific enumerated values (e.g., classification levels "public, internal, confidential, restricted") but implementation substitutes a different term ("PII" for "confidential"). Even when the substitution may be arguably better, it deviates from the spec's explicit prescription.
 - **Fix**: Use the exact values prescribed by the spec. If a different term is preferable, propose a spec amendment via the "Update Specification" handoff rather than silently deviating.
 - **Source**: review-spec SPEC-012
-
-## Resolved
 
 ### PAT-004 [spec-adherence] Incomplete OWASP checklist item coverage
 - **First seen**: WP04 (2026-04-04)

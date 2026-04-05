@@ -5,9 +5,9 @@ spec: .sdd/specs/002-spec-architect-v2.spec.md
 reviewed_at: 2026-04-05T16:00:00Z
 status: completed
 finding_counts:
-  pass: 11
+  pass: 12
   warn: 0
-  fail: 1
+  fail: 0
   na: 2
 files_reviewed:
   - .github/skills/spec-architecture/SKILL.md
@@ -18,7 +18,7 @@ files_reviewed:
 
 ## Summary
 
-Evaluated 13 FRs (FR-023 through FR-028 common contract, FR-043 through FR-049 skill-specific) across two SKILL.md files. 11 FRs are fully compliant, 1 FR has a deviation (FR-047 data classification levels), and 2 items are N/A. Both skills correctly implement the common skill contract and their skill-specific requirements, with one exception: the security skill uses "PII" as a classification level where the spec prescribes "confidential".
+Evaluated 13 FRs (FR-023 through FR-028 common contract, FR-043 through FR-049 skill-specific) across two SKILL.md files. 12 FRs are fully compliant and 2 items are N/A. Both skills correctly implement the common skill contract and their skill-specific requirements. Previous FAIL on SPEC-012 (data classification levels) has been resolved in round 2: "PII" replaced with "confidential" per FR-047 item 3.
 
 ## Findings
 
@@ -87,21 +87,11 @@ Evaluated 13 FRs (FR-023 through FR-028 common contract, FR-043 through FR-049 s
 - **File**: .github/skills/spec-architecture/SKILL.md
 - **Description**: Under Section 9.2 template, "MANDATORY: Package isolation" block specifies: Python (venv, poetry, conda), Node.js (local node_modules via npm/yarn/pnpm), other languages (equivalent isolation). "Global package installation is PROHIBITED for project dependencies." All FR-046 requirements met.
 
-### SPEC-012 [FAIL]
-- **Checklist item**: FR classification - SHALL obligation (Deviating)
+### SPEC-012 [PASS]
+- **Checklist item**: FR classification - SHALL obligation (Re-reviewed round 2)
 - **Requirement**: FR-047 (Section 10.2 Security Expansion)
-- **File**: .github/skills/spec-security/SKILL.md#L105-L112
-- **Description**: FR-047 prescribes data sensitivity classification levels as "(public, internal, confidential, restricted)". The implementation uses "(public, internal, PII, restricted)" -- substituting "PII" for "confidential". While PII is arguably more specific, it deviates from the spec's prescribed classification levels.
-- **Expected**: Classification levels should be "public, internal, confidential, restricted" per FR-047 item 3.
-- **Evidence**:
-  ```markdown
-  Classification levels:
-  - **public**: No restrictions
-  - **internal**: Not exposed to unauthorized users
-  - **PII**: Personally identifiable information; regulatory handling required
-  - **restricted**: Maximum protection; never logged, encrypted at rest and in transit
-  ```
-  Spec text: "Data sensitivity classification per entity (public, internal, confidential, restricted)"
+- **File**: .github/skills/spec-security/SKILL.md#L105-L120
+- **Description**: Classification levels now correctly use "(public, internal, confidential, restricted)" per FR-047 item 3. Previous deviation ("PII" substituted for "confidential") has been remediated. Example table uses "confidential" for User.email, and the classification levels list defines "confidential" as "Sensitive data; regulatory handling may apply, encrypted at rest". Fully compliant.
 
 ### SPEC-013 [PASS]
 - **Checklist item**: FR classification - SHALL obligation
