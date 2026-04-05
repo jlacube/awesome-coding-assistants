@@ -156,10 +156,10 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-011, FR-012, FR-013
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL update the WP file's `lane:` frontmatter to `doing` when implementation begins (FR-011)
-  - [ ] The coordinator SHALL track each task's progress using `manage_todo_list`, marking tasks in-progress when started and completed when acceptance criteria are met (FR-012)
-  - [ ] The coordinator SHALL update the WP file after each task completes: check off acceptance criteria and append an Activity Log entry (FR-013)
-  - [ ] Activity Log entries SHALL include task ID, status, and timestamp per Section 7.3
+  - [x] The coordinator SHALL update the WP file's `lane:` frontmatter to `doing` when implementation begins (FR-011)
+  - [x] The coordinator SHALL track each task's progress using `manage_todo_list`, marking tasks in-progress when started and completed when acceptance criteria are met (FR-012)
+  - [x] The coordinator SHALL update the WP file after each task completes: check off acceptance criteria and append an Activity Log entry (FR-013)
+  - [x] Activity Log entries SHALL include task ID, status, and timestamp per Section 7.3
 - **Test requirements**: none
 - **Depends on**: T21-06
 - **Implementation Guidance**:

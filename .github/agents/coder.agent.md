@@ -196,4 +196,41 @@ Debug attempt: <N> of 3.
    - Summary of all 3 debug attempt outcomes
    - Do NOT mark the WP as `for_review`. Halt.
 
+## Step 8 - Task State Tracking and WP Lifecycle (FR-011, FR-012, FR-013)
+
+This protocol runs throughout the implementation lifecycle, not as a single sequential step.
+
+### 8a. Lane Update on Start (FR-011)
+
+When implementation begins (after all validation in Steps 1-5 passes), update the WP file:
+1. Set the `lane:` YAML frontmatter field to `doing`.
+2. Append an Activity Log entry: `<timestamp> - coder - lane=doing - Starting implementation`
+
+### 8b. Task Progress Tracking (FR-012)
+
+Use `manage_todo_list` to track every task in the WP:
+- Mark each task as in-progress when its implementation starts (via the skill dispatch)
+- Mark each task as completed when its acceptance criteria are all met
+
+### 8c. WP File Updates After Each Task (FR-013)
+
+After each skill completes, update the WP file:
+1. Check off acceptance criteria (`- [ ]` to `- [x]`) for criteria verified by the skill.
+2. Append an Activity Log entry with task ID, status, and timestamp:
+   ```
+   - <timestamp> - coder - <task_id> - completed - <brief notes>
+   ```
+
+### Activity Log Protocol
+
+Every time the WP's lane changes, append an entry to its Activity Log section (oldest first, newest last):
+
+```
+- <timestamp> - coder - lane=<lane> - <brief action description>
+```
+
+Valid lanes: `planned` -> `doing` -> `for_review` -> `done` (set by Reviewer) | `to_do` (set by Reviewer on FAIL)
+
+Do NOT prepend or insert mid-list -- always append to the end.
+
 </workflow>
