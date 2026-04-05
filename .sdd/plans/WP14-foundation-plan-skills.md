@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP14 - Foundation: Plan Skill Scaffolding
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | none |
 | Goal | Create the directory structure, stub skill files, and common plan-skill contract so Phase 1 and Phase 2 skills can be implemented |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Verify: 8 plan skill directories exist under `.github/skills/plan-*/`, each contains a stub `SKILL.md` with valid YAML frontmatter, and `PLAN-SKILL-CONTRACT.md` defines the 9-input contract |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP14-foundation-plan-skills.md` |
@@ -32,9 +32,9 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 - **Spec refs**: FR-010, FR-011, Section 9.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] All 8 directories exist under `.github/skills/`
-  - [ ] Directory names match the canonical names from FR-011 exactly
-  - [ ] No extra directories created beyond the 8 specified
+  - [x] All 8 directories exist under `.github/skills/`
+  - [x] Directory names match the canonical names from FR-011 exactly
+  - [x] No extra directories created beyond the 8 specified
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,11 +49,11 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 - **Spec refs**: FR-023, FR-024, Section 9.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each of the 8 directories contains a `SKILL.md` file
-  - [ ] Each `SKILL.md` has valid YAML frontmatter with `name`, `description`, and `argument-hint`
-  - [ ] `argument-hint` reads "Invoked by Planner Coordinator - do not call directly"
-  - [ ] The `name` field matches the directory name (e.g., `plan-decomposition`)
-  - [ ] The `description` field matches the canonical purpose from FR-011
+  - [x] Each of the 8 directories contains a `SKILL.md` file
+  - [x] Each `SKILL.md` has valid YAML frontmatter with `name`, `description`, and `argument-hint`
+  - [x] `argument-hint` reads "Invoked by Planner Coordinator - do not call directly"
+  - [x] The `name` field matches the directory name (e.g., `plan-decomposition`)
+  - [x] The `description` field matches the canonical purpose from FR-011
 - **Test requirements**: none
 - **Depends on**: T14-01
 - **Implementation Guidance**:
@@ -73,13 +73,13 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/PLAN-SKILL-CONTRACT.md`
-  - [ ] Contract specifies all 9 inputs from FR-023: skill_path, plan_dir, contracts_dir, spec_path, spec_artifacts_dir, research_summary, target_language, patterns, phase
-  - [ ] Contract specifies the 4-step execution sequence from FR-024: read SKILL.md, read plan state, read spec + artifacts, write assigned artifacts
-  - [ ] Contract specifies Phase 1 output rules (FR-025): write WP files and README to `.sdd/plans/`
-  - [ ] Contract specifies Phase 2 output rules (FR-026): write contract files to `.sdd/plans/contracts/<WP-slug>/`
-  - [ ] Contract specifies modification constraint (FR-027): skills SHALL NOT modify files written by earlier skills unless marked `[CONSISTENCY FIX: <description>]`
-  - [ ] No em dashes, smart quotes, or curly apostrophes (ASCII only)
+  - [x] File exists at `.github/skills/PLAN-SKILL-CONTRACT.md`
+  - [x] Contract specifies all 9 inputs from FR-023: skill_path, plan_dir, contracts_dir, spec_path, spec_artifacts_dir, research_summary, target_language, patterns, phase
+  - [x] Contract specifies the 4-step execution sequence from FR-024: read SKILL.md, read plan state, read spec + artifacts, write assigned artifacts
+  - [x] Contract specifies Phase 1 output rules (FR-025): write WP files and README to `.sdd/plans/`
+  - [x] Contract specifies Phase 2 output rules (FR-026): write contract files to `.sdd/plans/contracts/<WP-slug>/`
+  - [x] Contract specifies modification constraint (FR-027): skills SHALL NOT modify files written by earlier skills unless marked `[CONSISTENCY FIX: <description>]`
+  - [x] No em dashes, smart quotes, or curly apostrophes (ASCII only)
 - **Test requirements**: none
 - **Depends on**: T14-01
 - **Implementation Guidance**:
@@ -93,9 +93,9 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 - **Spec refs**: FR-017, FR-026, FR-052, Section 9.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Directory `.sdd/plans/contracts/` exists
-  - [ ] Directory `.sdd/plans/contracts/shared/` exists
-  - [ ] A `.gitkeep` file is placed in each empty directory to ensure git tracking
+  - [x] Directory `.sdd/plans/contracts/` exists
+  - [x] Directory `.sdd/plans/contracts/shared/` exists
+  - [x] A `.gitkeep` file is placed in each empty directory to ensure git tracking
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -108,9 +108,9 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 - **Spec refs**: FR-039
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Manifest header template is documented in `PLAN-SKILL-CONTRACT.md`
-  - [ ] Template includes all 5 fields: `Generated by`, `Source spec`, `Work package`, `Target language`, `DO NOT EDIT MANUALLY` warning
-  - [ ] Template matches FR-039 format exactly
+  - [x] Manifest header template is documented in `PLAN-SKILL-CONTRACT.md`
+  - [x] Template includes all 5 fields: `Generated by`, `Source spec`, `Work package`, `Target language`, `DO NOT EDIT MANUALLY` warning
+  - [x] Template matches FR-039 format exactly
 - **Test requirements**: none
 - **Depends on**: T14-03
 - **Implementation Guidance**:
@@ -129,9 +129,9 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 - **Spec refs**: Section 9.2 (plain ASCII encoding requirement inherited from pipeline conventions)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Python script confirms zero prohibited Unicode characters across all new files
-  - [ ] All hyphens are ASCII `-` (U+002D), all quotes are straight `"` or `'`
-  - [ ] Script output shows clean results
+  - [x] Python script confirms zero prohibited Unicode characters across all new files
+  - [x] All hyphens are ASCII `-` (U+002D), all quotes are straight `"` or `'`
+  - [x] Script output shows clean results
 - **Test requirements**: unit (encoding validation script)
 - **Depends on**: T14-01, T14-02, T14-03, T14-04, T14-05
 - **Implementation Guidance**:
@@ -162,3 +162,5 @@ FR-023, FR-024, FR-025, FR-026, FR-027, FR-039, Section 9.3 (Directory Structure
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T10:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T10:15:00Z - coder - lane=for_review - All tasks complete, submitted for review
