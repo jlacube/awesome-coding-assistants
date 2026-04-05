@@ -157,7 +157,7 @@ Cross-WP consistency audit performed before plan submission. No inconsistencies 
 
 | ID | Title | Priority | Status | Depends On | Parallelisable |
 |----|-------|----------|--------|------------|----------------|
-| [WP08](WP08-foundation-spec-architect.md) | Foundation & Skill Directories | P0 | Not Started | none | - |
+| [WP08](WP08-foundation-spec-architect.md) | Foundation & Skill Directories | P0 | Complete | none | - |
 | [WP09](WP09-spec-architect-coordinator.md) | Spec Architect Coordinator | P1 | Not Started | WP08 | No |
 | [WP10](WP10-requirements-user-stories-skills.md) | Requirements & User Stories Skills | P1 | Not Started | WP08, WP09 | Yes |
 | [WP11](WP11-data-model-api-design-skills.md) | Data Model & API Design Skills | P1 | Not Started | WP08, WP09 | Yes |

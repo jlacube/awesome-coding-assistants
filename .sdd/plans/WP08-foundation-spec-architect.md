@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP08 - Foundation & Skill Directories
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/002-spec-architect-v2.spec.md` |
 | Priority | P0 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | none |
 | Goal | Create the directory structure, common skill template, and infrastructure for Spec Architect V2 |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Verify: 8 directories exist at `.github/skills/spec-*/`; each contains a stub SKILL.md with valid YAML frontmatter; `.sdd/reviews/spec-patterns.md` exists |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP08-foundation-spec-architect.md` |
@@ -38,15 +38,15 @@ Establish the directory layout, common skill template, and supporting infrastruc
 - **Spec refs**: FR-009, FR-010, Section 9.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Directory `.github/skills/spec-requirements/` exists
-  - [ ] Directory `.github/skills/spec-user-stories/` exists
-  - [ ] Directory `.github/skills/spec-data-model/` exists
-  - [ ] Directory `.github/skills/spec-api-design/` exists
-  - [ ] Directory `.github/skills/spec-architecture/` exists
-  - [ ] Directory `.github/skills/spec-security/` exists
-  - [ ] Directory `.github/skills/spec-test-strategy/` exists
-  - [ ] Directory `.github/skills/spec-traceability/` exists
-  - [ ] All directory names match FR-010 canonical list verbatim
+  - [x] Directory `.github/skills/spec-requirements/` exists
+  - [x] Directory `.github/skills/spec-user-stories/` exists
+  - [x] Directory `.github/skills/spec-data-model/` exists
+  - [x] Directory `.github/skills/spec-api-design/` exists
+  - [x] Directory `.github/skills/spec-architecture/` exists
+  - [x] Directory `.github/skills/spec-security/` exists
+  - [x] Directory `.github/skills/spec-test-strategy/` exists
+  - [x] Directory `.github/skills/spec-traceability/` exists
+  - [x] All directory names match FR-010 canonical list verbatim
 - **Test requirements**: none (directory existence check)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -61,11 +61,11 @@ Establish the directory layout, common skill template, and supporting infrastruc
 - **Spec refs**: FR-009, FR-023, Section 7.4
 - **Parallel**: Yes (with T08-01 completed)
 - **Acceptance criteria**:
-  - [ ] Each skill directory contains a SKILL.md file
-  - [ ] Each SKILL.md has YAML frontmatter with `name: spec-<name>` matching its directory
-  - [ ] Each SKILL.md has a `description` field (1-500 characters)
-  - [ ] Each SKILL.md body contains a placeholder comment indicating "Not yet implemented"
-  - [ ] The coordinator's glob scan `.github/skills/spec-*/SKILL.md` returns exactly 8 results
+  - [x] Each skill directory contains a SKILL.md file
+  - [x] Each SKILL.md has YAML frontmatter with `name: spec-<name>` matching its directory
+  - [x] Each SKILL.md has a `description` field (1-500 characters)
+  - [x] Each SKILL.md body contains a placeholder comment indicating "Not yet implemented"
+  - [x] The coordinator's glob scan `.github/skills/spec-*/SKILL.md` returns exactly 8 results
 - **Test requirements**: none (file existence and frontmatter validation)
 - **Depends on**: T08-01
 - **Implementation Guidance**:
@@ -94,10 +94,10 @@ Establish the directory layout, common skill template, and supporting infrastruc
 - **Spec refs**: FR-019, Section 9.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] File `.sdd/reviews/spec-patterns.md` exists
-  - [ ] File follows the same structure as `.sdd/reviews/review-patterns.md` (header, Active Patterns section, Resolved section)
-  - [ ] Active Patterns section starts empty ("(none)")
-  - [ ] File has a header comment explaining its purpose: patterns learned from spec generation to avoid repeating mistakes
+  - [x] File `.sdd/reviews/spec-patterns.md` exists
+  - [x] File follows the same structure as `.sdd/reviews/review-patterns.md` (header, Active Patterns section, Resolved section)
+  - [x] Active Patterns section starts empty ("(none)")
+  - [x] File has a header comment explaining its purpose: patterns learned from spec generation to avoid repeating mistakes
 - **Test requirements**: none (file existence)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -127,11 +127,11 @@ Establish the directory layout, common skill template, and supporting infrastruc
 - **Spec refs**: FR-008, FR-014, FR-015, FR-016, Section 7.2
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] A file `.sdd/specs/artifacts/README.md` exists
-  - [ ] It documents the naming convention: `<NNN>-<idea-name>/` subdirectory per spec
-  - [ ] It lists the expected artifact files: `data-models.<ext>`, `state-machines.<ext>`, `api-contracts.<ext>`, `error-catalog.<ext>`, `interfaces.<ext>`, `config-schema.<ext>`
-  - [ ] It documents the manifest comment format (FR-028)
-  - [ ] It documents target language selection logic (FR-015): use spec's tech stack or default to TypeScript
+  - [x] A file `.sdd/specs/artifacts/README.md` exists
+  - [x] It documents the naming convention: `<NNN>-<idea-name>/` subdirectory per spec
+  - [x] It lists the expected artifact files: `data-models.<ext>`, `state-machines.<ext>`, `api-contracts.<ext>`, `error-catalog.<ext>`, `interfaces.<ext>`, `config-schema.<ext>`
+  - [x] It documents the manifest comment format (FR-028)
+  - [x] It documents target language selection logic (FR-015): use spec's tech stack or default to TypeScript
 - **Test requirements**: none (documentation)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -151,12 +151,12 @@ Establish the directory layout, common skill template, and supporting infrastruc
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027, FR-028
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] A document exists that specifies the 8 inputs every spec skill receives (skill_path, accumulator_path, artifacts_dir, brief_path, research_summary, section_numbers, patterns, target_language)
-  - [ ] It specifies the 5-step execution sequence (read SKILL.md, read accumulator, read brief, write section, produce artifacts)
-  - [ ] It specifies the output format (FR-025): numbered headings, FR-XXX identifiers, SHALL statements, implementation contracts
-  - [ ] It specifies the constraint: no modification of prior sections (FR-026), use `[CROSS-REF ISSUE]` markers instead
-  - [ ] It specifies the constraint: no modification of coordinator sections 1-3 (FR-027)
-  - [ ] It specifies the manifest comment format for artifact files (FR-028)
+  - [x] A document exists that specifies the 8 inputs every spec skill receives (skill_path, accumulator_path, artifacts_dir, brief_path, research_summary, section_numbers, patterns, target_language)
+  - [x] It specifies the 5-step execution sequence (read SKILL.md, read accumulator, read brief, write section, produce artifacts)
+  - [x] It specifies the output format (FR-025): numbered headings, FR-XXX identifiers, SHALL statements, implementation contracts
+  - [x] It specifies the constraint: no modification of prior sections (FR-026), use `[CROSS-REF ISSUE]` markers instead
+  - [x] It specifies the constraint: no modification of coordinator sections 1-3 (FR-027)
+  - [x] It specifies the manifest comment format for artifact files (FR-028)
 - **Test requirements**: none (documentation)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -185,3 +185,5 @@ All tasks (T08-01 through T08-05) can be worked concurrently. None depend on eac
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T16:00:00Z - coder - lane=doing - Starting implementation of T08-01 through T08-05
+- 2026-04-05T16:15:00Z - coder - lane=for_review - All tasks complete, submitted for review
