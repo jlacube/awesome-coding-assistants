@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP21 - Coder Coordinator
@@ -32,9 +32,9 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-001
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL list all `.sdd/plans/WP*.md` files and select the specified WP or present the list to the user via `vscode_askQuestions` (FR-001)
-  - [ ] If no WP files exist, the coordinator SHALL halt and inform the user (FR-001 error)
-  - [ ] Given a user selects WP03 from a list of 5 WPs, the coordinator proceeds with WP03
+  - [x] The coordinator SHALL list all `.sdd/plans/WP*.md` files and select the specified WP or present the list to the user via `vscode_askQuestions` (FR-001)
+  - [x] If no WP files exist, the coordinator SHALL halt and inform the user (FR-001 error)
+  - [x] Given a user selects WP03 from a list of 5 WPs, the coordinator proceeds with WP03
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -227,3 +227,4 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation of coordinator rewrite
