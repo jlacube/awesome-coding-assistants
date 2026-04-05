@@ -1,5 +1,6 @@
 ---
-lane: for_review
+lane: to_do
+review_status: has_feedback
 ---
 
 # WP15 - Planner Coordinator Rewrite
@@ -248,6 +249,55 @@ FR-001 through FR-022, Section 8.1 through 8.5, Section 9.1, Section 9.4
 - The Planner V2 coordinator mirrors the Spec Architect V2 coordinator pattern (WP09)
 - Key structural difference: Planner has two-phase dispatch (Phase 1 decomposition, Phase 2 contracts) whereas Spec Architect has single-phase
 - The auto-loop to Spec Architect (FR-006) is unique to the Planner -- no other coordinator has this pattern
+
+## Activity Log
+
+- 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T10:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T11:00:00Z - coder - lane=for_review - All tasks complete, submitted for review
+- 2026-04-05T18:00:00Z - review-coordinator - lane=to_do - Verdict: Changes Required (2 FAILs) -- awaiting remediation
+
+## Review
+
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-05T18:00:00Z
+> **Verdict**: Changes Required
+> **Skills dispatched**: review-spec (FAIL), review-quality (WARN)
+> **Review round**: 1
+
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All acceptance criteria checked
+- [PASS] Activity Log: Consistent lane transitions
+- [WARN] Commit granularity: Single bulk commit (9036def) for all 11 tasks
+- [PASS] Encoding: No violations found
+
+### Review Feedback
+
+> Implementers: address every FB-XX item before returning for re-review.
+
+- [ ] **FB-01**: [spec-adherence] FR-008 item 4 deviation - Implementation says "CI/CD best practices for the target platform" instead of spec's "Starter templates or boilerplate repos matching the tech stack".
+  File: .github/agents/planner.agent.md#L159. Expected: Change to "Starter templates or boilerplate repos matching the tech stack" per FR-008.
+  Source skills: review-spec (SPEC-013)
+- [ ] **FB-02**: [spec-adherence] FR-019 ambiguous language list incomplete - Omits "should" from the banned terms list. Spec says ("should", "appropriate", "reasonable") but implementation says ("appropriate", "reasonable", "as needed", "etc.", "similar").
+  File: .github/agents/planner.agent.md#L282. Expected: Add "should" to the list. Keep the extra terms.
+  Source skills: review-spec (SPEC-025)
+
+### Warnings
+- [WARN] SPEC-020: FR-014 Phase 2 prompt omits research_summary and patterns inputs, but matches spec's own Section 8.3 template verbatim. Spec-internal inconsistency. (review-spec SPEC-020)
+- [WARN] QUAL-001: Orphaned closing `</plan_templates>` tag with no matching opening tag. (review-quality QUAL-001)
+- [WARN] QUAL-002: Uses `fetch_webpage` in text while spec-architect uses `web/fetch`. (review-quality QUAL-002)
+- [WARN] PROC-003: Single bulk commit for all tasks.
+
+### Cross-Correlation Notes
+- SPEC-020 (FR-014 inputs) may be reclassified pending spec clarification -- the implementation follows Section 8.3 verbatim.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 2 | 2 | 0 |
+| review-spec | 29 | 1 | 2 |
+| review-quality | 6 | 2 | 0 |
+| **Total** | **37** | **5** | **2** |
 - The coordinator file replaces the existing V1 planner at `.github/agents/planner.agent.md`
 
 ## Parallel Opportunities
