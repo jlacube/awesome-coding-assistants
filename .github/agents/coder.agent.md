@@ -116,4 +116,45 @@ Before dispatching any skill, read the full context chain:
 6. Skills present but NOT in the canonical list: dispatch AFTER all known skills, in alphabetical order.
 7. Log the discovery result: list skills found and their dispatch order.
 
+## Step 6 - Dispatch Skills Sequentially (FR-007, FR-008, FR-009)
+
+Dispatch each discovered skill (except `code-debug`, handled in Step 7) one at a time using `runSubagent`. Skills execute sequentially, blocking. Do NOT dispatch the next skill until the current skill completes.
+
+For each skill, use this prompt template:
+
+```
+Implement: <skill_name>
+
+1. Read the skill instructions at: <skill_path>
+2. Read the WP file at: <wp_path>
+3. Read contract files at: <contracts_dir>
+4. Read spec sections: <spec_refs>
+5. Active patterns to avoid: <patterns>
+6. Target: <target_language> with <target_framework>
+7. Tasks: <task_list_with_acceptance_criteria>
+
+Rules:
+- Implement contract-first: signatures, types, fields MUST match contract files exactly
+- Contract files are READ-ONLY -- do NOT modify any file in .sdd/plans/contracts/
+- Check off acceptance criteria in the WP file as you complete them
+- Follow existing codebase conventions
+- Do NOT add features not in the spec
+- Do NOT perform self-review or quality assessment
+- Report files modified, tasks completed, test results, and issues
+```
+
+**Substitution values**:
+- `<skill_path>`: Full path to the skill's SKILL.md (e.g., `.github/skills/code-env-setup/SKILL.md`)
+- `<wp_path>`: Path to the WP file being implemented
+- `<contracts_dir>`: `.sdd/plans/contracts/<WP-slug>/`
+- `<spec_refs>`: Spec file path and section references from the WP
+- `<patterns>`: Active patterns from Step 4 (or "No active patterns")
+- `<target_language>`: Programming language from WP or spec (e.g., TypeScript, Python)
+- `<target_framework>`: Framework from WP or spec (e.g., Express, FastAPI, React)
+- `<task_list_with_acceptance_criteria>`: All tasks from the WP with their acceptance criteria and spec refs
+
+**Context forwarding (FR-009)**: Each skill reads the current state of the codebase (files created or modified by prior skills) before executing. This is automatic since each subagent reads the filesystem fresh.
+
+**Failure handling**: If any skill reports failure (environment setup or implementation), halt the WP immediately. Do NOT dispatch remaining skills. Report the failure with full context to the user via `vscode_askQuestions`.
+
 </workflow>

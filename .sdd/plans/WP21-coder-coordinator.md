@@ -117,12 +117,12 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-007, FR-008, FR-009
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each skill SHALL be dispatched as a subagent invocation using `runSubagent` (FR-007)
-  - [ ] Each invocation SHALL include: skill file path, WP file path, contracts directory, spec file path, active patterns, target language, target framework, and task list with acceptance criteria (FR-007)
-  - [ ] If a skill fails (environment setup or implementation), the coordinator SHALL halt the WP and report the error; it SHALL NOT proceed to later skills (FR-007 error)
-  - [ ] Skills SHALL execute sequentially, one at a time, blocking (FR-008)
-  - [ ] The coordinator SHALL NOT dispatch the next skill until the current skill completes (FR-008)
-  - [ ] Each skill SHALL read the current state of the codebase (files created or modified by prior skills) before executing (FR-009)
+  - [x] Each skill SHALL be dispatched as a subagent invocation using `runSubagent` (FR-007)
+  - [x] Each invocation SHALL include: skill file path, WP file path, contracts directory, spec file path, active patterns, target language, target framework, and task list with acceptance criteria (FR-007)
+  - [x] If a skill fails (environment setup or implementation), the coordinator SHALL halt the WP and report the error; it SHALL NOT proceed to later skills (FR-007 error)
+  - [x] Skills SHALL execute sequentially, one at a time, blocking (FR-008)
+  - [x] The coordinator SHALL NOT dispatch the next skill until the current skill completes (FR-008)
+  - [x] Each skill SHALL read the current state of the codebase (files created or modified by prior skills) before executing (FR-009)
 - **Test requirements**: BDD
 - **Depends on**: T21-05
 - **Implementation Guidance**:
