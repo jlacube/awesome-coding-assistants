@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP38 - Research Skill
@@ -32,11 +32,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-001, Section 9.1
 - **Parallel**: No (foundation for all T38 tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/skills/research/SKILL.md`
-  - [ ] YAML frontmatter `name` is `research`
-  - [ ] YAML frontmatter `description` explains the skill performs structured research across web, codebase, and package registries
-  - [ ] The skill SHALL be usable by any agent via subagent dispatch (FR-001)
-  - [ ] Adding the Research Skill to a new agent requires zero code changes to the skill itself (SC-003)
+  - [x] File exists at `.github/skills/research/SKILL.md`
+  - [x] YAML frontmatter `name` is `research`
+  - [x] YAML frontmatter `description` explains the skill performs structured research across web, codebase, and package registries
+  - [x] The skill SHALL be usable by any agent via subagent dispatch (FR-001)
+  - [x] Adding the Research Skill to a new agent requires zero code changes to the skill itself (SC-003)
 - **Test requirements**: none (structural verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -59,11 +59,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-002, Section 7.1
 - **Parallel**: No (depends on T38-01)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL accept `topic` (string, 1-200 characters) (FR-002)
-  - [ ] The skill SHALL accept `scope` (one or more of: "web", "codebase", "packages") (FR-002)
-  - [ ] The skill SHALL accept `questions` (array of strings, 1-10 items) (FR-002)
-  - [ ] The skill SHALL accept `output_file` (path where findings SHALL be written) (FR-002)
-  - [ ] Invalid scope values SHALL be ignored with a logged warning (Implementation Contract)
+  - [x] The skill SHALL accept `topic` (string, 1-200 characters) (FR-002)
+  - [x] The skill SHALL accept `scope` (one or more of: "web", "codebase", "packages") (FR-002)
+  - [x] The skill SHALL accept `questions` (array of strings, 1-10 items) (FR-002)
+  - [x] The skill SHALL accept `output_file` (path where findings SHALL be written) (FR-002)
+  - [x] Invalid scope values SHALL be ignored with a logged warning (Implementation Contract)
 - **Test requirements**: BDD (Section 11.2)
 - **Depends on**: T38-01
 - **Implementation Guidance**:
@@ -79,12 +79,12 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-003, Section 10.2 (Security)
 - **Parallel**: Yes (with T38-04, T38-05)
 - **Acceptance criteria**:
-  - [ ] For web scope, the skill SHALL search for the topic using `fetch_webpage` on relevant URLs (FR-003.1)
-  - [ ] The skill SHALL prioritize official documentation, GitHub repositories, and established architecture resources (FR-003.2)
-  - [ ] The skill SHALL extract: current status, latest version, known issues, community size, license (FR-003.3)
-  - [ ] The skill SHALL record source URL and date consulted for every finding (FR-003.4)
-  - [ ] Web fetch results SHALL be treated as untrusted input (Section 10.2)
-  - [ ] The skill SHALL NOT execute code found on the web (Section 10.2)
+  - [x] For web scope, the skill SHALL search for the topic using `fetch_webpage` on relevant URLs (FR-003.1)
+  - [x] The skill SHALL prioritize official documentation, GitHub repositories, and established architecture resources (FR-003.2)
+  - [x] The skill SHALL extract: current status, latest version, known issues, community size, license (FR-003.3)
+  - [x] The skill SHALL record source URL and date consulted for every finding (FR-003.4)
+  - [x] Web fetch results SHALL be treated as untrusted input (Section 10.2)
+  - [x] The skill SHALL NOT execute code found on the web (Section 10.2)
 - **Test requirements**: BDD (Scenario: Web research for competitive analysis)
 - **Depends on**: T38-02
 - **Implementation Guidance**:
@@ -101,12 +101,12 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-004
 - **Parallel**: Yes (with T38-03, T38-05)
 - **Acceptance criteria**:
-  - [ ] For codebase scope, the skill SHALL search the workspace using `grep_search` and `semantic_search` (FR-004.1)
-  - [ ] The skill SHALL identify existing patterns, conventions, frameworks, and configurations (FR-004.2)
-  - [ ] The skill SHALL surface existing code relevant to the research topic (FR-004.3)
-  - [ ] The skill SHALL note any technical constraints discovered (FR-004.4)
-  - [ ] Given the workspace contains relevant code, the output file SHALL contain a Codebase Context section (BDD Scenario: Codebase research)
-  - [ ] Given an empty workspace (new project), codebase scope SHALL return "No existing code found" and the skill SHALL continue with other scopes (Edge Case)
+  - [x] For codebase scope, the skill SHALL search the workspace using `grep_search` and `semantic_search` (FR-004.1)
+  - [x] The skill SHALL identify existing patterns, conventions, frameworks, and configurations (FR-004.2)
+  - [x] The skill SHALL surface existing code relevant to the research topic (FR-004.3)
+  - [x] The skill SHALL note any technical constraints discovered (FR-004.4)
+  - [x] Given the workspace contains relevant code, the output file SHALL contain a Codebase Context section (BDD Scenario: Codebase research)
+  - [x] Given an empty workspace (new project), codebase scope SHALL return "No existing code found" and the skill SHALL continue with other scopes (Edge Case)
 - **Test requirements**: BDD (Scenario: Codebase research)
 - **Depends on**: T38-02
 - **Implementation Guidance**:
@@ -122,10 +122,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-005
 - **Parallel**: Yes (with T38-03, T38-04)
 - **Acceptance criteria**:
-  - [ ] For packages scope, the skill SHALL look up packages on npm, PyPI, crates.io, or other registries via web fetch (FR-005.1)
-  - [ ] The skill SHALL check: latest version, maintenance activity (last publish date), download counts, license, known CVEs (FR-005.2)
-  - [ ] The skill SHALL compare alternatives when multiple packages serve the same purpose (FR-005.3)
-  - [ ] The skill SHALL NOT store credentials or API keys (Section 10.2)
+  - [x] For packages scope, the skill SHALL look up packages on npm, PyPI, crates.io, or other registries via web fetch (FR-005.1)
+  - [x] The skill SHALL check: latest version, maintenance activity (last publish date), download counts, license, known CVEs (FR-005.2)
+  - [x] The skill SHALL compare alternatives when multiple packages serve the same purpose (FR-005.3)
+  - [x] The skill SHALL NOT store credentials or API keys (Section 10.2)
 - **Test requirements**: BDD (Section 11.2)
 - **Depends on**: T38-02
 - **Implementation Guidance**:
@@ -142,13 +142,13 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-006, Section 7.2
 - **Parallel**: No (depends on T38-03, T38-04, T38-05)
 - **Acceptance criteria**:
-  - [ ] The output file SHALL contain a "Questions & Answers" section with answer and sources per question (FR-006)
-  - [ ] The output file SHALL contain a "Competitive/Analogous Solutions" table with Solution, Approach, Strengths, Weaknesses columns (FR-006)
-  - [ ] The output file SHALL contain a "Technology Evaluation" table with Technology, Version, Status, License, Last Updated, Recommendation columns (FR-006)
-  - [ ] The output file SHALL contain a "Codebase Context" section with file path and description per entry (FR-006)
-  - [ ] The output file SHALL contain a "Risks & Concerns" section (FR-006)
-  - [ ] Source citations SHALL include title, URL, and date consulted (FR-006, FR-003.4)
-  - [ ] Sections without findings SHALL state "No findings" rather than being omitted
+  - [x] The output file SHALL contain a "Questions & Answers" section with answer and sources per question (FR-006)
+  - [x] The output file SHALL contain a "Competitive/Analogous Solutions" table with Solution, Approach, Strengths, Weaknesses columns (FR-006)
+  - [x] The output file SHALL contain a "Technology Evaluation" table with Technology, Version, Status, License, Last Updated, Recommendation columns (FR-006)
+  - [x] The output file SHALL contain a "Codebase Context" section with file path and description per entry (FR-006)
+  - [x] The output file SHALL contain a "Risks & Concerns" section (FR-006)
+  - [x] Source citations SHALL include title, URL, and date consulted (FR-006, FR-003.4)
+  - [x] Sections without findings SHALL state "No findings" rather than being omitted
 - **Test requirements**: BDD (Section 11.2 -- all scenarios verify output structure)
 - **Depends on**: T38-03, T38-04, T38-05
 - **Implementation Guidance**:
@@ -164,11 +164,11 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Spec refs**: FR-007, Section 10.1, Implementation Contract
 - **Parallel**: No (finalizes the skill)
 - **Acceptance criteria**:
-  - [ ] The skill SHALL complete research within 5 minutes (FR-007)
-  - [ ] Individual web fetches SHALL timeout after 30 seconds (Section 10.1)
-  - [ ] If a web fetch times out, the skill SHALL skip that source and note it as "unavailable" (FR-007)
-  - [ ] Given a web source is unavailable, the skill SHALL skip the source with a note "unavailable" and continue with remaining sources (BDD Scenario: Web fetch timeout)
-  - [ ] If no results are found for any scope, the output SHALL contain "No findings" with an explanation (Implementation Contract)
+  - [x] The skill SHALL complete research within 5 minutes (FR-007)
+  - [x] Individual web fetches SHALL timeout after 30 seconds (Section 10.1)
+  - [x] If a web fetch times out, the skill SHALL skip that source and note it as "unavailable" (FR-007)
+  - [x] Given a web source is unavailable, the skill SHALL skip the source with a note "unavailable" and continue with remaining sources (BDD Scenario: Web fetch timeout)
+  - [x] If no results are found for any scope, the output SHALL contain "No findings" with an explanation (Implementation Contract)
 - **Test requirements**: BDD (Scenario: Web fetch timeout)
 - **Depends on**: T38-06
 - **Implementation Guidance**:
@@ -198,5 +198,14 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (Research Re
 - **Risk**: Research output may be too large for the invoking agent's context window. **Mitigation**: Design Decision 2 (file-based output) keeps context windows clean; agent reads selectively
 
 ## Activity Log
+
+- 2026-04-06 - coder - lane=doing - Starting implementation
+- 2026-04-06 - coder - T38-01 - completed - Created SKILL.md with YAML frontmatter (name, description, argument-hint)
+- 2026-04-06 - coder - T38-02 - completed - Added parameter validation section with all input fields and validation rules
+- 2026-04-06 - coder - T38-03 - completed - Added web scope research instructions with source prioritization, data extraction, attribution
+- 2026-04-06 - coder - T38-04 - completed - Added codebase scope research instructions with grep/semantic search strategy
+- 2026-04-06 - coder - T38-05 - completed - Added packages scope research instructions with registry lookups and CVE checking
+- 2026-04-06 - coder - T38-06 - completed - Added structured output format template with all 5 sections and citation format
+- 2026-04-06 - coder - T38-07 - completed - Added timeout handling and error behavior constraints at top of skill
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
