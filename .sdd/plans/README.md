@@ -1,7 +1,7 @@
 # Plan Index
 
 > **Generated**: 2026-04-04
-> **Updated**: 2026-04-05T00:00:00Z
+> **Updated**: 2026-04-06T00:00:00Z
 
 ---
 
@@ -618,3 +618,537 @@ Cross-WP consistency audit performed before plan submission. No inconsistencies 
 - **Spec traceability**: All 37 FRs (FR-001 through FR-037) are assigned. FR-005 (discovery), FR-017/FR-018/FR-019 (common contract) are shared across multiple WPs by design.
 - **Phase ordering**: Skills are dispatched in canonical order: code-env-setup -> code-implementation -> code-unit-tests -> code-integration-tests -> code-debug (conditional). This ordering is enforced by the coordinator (FR-006).
 - **Debug coordination**: Test skills (WP23) report test_results in FR-019 format. Coordinator (WP21) reads test_results.fail_count to decide debug dispatch. Debug skill (WP24) receives failing test output and attempt counter. All three WPs use consistent data contracts.
+
+---
+
+## Spec 005 -- Review Spec Completeness & Contract-Aware Review
+
+> **Spec**: `.sdd/specs/005-review-spec-completeness.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP25](WP25-review-spec-completeness.md) | review-spec-completeness Skill | P1 | Not Started | none | Yes |
+| [WP26](WP26-review-spec-contract-aware.md) | review-spec Contract-Aware Expansion | P1 | Not Started | none | Yes |
+
+### MVP Scope
+
+Both work packages are MVP:
+
+- WP25 (P1) creates the new review-spec-completeness skill that validates spec implementation-readiness before planning
+- WP26 (P1) expands the existing review-spec skill with contract-aware code review capabilities
+
+Both features deliver SC-001 (pre-planning validation gate) and SC-002 (contract-aware review) respectively. Neither requires Review Coordinator changes (SC-003).
+
+### Dependency & Execution Summary
+
+- **Sequence**: {WP25, WP26} (fully parallel -- no inter-WP dependencies)
+- **Parallelization**: WP25 and WP26 modify different files (new SKILL.md vs existing SKILL.md) and can run in parallel
+- **Critical path**: WP25 or WP26 (whichever finishes last) = MVP complete
+
+### Sequencing Notes
+
+WP25 creates a brand new skill file at `.github/skills/review-spec-completeness/SKILL.md`. WP26 expands the existing skill at `.github/skills/review-spec/SKILL.md`. Since these are different files with no shared dependencies, both WPs can run in parallel.
+
+No foundation WP is needed because the only scaffolding (creating the `review-spec-completeness/` directory) is trivially included in WP25's first task. No coordinator changes are needed (SC-003).
+
+All implementation artifacts are markdown files (SKILL.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the skill against a spec or implementation with known issues and verifying the findings output matches BDD scenarios.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T25-01 | Create review-spec-completeness directory and SKILL.md with frontmatter | WP25 | No |
+| T25-02 | Write finding format and verdict output sections | WP25 | No |
+| T25-03 | Write obligation language and ambiguity checks | WP25 | Yes |
+| T25-04 | Write error behavior check | WP25 | Yes |
+| T25-05 | Write data model completeness check | WP25 | Yes |
+| T25-06 | Write API endpoint completeness check | WP25 | Yes |
+| T25-07 | Write state machine completeness check | WP25 | Yes |
+| T25-08 | Write traceability matrix check | WP25 | Yes |
+| T25-09 | Write integration strategy and security requirements checks | WP25 | Yes |
+| T25-10 | Write artifact consistency check | WP25 | Yes |
+| T25-11 | Integration verification with Review Coordinator | WP25 | No |
+| T26-01 | Preserve existing behavior and add contract-aware overview | WP26 | No |
+| T26-02 | Write interface contract check with token-level comparison | WP26 | No |
+| T26-03 | Write data schema contract check with token-level comparison | WP26 | No |
+| T26-04 | Write API, state machine, and error catalog contract checks | WP26 | No |
+| T26-05 | Write contract mismatch finding format | WP26 | Yes |
+| T26-06 | Write fallback to prose-only handling | WP26 | Yes |
+| T26-07 | Integration verification with Review Coordinator | WP26 | No |
+
+**Total**: 2 work packages, 18 tasks
+
+### FR Traceability
+
+Every FR from Spec 005 is assigned to exactly one task:
+
+| FR | Task | Status |
+|----|------|--------|
+| FR-001 | T25-01 | Covered |
+| FR-002 | T25-01 | Covered |
+| FR-003 | T25-03 | Covered |
+| FR-004 | T25-04 | Covered |
+| FR-005 | T25-05 | Covered |
+| FR-006 | T25-06 | Covered |
+| FR-007 | T25-07 | Covered |
+| FR-008 | T25-08 | Covered |
+| FR-009 | T25-09 | Covered |
+| FR-010 | T25-03 | Covered |
+| FR-011 | T25-10 | Covered |
+| FR-012 | T25-09 | Covered |
+| FR-013 | T25-02 | Covered |
+| FR-014 | T25-02 | Covered |
+| FR-015 | T26-01 | Covered |
+| FR-016 | T26-02, T26-03, T26-04 | Covered |
+| FR-017 | T26-02, T26-03, T26-04 | Covered |
+| FR-018 | T26-05 | Covered |
+| FR-019 | T26-06 | Covered |
+
+**FR coverage**: 19/19 FRs assigned (100%).
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **Data contracts**: Both WPs reference the same finding format structures from Section 7. Completeness findings use SPEC-COMP-XXX prefix; contract findings use SPEC-CONTRACT-XXX prefix. No overlap.
+- **Skill contract**: Both skills follow the existing review skill discovery pattern (`review-*/SKILL.md`) and standard findings format. No coordinator changes needed.
+- **Dependency graph**: No dependencies between WP25 and WP26. Both modify different files. No circular dependencies.
+- **Configuration**: Glob pattern `review-*/SKILL.md` is consistent. Contract file paths `.sdd/plans/contracts/<WP-slug>/` are consistent with Planner V2 output (Spec 003).
+- **Test consistency**: Both WPs use manual invocation testing against synthetic fixtures.
+- **Spec traceability**: All 19 FRs assigned. FR-016 and FR-017 span multiple tasks by design (FR-016 has 5 sub-checks across 3 tasks; FR-017 is the comparison methodology used by all contract checks).
+
+---
+
+## Spec 006 -- Handoff Schemas & Domain-Specific Patterns
+
+> **Spec**: `.sdd/specs/006-handoff-schemas-patterns.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP27](WP27-handoff-schema-definitions.md) | Handoff Schema Definitions | P1 | Not Started | none | Yes |
+| [WP28](WP28-domain-specific-pattern-files.md) | Domain-Specific Pattern Files & Migration | P1 | Not Started | none | Yes |
+| [WP29](WP29-agent-coordinator-integration.md) | Agent Coordinator Integration | P1 | Not Started | WP27, WP28 | No |
+
+### MVP Scope
+
+All 3 work packages are MVP:
+
+- WP27 (P1) creates 8 YAML handoff schema files in `.github/schemas/` defining agent-to-agent contracts
+- WP28 (P1) creates/updates 4 domain-specific pattern files in `.sdd/reviews/` and migrates the legacy single patterns file
+- WP29 (P1) wires schemas and patterns into agent coordinator files (schema validation, pattern consumption, automated curation)
+
+WP27 and WP28 can run in parallel (they create independent artifact types). WP29 depends on both because it integrates their outputs into agent coordinators.
+
+### Dependency & Execution Summary
+
+- **Sequence**: {WP27, WP28} -> WP29
+- **Parallelization**: WP27 and WP28 can run in parallel (schema YAML files vs. pattern Markdown files -- no shared state)
+- **Critical path**: WP27 or WP28 (whichever finishes last) -> WP29
+
+### Sequencing Notes
+
+WP27 creates 8 YAML schema files in `.github/schemas/`. These are pure content authoring -- no agent file modifications. The reference schema (spec-to-planner) should be written first as it has the full example from FR-003.
+
+WP28 creates/updates 4 pattern files in `.sdd/reviews/` and migrates the legacy `review-patterns.md`. Two files already exist (spec-patterns.md, code-patterns.md) and need format normalization. Two are new (plan-patterns.md, doc-patterns.md).
+
+WP29 is the integration WP that modifies existing agent `.agent.md` files. Schema validation is added as Step 0 in every coordinator. Pattern consumption is formalized. The Review Coordinator gets the most changes (curation, retirement, commit format).
+
+All implementation artifacts are YAML and Markdown files. There is no executable code, build system, or test framework. "Testing" means manually invoking agents and verifying behavior matches BDD scenarios from the spec.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T27-01 | Create schemas directory and define schema template | WP27 | No |
+| T27-02 | Author ideation-to-spec.schema.yaml | WP27 | Yes |
+| T27-03 | Author spec-to-planner.schema.yaml | WP27 | Yes |
+| T27-04 | Author planner-to-coder.schema.yaml | WP27 | Yes |
+| T27-05 | Author coder-to-reviewer.schema.yaml | WP27 | Yes |
+| T27-06 | Author rework handoff schemas (3 files) | WP27 | Yes |
+| T27-07 | Author orchestrator-handoff.schema.yaml | WP27 | Yes |
+| T27-08 | Verify schema compliance and add maintenance docs | WP27 | No |
+| T28-01 | Create plan-patterns.md with FR-009 structure | WP28 | Yes |
+| T28-02 | Create doc-patterns.md with FR-009 structure | WP28 | Yes |
+| T28-03 | Update spec-patterns.md to FR-009 format | WP28 | Yes |
+| T28-04 | Update code-patterns.md to FR-009 format | WP28 | Yes |
+| T28-05 | Migrate legacy review-patterns.md to domain files | WP28 | No |
+| T28-06 | Verify migration idempotency | WP28 | No |
+| T28-07 | Verify pattern ID format compliance | WP28 | No |
+| T29-01 | Add schema validation to Spec Architect coordinator | WP29 | Yes |
+| T29-02 | Add schema validation to Planner coordinator | WP29 | Yes |
+| T29-03 | Add schema validation to Coder coordinator | WP29 | Yes |
+| T29-04 | Add schema validation to Review Coordinator | WP29 | Yes |
+| T29-05 | Formalize domain-specific pattern consumption | WP29 | No |
+| T29-06 | Add automated pattern curation to Review Coordinator | WP29 | No |
+| T29-07 | Add pattern retirement logic to Review Coordinator | WP29 | No |
+| T29-08 | Add pattern curation commit format | WP29 | Yes |
+| T29-09 | Verify schema validation blocks invalid handoffs | WP29 | No |
+| T29-10 | Verify pattern isolation across domains | WP29 | No |
+
+**Total**: 3 work packages, 25 tasks
+
+### FR Traceability
+
+Every FR from Spec 006 is assigned to exactly one task (or documented multi-task spans):
+
+| FR | Task(s) | Status |
+|----|---------|--------|
+| FR-001 | T27-02, T27-03, T27-04, T27-05, T27-06, T27-07 | Covered (one schema per sub-item) |
+| FR-002 | T27-02, T27-03, T27-04, T27-05, T27-06, T27-07 | Covered (structure applied per schema) |
+| FR-003 | T27-01, T27-03 | Covered (template + reference schema) |
+| FR-004 | T29-01, T29-02, T29-03, T29-04 | Covered (validation per coordinator) |
+| FR-005 | T29-01, T29-02, T29-03, T29-04 | Covered (first-action per coordinator) |
+| FR-006 | T27-08 | Covered |
+| FR-007 | T27-01, T27-08 | Covered |
+| FR-008 | T28-01, T28-02, T28-03, T28-04 | Covered (one task per domain file) |
+| FR-009 | T28-01, T28-02, T28-03, T28-04 | Covered (format applied per file) |
+| FR-010 | T28-03, T28-04, T28-07 | Covered |
+| FR-011 | T29-05 | Covered |
+| FR-012 | T29-05 | Covered |
+| FR-013 | T29-06 | Covered |
+| FR-014 | T29-07 | Covered |
+| FR-015 | T29-08 | Covered |
+| FR-016 | T28-05, T28-06 | Covered |
+
+**FR coverage**: 16/16 FRs assigned (100%).
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **Data contracts**: WP27 creates schema YAML files referenced by WP29's validation logic. Schema file paths are consistent between WP27 task descriptions and WP29 validation references (e.g., `.github/schemas/spec-to-planner.schema.yaml`).
+- **Pattern files**: WP28 creates/updates pattern files referenced by WP29's consumption logic. File paths are consistent (e.g., `.sdd/reviews/plan-patterns.md`).
+- **Dependency graph**: No circular dependencies. {WP27 || WP28} -> WP29. All `Depends on` declarations verified valid.
+- **Configuration**: Schema directory path `.github/schemas/` and pattern directory path `.sdd/reviews/` are consistent across all 3 WPs. Schema version `handoff/v1` is consistent. Pattern ID format `PAT-{DOMAIN}-XXX` is consistent.
+- **Agent naming**: Agent names referenced in schemas (WP27) match the names used in agent coordinator files (WP29): "2. Spec Architect", "3. Planner", "4. Coder", "5. Reviewer".
+- **Test consistency**: All WPs use manual invocation testing. BDD scenarios from the spec (Section 11.2) are mapped to verification tasks (T29-09, T29-10).
+- **Spec traceability**: All 16 FRs assigned. FR-001/FR-002 span 6 tasks by design (one schema file per handoff). FR-004/FR-005 span 4 tasks by design (one coordinator per agent).
+
+---
+
+## Spec 007 -- Docs Agent
+
+> **Spec**: `.sdd/specs/007-docs-agent.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP30](WP30-foundation-doc-skills.md) | Foundation & Doc Skill Scaffolding | P0 | Not Started | none | - |
+| [WP31](WP31-docs-agent-coordinator.md) | Docs Agent Coordinator | P1 | Not Started | WP30 | No |
+| [WP32](WP32-technical-reference-skills.md) | Technical Reference Doc Skills | P1 | Not Started | WP30, WP31 | Yes |
+| [WP33](WP33-audience-guide-skills.md) | Audience Guide Doc Skills | P1 | Not Started | WP30, WP31 | Yes |
+| [WP34](WP34-code-adjacent-doc-skills.md) | Code-Adjacent Doc Skills | P1 | Not Started | WP30, WP31 | Yes |
+
+### MVP Scope
+
+All 5 work packages are MVP:
+
+- WP30 (P0) creates directory scaffolding, stub skill files for all 6 doc skills, common doc skill contract, and placeholder agent file
+- WP31 (P1) writes the Docs Agent coordinator with trigger handling, skill discovery, sequential dispatch, failure tolerance, pattern consumption, and commit policy
+- WP32 (P1) implements doc-architecture and doc-api-reference skills (technical reference documentation)
+- WP33 (P1) implements doc-user-guide and doc-developer-guide skills (audience-facing guides)
+- WP34 (P1) implements doc-changelog and doc-inline-code skills (code-adjacent documentation)
+
+The coordinator dynamically discovers skills, so WP32-WP34 integrate automatically once installed.
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP30 -> WP31 -> {WP32, WP33, WP34}
+- **Parallelization**: WP32, WP33, and WP34 can all run in parallel after WP31 completes. Each creates independent SKILL.md files.
+- **Critical path**: WP30 -> WP31 -> WP34 (longest, 8 tasks)
+
+### Sequencing Notes
+
+WP30 creates the directory structure and stub SKILL.md files that the coordinator's dynamic discovery depends on (FR-003). Without the directories, the coordinator halts with "No doc skills found."
+
+WP31 is the critical bottleneck: it writes the entire docs-agent.agent.md coordinator logic for context loading, skill discovery, sequential dispatch, failure tolerance, and commit policy. All skill WPs depend on the coordinator being in place.
+
+After WP31 completes, WP32-WP34 are fully parallelizable because each creates independent SKILL.md files. WP32 (doc-architecture + doc-api-reference) is recommended first because it establishes the reference pattern for the technical-reference documentation dimension. WP33 and WP34 can follow in any order.
+
+All implementation artifacts are markdown files (.agent.md, SKILL.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the coordinator with an approved WP and verifying the output matches BDD scenarios from the spec.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T30-01 | Create doc skill directory structure | WP30 | Yes |
+| T30-02 | Create stub SKILL.md files with YAML frontmatter | WP30 | No |
+| T30-03 | Create DOC-SKILL-CONTRACT.md common contract | WP30 | No |
+| T30-04 | Create missing doc output files | WP30 | Yes |
+| T30-05 | Create docs-agent.agent.md placeholder | WP30 | Yes |
+| T30-06 | Verify directory structure and encoding compliance | WP30 | No |
+| T31-01 | Write YAML frontmatter for docs-agent.agent.md | WP31 | No |
+| T31-02 | Write trigger context and artifact chain loading | WP31 | No |
+| T31-03 | Write dynamic skill discovery | WP31 | No |
+| T31-04 | Write canonical ordering and sequential dispatch | WP31 | No |
+| T31-05 | Write skill failure tolerance | WP31 | No |
+| T31-06 | Write doc-patterns consumption | WP31 | Yes |
+| T31-07 | Write commit policy | WP31 | No |
+| T31-08 | Verify encoding compliance | WP31 | No |
+| T32-01 | Create doc-architecture SKILL.md structure | WP32 | No |
+| T32-02 | Write architecture docs generation sections | WP32 | No |
+| T32-03 | Write incremental update logic | WP32 | No |
+| T32-04 | Create doc-api-reference SKILL.md structure | WP32 | Yes |
+| T32-05 | Write API reference generation from contracts | WP32 | No |
+| T32-06 | Write contract-based accuracy rules | WP32 | No |
+| T32-07 | Integration verification with coordinator | WP32 | No |
+| T33-01 | Create doc-user-guide SKILL.md structure | WP33 | No |
+| T33-02 | Write user guide generation sections | WP33 | No |
+| T33-03 | Create doc-developer-guide SKILL.md structure | WP33 | Yes |
+| T33-04 | Write developer guide generation sections | WP33 | No |
+| T33-05 | Integration verification with coordinator | WP33 | No |
+| T34-01 | Create doc-changelog SKILL.md structure | WP34 | No |
+| T34-02 | Write changelog entry generation logic | WP34 | No |
+| T34-03 | Write changelog prepend ordering | WP34 | No |
+| T34-04 | Create doc-inline-code SKILL.md structure | WP34 | Yes |
+| T34-05 | Write docstring and comment generation logic | WP34 | No |
+| T34-06 | Write no-logic-modification constraint | WP34 | No |
+| T34-07 | Write convention detection and adherence | WP34 | No |
+| T34-08 | Integration verification with coordinator | WP34 | No |
+
+**Total**: 5 work packages, 34 tasks
+
+### FR Traceability
+
+Every FR from Spec 007 is assigned to exactly one task:
+
+| FR | Task(s) | Status |
+|----|---------|--------|
+| FR-001 | T31-01, T31-02 | Covered (frontmatter + trigger context) |
+| FR-002 | T31-02 | Covered |
+| FR-003 | T31-03 | Covered |
+| FR-004 | T31-04 | Covered |
+| FR-005 | T30-03, T31-04 | Covered (contract definition + dispatch) |
+| FR-006 | T31-04 | Covered |
+| FR-007 | T31-05 | Covered |
+| FR-008 | T31-06 | Covered |
+| FR-009 | T31-07 | Covered |
+| FR-010 | T32-01, T32-02 | Covered |
+| FR-011 | T32-03 | Covered |
+| FR-012 | T32-04, T32-05 | Covered |
+| FR-013 | T32-06 | Covered |
+| FR-014 | T33-01, T33-02 | Covered |
+| FR-015 | T33-03, T33-04 | Covered |
+| FR-016 | T34-01, T34-02 | Covered |
+| FR-017 | T34-03 | Covered |
+| FR-018 | T34-04, T34-05 | Covered |
+| FR-019 | T34-06 | Covered |
+| FR-020 | T34-07 | Covered |
+
+**FR coverage**: 20/20 FRs assigned (100%).
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **Skill contract**: Common doc-skill contract (FR-005) defined in WP30 (DOC-SKILL-CONTRACT.md) and referenced identically in all skill WPs (WP32-WP34). Input contract has 6 fields matching FR-005.
+- **Dependency graph**: No circular dependencies. WP30 -> WP31 -> {WP32 || WP33 || WP34}. All `Depends on` declarations verified valid.
+- **Configuration**: Glob pattern `doc-*/SKILL.md` is consistent across coordinator (WP31) and all skill WPs. Doc output paths `.sdd/docs/` are consistent. Pattern file path `.sdd/reviews/doc-patterns.md` is consistent.
+- **Canonical order**: The 6 skills' dispatch order (doc-architecture, doc-api-reference, doc-user-guide, doc-developer-guide, doc-changelog, doc-inline-code) is consistent between WP31 (coordinator) and WP32-WP34 (integration verification tasks).
+- **Incremental updates**: All content doc skills (WP32, WP33) implement the incremental update pattern from FR-011. doc-changelog (WP34) uses prepend ordering (FR-017). doc-inline-code (WP34) modifies source files, not `.sdd/docs/` files -- coordinator commit policy (WP31 T31-07) handles both.
+- **Test consistency**: All WPs use manual invocation testing. BDD scenarios from Section 11.2 are mapped to integration verification tasks (T32-07, T33-05, T34-08).
+- **Spec traceability**: All 20 FRs (FR-001 through FR-020) are assigned. FR-001/FR-005/FR-010/FR-012/FR-014/FR-015/FR-016/FR-018 span multiple tasks by design (structure + content tasks).
+
+---
+
+## Spec 008 -- Orchestrator V2
+
+> **Spec**: `.sdd/specs/008-orchestrator-v2.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP35](WP35-orchestrator-state-management.md) | Orchestrator V2: State File Management & Verification | P0 | Not Started | none | - |
+| [WP36](WP36-orchestrator-pipeline-recovery.md) | Orchestrator V2: Pipeline Sequence, Sequential Execution & Error Recovery | P1 | Not Started | WP35 | No |
+| [WP37](WP37-orchestrator-escalation-reporting.md) | Orchestrator V2: Escalation Support & Status Reporting | P1 | Not Started | WP35, WP36 | No |
+
+### MVP Scope
+
+All 3 work packages are MVP:
+
+- WP35 (P0) creates the persistent state file infrastructure (.sdd/state.md) with YAML schema, initialization, update protocol, cross-verification against WP frontmatter, valid state transitions, and read-only frontmatter constraint
+- WP36 (P1) rewrites the core orchestration logic with the V2 pipeline sequence (Docs Agent integration), strict sequential execution (pre-queuing bug fix), and structured error recovery (retry + escalation)
+- WP37 (P1) adds universal escalation support, structured status reporting, todo list pipeline tracking, and corrupted state file recovery
+
+All three WPs modify the same file (`orchestrator.agent.md`), so they must be implemented sequentially.
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP35 -> WP36 -> WP37
+- **Parallelization**: None -- all WPs modify the same file and have strict dependencies
+- **Critical path**: WP35 -> WP36 -> WP37
+
+### Sequencing Notes
+
+WP35 is the foundation: it defines the state file schema and verification protocol that WP36 and WP37 depend on. Without the state file, error recovery cannot log errors, sequential execution cannot update state, and status reporting has no state to report.
+
+WP36 is the core rewrite: it replaces the V1 pipeline sequence, decision table, workflow loop, and failure handling. It depends on WP35 because the sequential execution loop reads and writes the state file after every agent invocation, and error recovery records failures in the state file's error_log.
+
+WP37 completes the feature set: universal escalation uses the state file to record escalation state (last_result: escalated from WP35) and the sequential execution loop to wait for resolution (from WP36). Status reporting reads state produced by the update protocol (WP35) and the pipeline/error state (WP36).
+
+All implementation artifacts are markdown files (.agent.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the Orchestrator against a workspace with WPs and verifying behavior matches BDD scenarios from Section 11.2.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T35-01 | Define state file schema in orchestrator.agent.md | WP35 | No |
+| T35-02 | Write state file creation logic | WP35 | No |
+| T35-03 | Write state file update protocol | WP35 | No |
+| T35-04 | Write state verification logic | WP35 | No |
+| T35-05 | Write state transition validation | WP35 | Yes |
+| T35-06 | Add WP frontmatter read-only constraint | WP35 | Yes |
+| T35-07 | Verify state schema against companion artifacts | WP35 | No |
+| T36-01 | Write updated pipeline sequence | WP36 | No |
+| T36-02 | Write updated decision table | WP36 | No |
+| T36-03 | Write Docs Agent delegation prompt and handoff | WP36 | Yes |
+| T36-04 | Write strict sequential execution loop | WP36 | No |
+| T36-05 | Write error recording and retry logic | WP36 | No |
+| T36-06 | Write escalation on max retries | WP36 | No |
+| T36-07 | Write review failure escalation | WP36 | Yes |
+| T36-08 | Write MVP completion and pipeline halt logic | WP36 | Yes |
+| T36-09 | Integration verification of pipeline and error handling | WP36 | No |
+| T37-01 | Write universal escalation support | WP37 | No |
+| T37-02 | Write escalation resolution logic | WP37 | No |
+| T37-03 | Write status report format | WP37 | Yes |
+| T37-04 | Write todo list pipeline tracker | WP37 | Yes |
+| T37-05 | Write corrupted state file recovery | WP37 | Yes |
+| T37-06 | Integration verification of full Orchestrator V2 | WP37 | No |
+
+**Total**: 3 work packages, 22 tasks
+
+### FR Traceability
+
+Every FR from Spec 008 is assigned to exactly one task:
+
+| FR | Task(s) | Status |
+|----|---------|--------|
+| FR-001 | T35-01, T35-05, T35-07 | Covered (schema + transitions + verification) |
+| FR-002 | T35-02 | Covered |
+| FR-003 | T35-03 | Covered |
+| FR-004 | T35-04, T37-05 | Covered (verification + corrupted recovery) |
+| FR-005 | T35-06 | Covered |
+| FR-006 | T36-01, T36-02, T36-08 | Covered (sequence + decision table + completion) |
+| FR-007 | T36-02, T36-03 | Covered (decision table + handoff) |
+| FR-008 | T36-02, T36-03 | Covered (decision table + handoff) |
+| FR-009 | T36-04 | Covered |
+| FR-010 | T36-04 | Covered |
+| FR-011 | T36-05, T36-06 | Covered (retry + escalation) |
+| FR-012 | T36-07 | Covered |
+| FR-013 | T36-05 | Covered |
+| FR-014 | T37-01 | Covered |
+| FR-015 | T37-02 | Covered |
+| FR-016 | T37-03 | Covered |
+| FR-017 | T37-04 | Covered |
+
+**FR coverage**: 17/17 FRs assigned (100%).
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **State file schema**: All 3 WPs reference the same `.sdd/state.md` schema defined in WP35 T35-01. Field names (pipeline_stage, current_spec, current_wp, last_agent, last_result, retry_count, error_log, updated_at) are used consistently.
+- **Companion artifacts**: Schema matches `data-models.ts` (PipelineState, ErrorEntry interfaces) and `state-machines.ts` (VALID_PIPELINE_TRANSITIONS, MAX_RETRY_COUNT=2, MAX_REVIEW_CYCLES=3). Verified in T35-07.
+- **Dependency graph**: No circular dependencies. WP35 -> WP36 -> WP37. All `Depends on` declarations verified valid.
+- **File scope**: All 3 WPs modify the same file (`.github/agents/orchestrator.agent.md`) but target independent sections: WP35 adds state_schema and state_machine sections, WP36 rewrites workflow and decision table, WP37 adds escalation handling and output_format.
+- **Agent naming**: Docs Agent handoff in WP36 T36-03 references the agent created by Spec 007 (docs-agent.agent.md). Pipeline agent names match existing handoff entries.
+- **Constants**: retry_count max (2) is consistent between WP36 T36-05/T36-06 and companion artifact MAX_RETRY_COUNT. Review cycle max (3) is consistent between WP36 T36-07 and companion artifact MAX_REVIEW_CYCLES.
+- **Test consistency**: All WPs use manual invocation testing against BDD scenarios from Section 11.2. Integration verification tasks exist in each WP (T35-07, T36-09, T37-06).
+
+---
+
+## Spec 009 -- Research Skill & Ideation/Brainstorming Improvements
+
+> **Spec**: `.sdd/specs/009-research-skill-ideation.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP38](WP38-research-skill.md) | Research Skill | P1 | Not Started | none | No |
+| [WP39](WP39-agent-integration.md) | Agent Integration | P1 | Not Started | WP38 | No |
+
+### MVP Scope
+
+Both work packages are MVP (US-01 is P1, US-02 is P2 but shares the same enriched brief format):
+
+- WP38 (P1) creates the shared Research Skill at `.github/skills/research/SKILL.md` with web, codebase, and packages scope support, structured output format, and timeout handling
+- WP39 (P1) integrates the Research Skill into both the Ideation Agent and Brainstorming Agent, adding enriched brief format sections (Research Findings, Risk Assessment, Technical Feasibility) and source citation requirements
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP38 -> WP39
+- **Parallelization**: None -- WP39 depends on WP38 (agents cannot dispatch a skill that does not exist yet)
+- **Critical path**: WP38 -> WP39
+
+### Sequencing Notes
+
+WP38 creates the Research Skill file that both agents will dispatch. It must be completed first because WP39's integration verification (T39-07) validates that the dispatch prompt matches the skill's expected input format.
+
+WP39 modifies two existing agent files. Within WP39, the ideation agent tasks (T39-01 through T39-03) and brainstorming agent dispatch task (T39-04) can partially overlap since they modify different files. However, the brainstorming enriched brief (T39-06) depends on ideation enriched brief (T39-02) being done first to establish the format pattern.
+
+No foundation WP is needed because the only scaffolding (creating the `.github/skills/research/` directory) is trivially included in WP38's first task.
+
+All implementation artifacts are markdown files (SKILL.md, .agent.md). There is no executable code, build system, or test framework. "Testing" means manually invoking the agents, describing an idea, and verifying the output brief structure matches BDD scenarios from the spec.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T38-01 | Create research skill directory and SKILL.md with YAML frontmatter | WP38 | No |
+| T38-02 | Write research request parameter validation section | WP38 | No |
+| T38-03 | Write web scope research instructions | WP38 | Yes |
+| T38-04 | Write codebase scope research instructions | WP38 | Yes |
+| T38-05 | Write packages scope research instructions | WP38 | Yes |
+| T38-06 | Write structured output format template | WP38 | No |
+| T38-07 | Write timeout handling, error behavior, and completion constraints | WP38 | No |
+| T39-01 | Add Research Skill dispatch to Ideation Agent workflow | WP39 | No |
+| T39-02 | Add enriched brief format sections to Ideation Agent | WP39 | No |
+| T39-03 | Add source citation requirements to Ideation Agent | WP39 | Yes |
+| T39-04 | Add Research Skill dispatch to Brainstorming Agent workflow | WP39 | Yes |
+| T39-05 | Add research-backed pros/cons to Brainstorming Agent | WP39 | No |
+| T39-06 | Add enriched brief format to Brainstorming Agent | WP39 | No |
+| T39-07 | Verify both agents dispatch Research Skill correctly | WP39 | No |
+
+**Total**: 2 work packages, 14 tasks
+
+### FR Traceability
+
+Every FR from Spec 009 is assigned to exactly one task:
+
+| FR | Task | Status |
+|----|------|--------|
+| FR-001 | T38-01 | Covered |
+| FR-002 | T38-02 | Covered |
+| FR-003 | T38-03 | Covered |
+| FR-004 | T38-04 | Covered |
+| FR-005 | T38-05 | Covered |
+| FR-006 | T38-06 | Covered |
+| FR-007 | T38-07 | Covered |
+| FR-008 | T39-01 | Covered |
+| FR-009 | T39-02 | Covered |
+| FR-010 | T39-02 | Covered |
+| FR-011 | T39-03 | Covered |
+| FR-012 | T39-04 | Covered |
+| FR-013 | T39-05 | Covered |
+| FR-014 | T39-06 | Covered |
+
+**FR coverage**: 14/14 FRs assigned (100%).
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **Skill contract**: WP38 creates the Research Skill with input parameters (topic, scope, questions, output_file) matching Section 7.1 and the companion `data-models.ts` artifact. WP39 dispatches using the prompt template from Section 8.1 which maps to these same parameters.
+- **Output format**: The structured output format in WP38 (T38-06) matches the ResearchOutput type from `data-models.ts`. The enriched brief sections in WP39 (T39-02, T39-06) match the EnrichedBriefSections type.
+- **Dependency graph**: No circular dependencies. WP38 -> WP39. Both are P1 MVP.
+- **Agent consistency**: Both agents' enriched brief formats are identical (FR-014 explicitly references FR-010). Citation format is consistent: `[Title](URL), consulted YYYY-MM-DD`.
+- **Error handling**: Dispatch failure handling is consistent across both agents: log failure, proceed without research, note limitation in brief. Defaults differ appropriately: ideation uses "No research findings available" (research is automatic), brainstorming uses "No research performed" (research is on-demand).
+- **Scope differences**: Ideation dispatches with scope `[web, codebase]` (FR-008); Brainstorming dispatches with scope `[web, codebase, packages]` (FR-012). This difference is intentional per spec.
+- **Test consistency**: All tasks use manual invocation testing against BDD scenarios from Section 11.2.
