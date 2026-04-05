@@ -48,12 +48,12 @@ FR-001 through FR-016, Section 6.1 (Full WP Implementation Flow), Section 6.2 (D
 - **Spec refs**: FR-002
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL read the selected WP file in full (FR-002.1)
-  - [ ] The coordinator SHALL read `.sdd/plans/README.md` for sequencing context and dependency status (FR-002.2)
-  - [ ] The coordinator SHALL read the spec sections referenced in the WP (FR-002.3)
-  - [ ] The coordinator SHALL read contract files in `.sdd/plans/contracts/<WP-slug>/` (FR-002.4)
-  - [ ] The coordinator SHALL read `AGENTS.md` at workspace root if it exists (FR-002.5)
-  - [ ] If a dependency WP has `lane` not equal to `done`, the coordinator SHALL halt and recommend completing the dependency first (FR-002 error)
+  - [x] The coordinator SHALL read the selected WP file in full (FR-002.1)
+  - [x] The coordinator SHALL read `.sdd/plans/README.md` for sequencing context and dependency status (FR-002.2)
+  - [x] The coordinator SHALL read the spec sections referenced in the WP (FR-002.3)
+  - [x] The coordinator SHALL read contract files in `.sdd/plans/contracts/<WP-slug>/` (FR-002.4)
+  - [x] The coordinator SHALL read `AGENTS.md` at workspace root if it exists (FR-002.5)
+  - [x] If a dependency WP has `lane` not equal to `done`, the coordinator SHALL halt and recommend completing the dependency first (FR-002 error)
 - **Test requirements**: BDD
 - **Depends on**: T21-01
 - **Implementation Guidance**:

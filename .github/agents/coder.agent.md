@@ -72,4 +72,14 @@ Commit after every completed task. Never batch multiple tasks into one commit.
 4. If no WP was specified: present the list via `vscode_askQuestions` and ask which to implement.
 5. Read the selected WP file in full using `read_file`.
 
+## Step 2 - Load Artifact Chain (FR-002)
+
+Before dispatching any skill, read the full context chain:
+
+1. Read `.sdd/plans/README.md` for sequencing context and dependency status.
+2. Read the spec section(s) referenced in the WP's `Spec` field using `read_file`.
+3. Extract the WP slug from the filename (e.g., `WP03-review-spec.md` -> slug is `review-spec`). Read contract files in `.sdd/plans/contracts/<WP-slug>/` using `list_dir` then `read_file` for each file.
+4. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
+5. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
+
 </workflow>
