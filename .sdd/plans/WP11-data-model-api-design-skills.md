@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP11 - Data Model & API Design Skills
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | WP08, WP09 |
 | Goal | Implement the spec-data-model and spec-api-design skills that produce typed entity definitions, API endpoint specs, and companion artifact files |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Dispatch spec-data-model and spec-api-design against a test accumulator with sections 1-6. Verify: sections 7-8 written with typed fields and error codes; companion artifacts (data-models, state-machines, api-contracts, error-catalog) created with matching field names |
 | Parallelisable | Yes (with WP10, WP12, WP13 after WP09 completes) |
 | Prompt | `.sdd/plans/WP11-data-model-api-design-skills.md` |
@@ -37,15 +37,15 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-036
 - **Parallel**: No (establishes artifact pattern for T11-04)
 - **Acceptance criteria**:
-  - [ ] SKILL.md contains instructions for Section 7 where each entity has:
+  - [x] SKILL.md contains instructions for Section 7 where each entity has:
     - Entity name
     - Fields table: name, type (with nullability), constraints (required, unique, max length, format regex, enum values, min/max), default value
     - Relationships to other entities with cardinality (1:1, 1:N, N:M)
     - Validation rules (cross-field validation, business rules)
     - State machine definition (if entity has status/state field): valid states, valid transitions, guards, side effects
-  - [ ] Skill reads accumulator (sections 1-6) to derive entities from FRs and user stories
-  - [ ] Skill reads the source brief for domain context
-  - [ ] Entity field definitions are precise enough to generate code verbatim
+  - [x] Skill reads accumulator (sections 1-6) to derive entities from FRs and user stories
+  - [x] Skill reads the source brief for domain context
+  - [x] Entity field definitions are precise enough to generate code verbatim
 - **Test requirements**: BDD (Scenario 2 from Section 11.2 -- data model used by API skill)
 - **Depends on**: T08-02 (stub exists)
 - **Implementation Guidance**:
@@ -73,12 +73,12 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-037, FR-038, FR-028
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill produces `data-models.<ext>` in the artifacts directory with typed entity definitions in the target language
-  - [ ] Every entity in Section 7 prose has a corresponding definition in the artifact file (FR-037)
-  - [ ] Field names, types, constraints, and defaults in the artifact match Section 7 prose exactly (FR-038)
-  - [ ] Skill produces `state-machines.<ext>` if any entity has state fields: state enums and transition validation functions
-  - [ ] Each artifact file includes the manifest comment header (FR-028)
-  - [ ] Artifacts contain type definitions ONLY -- no I/O, network, or filesystem operations (NFR-005)
+  - [x] Skill produces `data-models.<ext>` in the artifacts directory with typed entity definitions in the target language
+  - [x] Every entity in Section 7 prose has a corresponding definition in the artifact file (FR-037)
+  - [x] Field names, types, constraints, and defaults in the artifact match Section 7 prose exactly (FR-038)
+  - [x] Skill produces `state-machines.<ext>` if any entity has state fields: state enums and transition validation functions
+  - [x] Each artifact file includes the manifest comment header (FR-028)
+  - [x] Artifacts contain type definitions ONLY -- no I/O, network, or filesystem operations (NFR-005)
 - **Test requirements**: BDD (Scenario 1 from Section 11.2 -- artifacts exist; Scenario 4 -- consistency)
 - **Depends on**: T11-01
 - **Implementation Guidance**:
@@ -128,12 +128,12 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027, FR-028
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Input contract documented at top of SKILL.md (8 inputs)
-  - [ ] Execution sequence specified (5 steps including artifact production)
-  - [ ] Output format: numbered headings, typed fields, implementation contracts
-  - [ ] Constraint: no modification of prior sections; use `[CROSS-REF ISSUE]` markers
-  - [ ] Constraint: no modification of coordinator sections 1-3
-  - [ ] Manifest comment required on all artifact files
+  - [x] Input contract documented at top of SKILL.md (8 inputs)
+  - [x] Execution sequence specified (5 steps including artifact production)
+  - [x] Output format: numbered headings, typed fields, implementation contracts
+  - [x] Constraint: no modification of prior sections; use `[CROSS-REF ISSUE]` markers
+  - [x] Constraint: no modification of coordinator sections 1-3
+  - [x] Manifest comment required on all artifact files
 - **Test requirements**: none (contract compliance)
 - **Depends on**: T11-01
 - **Implementation Guidance**:
@@ -146,7 +146,7 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-039
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md contains instructions for Section 8 where each endpoint/interface has:
+  - [x] SKILL.md contains instructions for Section 8 where each endpoint/interface has:
     - Method + path (or function signature for libraries/CLIs)
     - Purpose (one line)
     - Request: parameters, body schema with all fields typed, validation rules
@@ -154,8 +154,8 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
     - Every applicable error code (400, 401, 403, 404, 409, 422, 500) with meaning and response body
     - Auth requirements
     - Rate limits (if applicable)
-  - [ ] Skill reads accumulator including Section 7 (Data Model) to reference entity definitions
-  - [ ] Endpoints use the same entity field names and types defined in Section 7
+  - [x] Skill reads accumulator including Section 7 (Data Model) to reference entity definitions
+  - [x] Endpoints use the same entity field names and types defined in Section 7
 - **Test requirements**: BDD (Scenario 2 from Section 11.2 -- API references data model fields)
 - **Depends on**: T08-02 (stub exists)
 - **Implementation Guidance**:
@@ -189,12 +189,12 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-040, FR-041, FR-028
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Skill produces `api-contracts.<ext>` with request/response type definitions per endpoint
-  - [ ] Every endpoint's request and response types have corresponding definitions in the artifact (FR-040)
-  - [ ] Field names and types match Section 8 prose exactly (FR-041)
-  - [ ] Skill produces `error-catalog.<ext>` with error code constants/enums, HTTP status codes, message templates
-  - [ ] Error codes in the catalog match Section 4 error behaviors (FR-041)
-  - [ ] Each artifact file includes the manifest comment header (FR-028)
+  - [x] Skill produces `api-contracts.<ext>` with request/response type definitions per endpoint
+  - [x] Every endpoint's request and response types have corresponding definitions in the artifact (FR-040)
+  - [x] Field names and types match Section 8 prose exactly (FR-041)
+  - [x] Skill produces `error-catalog.<ext>` with error code constants/enums, HTTP status codes, message templates
+  - [x] Error codes in the catalog match Section 4 error behaviors (FR-041)
+  - [x] Each artifact file includes the manifest comment header (FR-028)
 - **Test requirements**: BDD (Scenario 2 from Section 11.2 -- artifact consistency)
 - **Depends on**: T11-04
 - **Implementation Guidance**:
@@ -229,10 +229,10 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-042
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Skill instructions include a cross-reference step: after writing Section 8, compare response schemas against Section 7 entities
-  - [ ] If an API response references a field not defined in the data model, add a `[CROSS-REF ISSUE: field X in endpoint Y not defined in data model]` marker
-  - [ ] If field types differ between API schema and data model, add a `[CROSS-REF ISSUE]` marker
-  - [ ] Cross-reference covers: field names, field types, enum values, nullability
+  - [x] Skill instructions include a cross-reference step: after writing Section 8, compare response schemas against Section 7 entities
+  - [x] If an API response references a field not defined in the data model, add a `[CROSS-REF ISSUE: field X in endpoint Y not defined in data model]` marker
+  - [x] If field types differ between API schema and data model, add a `[CROSS-REF ISSUE]` marker
+  - [x] Cross-reference covers: field names, field types, enum values, nullability
 - **Test requirements**: BDD (Scenario 2 from Section 11.2)
 - **Depends on**: T11-04
 - **Implementation Guidance**:
@@ -253,8 +253,8 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: FR-023, FR-024, FR-025, FR-026, FR-027, FR-028
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Same contract compliance criteria as T11-03
-  - [ ] Input contract, execution sequence, output format, modification constraints, manifest comments
+  - [x] Same contract compliance criteria as T11-03
+  - [x] Input contract, execution sequence, output format, modification constraints, manifest comments
 - **Test requirements**: none (contract compliance)
 - **Depends on**: T11-04
 - **Implementation Guidance**:
@@ -266,14 +266,14 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Spec refs**: All FR-036 through FR-042
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Dispatch spec-data-model: verify Section 7 appended with typed entities
-  - [ ] Verify companion artifacts: `data-models.<ext>` contains all entities; field names match prose
-  - [ ] Verify `state-machines.<ext>` created if entities have state fields
-  - [ ] Dispatch spec-api-design: verify Section 8 appended with all endpoints
-  - [ ] Verify companion artifacts: `api-contracts.<ext>` and `error-catalog.<ext>` generated
-  - [ ] Verify cross-reference: API response fields match data model entity fields
-  - [ ] Verify manifest comments present on all artifact files
-  - [ ] Verify no prior sections (1-6) were modified
+  - [x] Dispatch spec-data-model: verify Section 7 appended with typed entities
+  - [x] Verify companion artifacts: `data-models.<ext>` contains all entities; field names match prose
+  - [x] Verify `state-machines.<ext>` created if entities have state fields
+  - [x] Dispatch spec-api-design: verify Section 8 appended with all endpoints
+  - [x] Verify companion artifacts: `api-contracts.<ext>` and `error-catalog.<ext>` generated
+  - [x] Verify cross-reference: API response fields match data model entity fields
+  - [x] Verify manifest comments present on all artifact files
+  - [x] Verify no prior sections (1-6) were modified
 - **Test requirements**: integration (manual invocation)
 - **Depends on**: T11-01 through T11-07
 - **Implementation Guidance**:
@@ -304,6 +304,18 @@ Implement the first two artifact-producing spec skills. spec-data-model produces
 - **Risk**: Cross-reference between API and data model misses edge cases (e.g., computed fields).
   - **Mitigation**: CROSS-REF ISSUE markers catch issues; coordinator resolves them post-completion.
 
+## Self-Review
+
+**Spec Compliance**: Both skills implement all FRs (FR-036 through FR-042). Input contracts, execution sequences, constraints, artifact generation instructions, and cross-reference validation are present.
+
+**Correctness**: spec-data-model covers Section 7 with entity format (fields table, relationships, validation rules, state machines) and companion artifacts (data-models, state-machines). spec-api-design covers Section 8 with endpoint format (method, path, request, response, errors) and companion artifacts (api-contracts, error-catalog). Cross-reference validation between API and data model is included.
+
+**Code quality**: Both files encoding-clean. spec-data-model: 251 lines, spec-api-design: 280 lines. Both include TypeScript and Python examples for artifacts.
+
+**Scope discipline**: Only two files modified (SKILL.md stubs replaced). No unrelated changes.
+
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T14:30:00Z - coder - lane=for_review - All 8 tasks complete, both skills implemented with artifact generation, submitted for review
