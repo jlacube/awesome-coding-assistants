@@ -130,3 +130,80 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 | Data format | Markdown with YAML frontmatter |
 | Version control | Git (via terminal commands, explicit `git add`) |
 | File system | Local workspace only -- no external services |
+
+---
+
+## Coder V2 - Skill-Based Coordinator
+
+The Coder V2 replaces the monolithic single-pass implementation agent with a lightweight coordinator that dispatches 5 sequential coding skills. The coordinator writes no implementation code itself.
+
+### Coder Coordinator
+
+**File**: `.github/agents/coder.agent.md`
+
+The coordinator owns the entire WP implementation lifecycle:
+
+- WP selection (from argument or user prompt)
+- Artifact chain loading (WP, spec, contracts, AGENTS.md, README)
+- Dependency verification (prior WPs must have `lane: done`)
+- Contract file validation (all referenced contracts must exist)
+- Code patterns consumption (`.sdd/reviews/code-patterns.md`)
+- Dynamic skill discovery (scan `.github/skills/code-*/SKILL.md`)
+- Sequential skill dispatch via `runSubagent`
+- Conditional debug dispatch with 3-attempt retry
+- Task state tracking (`manage_todo_list`, acceptance criteria checkboxes)
+- Coverage verification (80% code, 90% branch)
+- Per-task commits with explicit file listing
+- Handoff to Reviewer (no self-review)
+
+### Coding Skills
+
+**Path pattern**: `.github/skills/code-*/SKILL.md`
+
+Skills execute in canonical order:
+
+| Order | Skill | Phase |
+|-------|-------|-------|
+| 1 | `code-env-setup` | Environment verification, dependency installation |
+| 2 | `code-implementation` | Contract-first task implementation |
+| 3 | `code-unit-tests` | Unit test writing and execution |
+| 4 | `code-integration-tests` | Integration test writing and execution |
+| 5 | `code-debug` | Conditional: test failure diagnosis and fix (max 3 attempts) |
+
+All coding skills follow the common contract defined in `.github/skills/CODER-SKILL-CONTRACT.md` (FR-017 through FR-019).
+
+### Coder Interaction Flow
+
+```
+User / Orchestrator
+       |
+       v
+Coder Coordinator
+       |
+       |--> Read WP + contracts + spec + patterns
+       |--> Verify dependencies (prior WPs done)
+       |--> Verify contract files exist
+       |--> Discover skills (scan .github/skills/code-*/)
+       |
+       |--> runSubagent(code-env-setup)          --> env verified
+       |--> runSubagent(code-implementation)      --> code written
+       |--> runSubagent(code-unit-tests)          --> unit tests written + run
+       |--> runSubagent(code-integration-tests)   --> integration tests written + run
+       |
+       |--> Check test results
+       |     |--> All pass? --> coverage check --> for_review --> handoff to Reviewer
+       |     |--> Fail? --> runSubagent(code-debug) (max 3x) --> re-check
+       |                          |--> Still fail after 3? --> escalate to human
+       |
+       |--> Commit per task
+       |--> Set lane: for_review
+       |--> Handoff to Review Coordinator
+```
+
+### Key Coder Design Decisions
+
+1. **No self-review**: The Reviewer is the sole quality gate. The Coder's job ends at "tests pass + coverage met".
+2. **Contract files are read-only**: Produced by the Planner, consumed verbatim by the Coder. Implementation must match contracts exactly.
+3. **One implementation skill per WP**: All tasks in a WP are handled by a single `code-implementation` invocation.
+4. **Debug skill with 3-attempt budget**: Balances autonomy with human escalation. After 3 failed debug attempts, escalates to the user.
+5. **Dynamic skill discovery**: Adding a coding phase = creating a `.github/skills/code-*/SKILL.md` directory. No coordinator edit needed.

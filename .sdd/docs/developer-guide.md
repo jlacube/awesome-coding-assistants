@@ -7,10 +7,16 @@
   agents/                           # VS Code Copilot Chat agent definitions
     review-coordinator.agent.md     # Review orchestration agent
     orchestrator.agent.md           # Pipeline orchestration agent
-    coder.agent.md                  # Implementation agent
+    coder.agent.md                  # Implementation coordinator (dispatches coding skills)
     spec-architect.agent.md         # Specification agent
     planner.agent.md                # Planning agent
   skills/                           # VS Code Copilot Chat skill definitions
+    code-env-setup/SKILL.md         # Environment setup coding skill
+    code-implementation/SKILL.md    # Core implementation coding skill
+    code-unit-tests/SKILL.md        # Unit test coding skill
+    code-integration-tests/SKILL.md # Integration test coding skill
+    code-debug/SKILL.md             # Debug coding skill
+    CODER-SKILL-CONTRACT.md         # Common contract for all coding skills
     review-spec/SKILL.md            # Spec adherence review skill
     review-security/SKILL.md        # Security review skill
     review-quality/SKILL.md         # Code quality review skill
