@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP18 - Phase 2: API Contracts + State Machines + Error Catalogs Skills
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/003-planner-v2.spec.md` |
 | Priority | P1 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP14, WP15 |
 | Goal | Implement the plan-api-contracts, plan-state-machines, and plan-error-catalogs skills that generate API endpoint definitions, state transition validators, and error code constants per WP |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Dispatch all 3 skills against a plan accumulator. Verify: applicable WPs have `api-contracts.<ext>`, `state-machines.<ext>`, and `error-catalog.<ext>` in their contracts directories; all files have manifest headers; error codes include HTTP status mappings |
 | Parallelisable | Yes (with WP16, WP17, WP19 after WP14+WP15 complete) |
 | Prompt | `.sdd/plans/WP18-phase2-api-state-error-skills.md` |
@@ -32,9 +32,9 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: FR-043, FR-023, FR-024
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
-  - [ ] Skill reads plan state before generating contracts (FR-024, FR-016)
-  - [ ] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
+  - [x] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
+  - [x] Skill reads plan state before generating contracts (FR-024, FR-016)
+  - [x] Skill references `.github/skills/PLAN-SKILL-CONTRACT.md` for the common contract
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -46,12 +46,12 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: FR-043, FR-044
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL generate request type definitions with all fields typed and validated (FR-043.1)
-  - [ ] The skill SHALL generate response type definitions with all fields typed (FR-043.2)
-  - [ ] The skill SHALL include endpoint path constants (FR-043.3)
-  - [ ] The skill SHALL include auth requirement declarations per endpoint (FR-043.4)
-  - [ ] API contracts SHALL match the spec's companion artifact `api-contracts.<ext>` (FR-044)
-  - [ ] Output file: `.sdd/plans/contracts/<WP-slug>/api-contracts.<ext>` (FR-043)
+  - [x] The skill SHALL generate request type definitions with all fields typed and validated (FR-043.1)
+  - [x] The skill SHALL generate response type definitions with all fields typed (FR-043.2)
+  - [x] The skill SHALL include endpoint path constants (FR-043.3)
+  - [x] The skill SHALL include auth requirement declarations per endpoint (FR-043.4)
+  - [x] API contracts SHALL match the spec's companion artifact `api-contracts.<ext>` (FR-044)
+  - [x] Output file: `.sdd/plans/contracts/<WP-slug>/api-contracts.<ext>` (FR-043)
 - **Test requirements**: BDD (US-02 Scenario 1)
 - **Depends on**: T18-01
 - **Implementation Guidance**:
@@ -65,10 +65,10 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: FR-045
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each endpoint contract SHALL include all applicable error response types (FR-045)
-  - [ ] Error responses SHALL cover: 400, 401, 403, 404, 409, 422, 500 (FR-045)
-  - [ ] Each error response SHALL have a typed error response schema (FR-045)
-  - [ ] Not all error codes apply to every endpoint -- only include applicable ones
+  - [x] Each endpoint contract SHALL include all applicable error response types (FR-045)
+  - [x] Error responses SHALL cover: 400, 401, 403, 404, 409, 422, 500 (FR-045)
+  - [x] Each error response SHALL have a typed error response schema (FR-045)
+  - [x] Not all error codes apply to every endpoint -- only include applicable ones
 - **Test requirements**: BDD (US-02 Scenario 1)
 - **Depends on**: T18-02
 - **Implementation Guidance**:
@@ -82,13 +82,13 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: FR-046, FR-047, FR-023, FR-024
 - **Parallel**: Yes (with T18-01 through T18-03)
 - **Acceptance criteria**:
-  - [ ] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
-  - [ ] The skill SHALL generate state enum definitions with all valid values (FR-046.1)
-  - [ ] The skill SHALL generate transition validation functions (from-state, to-state, guard) (FR-046.2)
-  - [ ] The skill SHALL include side effect declarations per transition (FR-046.3)
-  - [ ] State machines SHALL match the spec's companion artifact `state-machines.<ext>` (FR-047)
-  - [ ] Output file: `.sdd/plans/contracts/<WP-slug>/state-machines.<ext>` (FR-046)
-  - [ ] No state machine files generated for WPs without stateful entities
+  - [x] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
+  - [x] The skill SHALL generate state enum definitions with all valid values (FR-046.1)
+  - [x] The skill SHALL generate transition validation functions (from-state, to-state, guard) (FR-046.2)
+  - [x] The skill SHALL include side effect declarations per transition (FR-046.3)
+  - [x] State machines SHALL match the spec's companion artifact `state-machines.<ext>` (FR-047)
+  - [x] Output file: `.sdd/plans/contracts/<WP-slug>/state-machines.<ext>` (FR-046)
+  - [x] No state machine files generated for WPs without stateful entities
 - **Test requirements**: BDD (US-02 Scenario 1, Scenario 2)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -103,14 +103,14 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: FR-048, FR-049, FR-050, FR-023, FR-024
 - **Parallel**: Yes (with T18-01 through T18-04)
 - **Acceptance criteria**:
-  - [ ] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
-  - [ ] The skill SHALL generate error code constants/enums (FR-048.1)
-  - [ ] The skill SHALL include HTTP status code mappings if applicable (FR-048.2)
-  - [ ] The skill SHALL include user-facing error message templates (FR-048.3)
-  - [ ] The skill SHALL include internal log message templates (FR-048.4)
-  - [ ] Error catalogs SHALL match the spec's companion artifact `error-catalog.<ext>` (FR-049)
-  - [ ] If an error code is shared across multiple WPs, the first WP SHALL define it fully; subsequent WPs SHALL import/reference (FR-050)
-  - [ ] Output file: `.sdd/plans/contracts/<WP-slug>/error-catalog.<ext>` (FR-048)
+  - [x] SKILL.md follows the common plan-skill contract with phase=2 (FR-023)
+  - [x] The skill SHALL generate error code constants/enums (FR-048.1)
+  - [x] The skill SHALL include HTTP status code mappings if applicable (FR-048.2)
+  - [x] The skill SHALL include user-facing error message templates (FR-048.3)
+  - [x] The skill SHALL include internal log message templates (FR-048.4)
+  - [x] Error catalogs SHALL match the spec's companion artifact `error-catalog.<ext>` (FR-049)
+  - [x] If an error code is shared across multiple WPs, the first WP SHALL define it fully; subsequent WPs SHALL import/reference (FR-050)
+  - [x] Output file: `.sdd/plans/contracts/<WP-slug>/error-catalog.<ext>` (FR-048)
 - **Test requirements**: BDD (US-02 Scenario 1, Scenario 3)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -124,9 +124,9 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: FR-039, FR-013
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] All three skills include manifest header generation instructions matching FR-039 format
-  - [ ] Each `Generated by` field correctly identifies the producing skill
-  - [ ] All three skills include instructions to split at 800 lines per WP if needed (FR-013)
+  - [x] All three skills include manifest header generation instructions matching FR-039 format
+  - [x] Each `Generated by` field correctly identifies the producing skill
+  - [x] All three skills include instructions to split at 800 lines per WP if needed (FR-013)
 - **Test requirements**: none
 - **Depends on**: T18-02, T18-04, T18-05
 - **Implementation Guidance**:
@@ -138,9 +138,9 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 - **Spec refs**: Section 9.2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Zero prohibited Unicode characters in all three SKILL.md files
-  - [ ] All hyphens are ASCII `-`, all quotes are straight
-  - [ ] Python validation script confirms clean results
+  - [x] Zero prohibited Unicode characters in all three SKILL.md files
+  - [x] All hyphens are ASCII `-`, all quotes are straight
+  - [x] Python validation script confirms clean results
 - **Test requirements**: unit (encoding validation)
 - **Depends on**: T18-06
 - **Implementation Guidance**:
@@ -165,3 +165,5 @@ FR-043 through FR-050, Section 4.7, Section 4.8, Section 4.9, Section 7.2
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-05T14:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-05T14:30:00Z - coder - lane=for_review - All tasks complete, submitted for review
