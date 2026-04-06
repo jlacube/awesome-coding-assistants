@@ -55,9 +55,9 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 - **Spec refs**: FR-014, FR-015, Section 4.2
 - **Parallel**: Yes (independent of T40-03 through T40-07)
 - **Acceptance criteria**:
-  - [ ] No references to "Final" as a spec status exist in the Planner agent file (FR-015)
-  - [ ] The Planner agent file contains a comment: `<!-- Enum source: .github/schemas/enums.yaml -->` near its enum references (FR-014)
-  - [ ] Spec status validation only accepts Draft, Validated, Approved
+  - [x] No references to "Final" as a spec status exist in the Planner agent file (FR-015)
+  - [x] The Planner agent file contains a comment: `<!-- Enum source: .github/schemas/enums.yaml -->` near its enum references (FR-014)
+  - [x] Spec status validation only accepts Draft, Validated, Approved
 - **Test requirements**: content (grep search for "Final", grep for enum comment)
 - **Depends on**: T40-01
 - **Implementation Guidance**:

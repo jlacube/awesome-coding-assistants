@@ -90,13 +90,15 @@ Before any other action, validate the incoming handoff against `spec-to-planner.
 
 ## Step 1 - Spec Selection and Status Validation (FR-001, FR-002, FR-003)
 
+<!-- Enum source: .github/schemas/enums.yaml -->
+
 1. Use `list_dir` to scan `.sdd/specs/` for all `.spec.md` files.
 2. If `.sdd/specs/` is empty: inform the user "No specs found in .sdd/specs/. Create a spec first using the Spec Architect agent." and halt.
 3. If multiple specs exist: present them via `vscode_askQuestions` and ask which to decompose.
 4. If only one spec exists: confirm it with the user before proceeding.
 5. Read the selected spec in full using `read_file`.
 6. Read companion artifacts from `.sdd/specs/artifacts/<NNN>-<idea-name>/` if the directory exists.
-7. Verify the spec's `Status` field is "Validated" or "Final". If "Draft": refuse to proceed and recommend handing off to the **Spec Architect**. Only validated specs are eligible for planning.
+7. Verify the spec's `Status` field is "Validated" or "Approved". If "Draft": refuse to proceed and recommend handing off to the **Spec Architect**. Only validated or approved specs are eligible for planning.
 
 ## Step 2 - Spec Completeness Pre-Check (FR-004, FR-005)
 
