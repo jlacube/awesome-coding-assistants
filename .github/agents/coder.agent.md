@@ -64,6 +64,41 @@ Commit after every completed task. Never batch multiple tasks into one commit.
 
 <workflow>
 
+## Step 0 - Schema Validation (FR-004, FR-005)
+
+Before any other action, validate the incoming handoff against the relevant schema. This MUST be the FIRST step -- do not proceed to WP selection, artifact loading, or skill dispatch until validation passes.
+
+1. **Determine schema**: Based on the handoff source:
+   - If this is a fresh implementation (WP has `lane: planned`): read `.github/schemas/planner-to-coder.schema.yaml`
+   - If this is rework after review (WP has `lane: to_do` and review findings exist): read `.github/schemas/reviewer-to-coder.schema.yaml`
+   - Determine the source by examining the handoff prompt context (e.g., mentions of "FB-XX", "Changes Required", "review findings" indicate rework from Reviewer).
+
+2. **Read the schema file** using `read_file`. If the schema file does not exist, halt with: "Schema file not found at `<path>`. Cannot validate handoff."
+
+3. **Validate required_artifacts**: For each entry in the schema's `required_artifacts`:
+   - Verify the WP file exists at the specified path.
+   - If `field` and `value` validations are specified (e.g., `lane` must equal a certain value), read the file and verify.
+   - For the contracts directory, verify it exists.
+
+4. **Validate required_state**: For each condition in `required_state`:
+   - Evaluate the condition against the current state.
+   - If any condition fails, halt with the schema's error message.
+
+5. **Validate context_fields**: For each field in `context_fields` where `required: true`:
+   - Verify `wp_path` is present and non-empty.
+   - Verify `spec_path` is present and non-empty.
+   - Verify `contracts_dir` is present and non-empty (for planner-to-coder schema).
+   - If any required field is missing, halt with: "Missing required context field: `<name>` -- <description>"
+
+6. **Run validation_rules**: For each rule in `validation_rules`:
+   - `file_exists`: Verify the target file exists.
+   - `field_value`: Read the target file and check the field matches the expected value.
+   - If any check fails, halt with the schema's error message.
+
+7. **On any failure**: Halt immediately. Report ALL failed checks with the schema's error messages. Do not proceed to Step 1.
+
+8. **On success**: Log "Schema validation passed for <schema_file>" and proceed to Step 1.
+
 ## Step 1 - Select Work Package (FR-001)
 
 1. Use `list_dir` to scan `.sdd/plans/` for all `WP*.md` files.
@@ -90,12 +125,13 @@ Before dispatching any skill, read the full context chain:
 4. Read each contract file using `read_file` to verify it contains valid syntax (not empty, not corrupted).
 5. If the contracts directory does not exist or is empty but the WP's tasks reference no contracts, proceed without error.
 
-## Step 4 - Consume Patterns (FR-004)
+## Step 4 - Consume Patterns (FR-004, FR-011, FR-012)
 
-1. Read `.sdd/reviews/code-patterns.md` using `read_file`.
+1. Read `.sdd/reviews/code-patterns.md` using `read_file`. This is the ONLY patterns file the Coder reads. Do NOT read `spec-patterns.md`, `plan-patterns.md`, or `doc-patterns.md` -- those belong to other agents.
 2. If the file exists: extract the "Active Patterns" section. These are mistakes from prior code reviews to avoid. Store the active patterns text for inclusion in every skill dispatch prompt.
-3. If the file does not exist: set patterns to "No active patterns" and continue without error.
+3. If the file does not exist: set patterns to "No active patterns" and continue without error. Log a warning: "code-patterns.md not found, proceeding without patterns."
 4. Each skill dispatch (Step 6) SHALL include the active patterns so skills avoid producing code that would trigger known patterns.
+5. If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
 
 ## Step 5 - Discover and Order Skills (FR-005, FR-006)
 
