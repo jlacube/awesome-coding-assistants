@@ -199,11 +199,75 @@ Before every decision, read these files to determine current state:
 - When WP lane is `to_do`, the Orchestrator SHALL invoke Coder, NOT Docs Agent (FR-008, row 7)
 - Error recovery rows (11-12) are evaluated before standard routing when `last_result` is `failed` (FR-011)
 
-### WP Selection Priority
+### WP Selection Priority -- Dependency-Aware Topological Sort
 
-When multiple WPs are ready (all dependencies met, lane=planned):
-1. Pick the lowest-numbered WP first (WP10 before WP11)
-2. Exception: if two WPs can run in parallel and have no shared files, note this to the user but still execute sequentially (agents are single-threaded)
+<!-- Spec refs: FR-040, FR-041, FR-042, FR-043; Section 6.5; Section 8.6 -->
+
+The Orchestrator SHALL select the next WP for implementation using a topological sort of the dependency graph derived from `depends_on` frontmatter fields in WP files (FR-040). This replaces simple lowest-number-first ordering. When no WPs have `depends_on` fields, the sort degenerates to lowest-number-first (backward compatible).
+
+Follow these steps in order:
+
+#### Step A: Read all WP files and build the dependency graph
+
+1. Read all `.sdd/plans/WP*.md` files. For each WP, extract `lane` and `depends_on` from YAML frontmatter.
+2. If a WP has no `depends_on` field or has `depends_on: []`, treat it as having no dependencies -- it is immediately eligible when its lane is `planned` (FR-043).
+3. Build an adjacency list representing the dependency graph. Each edge goes from a dependency to the WP that depends on it (e.g., if WP03 depends on WP01, the edge is WP01 -> WP03).
+4. Compute the in-degree for each WP (the number of dependencies it has).
+
+#### Step B: Validate dependency references
+
+For each WP's `depends_on` list, verify that every referenced WP identifier corresponds to an existing WP file. If any reference is invalid:
+- **Halt** with error E-051 (MISSING_DEPENDENCY): "{wp} depends on {dep} which does not exist."
+- Example: If WP03 has `depends_on: [WP99]` and no WP99 file exists, halt with: "WP03 depends on WP99 which does not exist."
+- Do NOT proceed to WP selection.
+
+#### Step C: Detect circular dependencies
+
+Use Kahn's algorithm to detect cycles (FR-042). After processing all nodes with in-degree 0 (Step D), if there are still unprocessed WPs remaining in the graph, a circular dependency exists.
+
+If a cycle is detected:
+- **Halt** with error E-050 (CIRCULAR_DEPENDENCY): "Circular dependency detected: WP-A -> WP-B -> ... -> WP-A. Cannot determine execution order."
+- To identify the cycle: from the unprocessed WPs, pick one and follow its `depends_on` chain until a WP is visited twice. Report the cycle path.
+- Example: If WP01 depends on WP02 and WP02 depends on WP01, halt with: "Circular dependency detected: WP01 -> WP02 -> WP01."
+- Do NOT proceed to WP selection.
+
+Cycle detection runs BEFORE WP selection, not after.
+
+#### Step D: Perform topological sort (Kahn's algorithm)
+
+1. Initialize a queue with all WPs that have in-degree 0 (no dependencies).
+2. While the queue is not empty:
+   a. Remove a WP from the queue.
+   b. Add it to the sorted order.
+   c. For each WP that depends on the removed WP, decrement its in-degree by 1. If the in-degree reaches 0, add it to the queue.
+3. After the queue is empty, if the number of WPs in the sorted order is less than the total number of WPs, a cycle exists (see Step C).
+
+This completes in O(V+E) time where V is the number of WPs and E is the number of dependency edges (NFR-002).
+
+#### Step E: Filter to eligible WPs
+
+From the topological order, filter to WPs that meet ALL of these conditions:
+1. The WP has `lane: planned` (not doing, done, for_review, to_do, or blocked).
+2. ALL of the WP's dependencies have `lane: done`. A WP with no dependencies automatically satisfies this condition (FR-043).
+
+#### Step F: Apply tiebreaker and select
+
+Among the eligible WPs, select the one with the **lowest WP number** (FR-041). This is deterministic -- the same input always produces the same output.
+
+- Example: Given WP03, WP01, and WP02 all with no dependencies and `lane: planned`, select WP01.
+- Example: Given WP01 depends on WP02, both with `lane: planned`, WP01 is not eligible (WP02 is not done). WP02 is eligible (no unmet deps). Select WP02.
+
+If two or more WPs can run in parallel and have no shared files, note this to the user but still execute sequentially (agents are single-threaded).
+
+#### Step G: Handle no-eligible-WP cases
+
+If no WPs are eligible after filtering:
+
+- **No WPs with `lane: planned` at all**: This is normal (all WPs are in progress, under review, or done). No action needed for WP selection.
+- **WPs with `lane: planned` exist but ALL have unmet dependencies** (at least one dependency is not `lane: done`): Report error E-052 (ALL_WPS_BLOCKED): "No WPs are ready. Blocked WPs: {list with unmet deps}."
+  - The report SHALL list each blocked WP and which of its dependencies are not yet `lane: done`.
+  - Example: "No WPs are ready. Blocked WPs: WP03 (waiting on WP01 [lane: doing], WP02 [lane: for_review]), WP05 (waiting on WP04 [lane: planned])."
+  - This is a report, not a halt -- the Orchestrator continues processing other pipeline states (e.g., reviews, documentation) via the Decision Table.
 </state_machine>
 
 <workflow>
@@ -457,7 +521,9 @@ When ALL WPs (MVP and non-MVP, or only MVP if user chose to halt) have `lane: do
 | Agent reports escalation | Record, present to user, wait for resolution, re-assess state | FR-014, FR-015 |
 | Escalation resolved by user | Reset state, re-read from disk, use decision table for next agent | FR-015 |
 | Same WP fails review 3 times | Halt, present all feedback, ask user | FR-012 |
-| Circular dependency detected | Halt, report the cycle, ask user to resolve | -- |
+| Circular dependency detected | Halt with cycle description (E-050), ask user to resolve | FR-042 |
+| Missing dependency reference | Halt with "{wp} depends on {dep} which does not exist" (E-051) | FR-042 |
+| All WPs blocked by unmet deps | Report blocked status with unmet dep list (E-052), continue | FR-040 |
 | Spec ambiguity blocks coder | Route to Spec Architect for clarification | FR-015 |
 | State file write failure | Halt with last known state and failed update | FR-003 |
 | State file corrupted YAML | Recreate from WP frontmatter ground truth, log warning | Section 5 |

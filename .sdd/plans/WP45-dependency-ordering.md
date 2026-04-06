@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP45 - Dependency-Aware WP Ordering
@@ -32,10 +32,10 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 - **Spec refs**: FR-040, Section 6.5 (steps 1-2, 5-8), Section 8.6
 - **Parallel**: No (foundation for T45-02 through T45-04)
 - **Acceptance criteria**:
-  - [ ] Orchestrator SHALL select the next WP using topological sort of the dependency graph derived from `depends_on` frontmatter (FR-040)
-  - [ ] Selected WP has all dependencies in `lane: done` or has no dependencies (FR-040)
-  - [ ] Topological sort completes in O(V+E) time (NFR-002)
-  - [ ] The algorithm description is clear enough for an LLM agent to follow step by step
+  - [x] Orchestrator SHALL select the next WP using topological sort of the dependency graph derived from `depends_on` frontmatter (FR-040)
+  - [x] Selected WP has all dependencies in `lane: done` or has no dependencies (FR-040)
+  - [x] Topological sort completes in O(V+E) time (NFR-002)
+  - [x] The algorithm description is clear enough for an LLM agent to follow step by step
 - **Test requirements**: BDD (US-05 Scenario 1), E2E (Section 11.4 row 4)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -50,9 +50,9 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 - **Spec refs**: FR-041, Section 6.5 (step 7)
 - **Parallel**: No (part of T45-01's algorithm)
 - **Acceptance criteria**:
-  - [ ] Lowest-numbered WP among equally eligible WPs is selected as tiebreaker (FR-041)
-  - [ ] Given WP03, WP01, WP02 all with no dependencies and lane: planned, the Orchestrator selects WP01 (US-05 Edge Case 1)
-  - [ ] The tiebreaker is deterministic -- same input always produces same output
+  - [x] Lowest-numbered WP among equally eligible WPs is selected as tiebreaker (FR-041)
+  - [x] Given WP03, WP01, WP02 all with no dependencies and lane: planned, the Orchestrator selects WP01 (US-05 Edge Case 1)
+  - [x] The tiebreaker is deterministic -- same input always produces same output
 - **Test requirements**: BDD (US-05 Edge Case 1)
 - **Depends on**: T45-01
 - **Implementation Guidance**:
@@ -66,10 +66,10 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 - **Spec refs**: FR-042, Section 6.5 (step 3), Section 8.6 (detect_cycles)
 - **Parallel**: No (part of the dependency graph logic)
 - **Acceptance criteria**:
-  - [ ] Orchestrator SHALL detect circular dependencies and halt with cycle description (FR-042)
-  - [ ] Error message format: "Circular dependency detected: WP-A -> WP-B -> ... -> WP-A" (FR-042)
-  - [ ] Given WP01 depends on WP02 and WP02 depends on WP01, the Orchestrator halts with cycle description (US-05 Scenario 2)
-  - [ ] Detection runs before WP selection, not after
+  - [x] Orchestrator SHALL detect circular dependencies and halt with cycle description (FR-042)
+  - [x] Error message format: "Circular dependency detected: WP-A -> WP-B -> ... -> WP-A" (FR-042)
+  - [x] Given WP01 depends on WP02 and WP02 depends on WP01, the Orchestrator halts with cycle description (US-05 Scenario 2)
+  - [x] Detection runs before WP selection, not after
 - **Test requirements**: BDD (US-05 Scenario 2)
 - **Depends on**: T45-01
 - **Implementation Guidance**:
@@ -84,9 +84,9 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 - **Spec refs**: FR-043, Section 6.5 (step 5-6)
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] WPs with no `depends_on` field SHALL be treated as having no dependencies (FR-043)
-  - [ ] WPs with `depends_on: []` SHALL be treated as having no dependencies (FR-043)
-  - [ ] These WPs are eligible for implementation as soon as their lane is `planned`
+  - [x] WPs with no `depends_on` field SHALL be treated as having no dependencies (FR-043)
+  - [x] WPs with `depends_on: []` SHALL be treated as having no dependencies (FR-043)
+  - [x] These WPs are eligible for implementation as soon as their lane is `planned`
 - **Test requirements**: BDD (US-05 Edge Case 1)
 - **Depends on**: T45-01
 - **Implementation Guidance**:
@@ -100,9 +100,9 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 - **Spec refs**: FR-040, Section 8.6 (E-052)
 - **Parallel**: No (verification task)
 - **Acceptance criteria**:
-  - [ ] If no WP has all dependencies met and at least one WP has unmet dependencies, the Orchestrator SHALL report: "No WPs are ready. Blocked WPs: <list with unmet deps>" (FR-040)
-  - [ ] The report lists each blocked WP and which dependencies are not yet done
-  - [ ] Error E-052 (ALL_WPS_BLOCKED): report, do not halt
+  - [x] If no WP has all dependencies met and at least one WP has unmet dependencies, the Orchestrator SHALL report: "No WPs are ready. Blocked WPs: <list with unmet deps>" (FR-040)
+  - [x] The report lists each blocked WP and which dependencies are not yet done
+  - [x] Error E-052 (ALL_WPS_BLOCKED): report, do not halt
 - **Test requirements**: content (review of Orchestrator instructions)
 - **Depends on**: T45-01, T45-03
 - **Implementation Guidance**:
@@ -126,3 +126,9 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:00:01Z - coder - T45-01 completed - Topological sort algorithm written in orchestrator.agent.md
+- 2026-04-07T00:00:02Z - coder - T45-02 completed - Lowest-number tiebreaker added
+- 2026-04-07T00:00:03Z - coder - T45-03 completed - Circular dependency detection with E-050, E-051 errors added
+- 2026-04-07T00:00:04Z - coder - T45-04 completed - Missing/empty depends_on handling documented
+- 2026-04-07T00:00:05Z - coder - T45-05 completed - All-blocked reporting with E-052 added
