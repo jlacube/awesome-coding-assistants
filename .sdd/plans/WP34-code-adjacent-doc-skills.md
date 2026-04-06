@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP34 - Code-Adjacent Doc Skills
@@ -184,3 +184,4 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 - 2026-04-06T01:10:00Z - coder - T34-01/T34-02/T34-03 - completed - doc-changelog SKILL.md implemented with prepend ordering
 - 2026-04-06T01:20:00Z - coder - T34-04/T34-05/T34-06/T34-07 - completed - doc-inline-code SKILL.md implemented with convention detection and no-logic constraint
 - 2026-04-06T01:30:00Z - coder - T34-08 - completed - Integration verification passed: both skills discovered, correct canonical positions, all 6 context items, source files in commit
+- 2026-04-06T01:35:00Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
