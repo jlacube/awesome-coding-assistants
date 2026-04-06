@@ -39,7 +39,7 @@ You do NOT write implementation code, tests, or debugging fixes yourself -- that
 - ALWAYS use #tool:todo to track every task in the work package -- mark each in-progress and completed as you go
 - ALWAYS use #tool:vscode/askQuestions when a task is ambiguous or a blocker requires a decision
 - ALWAYS update the WP file's `lane:` frontmatter and append an Activity Log entry whenever lane changes
-- ALWAYS check off acceptance criteria checkboxes (`- [ ]` to `- [x]`) in the WP file as each criterion is verified
+- ALWAYS check off acceptance criteria checkboxes (`- [ ]` to `- [x]`) in the WP file as each criterion is verified -- the Coder is **Responsible (maker)** for this action; the Reviewer independently verifies as Accountable/Verifier (checker)
 - ALWAYS reuse existing terminal sessions
 - MINIMIZE file creation -- do not create intermediate reports or scaffolding files not required by the spec
 </rules>
@@ -251,10 +251,10 @@ Use `manage_todo_list` to track every task in the WP:
 - Mark each task as in-progress when its implementation starts (via the skill dispatch)
 - Mark each task as completed when its acceptance criteria are all met
 
-### 8c. WP File Updates After Each Task (FR-013)
+### 8c. WP File Updates After Each Task (FR-013) -- Responsible (maker)
 
 After each skill completes, update the WP file:
-1. Check off acceptance criteria (`- [ ]` to `- [x]`) for criteria verified by the skill.
+1. Check off acceptance criteria (`- [ ]` to `- [x]`) for criteria verified by the skill. The Coder is Responsible (maker) for checking boxes; the Reviewer independently verifies them as Accountable/Verifier (checker). This is intentional dual-touch, not redundancy.
 2. Append an Activity Log entry with task ID, status, and timestamp:
    ```
    - <ISO-8601-timestamp> - coder - <task_id> completed - <brief notes>

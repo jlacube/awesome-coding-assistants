@@ -68,9 +68,9 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 - **Spec refs**: FR-031, Section 4.6
 - **Parallel**: Yes (with T43-04)
 - **Acceptance criteria**:
-  - [ ] Coder agent instructions label acceptance criteria handling as "Responsible (maker)" (FR-031)
-  - [ ] The existing checkbox behavior is preserved -- only the label is added
-  - [ ] Given a maintainer reads the Coder agent, they find the role labeled "Responsible (maker)" (US-09 Scenario 1)
+  - [x] Coder agent instructions label acceptance criteria handling as "Responsible (maker)" (FR-031)
+  - [x] The existing checkbox behavior is preserved -- only the label is added
+  - [x] Given a maintainer reads the Coder agent, they find the role labeled "Responsible (maker)" (US-09 Scenario 1)
 - **Test requirements**: content (grep search), BDD (US-09 Scenario 1)
 - **Depends on**: none
 - **Implementation Guidance**:
