@@ -65,10 +65,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-002, Section 6.1 (step 1), Section 7.1 (state machine: for_review -> to_do)
 - **Parallel**: No (modifies review-coordinator.agent.md)
 - **Acceptance criteria**:
-  - [ ] Review Coordinator SHALL increment `review_cycles` by 1 in WP frontmatter each time it sets lane to `to_do` (FR-002)
-  - [ ] If `review_cycles` field is absent, the Review Coordinator SHALL add it with value 1 (FR-002)
-  - [ ] The increment and lane change happen together as a single frontmatter update
-  - [ ] Given a WP with `review_cycles: 2` and verdict "Changes Required", when the Review Coordinator updates, then `review_cycles` becomes 3 (US-01 Scenario 1)
+  - [x] Review Coordinator SHALL increment `review_cycles` by 1 in WP frontmatter each time it sets lane to `to_do` (FR-002)
+  - [x] If `review_cycles` field is absent, the Review Coordinator SHALL add it with value 1 (FR-002)
+  - [x] The increment and lane change happen together as a single frontmatter update
+  - [x] Given a WP with `review_cycles: 2` and verdict "Changes Required", when the Review Coordinator updates, then `review_cycles` becomes 3 (US-01 Scenario 1)
 - **Test requirements**: BDD (US-01 Scenario 1)
 - **Depends on**: T41-01
 - **Implementation Guidance**:

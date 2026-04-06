@@ -369,6 +369,7 @@ Based on the verdict:
 - **Changes Required**:
   - Set `lane: to_do` in the YAML frontmatter.
   - Set `review_status: has_feedback` in the YAML frontmatter.
+  - Increment `review_cycles` by 1 in the YAML frontmatter. If the `review_cycles` field is absent, add it with value 1. The lane change and `review_cycles` increment happen together as a single frontmatter update.
 
 ### 13b. Append Activity Log entry
 
