@@ -194,6 +194,13 @@ git commit -m "docs(docs): update documentation for WP<NN>"
 - If `git add` or `git commit` fails, report the error to the invoker.
 - Do not retry -- report the error and halt.
 
+## Step 7e - Set docs_completed Frontmatter (FR-004)
+
+After committing documentation changes (Step 7c), set `docs_completed: true` in the WP file's YAML frontmatter. If the `docs_completed` field is absent, add it. This signals to the Orchestrator that documentation has been generated for this WP.
+
+- If the WP file cannot be written, log the error and report it in the completion signal. Do NOT halt -- the Docs Agent is advisory (best-effort).
+- If no documentation was produced (Step 7a found no modified files), still set `docs_completed: true` because the Docs Agent invocation completed (skills may have determined no updates were needed).
+
 ## Step 8 - Activity Log Protocol
 
 Canonical format (from `.github/schemas/enums.yaml` conventions): `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`

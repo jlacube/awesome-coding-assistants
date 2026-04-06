@@ -83,9 +83,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-004, Section 6.2 (step 5)
 - **Parallel**: No (modifies docs-agent.agent.md)
 - **Acceptance criteria**:
-  - [ ] Docs Agent SHALL set `docs_completed: true` in WP frontmatter upon successful completion (FR-004)
-  - [ ] If the WP file cannot be written, the Docs Agent SHALL log the error and report it in its completion signal (FR-004)
-  - [ ] Given the Docs Agent finishes documentation, then `docs_completed: true` is set in frontmatter (US-02 Scenario 3)
+  - [x] Docs Agent SHALL set `docs_completed: true` in WP frontmatter upon successful completion (FR-004)
+  - [x] If the WP file cannot be written, the Docs Agent SHALL log the error and report it in its completion signal (FR-004)
+  - [x] Given the Docs Agent finishes documentation, then `docs_completed: true` is set in frontmatter (US-02 Scenario 3)
 - **Test requirements**: BDD (US-02 Scenario 3)
 - **Depends on**: T41-02
 - **Implementation Guidance**:
