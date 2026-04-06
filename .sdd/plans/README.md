@@ -966,7 +966,7 @@ Cross-WP consistency audit performed. No inconsistencies found:
 |----|-------|----------|--------|------------|----------------|
 | [WP35](WP35-orchestrator-state-management.md) | Orchestrator V2: State File Management & Verification | P0 | For Review | none | - |
 | [WP36](WP36-orchestrator-pipeline-recovery.md) | Orchestrator V2: Pipeline Sequence, Sequential Execution & Error Recovery | P1 | For Review | WP35 | No |
-| [WP37](WP37-orchestrator-escalation-reporting.md) | Orchestrator V2: Escalation Support & Status Reporting | P1 | Not Started | WP35, WP36 | No |
+| [WP37](WP37-orchestrator-escalation-reporting.md) | Orchestrator V2: Escalation Support & Status Reporting | P1 | For Review | WP35, WP36 | No |
 
 ### MVP Scope
 

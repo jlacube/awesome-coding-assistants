@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP37 - Orchestrator V2: Escalation Support & Status Reporting
@@ -154,3 +154,4 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:30:00Z - coder - lane=for_review - All tasks complete, tests passing (manual BDD verification)
