@@ -131,8 +131,9 @@ Before dispatching any skill, read the full context chain:
 1. Read `.sdd/reviews/code-patterns.md` using `read_file`. This is the ONLY patterns file the Coder reads. Do NOT read `spec-patterns.md`, `plan-patterns.md`, or `doc-patterns.md` -- those belong to other agents.
 2. If the file exists: extract the "Active Patterns" section. These are mistakes from prior code reviews to avoid. Store the active patterns text for inclusion in every skill dispatch prompt.
 3. If the file does not exist: set patterns to "No active patterns" and continue without error. Log a warning: "code-patterns.md not found, proceeding without patterns."
-4. Each skill dispatch (Step 6) SHALL include the active patterns so skills avoid producing code that would trigger known patterns.
-5. If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
+4. Record `patterns_version` from the file's YAML frontmatter. If the frontmatter is missing or `patterns_version` is not an integer, treat it as 0 (E-032). Store this value as `last_patterns_version`.
+5. Each skill dispatch (Step 6) SHALL include the active patterns so skills avoid producing code that would trigger known patterns.
+6. If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
 
 ## Step 5 - Discover and Order Skills (FR-005, FR-006)
 
@@ -156,6 +157,10 @@ Before dispatching any skill, read the full context chain:
 ## Step 6 - Dispatch Skills Sequentially (FR-007, FR-008, FR-009)
 
 Dispatch each discovered skill (except `code-debug`, handled in Step 7) one at a time using `runSubagent`. Skills execute sequentially, blocking. Do NOT dispatch the next skill until the current skill completes.
+
+### Pre-dispatch patterns version check (FR-054)
+
+Before each skill dispatch, read `patterns_version` from `.sdd/reviews/code-patterns.md` YAML frontmatter. If it differs from `last_patterns_version`, re-read the full file, extract the updated "Active Patterns" section, and update `last_patterns_version`. If the file is unreadable on re-check (E-031), use the last successfully read patterns and log a warning. If frontmatter is missing, treat `patterns_version` as 0 (triggers reload every time as a safe default).
 
 For each skill, use this prompt template:
 

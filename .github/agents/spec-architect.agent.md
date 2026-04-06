@@ -166,6 +166,7 @@ Read `.sdd/reviews/spec-patterns.md` using `read_file`. This is the ONLY pattern
 
 - If the file exists: extract the "Active Patterns" section. These are mistakes from prior spec generations to avoid. Active patterns SHALL be included in the prompt for every skill this agent dispatches.
 - If the file does not exist: set patterns to "No active patterns" and continue without error. Log a warning: "spec-patterns.md not found, proceeding without patterns."
+- Record `patterns_version` from the file's YAML frontmatter. If the frontmatter is missing or `patterns_version` is not an integer, treat it as 0 (E-032). Store this value as `last_patterns_version`.
 - If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
 
 Keep pattern summaries concise (1-2 lines each) for inclusion in skill prompts.
@@ -245,6 +246,10 @@ Log the discovery result with the ordered list of skills to dispatch.
 ## Step 7 - Skill Dispatch (FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-028)
 
 Dispatch each discovered skill sequentially using `runSubagent`. For each skill:
+
+### Pre-dispatch patterns version check (FR-054)
+
+Before each skill dispatch, read `patterns_version` from `.sdd/reviews/spec-patterns.md` YAML frontmatter. If it differs from `last_patterns_version`, re-read the full file, extract the updated "Active Patterns" section, and update `last_patterns_version`. If the file is unreadable on re-check (E-031), use the last successfully read patterns and log a warning. If frontmatter is missing, treat `patterns_version` as 0 (triggers reload every time as a safe default).
 
 ### 7a. Construct the dispatch prompt
 

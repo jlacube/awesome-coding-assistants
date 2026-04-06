@@ -81,6 +81,7 @@ Read the full context chain. Use `read_file` for each artifact.
 1. Read `.sdd/reviews/doc-patterns.md` using `read_file`.
 2. If the file exists: extract the "Active Patterns" section. Store the active patterns text for inclusion in every skill dispatch prompt.
 3. If the file does not exist: set patterns to "No active patterns" and continue without error. Log: "doc-patterns.md not found, proceeding without patterns."
+4. Record `patterns_version` from the file's YAML frontmatter. If the frontmatter is missing or `patterns_version` is not an integer, treat it as 0 (E-032). Store this value as `last_patterns_version`.
 
 ## Step 4 - Dynamic Skill Discovery (FR-003)
 
@@ -110,6 +111,10 @@ Log the final dispatch order.
 ## Step 6 - Sequential Skill Dispatch (FR-005, FR-006, FR-007)
 
 Dispatch each skill sequentially using `runSubagent`. Do NOT dispatch the next skill until the current skill completes. Each skill reads existing docs before writing updates (FR-006).
+
+### Pre-dispatch patterns version check (FR-054)
+
+Before each skill dispatch, read `patterns_version` from `.sdd/reviews/doc-patterns.md` YAML frontmatter. If it differs from `last_patterns_version`, re-read the full file, extract the updated "Active Patterns" section, and update `last_patterns_version`. If the file is unreadable on re-check (E-031), use the last successfully read patterns and log a warning. If frontmatter is missing, treat `patterns_version` as 0 (triggers reload every time as a safe default).
 
 ### 6a. Construct the dispatch prompt
 

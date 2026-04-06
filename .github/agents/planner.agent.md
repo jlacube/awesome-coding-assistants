@@ -198,6 +198,7 @@ Read `.sdd/reviews/plan-patterns.md` using `read_file`. This is the ONLY pattern
 
 - If the file exists: extract the "Active Patterns" section. These are mistakes from prior plan generations to avoid. Active patterns SHALL be included in the prompt for every skill this agent dispatches.
 - If the file does not exist: set patterns to "No active patterns" and continue without error. Log a warning: "plan-patterns.md not found, proceeding without patterns."
+- Record `patterns_version` from the file's YAML frontmatter. If the frontmatter is missing or `patterns_version` is not an integer, treat it as 0 (E-032). Store this value as `last_patterns_version`.
 - If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
 
 ## Step 6 - Plan Initialization (FR-017)
@@ -238,6 +239,10 @@ Log the discovery result: list Phase 1 skills found and Phase 2 skills found.
 ## Step 8 - Phase 1 Dispatch: Decomposition (FR-012, FR-014, FR-015)
 
 Dispatch Phase 1 skills sequentially using `runSubagent`. Phase 1 skills decompose the spec into WPs and tasks.
+
+### Pre-dispatch patterns version check (FR-054)
+
+Before each skill dispatch (Phase 1 and Phase 2), read `patterns_version` from `.sdd/reviews/plan-patterns.md` YAML frontmatter. If it differs from `last_patterns_version`, re-read the full file, extract the updated "Active Patterns" section, and update `last_patterns_version`. If the file is unreadable on re-check (E-031), use the last successfully read patterns and log a warning. If frontmatter is missing, treat `patterns_version` as 0 (triggers reload every time as a safe default).
 
 For each Phase 1 skill, use this prompt template (Section 8.2):
 
