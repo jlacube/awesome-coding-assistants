@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP44 - Configurable Coverage Thresholds
@@ -143,3 +143,9 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:01:00Z - coder - T44-01, T44-02 completed - Documented coverage_code and coverage_branch in developer guide
+- 2026-04-07T00:02:00Z - coder - T44-03 completed - Updated code-unit-tests skill for configurable thresholds
+- 2026-04-07T00:03:00Z - coder - T44-04 completed - Updated code-env-setup skill for configurable thresholds
+- 2026-04-07T00:04:00Z - coder - T44-05 completed - Updated spec-test-strategy skill for configurable references
+- 2026-04-07T00:05:00Z - coder - T44-06 completed - Verified cross-skill consistency
+- 2026-04-07T00:06:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria met
