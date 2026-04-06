@@ -59,6 +59,35 @@ Web research strengthens plan quality. Use `fetch_webpage` proactively.
 
 <workflow>
 
+## Step 0 - Schema Validation (FR-004, FR-005)
+
+Before any other action, validate the incoming handoff against `spec-to-planner.schema.yaml`. This MUST be the FIRST step -- do not proceed to spec selection, research, or skill dispatch until validation passes.
+
+1. **Read the schema file**: Read `.github/schemas/spec-to-planner.schema.yaml` using `read_file`. If the schema file does not exist, halt with: "Schema file not found at `.github/schemas/spec-to-planner.schema.yaml`. Cannot validate handoff."
+
+2. **Validate required_artifacts**: For each entry in the schema's `required_artifacts`:
+   - Verify the spec file exists at the specified path.
+   - Read the spec file and verify its `Status` field equals "Validated". If the spec status is "Draft", halt with: "Spec must be Validated before planning"
+   - Verify the companion artifacts directory exists and contains at least 1 file.
+
+3. **Validate required_state**: For each condition in `required_state`:
+   - Evaluate the condition (e.g., `spec.status == 'Validated'`).
+   - If any condition fails, halt with the schema's error message (e.g., "Spec must be Validated before planning").
+
+4. **Validate context_fields**: For each field in `context_fields` where `required: true`:
+   - Verify `spec_path` is present and non-empty.
+   - Verify `artifacts_dir` is present and non-empty.
+   - If any required field is missing, halt with: "Missing required context field: `<name>` -- <description>"
+
+5. **Run validation_rules**: For each rule in `validation_rules`:
+   - `file_exists`: Verify the target file exists.
+   - `field_value`: Read the target file and verify the field matches the expected value.
+   - If any check fails, halt with the schema's error message.
+
+6. **On any failure**: Halt immediately. Report ALL failed checks with the schema's error messages. Do not proceed to Step 1.
+
+7. **On success**: Log "Schema validation passed for spec-to-planner.schema.yaml" and proceed to Step 1.
+
 ## Step 1 - Spec Selection and Status Validation (FR-001, FR-002, FR-003)
 
 1. Use `list_dir` to scan `.sdd/specs/` for all `.spec.md` files.
@@ -160,12 +189,13 @@ Conduct web research using `fetch_webpage` for:
 
 Summarize all findings into a compact research summary (500-1000 words). This summary is passed to every skill during dispatch.
 
-## Step 5 - Patterns Consumption (FR-009)
+## Step 5 - Patterns Consumption (FR-009, FR-011, FR-012)
 
-Read `.sdd/reviews/plan-patterns.md` using `read_file`.
+Read `.sdd/reviews/plan-patterns.md` using `read_file`. This is the ONLY patterns file the Planner reads. Do NOT read `spec-patterns.md`, `code-patterns.md`, or `doc-patterns.md` -- those belong to other agents.
 
-- If the file exists: extract the "Active Patterns" section. These are mistakes from prior plan generations to avoid.
-- If the file does not exist: set patterns to "No active patterns" and continue without error.
+- If the file exists: extract the "Active Patterns" section. These are mistakes from prior plan generations to avoid. Active patterns SHALL be included in the prompt for every skill this agent dispatches.
+- If the file does not exist: set patterns to "No active patterns" and continue without error. Log a warning: "plan-patterns.md not found, proceeding without patterns."
+- If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
 
 ## Step 6 - Plan Initialization (FR-017)
 
