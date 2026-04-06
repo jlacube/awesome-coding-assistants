@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP43 - Error-Handling Policy & Acceptance Criteria RACI
@@ -8,10 +8,10 @@ lane: doing
 |-------|-------|
 | Spec | `.sdd/specs/010-sdd-pipeline-hardening.spec.md` |
 | Priority | P1 |
-| Lane | planned |
+| Lane | for_review |
 | Depends on | WP40 |
 | Goal | Document the error-handling policy and the maker/checker acceptance criteria pattern so pipeline behavior is explicit and understandable |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Read `.sdd/docs/architecture.md` and find the "Design Decision: Error-Handling Policy" section categorizing every agent. Read any agent file and find the error policy reference comment. Read the Coder agent and find "Responsible (maker)" label. |
 | Parallelisable | Yes (with WP41, WP42) |
 | Prompt | `.sdd/plans/WP43-error-policy-raci.md` |
@@ -144,3 +144,10 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:00:01Z - coder - T43-01 completed - Added error-handling policy design decision to architecture.md
+- 2026-04-07T00:00:02Z - coder - T43-02 completed - Added error policy reference comment to all 8 agent files
+- 2026-04-07T00:00:03Z - coder - T43-03 completed - Added Responsible (maker) label to coder.agent.md
+- 2026-04-07T00:00:04Z - coder - T43-04 completed - Added Accountable/Verifier (checker) label to review-coordinator.agent.md
+- 2026-04-07T00:00:05Z - coder - T43-05 completed - Added Acceptance Criteria Ownership section to developer-guide.md
+- 2026-04-07T00:00:06Z - coder - T43-06 completed - Verified cross-file RACI consistency
+- 2026-04-07T00:00:07Z - coder - lane=for_review - All tasks complete, submitted for review
