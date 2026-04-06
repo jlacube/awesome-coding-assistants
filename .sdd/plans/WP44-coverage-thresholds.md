@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP44 - Configurable Coverage Thresholds
@@ -32,10 +32,10 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 - **Spec refs**: FR-034, Section 7.1
 - **Parallel**: Yes (with T44-02)
 - **Acceptance criteria**:
-  - [ ] WP frontmatter schema accepts `coverage_code` as a valid optional field of type integer (FR-034)
-  - [ ] Valid range is 0-100 inclusive
-  - [ ] If `coverage_code` is present but out of range or not an integer, the reading skill SHALL halt with: "Invalid coverage_code value '<value>'. Must be an integer 0-100." (FR-034)
-  - [ ] Default value when absent is 80
+  - [x] WP frontmatter schema accepts `coverage_code` as a valid optional field of type integer (FR-034)
+  - [x] Valid range is 0-100 inclusive
+  - [x] If `coverage_code` is present but out of range or not an integer, the reading skill SHALL halt with: "Invalid coverage_code value '<value>'. Must be an integer 0-100." (FR-034)
+  - [x] Default value when absent is 80
 - **Test requirements**: content, BDD (US-04 Scenario 3)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,10 +49,10 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 - **Spec refs**: FR-035, Section 7.1
 - **Parallel**: Yes (with T44-01)
 - **Acceptance criteria**:
-  - [ ] WP frontmatter schema accepts `coverage_branch` as a valid optional field of type integer (FR-035)
-  - [ ] Valid range is 0-100 inclusive
-  - [ ] Same validation and halt behavior as `coverage_code` (FR-035)
-  - [ ] Default value when absent is 90
+  - [x] WP frontmatter schema accepts `coverage_branch` as a valid optional field of type integer (FR-035)
+  - [x] Valid range is 0-100 inclusive
+  - [x] Same validation and halt behavior as `coverage_code` (FR-035)
+  - [x] Default value when absent is 90
 - **Test requirements**: content
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -142,3 +142,4 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
