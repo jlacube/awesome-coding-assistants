@@ -1,0 +1,138 @@
+---
+lane: planned
+---
+
+# WP47 - Pattern File Propagation
+
+| Field | Value |
+|-------|-------|
+| Spec | `.sdd/specs/010-sdd-pipeline-hardening.spec.md` |
+| Priority | P3 |
+| Lane | planned |
+| Depends on | WP40 |
+| Goal | Enable mid-cycle pattern propagation by adding version tracking to pattern files and version-check-before-dispatch to coordinators |
+| Status | Not Started |
+| Independent Test | Have the Review Coordinator add a pattern to code-patterns.md and increment patterns_version. Dispatch the Coder for the next skill. Verify the Coder detects the version change and reloads patterns before dispatch. |
+| Parallelisable | Yes (with WP46, WP48) |
+| Prompt | `.sdd/plans/WP47-pattern-propagation.md` |
+
+## Objective
+
+Add `patterns_version` frontmatter to all 4 domain pattern files, update the Review Coordinator to increment this version when it modifies patterns, and update all 4 coordinator agents (Spec Architect, Planner, Coder, Docs Agent) to check `patterns_version` before each skill dispatch and reload if changed. This enables mid-cycle pattern propagation so newly discovered patterns take effect within the same pipeline run.
+
+## Spec References
+
+FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pattern File Frontmatter Extended), Section 8.4 (Pattern File Read Interface), US-12
+
+## Tasks
+
+### T47-01 - Add patterns_version to spec-patterns.md
+
+- **Description**: Add `patterns_version: 1` to the YAML frontmatter of `.sdd/reviews/spec-patterns.md`.
+- **Spec refs**: FR-052, Section 7.5
+- **Parallel**: Yes (with T47-02, T47-03, T47-04)
+- **Acceptance criteria**:
+  - [ ] spec-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [ ] Existing content is preserved
+  - [ ] `patterns_version` is a positive integer
+- **Test requirements**: content (YAML frontmatter parse)
+- **Depends on**: none
+- **Implementation Guidance**:
+  - Add the field to the existing YAML frontmatter block (between `---` delimiters)
+  - If no frontmatter exists, create one
+  - Files to modify: `.sdd/reviews/spec-patterns.md`
+
+### T47-02 - Add patterns_version to plan-patterns.md
+
+- **Description**: Add `patterns_version: 1` to the YAML frontmatter of `.sdd/reviews/plan-patterns.md`.
+- **Spec refs**: FR-052, Section 7.5
+- **Parallel**: Yes (with T47-01, T47-03, T47-04)
+- **Acceptance criteria**:
+  - [ ] plan-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [ ] Existing content is preserved
+- **Test requirements**: content (YAML frontmatter parse)
+- **Depends on**: none
+- **Implementation Guidance**:
+  - Files to modify: `.sdd/reviews/plan-patterns.md`
+
+### T47-03 - Add patterns_version to code-patterns.md
+
+- **Description**: Add `patterns_version: 1` to the YAML frontmatter of `.sdd/reviews/code-patterns.md`.
+- **Spec refs**: FR-052, Section 7.5
+- **Parallel**: Yes (with T47-01, T47-02, T47-04)
+- **Acceptance criteria**:
+  - [ ] code-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [ ] Existing content is preserved
+- **Test requirements**: content (YAML frontmatter parse)
+- **Depends on**: none
+- **Implementation Guidance**:
+  - Files to modify: `.sdd/reviews/code-patterns.md`
+
+### T47-04 - Add patterns_version to doc-patterns.md
+
+- **Description**: Add `patterns_version: 1` to the YAML frontmatter of `.sdd/reviews/doc-patterns.md`.
+- **Spec refs**: FR-052, Section 7.5
+- **Parallel**: Yes (with T47-01, T47-02, T47-03)
+- **Acceptance criteria**:
+  - [ ] doc-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [ ] Existing content is preserved
+- **Test requirements**: content (YAML frontmatter parse)
+- **Depends on**: none
+- **Implementation Guidance**:
+  - Files to modify: `.sdd/reviews/doc-patterns.md`
+
+### T47-05 - Update Review Coordinator to increment patterns_version
+
+- **Description**: Add logic to the Review Coordinator to increment `patterns_version` by 1 each time it adds, modifies, or retires a pattern in a domain patterns file.
+- **Spec refs**: FR-053, Section 4.11
+- **Parallel**: No
+- **Acceptance criteria**:
+  - [ ] Review Coordinator SHALL increment `patterns_version` by 1 each time it modifies a patterns file (FR-053)
+  - [ ] If `patterns_version` is missing, the Review Coordinator SHALL add it with value 1 (FR-053)
+  - [ ] The increment applies to add, modify, and retire operations
+  - [ ] Given the Review Coordinator adds a pattern and increments patterns_version, the version in the file increases by 1 (US-12 Scenario 1)
+- **Test requirements**: BDD (US-12 Scenario 1)
+- **Depends on**: T47-01 through T47-04
+- **Implementation Guidance**:
+  - Find the pattern curation/management section in review-coordinator.agent.md
+  - Add: "After modifying any patterns file, increment `patterns_version` in that file's frontmatter by 1"
+  - Files to modify: `.github/agents/review-coordinator.agent.md`
+
+### T47-06 - Update coordinator agents for version-check-before-dispatch
+
+- **Description**: Update the 4 coordinator agents (Spec Architect, Planner, Coder, Docs Agent) to record `patterns_version` when first reading patterns and re-read the file before each skill dispatch if the version has changed.
+- **Spec refs**: FR-054, Section 4.11, Section 8.4
+- **Parallel**: No
+- **Acceptance criteria**:
+  - [ ] Coordinator agents SHALL record `patterns_version` when first reading the patterns file (FR-054)
+  - [ ] Before each skill dispatch, coordinators SHALL check if `patterns_version` has changed (FR-054)
+  - [ ] If version has changed, coordinator re-reads the file and uses updated patterns (FR-054)
+  - [ ] If the patterns file is unreadable on re-check, the coordinator SHALL use last cached patterns and log a warning (FR-054)
+  - [ ] If frontmatter is missing, treating `patterns_version` as 0 triggers a reload every time (safe default)
+  - [ ] Given the Coder coordinator dispatches the next skill after a version change, it detects the change and reloads (US-12 Scenario 1)
+  - [ ] Given the patterns file is unreadable, the coordinator uses cached patterns (US-12 Scenario 2)
+- **Test requirements**: BDD (US-12 Scenario 1, Scenario 2)
+- **Depends on**: T47-05
+- **Implementation Guidance**:
+  - For each coordinator, find the patterns consumption section
+  - Add before pre-dispatch check: "Read `patterns_version` from the patterns file frontmatter. If it differs from the last recorded version, re-read the full patterns content."
+  - Error E-031 (PATTERNS_UNREADABLE): use cached patterns, log warning
+  - Error E-032 (PATTERNS_VERSION_INVALID): treat as 0, always reload
+  - Files to modify: `.github/agents/spec-architect.agent.md`, `.github/agents/planner.agent.md`, `.github/agents/coder.agent.md`, `.github/agents/docs-agent.agent.md`
+
+## Implementation Notes
+
+- All deliverables are markdown file updates -- no executable code
+- This is a polling mechanism (Design Decision 5, Section 9.4): coordinators check the version counter before each skill dispatch
+- Pattern propagation only matters for long pipeline runs where the Review Coordinator finds patterns mid-cycle
+- Short-circuit: if the patterns file has not changed, no re-read occurs (just a version comparison)
+- The 4 pattern files already exist from WP28 (Spec 006). This WP only adds frontmatter and updates agent logic
+
+## Risks & Mitigations
+
+- **Risk**: Pattern files may not have frontmatter yet. **Mitigation**: Both T47-01-04 add frontmatter, and the agent logic handles missing frontmatter (treat version as 0).
+- **Risk**: Coordinators may have different patterns consumption implementations. **Mitigation**: Add the version check logic consistently to all 4 coordinators using the same template.
+
+## Activity Log
+
+- 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
