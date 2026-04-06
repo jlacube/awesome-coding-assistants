@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP33 - Audience Guide Doc Skills
@@ -140,3 +140,4 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 - 2026-04-06T12:03:00Z - coder - T33-03 - completed - doc-developer-guide SKILL.md structure created with frontmatter, input/output contracts, execution sequence
 - 2026-04-06T12:04:00Z - coder - T33-04 - completed - Developer guide generation sections written: env setup, project structure, conventions, testing, adding features, incremental update protocol
 - 2026-04-06T12:05:00Z - coder - T33-05 - completed - Integration verified: glob discovers both skills, canonical positions 3 and 4 correct, all 6 FR-005 context items passed in dispatch prompt
+- 2026-04-06T12:06:00Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
