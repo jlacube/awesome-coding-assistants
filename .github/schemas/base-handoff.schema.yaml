@@ -24,3 +24,8 @@ validation_patterns:
     check: "File path matches expected WP path format"
     pattern: "^\\.sdd/plans/WP\\d{2}-[a-z0-9-]+\\.md$"
     error: "File path '{path}' does not match expected format: .sdd/plans/WP<NN>-<slug>.md"
+
+version_history:
+  - version: "base/v1"
+    date: "2026-04-04"
+    description: "Initial version"

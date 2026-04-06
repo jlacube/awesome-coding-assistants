@@ -43,3 +43,8 @@ validation_rules:
     field: "lane"
     expected: "to_do"
     error: "WP lane is not 'to_do'"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

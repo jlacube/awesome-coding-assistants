@@ -51,3 +51,8 @@ validation_rules:
     field: "lane"
     expected: "for_review"
     error: "WP lane is not 'for_review'"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

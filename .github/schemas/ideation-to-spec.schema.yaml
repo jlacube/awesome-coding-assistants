@@ -28,3 +28,8 @@ validation_rules:
   - check: "file_exists"
     target: "brief_path"
     error: "Idea brief does not exist at {brief_path}"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

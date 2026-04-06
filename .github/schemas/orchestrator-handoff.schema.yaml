@@ -34,3 +34,8 @@ validation_rules:
   - check: "field_not_empty"
     target: "user_request"
     error: "User request must not be empty"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

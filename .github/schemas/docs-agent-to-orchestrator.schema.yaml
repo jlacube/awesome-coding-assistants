@@ -43,3 +43,8 @@ validation_rules:
     target: "docs_completed"
     expected: true
     error: "docs_completed must be true. False is not a valid completion signal."
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

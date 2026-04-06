@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP46 - Schema Versioning Protocol
@@ -32,10 +32,10 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - **Spec refs**: FR-044, FR-045, Section 7.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each existing handoff schema in `.github/schemas/` contains a `version_history` section (FR-044)
-  - [ ] Each version_history entry contains: `version` (string), `date` (ISO-8601), `description` (string) (FR-045)
-  - [ ] At least one entry exists per schema (the initial version)
-  - [ ] Given a maintainer opens coder-to-reviewer.schema.yaml, they find a version_history array (US-10 Scenario 1)
+  - [x] Each existing handoff schema in `.github/schemas/` contains a `version_history` section (FR-044)
+  - [x] Each version_history entry contains: `version` (string), `date` (ISO-8601), `description` (string) (FR-045)
+  - [x] At least one entry exists per schema (the initial version)
+  - [x] Given a maintainer opens coder-to-reviewer.schema.yaml, they find a version_history array (US-10 Scenario 1)
 - **Test requirements**: content (YAML parse), BDD (US-10 Scenario 1)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,10 +49,10 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - **Spec refs**: FR-044, FR-045
 - **Parallel**: Yes (with T46-01)
 - **Acceptance criteria**:
-  - [ ] reviewer-to-orchestrator.schema.yaml has version_history with initial entry
-  - [ ] coder-complete-to-orchestrator.schema.yaml has version_history with initial entry
-  - [ ] docs-agent-to-orchestrator.schema.yaml has version_history with initial entry
-  - [ ] base-handoff.schema.yaml has version_history with initial entry
+  - [x] reviewer-to-orchestrator.schema.yaml has version_history with initial entry
+  - [x] coder-complete-to-orchestrator.schema.yaml has version_history with initial entry
+  - [x] docs-agent-to-orchestrator.schema.yaml has version_history with initial entry
+  - [x] base-handoff.schema.yaml has version_history with initial entry
 - **Test requirements**: content (YAML parse)
 - **Depends on**: none (WP42 must be complete, enforced by WP-level dependency)
 - **Implementation Guidance**:
@@ -130,3 +130,6 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:01:00Z - coder - T46-01 completed - Added version_history to 8 existing forward schemas
+- 2026-04-07T00:01:00Z - coder - T46-02 completed - Added version_history to 4 new schemas (base, 3 return schemas)

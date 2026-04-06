@@ -50,3 +50,8 @@ validation_rules:
     field: "lane"
     expected: "planned"
     error: "WP lane is not 'planned'"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

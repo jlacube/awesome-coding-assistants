@@ -49,3 +49,8 @@ validation_rules:
     field: "Status"
     expected: "Validated"
     error: "Spec status is not Validated"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"

@@ -54,3 +54,8 @@ validation_rules:
     target: "lane_confirmation"
     expected: "for_review"
     error: "Coder completion handoff has invalid lane_confirmation. Expected 'for_review'."
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"
