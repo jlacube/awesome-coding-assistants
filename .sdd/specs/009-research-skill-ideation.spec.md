@@ -2,7 +2,7 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `009-research-skill-ideation`
-> **Status**: Validated
+> **Status**: Approved
 > **Version**: 1.1
 
 ---
