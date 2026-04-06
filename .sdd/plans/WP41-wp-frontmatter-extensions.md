@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP41 - WP Frontmatter Extensions
@@ -32,9 +32,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-001, FR-007, Section 7.1
 - **Parallel**: Yes (with T41-02)
 - **Acceptance criteria**:
-  - [ ] WP frontmatter schema accepts `review_cycles` as a valid optional field of type integer (FR-001)
-  - [ ] If `review_cycles` is present but not a non-negative integer, the reading agent SHALL treat it as 0 and log a warning (FR-001)
-  - [ ] Agents reading WP files created before this change (no `review_cycles` field) SHALL treat the absent field as 0 (FR-007)
+  - [x] WP frontmatter schema accepts `review_cycles` as a valid optional field of type integer (FR-001)
+  - [x] If `review_cycles` is present but not a non-negative integer, the reading agent SHALL treat it as 0 and log a warning (FR-001)
+  - [x] Agents reading WP files created before this change (no `review_cycles` field) SHALL treat the absent field as 0 (FR-007)
 - **Test requirements**: content, BDD (US-01 Scenario 2, Scenario 3)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,9 +49,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-003, FR-007, Section 7.1
 - **Parallel**: Yes (with T41-01)
 - **Acceptance criteria**:
-  - [ ] WP frontmatter schema accepts `docs_completed` as a valid optional field of type boolean (FR-003)
-  - [ ] If `docs_completed` is present but not a boolean, the reading agent SHALL treat it as false and log a warning (FR-003)
-  - [ ] Agents reading WP files created before this change (no `docs_completed` field) SHALL treat the absent field as false (FR-007)
+  - [x] WP frontmatter schema accepts `docs_completed` as a valid optional field of type boolean (FR-003)
+  - [x] If `docs_completed` is present but not a boolean, the reading agent SHALL treat it as false and log a warning (FR-003)
+  - [x] Agents reading WP files created before this change (no `docs_completed` field) SHALL treat the absent field as false (FR-007)
 - **Test requirements**: content, BDD (US-02 Scenario 2, Edge Case: string "true")
 - **Depends on**: none
 - **Implementation Guidance**:
