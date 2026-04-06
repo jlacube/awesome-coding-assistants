@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP31 - Docs Agent Coordinator
@@ -179,3 +179,4 @@ All implementation artifacts are markdown files. "Testing" means manually invoki
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:15:00Z - coder - lane=for_review - All tasks complete, encoding verified
