@@ -118,9 +118,9 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 - **Spec refs**: FR-034-039, Section 11.3
 - **Parallel**: No (verification task)
 - **Acceptance criteria**:
-  - [ ] All three skills reference `coverage_code` and `coverage_branch` by the same field names
-  - [ ] All three use the same defaults: 80 and 90
-  - [ ] Validation behavior is consistent (halt on out-of-range)
+  - [x] All three skills reference `coverage_code` and `coverage_branch` by the same field names
+  - [x] All three use the same defaults: 80 and 90
+  - [x] Validation behavior is consistent (halt on out-of-range)
 - **Test requirements**: integration (cross-file consistency)
 - **Depends on**: T44-03, T44-04, T44-05
 - **Implementation Guidance**:
