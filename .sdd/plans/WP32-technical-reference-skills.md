@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP32 - Technical Reference Doc Skills
@@ -32,10 +32,10 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-010, Section 4.2.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] doc-architecture SKILL.md has valid YAML frontmatter with `name: doc-architecture`
-  - [ ] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
-  - [ ] Output contract specifies `.sdd/docs/architecture.md` as the target file
-  - [ ] Execution sequence defines the step-by-step process for generating architecture docs
+  - [x] doc-architecture SKILL.md has valid YAML frontmatter with `name: doc-architecture`
+  - [x] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
+  - [x] Output contract specifies `.sdd/docs/architecture.md` as the target file
+  - [x] Execution sequence defines the step-by-step process for generating architecture docs
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,12 +49,12 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-010
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL produce/update `.sdd/docs/architecture.md` with system overview from spec Section 9.1 (FR-010.1)
-  - [ ] The skill SHALL include a component diagram in Mermaid or prose format (FR-010.2)
-  - [ ] The skill SHALL include technology stack summary from spec Section 9.2 (FR-010.3)
-  - [ ] The skill SHALL include key design decisions from spec Section 9.4 (FR-010.4)
-  - [ ] The skill SHALL include directory structure from the actual codebase, not the spec (FR-010.5)
-  - [ ] The skill SHALL include data flow descriptions (FR-010.6)
+  - [x] The skill SHALL produce/update `.sdd/docs/architecture.md` with system overview from spec Section 9.1 (FR-010.1)
+  - [x] The skill SHALL include a component diagram in Mermaid or prose format (FR-010.2)
+  - [x] The skill SHALL include technology stack summary from spec Section 9.2 (FR-010.3)
+  - [x] The skill SHALL include key design decisions from spec Section 9.4 (FR-010.4)
+  - [x] The skill SHALL include directory structure from the actual codebase, not the spec (FR-010.5)
+  - [x] The skill SHALL include data flow descriptions (FR-010.6)
 - **Test requirements**: BDD
 - **Depends on**: T32-01
 - **Implementation Guidance**:
@@ -68,10 +68,10 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-011
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] On incremental updates, the skill SHALL update affected sections without overwriting unrelated sections (FR-011)
-  - [ ] The skill reads existing architecture.md content before writing
-  - [ ] Sections not affected by the current WP remain unchanged
-  - [ ] BDD: Given architecture.md has existing content from WP01, When doc-architecture runs for WP02, Then WP01 content is preserved and WP02 content is added/updated
+  - [x] On incremental updates, the skill SHALL update affected sections without overwriting unrelated sections (FR-011)
+  - [x] The skill reads existing architecture.md content before writing
+  - [x] Sections not affected by the current WP remain unchanged
+  - [x] BDD: Given architecture.md has existing content from WP01, When doc-architecture runs for WP02, Then WP01 content is preserved and WP02 content is added/updated
 - **Test requirements**: BDD
 - **Depends on**: T32-02
 - **Implementation Guidance**:
