@@ -4,6 +4,22 @@
 
 ---
 
+## [WP45] - Dependency-Aware WP Ordering (2026-04-07)
+
+### Changes
+
+- Replaced the Orchestrator's WP-number-based selection with topological sort (Kahn's algorithm) over the `depends_on` dependency graph, with lowest WP number as tiebreaker
+- Added dependency reference validation: the Orchestrator halts with error E-051 (MISSING_DEPENDENCY) if a `depends_on` entry references a non-existent WP
+- Added circular dependency detection: the Orchestrator halts with error E-050 (CIRCULAR_DEPENDENCY) and reports the cycle path
+- Added all-blocked reporting: the Orchestrator reports error E-052 (ALL_WPS_BLOCKED) listing each blocked WP and its unmet dependencies when no WPs are eligible
+- WPs with no `depends_on` field or `depends_on: []` are treated as having no dependencies and are immediately eligible (backward compatible)
+
+### Breaking Changes
+
+None. When no WPs have `depends_on` fields, ordering matches the previous lowest-number-first behavior.
+
+---
+
 ## [WP44] - Configurable Coverage Thresholds (2026-04-07)
 
 ### Changes
