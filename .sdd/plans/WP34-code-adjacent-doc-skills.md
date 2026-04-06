@@ -84,10 +84,10 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-018, Section 4.2.6
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] doc-inline-code SKILL.md has valid YAML frontmatter with `name: doc-inline-code`
-  - [ ] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
-  - [ ] Output contract specifies "implementation source files" as the target (not `.sdd/docs/`)
-  - [ ] Execution sequence defines the step-by-step process for adding docstrings and comments
+  - [x] doc-inline-code SKILL.md has valid YAML frontmatter with `name: doc-inline-code`
+  - [x] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
+  - [x] Output contract specifies "implementation source files" as the target (not `.sdd/docs/`)
+  - [x] Execution sequence defines the step-by-step process for adding docstrings and comments
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -101,11 +101,11 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-018
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL add/update module-level docstrings describing purpose (FR-018.1)
-  - [ ] The skill SHALL add/update function/method docstrings with parameter descriptions, return types, and raises/throws (FR-018.2)
-  - [ ] The skill SHALL add complex logic comments explaining "why", not "what" (FR-018.3)
-  - [ ] The skill SHALL add type annotations if missing and the language supports them (FR-018.4)
-  - [ ] The skill reads existing source files to determine which docstrings are missing or stale
+  - [x] The skill SHALL add/update module-level docstrings describing purpose (FR-018.1)
+  - [x] The skill SHALL add/update function/method docstrings with parameter descriptions, return types, and raises/throws (FR-018.2)
+  - [x] The skill SHALL add complex logic comments explaining "why", not "what" (FR-018.3)
+  - [x] The skill SHALL add type annotations if missing and the language supports them (FR-018.4)
+  - [x] The skill reads existing source files to determine which docstrings are missing or stale
 - **Test requirements**: BDD
 - **Depends on**: T34-04
 - **Implementation Guidance**:
@@ -120,9 +120,9 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-019
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL NOT modify implementation logic; only add documentary content (FR-019)
-  - [ ] The constraint is prominently placed in the skill instructions (not buried in a footnote)
-  - [ ] Examples of prohibited modifications are listed (e.g., changing variable names, refactoring functions, fixing bugs)
+  - [x] The skill SHALL NOT modify implementation logic; only add documentary content (FR-019)
+  - [x] The constraint is prominently placed in the skill instructions (not buried in a footnote)
+  - [x] Examples of prohibited modifications are listed (e.g., changing variable names, refactoring functions, fixing bugs)
 - **Test requirements**: BDD
 - **Depends on**: T34-05
 - **Implementation Guidance**:
@@ -136,9 +136,9 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-020
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL follow the project's existing docstring convention if one exists (FR-020)
-  - [ ] If no convention exists, the skill SHALL use the language standard: Python = Google style, TypeScript = JSDoc, Go = godoc, Rust = rustdoc (FR-020)
-  - [ ] The skill detects existing conventions by examining existing docstrings in the codebase
+  - [x] The skill SHALL follow the project's existing docstring convention if one exists (FR-020)
+  - [x] If no convention exists, the skill SHALL use the language standard: Python = Google style, TypeScript = JSDoc, Go = godoc, Rust = rustdoc (FR-020)
+  - [x] The skill detects existing conventions by examining existing docstrings in the codebase
 - **Test requirements**: BDD
 - **Depends on**: T34-05
 - **Implementation Guidance**:
