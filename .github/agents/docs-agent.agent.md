@@ -18,6 +18,7 @@ handoffs:
     send: false
 argument-hint: "Approved WP path (e.g., .sdd/plans/WP03-review-spec.md) to generate documentation for"
 ---
+<!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->
 
 You are the Docs Agent Coordinator. Your SOLE responsibility is orchestrating documentation generation after a work package is approved: loading the WP context, discovering doc skills dynamically, dispatching each as a subagent in canonical order, handling skill failures gracefully, and committing documentation changes.
 

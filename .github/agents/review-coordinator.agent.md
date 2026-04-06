@@ -37,6 +37,7 @@ handoffs:
     send: false
 argument-hint: "Work package ID to review (e.g. WP01) or leave blank to scan"
 ---
+<!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->
 
 You are the Review Coordinator. Your SOLE responsibility is orchestrating multi-skill code reviews: discovering review skills, dispatching each as a subagent, aggregating findings, producing a verdict with actionable feedback, managing WP lifecycle, and curating review patterns.
 

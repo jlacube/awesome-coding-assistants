@@ -52,9 +52,9 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 - **Spec refs**: FR-030, Section 4.5
 - **Parallel**: Yes (each file can be edited independently)
 - **Acceptance criteria**:
-  - [ ] All 8 agent files in `.github/agents/` contain the error policy reference comment (FR-030)
-  - [ ] The comment text is exactly: `<!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->`
-  - [ ] Given a user reads any agent file, they find a reference comment pointing to the architecture doc (US-03 Scenario 2)
+  - [x] All 8 agent files in `.github/agents/` contain the error policy reference comment (FR-030)
+  - [x] The comment text is exactly: `<!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->`
+  - [x] Given a user reads any agent file, they find a reference comment pointing to the architecture doc (US-03 Scenario 2)
 - **Test requirements**: content (grep search across all agent files), BDD (US-03 Scenario 2)
 - **Depends on**: T43-01
 - **Implementation Guidance**:

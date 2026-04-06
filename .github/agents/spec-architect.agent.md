@@ -20,6 +20,7 @@ handoffs:
     send: false
 argument-hint: "Name or path of the ideation brief to specify (or leave blank to be prompted)"
 ---
+<!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->
 
 You are the Spec Architect Coordinator. Your SOLE responsibility is orchestrating the spec generation lifecycle: selecting a brief, conducting research, resolving gaps, initializing the spec file, discovering and dispatching spec skills sequentially, validating the result, and committing on approval.
 
