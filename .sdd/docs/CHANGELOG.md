@@ -4,6 +4,20 @@
 
 ---
 
+## [WP42] - Return Handoff Schemas & Shared Base (2026-04-07)
+
+### Changes
+
+- Created shared base handoff schema at `.github/schemas/base-handoff.schema.yaml` defining reusable validation patterns (wp_file_exists, lane_value_valid, file_path_format) for use by individual handoff schemas
+- Created return handoff schema `reviewer-to-orchestrator.schema.yaml` formalizing the Review Coordinator's completion signal to the Orchestrator with `wp_path`, `verdict`, and `updated_lane` context fields
+- Created return handoff schema `coder-complete-to-orchestrator.schema.yaml` formalizing the Coder's completion signal to the Orchestrator with `wp_path` and `lane_confirmation` context fields
+- Created return handoff schema `docs-agent-to-orchestrator.schema.yaml` formalizing the Docs Agent's completion signal to the Orchestrator with `wp_path` and `docs_completed` context fields
+- Linked existing schemas (`spec-to-planner.schema.yaml`, `coder-to-reviewer.schema.yaml`) to the base schema via `base_schema` field, replacing duplicated validation rules with shared references
+
+### Breaking Changes
+
+None.
+
 ## [WP41] - WP Frontmatter Extensions (2026-04-07)
 
 ### Changes

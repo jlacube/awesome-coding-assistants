@@ -13,14 +13,18 @@
     planner.agent.md                # Planning agent
   schemas/
     enums.yaml                      # Central enum registry -- single source of truth for pipeline enums and conventions (WP40)
+    base-handoff.schema.yaml        # Shared base schema with reusable validation patterns (WP42)
     orchestrator-handoff.schema.yaml
     coder-to-reviewer.schema.yaml
+    coder-complete-to-orchestrator.schema.yaml  # Return handoff: Coder -> Orchestrator (WP42)
     reviewer-to-coder.schema.yaml
+    reviewer-to-orchestrator.schema.yaml        # Return handoff: Reviewer -> Orchestrator (WP42)
     reviewer-to-spec.schema.yaml
     planner-to-coder.schema.yaml
     planner-to-spec.schema.yaml
     spec-to-planner.schema.yaml
     ideation-to-spec.schema.yaml
+    docs-agent-to-orchestrator.schema.yaml      # Return handoff: Docs Agent -> Orchestrator (WP42)
   skills/                           # VS Code Copilot Chat skill definitions
     code-env-setup/SKILL.md         # Environment setup coding skill
     code-implementation/SKILL.md    # Core implementation coding skill
@@ -166,6 +170,8 @@ The coordinator maintains `.sdd/reviews/review-patterns.md` with patterns extrac
 - Agent files referencing enum values include `<!-- Enum source: .github/schemas/enums.yaml -->` near those references (WP40)
 - **Activity Log entries** use the canonical format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>` with ` - ` (space-hyphen-space) separators. Agent names are lowercase with hyphens (e.g., `coder`, `review-coordinator`, `docs-agent`) (WP40)
 - The `spec_status` enum no longer includes "Final" -- valid values are Draft, Validated, Approved (WP40)
+- **Shared base handoff schema** (WP42): Common validation patterns (WP file existence, lane validation, file path format) are defined in `.github/schemas/base-handoff.schema.yaml`. Individual handoff schemas reference it via a `base_schema` field. If the base schema is missing, schemas fall back to inline validation rules.
+- **Return handoff schemas** (WP42): Three return handoff schemas (reviewer-to-orchestrator, coder-complete-to-orchestrator, docs-agent-to-orchestrator) formalize completion signals from agents back to the Orchestrator. All follow the handoff/v1 format.
 - **WP frontmatter extended fields** (WP41): Two optional fields track review and documentation state in WP YAML frontmatter, replacing Activity Log text parsing with structured data:
   - `review_cycles` (integer, default 0) -- number of review-rework cycles completed. The Review Coordinator increments this by 1 each time it sets `lane: to_do`. The Orchestrator reads this for escalation decisions (`review_cycles >= 3` triggers escalation). If absent, treat as 0. If present but not a non-negative integer, treat as 0 and log a warning.
   - `docs_completed` (boolean, default false) -- whether documentation has been generated for this WP. The Docs Agent sets this to `true` upon successful completion. The Orchestrator reads this to decide whether to invoke the Docs Agent. If absent, treat as false. If present but not a boolean, treat as false and log a warning.

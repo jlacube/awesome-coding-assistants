@@ -97,6 +97,8 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 6. **Central enum registry** (WP40): All pipeline-wide enumeration values (`lane`, `spec_status`, `pipeline_stage`, `review_status`) are defined in a single file at `.github/schemas/enums.yaml`. Agents reference this file as the authoritative source via `<!-- Enum source: .github/schemas/enums.yaml -->` comments. This eliminates scattered, potentially inconsistent inline value lists.
 7. **Canonical Activity Log format** (WP40): All agents use the same log entry format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`. The canonical template is stored in `enums.yaml` under `conventions.activity_log_format`.
 8. **Structured WP frontmatter for state tracking** (WP41): Two optional YAML frontmatter fields -- `review_cycles` (integer, default 0) and `docs_completed` (boolean, default false) -- replace Activity Log text parsing for review cycle counting and documentation completion status. The Review Coordinator increments `review_cycles` on each rework cycle. The Docs Agent sets `docs_completed: true` on completion. The Orchestrator reads both fields from frontmatter instead of scanning Activity Log entries. This eliminates fragile text parsing and provides machine-readable state.
+9. **Return handoff schemas** (WP42): Three return handoff schemas formalize the completion signals from Reviewer, Coder, and Docs Agent back to the Orchestrator. Each schema follows the handoff/v1 format and defines required context fields and validation rules for the return path. This completes the handoff schema coverage so every directional agent-to-agent path has an explicit contract.
+10. **Shared base handoff schema** (WP42): A shared base schema at `.github/schemas/base-handoff.schema.yaml` defines reusable validation patterns (wp_file_exists, lane_value_valid, file_path_format) that individual handoff schemas reference via a `base_schema` field. If the base schema file is missing, individual schemas fall back to inline rules. This eliminates duplicated validation logic across schemas.
 
 ## Directory Structure
 
@@ -111,14 +113,18 @@ The coordinator communicates with other agents exclusively via handoff buttons -
     spec-architect.agent.md         # Specification agent
   schemas/
     enums.yaml                      # Central enum registry (WP40) -- single source of truth for lane, spec_status, pipeline_stage, review_status, and canonical Activity Log format
+    base-handoff.schema.yaml        # Shared base schema with reusable validation patterns (WP42)
     orchestrator-handoff.schema.yaml
     coder-to-reviewer.schema.yaml
+    coder-complete-to-orchestrator.schema.yaml  # Return handoff: Coder -> Orchestrator (WP42)
     reviewer-to-coder.schema.yaml
+    reviewer-to-orchestrator.schema.yaml        # Return handoff: Reviewer -> Orchestrator (WP42)
     reviewer-to-spec.schema.yaml
     planner-to-coder.schema.yaml
     planner-to-spec.schema.yaml
     spec-to-planner.schema.yaml
     ideation-to-spec.schema.yaml
+    docs-agent-to-orchestrator.schema.yaml      # Return handoff: Docs Agent -> Orchestrator (WP42)
   skills/
     review-*/SKILL.md               # Review skills (8 dimensions)
     code-*/SKILL.md                 # Coding skills (5 phases)
