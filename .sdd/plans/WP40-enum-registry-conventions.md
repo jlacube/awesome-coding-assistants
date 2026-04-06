@@ -88,10 +88,10 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 - **Spec refs**: FR-014, FR-016, FR-017, Section 4.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Coder agent file contains `<!-- Enum source: .github/schemas/enums.yaml -->` comment (FR-014)
-  - [ ] Activity Log Protocol section specifies the canonical format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>` (FR-016, FR-017)
-  - [ ] Agent name in log entries is `coder` (lowercase with no spaces)
-  - [ ] Format matches the canonical definition in enums.yaml conventions
+  - [x] Coder agent file contains `<!-- Enum source: .github/schemas/enums.yaml -->` comment (FR-014)
+  - [x] Activity Log Protocol section specifies the canonical format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>` (FR-016, FR-017)
+  - [x] Agent name in log entries is `coder` (lowercase with no spaces)
+  - [x] Format matches the canonical definition in enums.yaml conventions
 - **Test requirements**: content (grep search)
 - **Depends on**: T40-01
 - **Implementation Guidance**:

@@ -234,13 +234,15 @@ Debug attempt: <N> of 3.
 
 ## Step 8 - Task State Tracking and WP Lifecycle (FR-011, FR-012, FR-013)
 
+<!-- Enum source: .github/schemas/enums.yaml -->
+
 This protocol runs throughout the implementation lifecycle, not as a single sequential step.
 
 ### 8a. Lane Update on Start (FR-011)
 
 When implementation begins (after all validation in Steps 1-5 passes), update the WP file:
 1. Set the `lane:` YAML frontmatter field to `doing`.
-2. Append an Activity Log entry: `<timestamp> - coder - lane=doing - Starting implementation`
+2. Append an Activity Log entry: `<ISO-8601-timestamp> - coder - lane=doing - Starting implementation`
 
 ### 8b. Task Progress Tracking (FR-012)
 
@@ -254,15 +256,17 @@ After each skill completes, update the WP file:
 1. Check off acceptance criteria (`- [ ]` to `- [x]`) for criteria verified by the skill.
 2. Append an Activity Log entry with task ID, status, and timestamp:
    ```
-   - <timestamp> - coder - <task_id> - completed - <brief notes>
+   - <ISO-8601-timestamp> - coder - <task_id> completed - <brief notes>
    ```
 
 ### Activity Log Protocol
 
+Canonical format (from `.github/schemas/enums.yaml` conventions): `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`
+
 Every time the WP's lane changes, append an entry to its Activity Log section (oldest first, newest last):
 
 ```
-- <timestamp> - coder - lane=<lane> - <brief action description>
+- <ISO-8601-timestamp> - coder - lane=<lane> - <brief action description>
 ```
 
 Valid lanes: `planned` -> `doing` -> `for_review` -> `done` (set by Reviewer) | `to_do` (set by Reviewer on FAIL)
@@ -275,7 +279,7 @@ After all skills complete and all tests pass:
 
 1. **Coverage verification (FR-014.1)**: Run a final coverage report. Verify thresholds: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
 2. **Set lane (FR-014.2)**: Update the WP file's `lane:` frontmatter to `for_review`.
-3. **Activity Log**: Append: `<timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
+3. **Activity Log**: Append: `<ISO-8601-timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
 4. **Update plan index**: Update the WP's status in `.sdd/plans/README.md` to reflect completion.
 
 **NO SELF-REVIEW (FR-015)**: The coordinator SHALL NOT perform any self-assessment, self-review, or quality evaluation of the code. No review checklists, no quality scores, no "verified implementation quality" statements. The Reviewer agent is the sole quality gate. The Coder's job ends at "tests pass + coverage met".
@@ -324,7 +328,7 @@ If the Reviewer returns the WP with `lane: to_do` (verdict: Changes Required):
 1. Read the full review report in the WP file under `## Review`.
 2. Address every FB-XX item flagged by the reviewer -- do not skip, defer, or partially fix.
 3. Update `review_status: acknowledged` in the WP frontmatter.
-4. Set `lane: doing` and append an Activity Log entry: `<timestamp> - coder - lane=doing - Addressing reviewer feedback (FB-XX, FB-XX, ...)`
+4. Set `lane: doing` and append an Activity Log entry: `<ISO-8601-timestamp> - coder - lane=doing - Addressing reviewer feedback (FB-XX, FB-XX, ...)`
 5. Re-dispatch the appropriate skill(s) to fix each FB-XX item, re-running tests after each fix.
 6. For each fixed FB-XX item, commit immediately:
    ```
