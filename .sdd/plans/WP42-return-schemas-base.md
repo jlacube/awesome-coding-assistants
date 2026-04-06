@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP42 - Return Handoff Schemas & Shared Base
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | WP40 |
 | Goal | Create 3 return handoff schemas and a shared base schema with reusable validation patterns |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | List `.github/schemas/` and verify reviewer-to-orchestrator.schema.yaml, coder-complete-to-orchestrator.schema.yaml, docs-agent-to-orchestrator.schema.yaml, and base-handoff.schema.yaml all exist. Read each and verify required fields. |
 | Parallelisable | Yes (with WP41, WP43) |
 | Prompt | `.sdd/plans/WP42-return-schemas-base.md` |
@@ -32,12 +32,12 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - **Spec refs**: FR-049, FR-050, Section 7.4
 - **Parallel**: No (dependent schemas reference this)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/schemas/base-handoff.schema.yaml` (FR-049)
-  - [ ] Contains `schema: base/v1` identifier
-  - [ ] Defines `validation_patterns.wp_file_exists` with check and error fields (FR-050)
-  - [ ] Defines `validation_patterns.lane_value_valid` with check, enum_ref, and error fields (FR-050)
-  - [ ] Defines `validation_patterns.file_path_format` with check, pattern, and error fields (FR-050)
-  - [ ] `lane_value_valid` references enums.yaml for valid values
+  - [x] File exists at `.github/schemas/base-handoff.schema.yaml` (FR-049)
+  - [x] Contains `schema: base/v1` identifier
+  - [x] Defines `validation_patterns.wp_file_exists` with check and error fields (FR-050)
+  - [x] Defines `validation_patterns.lane_value_valid` with check, enum_ref, and error fields (FR-050)
+  - [x] Defines `validation_patterns.file_path_format` with check, pattern, and error fields (FR-050)
+  - [x] `lane_value_valid` references enums.yaml for valid values
 - **Test requirements**: content (YAML parse + pattern verification)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -52,13 +52,13 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - **Spec refs**: FR-021, FR-022, FR-027, Section 7.7
 - **Parallel**: Yes (with T42-03, T42-04)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/schemas/reviewer-to-orchestrator.schema.yaml` (FR-021)
-  - [ ] Schema follows handoff/v1 format with all required sections (FR-027)
-  - [ ] `context_fields` includes `wp_path` (string, required) (FR-022)
-  - [ ] `context_fields` includes `verdict` (enum: approved, changes_required; required) (FR-022)
-  - [ ] `context_fields` includes `updated_lane` (enum from lane values; required) (FR-022)
-  - [ ] `source_agent` is "5. Reviewer" and `target_agent` is "1. Orchestrator"
-  - [ ] Contains `base_schema` reference to base-handoff.schema.yaml (FR-051)
+  - [x] File exists at `.github/schemas/reviewer-to-orchestrator.schema.yaml` (FR-021)
+  - [x] Schema follows handoff/v1 format with all required sections (FR-027)
+  - [x] `context_fields` includes `wp_path` (string, required) (FR-022)
+  - [x] `context_fields` includes `verdict` (enum: approved, changes_required; required) (FR-022)
+  - [x] `context_fields` includes `updated_lane` (enum from lane values; required) (FR-022)
+  - [x] `source_agent` is "5. Reviewer" and `target_agent` is "1. Orchestrator"
+  - [x] Contains `base_schema` reference to base-handoff.schema.yaml (FR-051)
 - **Test requirements**: content (YAML parse), BDD (US-08 Scenario 1, Scenario 2)
 - **Depends on**: T42-01
 - **Implementation Guidance**:
@@ -74,12 +74,12 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - **Spec refs**: FR-023, FR-024, FR-027, Section 7.7
 - **Parallel**: Yes (with T42-02, T42-04)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/schemas/coder-complete-to-orchestrator.schema.yaml` (FR-023)
-  - [ ] Schema follows handoff/v1 format (FR-027)
-  - [ ] `context_fields` includes `wp_path` (string, required) (FR-024)
-  - [ ] `context_fields` includes `lane_confirmation` (literal value `for_review`, required) (FR-024)
-  - [ ] `source_agent` is "4. Coder" and `target_agent` is "1. Orchestrator"
-  - [ ] Contains `base_schema` reference (FR-051)
+  - [x] File exists at `.github/schemas/coder-complete-to-orchestrator.schema.yaml` (FR-023)
+  - [x] Schema follows handoff/v1 format (FR-027)
+  - [x] `context_fields` includes `wp_path` (string, required) (FR-024)
+  - [x] `context_fields` includes `lane_confirmation` (literal value `for_review`, required) (FR-024)
+  - [x] `source_agent` is "4. Coder" and `target_agent` is "1. Orchestrator"
+  - [x] Contains `base_schema` reference (FR-051)
 - **Test requirements**: content (YAML parse)
 - **Depends on**: T42-01
 - **Implementation Guidance**:
@@ -93,12 +93,12 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - **Spec refs**: FR-025, FR-026, FR-027, Section 7.7
 - **Parallel**: Yes (with T42-02, T42-03)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/schemas/docs-agent-to-orchestrator.schema.yaml` (FR-025)
-  - [ ] Schema follows handoff/v1 format (FR-027)
-  - [ ] `context_fields` includes `wp_path` (string, required) (FR-026)
-  - [ ] `context_fields` includes `docs_completed` (boolean, required) (FR-026)
-  - [ ] `source_agent` is "6. Docs Agent" and `target_agent` is "1. Orchestrator"
-  - [ ] Contains `base_schema` reference (FR-051)
+  - [x] File exists at `.github/schemas/docs-agent-to-orchestrator.schema.yaml` (FR-025)
+  - [x] Schema follows handoff/v1 format (FR-027)
+  - [x] `context_fields` includes `wp_path` (string, required) (FR-026)
+  - [x] `context_fields` includes `docs_completed` (boolean, required) (FR-026)
+  - [x] `source_agent` is "6. Docs Agent" and `target_agent` is "1. Orchestrator"
+  - [x] Contains `base_schema` reference (FR-051)
 - **Test requirements**: content (YAML parse), BDD (US-08 Scenario 3)
 - **Depends on**: T42-01
 - **Implementation Guidance**:
@@ -112,9 +112,9 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - **Spec refs**: FR-051, Section 4.10
 - **Parallel**: No (modifies existing files)
 - **Acceptance criteria**:
-  - [ ] At least 2 existing schemas contain `base_schema: .github/schemas/base-handoff.schema.yaml` (FR-051)
-  - [ ] Duplicated validation rules (WP file existence, lane validation) are replaced with base schema references
-  - [ ] If base schema cannot be loaded, individual schemas' inline rules are used as fallback (FR-049)
+  - [x] At least 2 existing schemas contain `base_schema: .github/schemas/base-handoff.schema.yaml` (FR-051)
+  - [x] Duplicated validation rules (WP file existence, lane validation) are replaced with base schema references
+  - [x] If base schema cannot be loaded, individual schemas' inline rules are used as fallback (FR-049)
 - **Test requirements**: content (YAML parse), integration (cross-file reference check)
 - **Depends on**: T42-01
 - **Implementation Guidance**:
@@ -129,9 +129,9 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - **Spec refs**: FR-027, Section 11.3 (integration tests)
 - **Parallel**: No (verification task)
 - **Acceptance criteria**:
-  - [ ] All 3 return schemas have: schema, source_agent, target_agent, description, required_artifacts, required_state, context_fields, validation_rules sections (FR-027)
-  - [ ] Base schema references in all schemas resolve to the correct file path
-  - [ ] Enum values in schema validation rules match enums.yaml registry values
+  - [x] All 3 return schemas have: schema, source_agent, target_agent, description, required_artifacts, required_state, context_fields, validation_rules sections (FR-027)
+  - [x] Base schema references in all schemas resolve to the correct file path
+  - [x] Enum values in schema validation rules match enums.yaml registry values
 - **Test requirements**: integration (cross-file consistency)
 - **Depends on**: T42-02, T42-03, T42-04, T42-05
 - **Implementation Guidance**:
@@ -154,3 +154,11 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:01:00Z - coder - T42-01 completed - Created base-handoff.schema.yaml
+- 2026-04-07T00:02:00Z - coder - T42-02 completed - Created reviewer-to-orchestrator.schema.yaml
+- 2026-04-07T00:02:01Z - coder - T42-03 completed - Created coder-complete-to-orchestrator.schema.yaml
+- 2026-04-07T00:02:02Z - coder - T42-04 completed - Created docs-agent-to-orchestrator.schema.yaml
+- 2026-04-07T00:03:00Z - coder - T42-05 completed - Linked spec-to-planner and coder-to-reviewer schemas to base
+- 2026-04-07T00:04:00Z - coder - T42-06 completed - Verified structural consistency across all schemas
+- 2026-04-07T00:05:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria met
