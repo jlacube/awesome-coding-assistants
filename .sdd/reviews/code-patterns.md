@@ -1,3 +1,7 @@
+---
+patterns_version: 1
+---
+
 # Code Patterns
 
 ## Active Patterns

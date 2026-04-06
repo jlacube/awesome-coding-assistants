@@ -1,3 +1,7 @@
+---
+patterns_version: 1
+---
+
 # Spec Patterns
 
 ## Active Patterns
