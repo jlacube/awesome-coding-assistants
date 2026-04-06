@@ -101,10 +101,10 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 - **Spec refs**: FR-039
 - **Parallel**: Yes (with T44-03, T44-04)
 - **Acceptance criteria**:
-  - [ ] spec-test-strategy skill states coverage thresholds are configurable per-WP (FR-039)
-  - [ ] References `coverage_code` and `coverage_branch` frontmatter fields
-  - [ ] States defaults of 80% code and 90% branch
-  - [ ] No hardcoded values appear without mention of configurability
+  - [x] spec-test-strategy skill states coverage thresholds are configurable per-WP (FR-039)
+  - [x] References `coverage_code` and `coverage_branch` frontmatter fields
+  - [x] States defaults of 80% code and 90% branch
+  - [x] No hardcoded values appear without mention of configurability
 - **Test requirements**: content
 - **Depends on**: none
 - **Implementation Guidance**:
