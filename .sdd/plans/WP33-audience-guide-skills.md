@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP33 - Audience Guide Doc Skills
@@ -32,10 +32,10 @@ FR-014, FR-015, US-01, Section 4.2.3, Section 4.2.4, Section 7.1
 - **Spec refs**: FR-014, Section 4.2.3
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] doc-user-guide SKILL.md has valid YAML frontmatter with `name: doc-user-guide`
-  - [ ] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
-  - [ ] Output contract specifies `.sdd/docs/user-guide.md` as the target file
-  - [ ] Execution sequence defines the step-by-step process for generating user guide docs
+  - [x] doc-user-guide SKILL.md has valid YAML frontmatter with `name: doc-user-guide`
+  - [x] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
+  - [x] Output contract specifies `.sdd/docs/user-guide.md` as the target file
+  - [x] Execution sequence defines the step-by-step process for generating user guide docs
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,12 +49,12 @@ FR-014, FR-015, US-01, Section 4.2.3, Section 4.2.4, Section 7.1
 - **Spec refs**: FR-014
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL produce/update `.sdd/docs/user-guide.md` with feature descriptions from user stories (FR-014.1)
-  - [ ] The skill SHALL include step-by-step usage instructions (FR-014.2)
-  - [ ] The skill SHALL include configuration options from config schema contract (FR-014.3)
-  - [ ] The skill SHALL include common workflows (FR-014.4)
-  - [ ] The skill SHALL include troubleshooting for expected error scenarios (FR-014.5)
-  - [ ] On incremental updates, the skill SHALL update affected sections without overwriting unrelated sections (inherits FR-011 pattern)
+  - [x] The skill SHALL produce/update `.sdd/docs/user-guide.md` with feature descriptions from user stories (FR-014.1)
+  - [x] The skill SHALL include step-by-step usage instructions (FR-014.2)
+  - [x] The skill SHALL include configuration options from config schema contract (FR-014.3)
+  - [x] The skill SHALL include common workflows (FR-014.4)
+  - [x] The skill SHALL include troubleshooting for expected error scenarios (FR-014.5)
+  - [x] On incremental updates, the skill SHALL update affected sections without overwriting unrelated sections (inherits FR-011 pattern)
 - **Test requirements**: BDD
 - **Depends on**: T33-01
 - **Implementation Guidance**:
@@ -134,3 +134,6 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:01:00Z - coder - T33-01 - completed - doc-user-guide SKILL.md structure created with frontmatter, input/output contracts, execution sequence
+- 2026-04-06T12:02:00Z - coder - T33-02 - completed - User guide generation sections written: features, usage instructions, configuration, workflows, troubleshooting, incremental update protocol
