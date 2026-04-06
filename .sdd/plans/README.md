@@ -1164,7 +1164,7 @@ Cross-WP consistency audit performed. No inconsistencies found:
 | ID | Title | Priority | Status | Depends On | Parallelisable |
 |----|-------|----------|--------|------------|----------------|
 | [WP40](WP40-enum-registry-conventions.md) | Enum Registry & Canonical Conventions | P1 | For Review | none | No |
-| [WP41](WP41-wp-frontmatter-extensions.md) | WP Frontmatter Extensions | P1 | Not Started | WP40 | Yes |
+| [WP41](WP41-wp-frontmatter-extensions.md) | WP Frontmatter Extensions | P1 | For Review | WP40 | Yes |
 | [WP42](WP42-return-schemas-base.md) | Return Handoff Schemas & Shared Base | P1 | Not Started | WP40 | Yes |
 | [WP43](WP43-error-policy-raci.md) | Error-Handling Policy & Acceptance Criteria RACI | P1 | Not Started | WP40 | Yes |
 | [WP44](WP44-coverage-thresholds.md) | Configurable Coverage Thresholds | P2 | Not Started | WP41 | Yes |

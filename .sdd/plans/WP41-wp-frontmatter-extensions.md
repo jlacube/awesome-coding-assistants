@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP41 - WP Frontmatter Extensions
@@ -136,9 +136,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-007, NFR-010
 - **Parallel**: No (verification task)
 - **Acceptance criteria**:
-  - [ ] All agents reading `review_cycles` or `docs_completed` SHALL treat absent fields as their default values (0 and false) (FR-007)
-  - [ ] WP files created before this hardening pass are processed without errors by all agents (NFR-010)
-  - [ ] No agent halts or errors on missing new frontmatter fields
+  - [x] All agents reading `review_cycles` or `docs_completed` SHALL treat absent fields as their default values (0 and false) (FR-007)
+  - [x] WP files created before this hardening pass are processed without errors by all agents (NFR-010)
+  - [x] No agent halts or errors on missing new frontmatter fields
 - **Test requirements**: content (review of agent instructions for default handling)
 - **Depends on**: T41-03, T41-04, T41-05, T41-06
 - **Implementation Guidance**:
@@ -163,3 +163,12 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:00:01Z - coder - T41-01 completed - Defined review_cycles field in developer guide
+- 2026-04-07T00:00:02Z - coder - T41-02 completed - Defined docs_completed field in developer guide
+- 2026-04-07T00:00:03Z - coder - T41-03 completed - Updated Review Coordinator to increment review_cycles
+- 2026-04-07T00:00:04Z - coder - T41-04 completed - Updated Docs Agent to set docs_completed
+- 2026-04-07T00:00:05Z - coder - T41-05 completed - Updated Orchestrator review_cycles read from frontmatter
+- 2026-04-07T00:00:06Z - coder - T41-06 completed - Updated Orchestrator docs_completed read from frontmatter
+- 2026-04-07T00:00:07Z - coder - T41-07 completed - Verified backward compatibility for all agents
+- 2026-04-07T00:00:08Z - coder - lane=for_review - All tasks complete, submitted for review
