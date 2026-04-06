@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP36 - Orchestrator V2: Pipeline Sequence, Sequential Execution & Error Recovery
@@ -32,9 +32,9 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-006, Section 9.2 (Decision 4)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL follow this pipeline sequence: Ideation -> Spec Architect -> Planner -> [for each WP: Coder -> Review -> Docs Agent] -> Complete (FR-006)
-  - [ ] The Docs Agent is part of the per-WP loop, not a post-pipeline batch step (Section 9.2 Decision 4)
-  - [ ] Pipeline diagram in the prompt reflects the Docs Agent integration
+  - [x] The Orchestrator SHALL follow this pipeline sequence: Ideation -> Spec Architect -> Planner -> [for each WP: Coder -> Review -> Docs Agent] -> Complete (FR-006)
+  - [x] The Docs Agent is part of the per-WP loop, not a post-pipeline batch step (Section 9.2 Decision 4)
+  - [x] Pipeline diagram in the prompt reflects the Docs Agent integration
 - **Test requirements**: BDD (US-03 Scenario 1)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -48,13 +48,13 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-006, FR-007, FR-008, FR-011
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Decision table includes "WP with lane=done, not yet documented" -> "Generate docs" -> Docs Agent -> documentation (FR-007)
-  - [ ] Decision table includes "WP with lane=to_do (changes requested)" -> "Fix feedback" -> Coder -> implementation (FR-008)
-  - [ ] Decision table includes "Agent failure, retry_count < max" -> "Retry failed agent" -> Same agent (FR-011)
-  - [ ] Decision table includes "Agent failure, retry_count >= max" -> "Escalate to user" (FR-011)
-  - [ ] Decision table includes all 11 conditions from Section 4.3
-  - [ ] After Review Coordinator sets WP lane to done, the Orchestrator SHALL invoke Docs Agent before advancing to next WP (FR-007)
-  - [ ] When WP lane is to_do, the Orchestrator SHALL invoke Coder, NOT Docs Agent (FR-008)
+  - [x] Decision table includes "WP with lane=done, not yet documented" -> "Generate docs" -> Docs Agent -> documentation (FR-007)
+  - [x] Decision table includes "WP with lane=to_do (changes requested)" -> "Fix feedback" -> Coder -> implementation (FR-008)
+  - [x] Decision table includes "Agent failure, retry_count < max" -> "Retry failed agent" -> Same agent (FR-011)
+  - [x] Decision table includes "Agent failure, retry_count >= max" -> "Escalate to user" (FR-011)
+  - [x] Decision table includes all 11 conditions from Section 4.3
+  - [x] After Review Coordinator sets WP lane to done, the Orchestrator SHALL invoke Docs Agent before advancing to next WP (FR-007)
+  - [x] When WP lane is to_do, the Orchestrator SHALL invoke Coder, NOT Docs Agent (FR-008)
 - **Test requirements**: BDD (US-03 Scenario 1, 2)
 - **Depends on**: T36-01
 - **Implementation Guidance**:
@@ -69,9 +69,9 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-007, FR-008, Section 8.1
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Docs Agent prompt template: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Update documentation." (Section 8.1)
-  - [ ] orchestrator.agent.md YAML frontmatter includes a Docs Agent handoff entry with label, agent name, prompt, and send=true
-  - [ ] Docs Agent is NOT invoked for unapproved WPs (FR-008)
+  - [x] Docs Agent prompt template: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Update documentation." (Section 8.1)
+  - [x] orchestrator.agent.md YAML frontmatter includes a Docs Agent handoff entry with label, agent name, prompt, and send=true
+  - [x] Docs Agent is NOT invoked for unapproved WPs (FR-008)
 - **Test requirements**: BDD (US-03 Scenario 1, 2)
 - **Depends on**: T36-01
 - **Implementation Guidance**:
@@ -85,11 +85,11 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-009, FR-010, Section 9.2 (Decision 2)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL enforce strict sequential agent execution: invoke ONE agent, wait, read state, update state, decide, repeat (FR-009)
-  - [ ] The Orchestrator SHALL NEVER invoke a second agent without completing steps 2-5 first (FR-009)
-  - [ ] The Orchestrator SHALL NEVER pre-queue, batch, or parallelize agent invocations (FR-010)
-  - [ ] Every delegation decision is made fresh from current state (FR-010)
-  - [ ] Given the Coder completes WP03 successfully, when the Orchestrator processes the result, then it reads updated state from .sdd/ before deciding the next action (BDD: Sequential Execution Scenario)
+  - [x] The Orchestrator SHALL enforce strict sequential agent execution: invoke ONE agent, wait, read state, update state, decide, repeat (FR-009)
+  - [x] The Orchestrator SHALL NEVER invoke a second agent without completing steps 2-5 first (FR-009)
+  - [x] The Orchestrator SHALL NEVER pre-queue, batch, or parallelize agent invocations (FR-010)
+  - [x] Every delegation decision is made fresh from current state (FR-010)
+  - [x] Given the Coder completes WP03 successfully, when the Orchestrator processes the result, then it reads updated state from .sdd/ before deciding the next action (BDD: Sequential Execution Scenario)
 - **Test requirements**: BDD (Sequential Execution Scenario)
 - **Depends on**: T36-01, T36-02
 - **Implementation Guidance**:
@@ -104,11 +104,11 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-011, FR-013
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] When an agent invocation fails, record the failure in error_log with agent name, WP, error_summary (1-500 chars), and ISO 8601 timestamp (FR-011 step 1)
-  - [ ] Increment retry_count on each failure (FR-011 step 2)
-  - [ ] If retry_count < 2, retry the same agent with the same input (FR-011 step 3)
-  - [ ] After a successful agent invocation, reset retry_count to 0 (FR-013)
-  - [ ] Given the Coder fails on WP03 with a transient error and retry_count is 0, then the Orchestrator retries the Coder for WP03 and records the failure in error_log (US-02 Scenario 1)
+  - [x] When an agent invocation fails, record the failure in error_log with agent name, WP, error_summary (1-500 chars), and ISO 8601 timestamp (FR-011 step 1)
+  - [x] Increment retry_count on each failure (FR-011 step 2)
+  - [x] If retry_count < 2, retry the same agent with the same input (FR-011 step 3)
+  - [x] After a successful agent invocation, reset retry_count to 0 (FR-013)
+  - [x] Given the Coder fails on WP03 with a transient error and retry_count is 0, then the Orchestrator retries the Coder for WP03 and records the failure in error_log (US-02 Scenario 1)
 - **Test requirements**: BDD (US-02 Scenario 1)
 - **Depends on**: T36-04
 - **Implementation Guidance**:
@@ -123,9 +123,9 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-011
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] If retry_count >= 2, escalate to the user with: error summary, agent name, WP (if applicable), and full error log (FR-011 step 4)
-  - [ ] The Orchestrator SHALL NOT retry after escalation threshold is reached
-  - [ ] Given the Coder fails on WP03 twice (retry_count = 2), when the second retry fails, then the Orchestrator escalates to the user with the error log (US-02 Scenario 2)
+  - [x] If retry_count >= 2, escalate to the user with: error summary, agent name, WP (if applicable), and full error log (FR-011 step 4)
+  - [x] The Orchestrator SHALL NOT retry after escalation threshold is reached
+  - [x] Given the Coder fails on WP03 twice (retry_count = 2), when the second retry fails, then the Orchestrator escalates to the user with the error log (US-02 Scenario 2)
 - **Test requirements**: BDD (US-02 Scenario 2)
 - **Depends on**: T36-05
 - **Implementation Guidance**:
@@ -139,9 +139,9 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-012
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] When the same WP fails review 3 times (3 review cycles returning lane=to_do), the Orchestrator SHALL halt and escalate to the user (FR-012)
-  - [ ] Escalation includes: all review feedback from the 3 cycles, the WP file path, a summary of what was attempted (FR-012)
-  - [ ] The Orchestrator SHALL NOT continue retrying after 3 review failures
+  - [x] When the same WP fails review 3 times (3 review cycles returning lane=to_do), the Orchestrator SHALL halt and escalate to the user (FR-012)
+  - [x] Escalation includes: all review feedback from the 3 cycles, the WP file path, a summary of what was attempted (FR-012)
+  - [x] The Orchestrator SHALL NOT continue retrying after 3 review failures
 - **Test requirements**: BDD
 - **Depends on**: T36-04
 - **Implementation Guidance**:
@@ -156,9 +156,9 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-006, Section 4.3 (Decision Table rows 8-9)
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] When all MVP WPs have lane=done AND are documented, and non-MVP WPs remain, ask the user whether to continue (Section 4.3)
-  - [ ] When all WPs have lane=done AND are documented, set pipeline_stage to complete and halt (Section 4.3)
-  - [ ] WPs with no dependencies listed are always eligible for implementation (Edge case from Section 5)
+  - [x] When all MVP WPs have lane=done AND are documented, and non-MVP WPs remain, ask the user whether to continue (Section 4.3)
+  - [x] When all WPs have lane=done AND are documented, set pipeline_stage to complete and halt (Section 4.3)
+  - [x] WPs with no dependencies listed are always eligible for implementation (Edge case from Section 5)
 - **Test requirements**: BDD
 - **Depends on**: T36-02
 - **Implementation Guidance**:
@@ -172,12 +172,12 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - **Spec refs**: FR-006 to FR-013, Section 6.1-6.4 (User Flows)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Given Coder completes WP03, when Orchestrator processes result, it reads updated state before deciding next action (BDD: Sequential Execution)
-  - [ ] Given WP03 review passes and lane is done, when Orchestrator reads state, it invokes Docs Agent before starting WP04 (BDD: Docs Agent after approval)
-  - [ ] Given WP03 review fails and lane is to_do, when Orchestrator reads state, it invokes Coder not Docs Agent (BDD: No Docs on failure)
-  - [ ] Given agent failure with retry_count=0, Orchestrator retries (BDD: Automatic retry)
-  - [ ] Given agent failure with retry_count=2, Orchestrator escalates (BDD: Escalation after max)
-  - [ ] Full pipeline flow matches Section 6.1 User Flow steps 1-11
+  - [x] Given Coder completes WP03, when Orchestrator processes result, it reads updated state before deciding next action (BDD: Sequential Execution)
+  - [x] Given WP03 review passes and lane is done, when Orchestrator reads state, it invokes Docs Agent before starting WP04 (BDD: Docs Agent after approval)
+  - [x] Given WP03 review fails and lane is to_do, when Orchestrator reads state, it invokes Coder not Docs Agent (BDD: No Docs on failure)
+  - [x] Given agent failure with retry_count=0, Orchestrator retries (BDD: Automatic retry)
+  - [x] Given agent failure with retry_count=2, Orchestrator escalates (BDD: Escalation after max)
+  - [x] Full pipeline flow matches Section 6.1 User Flow steps 1-11
 - **Test requirements**: BDD (all Section 11.2 scenarios)
 - **Depends on**: T36-01 to T36-08
 - **Implementation Guidance**:
@@ -198,6 +198,20 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 
 - T36-03 (Docs Agent handoff) can run in parallel with T36-04 (sequential execution) -- they modify independent sections (YAML frontmatter vs workflow body)
 - T36-07 (review failure) can run in parallel with T36-08 (MVP completion) -- they are independent decision logic branches
+
+## Activity Log
+
+- 2026-04-06T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T00:00:00Z - coder - T36-01 - completed - Updated pipeline sequence diagram with per-WP Docs Agent loop
+- 2026-04-06T00:00:00Z - coder - T36-02 - completed - Replaced decision table with 12-row V2 table including Docs Agent, error recovery, escalation
+- 2026-04-06T00:00:00Z - coder - T36-03 - completed - Added Docs Agent handoff to YAML frontmatter and delegation prompt template
+- 2026-04-06T00:00:00Z - coder - T36-04 - completed - Rewrote workflow with strict sequential execution loop (FR-009, FR-010)
+- 2026-04-06T00:00:00Z - coder - T36-05 - completed - Added error recording and retry logic (FR-011, FR-013)
+- 2026-04-06T00:00:00Z - coder - T36-06 - completed - Added escalation on max retries (FR-011 step 4)
+- 2026-04-06T00:00:00Z - coder - T36-07 - completed - Added review failure escalation after 3 cycles (FR-012)
+- 2026-04-06T00:00:00Z - coder - T36-08 - completed - Added MVP completion check and pipeline halt logic
+- 2026-04-06T00:00:00Z - coder - T36-09 - completed - Integration verification passed all BDD scenarios
+- 2026-04-06T00:00:00Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
 
 ## Risks & Mitigations
 
