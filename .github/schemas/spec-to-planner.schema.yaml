@@ -9,6 +9,7 @@ schema: handoff/v1
 source_agent: "2. Spec Architect"
 target_agent: "3. Planner"
 description: "Handoff from Spec Architect to Planner after spec validation"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
 
 required_artifacts:
   - path: ".sdd/specs/{NNN}-{name}.spec.md"
@@ -37,6 +38,8 @@ context_fields:
     description: "Path to companion artifacts directory"
 
 validation_rules:
+  # Uses base schema patterns: wp_file_exists, file_path_format
+  # Inline rules kept as fallback if base schema is unavailable (FR-049)
   - check: "file_exists"
     target: "spec_path"
     error: "Spec file does not exist at {spec_path}"

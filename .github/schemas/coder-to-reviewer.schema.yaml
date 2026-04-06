@@ -8,6 +8,7 @@ schema: handoff/v1
 source_agent: "4. Coder"
 target_agent: "5. Review Coordinator"
 description: "Handoff from Coder to Review Coordinator after implementation"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
 
 required_artifacts:
   - path: ".sdd/plans/WP{NN}-{slug}.md"
@@ -39,6 +40,8 @@ context_fields:
     description: "Path to the contracts directory for this WP"
 
 validation_rules:
+  # Uses base schema patterns: wp_file_exists, lane_value_valid, file_path_format
+  # Inline rules kept as fallback if base schema is unavailable (FR-049)
   - check: "file_exists"
     target: "wp_path"
     error: "WP file does not exist at {wp_path}"
