@@ -1,0 +1,26 @@
+# Shared Base Handoff Schema
+#
+# Defines reusable validation patterns referenced by individual handoff schemas.
+# If this file is missing, individual schemas SHALL fall back to inline rules.
+# Error E-024 (BASE_SCHEMA_NOT_FOUND): agents log a warning and use inline fallback.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-049, FR-050, Section 7.4
+
+schema: base/v1
+description: "Shared validation patterns for handoff schemas. Individual schemas reference these patterns via base_schema field."
+
+validation_patterns:
+  wp_file_exists:
+    check: "File at target path exists and has valid YAML frontmatter"
+    error: "WP file does not exist or has invalid YAML frontmatter at {path}"
+
+  lane_value_valid:
+    check: "Field 'lane' value is one of the lane enum values"
+    enum_ref: ".github/schemas/enums.yaml#lane"
+    error: "Lane value '{value}' is not a valid enum value. Expected one of: planned, doing, for_review, to_do, done, blocked"
+
+  file_path_format:
+    check: "File path matches expected WP path format"
+    pattern: "^\\.sdd/plans/WP\\d{2}-[a-z0-9-]+\\.md$"
+    error: "File path '{path}' does not match expected format: .sdd/plans/WP<NN>-<slug>.md"
