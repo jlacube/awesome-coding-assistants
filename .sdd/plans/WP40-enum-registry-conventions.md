@@ -137,8 +137,8 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 - **Spec refs**: FR-014, Section 4.2
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Spec Architect agent file contains `<!-- Enum source: .github/schemas/enums.yaml -->` comment (FR-014)
-  - [ ] Spec status references align with the registry values (Draft, Validated, Approved)
+  - [x] Spec Architect agent file contains `<!-- Enum source: .github/schemas/enums.yaml -->` comment (FR-014)
+  - [x] Spec status references align with the registry values (Draft, Validated, Approved)
 - **Test requirements**: content (grep search)
 - **Depends on**: T40-01
 - **Implementation Guidance**:

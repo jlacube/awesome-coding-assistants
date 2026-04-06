@@ -355,6 +355,8 @@ Present the completed spec content in chat. The file is for persistence; the coo
 
 ### 9b. Handle user feedback
 
+<!-- Enum source: .github/schemas/enums.yaml -->
+
 | Feedback type | Action |
 |--------------|--------|
 | Approval | Change status from "Draft" to "Validated" in the spec file. Commit. |
