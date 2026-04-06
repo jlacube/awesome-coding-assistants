@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP45 - Dependency-Aware WP Ordering
@@ -132,3 +132,4 @@ FR-040, FR-041, FR-042, FR-043, Section 7.1 (depends_on field, state machine), S
 - 2026-04-07T00:00:03Z - coder - T45-03 completed - Circular dependency detection with E-050, E-051 errors added
 - 2026-04-07T00:00:04Z - coder - T45-04 completed - Missing/empty depends_on handling documented
 - 2026-04-07T00:00:05Z - coder - T45-05 completed - All-blocked reporting with E-052 added
+- 2026-04-07T00:00:06Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
