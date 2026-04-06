@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP46 - Schema Versioning Protocol
@@ -136,3 +136,4 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - 2026-04-07T00:02:00Z - coder - T46-03 completed - Added placeholder_patterns to 10 schemas with path placeholders
 - 2026-04-07T00:03:00Z - coder - T46-04 completed - Added Schema Versioning Protocol section to developer guide
 - 2026-04-07T00:04:00Z - coder - T46-05 completed - Verified all 12 schema files have version_history
+- 2026-04-07T00:05:00Z - coder - lane=for_review - All tasks complete, verification passing
