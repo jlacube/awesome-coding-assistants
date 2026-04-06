@@ -85,10 +85,10 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-012, Section 4.2.2
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] doc-api-reference SKILL.md has valid YAML frontmatter with `name: doc-api-reference`
-  - [ ] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
-  - [ ] Output contract specifies `.sdd/docs/api-reference.md` as the target file
-  - [ ] Execution sequence defines the step-by-step process for generating API reference docs
+  - [x] doc-api-reference SKILL.md has valid YAML frontmatter with `name: doc-api-reference`
+  - [x] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
+  - [x] Output contract specifies `.sdd/docs/api-reference.md` as the target file
+  - [x] Execution sequence defines the step-by-step process for generating API reference docs
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -102,13 +102,13 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-012
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL produce one section per API endpoint with method, path, and description (FR-012.1, FR-012.2, FR-012.3)
-  - [ ] The skill SHALL include request parameters and body from contract files (FR-012.4)
-  - [ ] The skill SHALL include response schema from contract files (FR-012.5)
-  - [ ] The skill SHALL include error codes and meanings from the error catalog contract (FR-012.6)
-  - [ ] The skill SHALL include authentication requirements (FR-012.7)
-  - [ ] The skill SHALL include example request/response generated from schemas (FR-012.8)
-  - [ ] BDD: Given api-contracts.ts defines POST /users with CreateUserInput { email, name, role }, When doc-api-reference runs, Then api-reference.md shows POST /users with fields email, name, role (Section 11.2 Scenario 2)
+  - [x] The skill SHALL produce one section per API endpoint with method, path, and description (FR-012.1, FR-012.2, FR-012.3)
+  - [x] The skill SHALL include request parameters and body from contract files (FR-012.4)
+  - [x] The skill SHALL include response schema from contract files (FR-012.5)
+  - [x] The skill SHALL include error codes and meanings from the error catalog contract (FR-012.6)
+  - [x] The skill SHALL include authentication requirements (FR-012.7)
+  - [x] The skill SHALL include example request/response generated from schemas (FR-012.8)
+  - [x] BDD: Given api-contracts.ts defines POST /users with CreateUserInput { email, name, role }, When doc-api-reference runs, Then api-reference.md shows POST /users with fields email, name, role (Section 11.2 Scenario 2)
 - **Test requirements**: BDD
 - **Depends on**: T32-04
 - **Implementation Guidance**:
@@ -123,9 +123,9 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-013
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] API docs SHALL be generated from contract files, NOT from prose interpretation; if contracts exist, they are the source of truth (FR-013)
-  - [ ] If no contract files exist for the WP, the skill SHALL skip API doc generation and log that no contracts were found (FR-013 error)
-  - [ ] The skill explicitly states contract files as primary source, spec prose as fallback-only context
+  - [x] API docs SHALL be generated from contract files, NOT from prose interpretation; if contracts exist, they are the source of truth (FR-013)
+  - [x] If no contract files exist for the WP, the skill SHALL skip API doc generation and log that no contracts were found (FR-013 error)
+  - [x] The skill explicitly states contract files as primary source, spec prose as fallback-only context
 - **Test requirements**: BDD
 - **Depends on**: T32-05
 - **Implementation Guidance**:
