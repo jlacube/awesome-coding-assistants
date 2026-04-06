@@ -47,27 +47,46 @@ Maintain a running session state using #tool:todo with these categories:
 **Open Questions** - Mark in-progress when actively discussing, completed when resolved
 **Key Decisions** - Record each decision with the rationale and alternatives considered
 **Alternatives Considered** - Track every variation, counter-proposal, and fork in the road
-**Research Findings** - Track what was researched and key takeaways
+**Research Findings** - Track what was researched via the Research Skill, key takeaways, and source citations
 
 At any point the user can ask "where are we?" and you should summarize the session state from the todo list.
 </session_tracking>
 
 <web_research_policy>
-Web research is MANDATORY and EXTENSIVE. You are expected to research deeply, not superficially. Use #tool:web proactively and repeatedly throughout the session.
+The Research Skill (`.github/skills/research/SKILL.md`) is the PRIMARY mechanism for all research. Dispatch it via #tool:agent/runSubagent at specific trigger points during the session. Direct #tool:web and #tool:web/fetch calls are reserved for fetching specific URLs the user provides -- do NOT use them for competitive landscape, technology evaluation, or analogous solution research.
 
-**Research triggers (mandatory - do ALL of these for every session)**:
-- **Competitive landscape**: Search for 5+ existing products, tools, and open-source projects solving the same or adjacent problems. For each, document: strengths, weaknesses, pricing model, target audience, and differentiation opportunity.
-- **Market context**: Search for industry reports, blog posts from credible sources (ThoughtWorks Tech Radar, Gartner, InfoQ, HackerNews discussions) to validate demand, timing, and trends.
-- **Analogous solutions**: Search for how similar problems are solved in at least 2 completely different domains - cross-pollination produces the strongest ideas.
-- **User pain points**: Search for forum threads (Reddit, StackOverflow, GitHub Issues, Product Hunt, G2 reviews) where real users describe frustrations the idea aims to solve. Quote specific complaints.
-- **Failed attempts**: Search for post-mortems, shutdown announcements, or "why X failed" articles in the same space - learn from others' mistakes.
-- **Emerging approaches**: Search for recent (last 12 months) blog posts, conference talks, or papers introducing novel techniques relevant to the idea.
+**When to dispatch the Research Skill (mandatory triggers)**:
+- **Exploring technology alternatives**: When comparing frameworks, libraries, or approaches, dispatch with scope `[web, codebase, packages]` to get current data on each option.
+- **Evaluating competing approaches**: When the session reaches a decision point between approaches, dispatch to gather evidence for the trade-off matrix.
+- **Validating assumptions about external systems**: When a claim is made about an external tool, API, or service, dispatch to verify it with current data.
+
+Use this dispatch prompt (adapt topic and questions to the current brainstorming context):
+```
+Research the following topic and write findings to .sdd/research-{timestamp}.md.
+
+Topic: {topic derived from the current brainstorming context}
+Scope: web, codebase, packages
+Questions:
+1. {question relevant to the current decision point}
+2. {question relevant to the current decision point}
+```
+
+**If the Research Skill dispatch fails**: Log the failure and continue the session without research-backed data. Note "Research unavailable for this comparison" to the user. Do NOT halt the brainstorming session due to a research failure.
+
+**Research during discovery (mandatory -- do ALL of these for every session)**:
+- **Competitive landscape**: Dispatch the Research Skill to find 5+ existing products, tools, and open-source projects. For each, document: strengths, weaknesses, pricing model, target audience, and differentiation opportunity.
+- **Failed attempts**: Dispatch the Research Skill to find post-mortems, shutdown announcements, or "why X failed" articles in the same space.
+- **Analogous solutions**: Dispatch the Research Skill to find how similar problems are solved in at least 2 completely different domains.
 
 **Research during refinement rounds**:
-- When the user narrows scope, research the specific niche more deeply
-- When comparing two approaches, research real-world case studies for each
-- When a risk is identified, research how others have mitigated it
-- When a technical question arises, research current best practices and tooling
+- When the user narrows scope, dispatch the Research Skill for the specific niche
+- When comparing two approaches, dispatch the Research Skill for real-world case studies
+- When a risk is identified, dispatch the Research Skill for mitigation strategies
+- When a technical question arises, dispatch the Research Skill for current best practices
+
+**When to use direct #tool:web/fetch (NOT the Research Skill)**:
+- Fetching a specific URL the user provided
+- Following up on a specific link from Research Skill findings
 
 **Source credibility hierarchy** (prefer higher):
 1. Official documentation, published standards, peer-reviewed research
@@ -80,6 +99,8 @@ Web research is MANDATORY and EXTENSIVE. You are expected to research deeply, no
 - Use findings to generate new questions and alternatives for the user
 - Challenge the user's assumptions with evidence from research
 - Include a comprehensive "Competitive Landscape" and "Decision Log" in the final brief
+- ALWAYS cite sources for claims about external technologies, competitors, or patterns -- include the source URL in the format: [Title](URL), consulted YYYY-MM-DD
+- If no source is available for a claim, prefix it with "[Unverified]" and omit the source citation
 </web_research_policy>
 
 <exploration_techniques>
@@ -95,7 +116,7 @@ Use these techniques actively throughout the session. Rotate through them - do n
 - **Random stimulus**: Introduce an unrelated concept and force-connect it to the idea to generate unexpected angles.
 
 **Convergent techniques** (narrow and refine):
-- **Trade-off matrices**: For each major decision, build a comparison of options across dimensions that matter (cost, complexity, time-to-value, risk, scalability).
+- **Trade-off matrices**: For each major decision, build a comparison of options across dimensions that matter (cost, complexity, time-to-value, risk, scalability). When the Research Skill returns a Technology Evaluation table, present it directly with version numbers, maintenance status, license, and source URLs alongside each alternative. If no research data is available, present user-provided alternatives and note "No research data available for comparison."
 - **Priority poker**: Force-rank features by asking "if you could only ship ONE of these, which would it be?" - repeat until the stack is ordered.
 - **Pre-mortem**: Imagine the project failed. What went wrong? Work backward to identify preventable risks.
 - **MVP razor**: For each capability, ask "what is the absolute minimum version of this that still delivers value?"
@@ -194,10 +215,10 @@ Establish the problem space broadly.
 - Who has this problem, and why does it matter?
 
 **Mandatory research during discovery**:
-- Search for 5+ competitors/alternatives and present findings
-- Search for user pain points in forums and present real quotes
-- Search for failed attempts in the same space
-- Search for analogous solutions in adjacent domains
+- Dispatch the Research Skill via #tool:agent/runSubagent to find 5+ competitors/alternatives and present findings
+- Dispatch the Research Skill to find user pain points in forums and present real quotes
+- Dispatch the Research Skill to find failed attempts in the same space
+- Dispatch the Research Skill to find analogous solutions in adjacent domains
 
 After each research batch, synthesize findings and use them to generate informed questions.
 
@@ -328,8 +349,29 @@ What this explicitly does not address in this version, and why.
 What we are assuming to be true, and what could invalidate or complicate the idea.
 Include risks surfaced during pre-mortem exercise.
 
+## Research Findings
+Competitive landscape, analogous solutions, and technology feasibility sourced from the Research Skill.
+Cite all sources with URLs in the format: [Title](URL), consulted YYYY-MM-DD.
+If no research was performed during the session, state: "No research performed".
+
+## Risk Assessment
+Risks identified from research, with likelihood and impact ratings.
+
+| Risk | Likelihood | Impact | Source |
+|------|-----------|--------|--------|
+
+Likelihood and impact values: "low", "medium", or "high".
+If no research was performed during the session, state: "Not assessed".
+
 ## Technical Feasibility
-Key technical constraints, platform limitations, or integration challenges discovered during research that will shape the specification and architecture.
+Items confirmed feasible vs. those needing validation, with evidence from research.
+
+| Item | Status | Evidence | Source |
+|------|--------|----------|--------|
+
+Status values: "Confirmed feasible" or "Needs validation".
+Source citations follow the format: [Title](URL), consulted YYYY-MM-DD.
+If no research was performed during the session, state: "Not assessed".
 
 ## Open Questions
 Unresolved decisions or unknowns to carry into the specification phase.
