@@ -474,7 +474,11 @@ After curation, check for patterns that should be retired:
 
 Only FAIL findings that recur across 3+ reviews generate new patterns. WARN findings are informational and do not enter the patterns file.
 
-### 14f. Pattern curation commit (FR-015)
+### 14f. Increment patterns_version (FR-053)
+
+After modifying any domain-specific pattern file (adding, modifying, or retiring a pattern), increment `patterns_version` in that file's YAML frontmatter by 1 before committing. If `patterns_version` is missing from the frontmatter, add it with value 1. This enables mid-cycle pattern propagation so coordinator agents detect and reload updated patterns before their next skill dispatch.
+
+### 14g. Pattern curation commit (FR-015)
 
 After modifying any domain-specific pattern file, commit the changes immediately with explicit file paths:
 
