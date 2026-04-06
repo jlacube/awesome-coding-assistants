@@ -4,6 +4,18 @@
 
 ---
 
+## [WP44] - Configurable Coverage Thresholds (2026-04-07)
+
+### Changes
+
+- Added `coverage_code` and `coverage_branch` as optional WP frontmatter fields (integer 0-100) for per-WP coverage threshold overrides, with defaults of 80% and 90%
+- Updated the code-unit-tests skill to read coverage thresholds from WP frontmatter with fallback to default values
+- Updated the code-env-setup skill to read coverage thresholds from WP frontmatter when configuring coverage tooling
+- Updated the spec-test-strategy skill to reference configurable coverage thresholds instead of hardcoded values
+- Verified cross-skill consistency for threshold field names, defaults, and validation behavior
+
+---
+
 ## [WP43] - Error-Handling Policy & Acceptance Criteria RACI (2026-04-07)
 
 ### Changes

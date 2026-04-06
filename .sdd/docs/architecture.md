@@ -101,6 +101,7 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 10. **Shared base handoff schema** (WP42): A shared base schema at `.github/schemas/base-handoff.schema.yaml` defines reusable validation patterns (wp_file_exists, lane_value_valid, file_path_format) that individual handoff schemas reference via a `base_schema` field. If the base schema file is missing, individual schemas fall back to inline rules. This eliminates duplicated validation logic across schemas.
 11. **Error-handling policy** (WP43): Pipeline agents are categorized as critical-path (HALT on failure) or advisory (best-effort). Critical-path agents (Spec Architect, Planner, Coder, Orchestrator) halt because downstream agents depend on their output for correctness. Advisory agents (Review Coordinator, Docs Agent, Ideation, Brainstorming) continue past failures because partial output is still valuable. See the "Design Decision: Error-Handling Policy" subsection below for detailed rationale per agent.
 12. **Acceptance criteria maker/checker RACI** (WP43): Acceptance criteria checkboxes follow a maker/checker pattern: the Coder is Responsible (maker) for checking boxes during implementation, and the Review Coordinator is Accountable/Verifier (checker) for confirming they match actual implementation. This intentional dual-touch prevents silent regressions where a box is checked but the work is incomplete.
+13. **Configurable coverage thresholds** (WP44): Two optional WP frontmatter fields -- `coverage_code` (integer 0-100, default 80) and `coverage_branch` (integer 0-100, default 90) -- allow per-WP coverage threshold overrides. The code-unit-tests, code-env-setup, and spec-test-strategy skills read these fields and fall back to defaults when absent. Each field is independent (specifying one does not require the other). A value of 0 is valid to support prototyping WPs with no coverage requirement. Out-of-range or non-integer values cause the reading skill to halt with an error.
 
 ### Design Decision: Error-Handling Policy
 
@@ -201,7 +202,7 @@ The coordinator owns the entire WP implementation lifecycle:
 - Sequential skill dispatch via `runSubagent`
 - Conditional debug dispatch with 3-attempt retry
 - Task state tracking (`manage_todo_list`, acceptance criteria checkboxes)
-- Coverage verification (80% code, 90% branch)
+- Coverage verification (configurable per-WP via `coverage_code`/`coverage_branch` frontmatter, defaults 80%/90%)
 - Per-task commits with explicit file listing
 - Handoff to Reviewer (no self-review)
 

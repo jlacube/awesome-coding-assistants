@@ -188,7 +188,7 @@ Or without a WP ID to be prompted:
 6. **Skill discovery** - Finds all installed coding skills
 7. **Skill dispatch** - Runs skills sequentially: env-setup, implementation, unit-tests, integration-tests
 8. **Debug (if needed)** - Up to 3 attempts to fix failing tests
-9. **Coverage check** - Verifies 80% code, 90% branch coverage
+9. **Coverage check** - Verifies coverage meets WP thresholds (configurable, defaults 80% code / 90% branch)
 10. **Handoff** - Sets lane to for_review and hands off to Reviewer
 
 ### Key Behaviors
@@ -197,3 +197,38 @@ Or without a WP ID to be prompted:
 - **Contract-first**: Implementation must match contract files exactly (signatures, types, fields, error codes).
 - **Per-task commits**: Each task is committed individually with explicit `git add` file listing.
 - **Debug retry**: If tests fail, the debug skill runs up to 3 times before escalating to the user.
+
+## Configurable Coverage Thresholds (WP44)
+
+Coverage thresholds can be overridden per-WP using optional YAML frontmatter fields. This lets pipeline operators set project-appropriate coverage targets without modifying skill instructions.
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `coverage_code` | Integer (0-100) | 80 | Minimum code coverage percentage |
+| `coverage_branch` | Integer (0-100) | 90 | Minimum branch coverage percentage |
+
+### Usage
+
+Add fields to the WP file's YAML frontmatter:
+
+```yaml
+---
+lane: planned
+coverage_code: 60
+coverage_branch: 70
+---
+```
+
+### Behaviors
+
+- **Absent fields**: Skills use the defaults (80% code, 90% branch)
+- **Independent fields**: Specifying one does not require specifying the other. For example, `coverage_code: 60` alone uses 60% code and the default 90% branch.
+- **Zero is valid**: Setting a threshold to 0 disables coverage enforcement for that dimension (useful for prototyping WPs)
+- **Invalid values**: If a value is out of range (not 0-100) or not an integer, the skill halts with an error
+
+### Affected Skills
+
+The following skills read these fields:
+- **code-unit-tests** -- uses thresholds for coverage enforcement
+- **code-env-setup** -- uses thresholds when configuring coverage tooling
+- **spec-test-strategy** -- references configurable thresholds in test requirements
