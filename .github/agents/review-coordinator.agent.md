@@ -58,6 +58,36 @@ You do NOT perform deep code analysis yourself -- that is delegated to review sk
 
 <workflow>
 
+## Step 0 - Schema Validation (FR-004, FR-005)
+
+Before any other action, validate the incoming handoff against `coder-to-reviewer.schema.yaml`. This MUST be the FIRST step -- do not proceed to scope selection, artifact loading, or skill dispatch until validation passes.
+
+1. **Read the schema file**: Read `.github/schemas/coder-to-reviewer.schema.yaml` using `read_file`. If the schema file does not exist, halt with: "Schema file not found at `.github/schemas/coder-to-reviewer.schema.yaml`. Cannot validate handoff."
+
+2. **Validate required_artifacts**: For each entry in the schema's `required_artifacts`:
+   - Verify the WP file exists at the specified path.
+   - Read the WP file and verify its `lane` field equals "for_review". If the WP has no implementation (no acceptance criteria checked, no implementation files referenced), halt with: "Missing implementation -- WP has no implementation artifacts to review."
+
+3. **Validate required_state**: For each condition in `required_state`:
+   - Verify `wp.lane == 'for_review'`.
+   - Verify all tests are passing (check the handoff prompt for test status).
+   - If any condition fails, halt with the schema's error message.
+
+4. **Validate context_fields**: For each field in `context_fields` where `required: true`:
+   - Verify `wp_path` is present and non-empty.
+   - Verify `spec_path` is present and non-empty.
+   - Verify `contracts_dir` is present and non-empty.
+   - If any required field is missing, halt with: "Missing required context field: `<name>` -- <description>"
+
+5. **Run validation_rules**: For each rule in `validation_rules`:
+   - `file_exists`: Verify the target file exists.
+   - `field_value`: Read the WP file and verify the `lane` equals "for_review".
+   - If any check fails, halt with the schema's error message.
+
+6. **On any failure**: Halt immediately. Report ALL failed checks with the schema's error messages. Do not proceed to Step 1.
+
+7. **On success**: Log "Schema validation passed for coder-to-reviewer.schema.yaml" and proceed to Step 1.
+
 ## Step 1 - Scope Selection (FR-001)
 
 Accept a WP identifier as argument, OR scan for WPs ready for review.
@@ -359,70 +389,102 @@ After updating the WP:
 3. If ALL WPs referencing this spec have `lane: done`, update the spec file's `> **Status**:` field from `Draft` or `Validated` to `Approved`.
 4. Include the spec file in the commit (Step 15) if its status was changed.
 
-## Step 14 - Patterns File Curation (FR-018, FR-019)
+## Step 14 - Domain-Specific Patterns Curation (FR-013, FR-014, FR-015)
 
-Update `.sdd/reviews/review-patterns.md` based on review findings.
+Update the relevant domain-specific pattern files in `.sdd/reviews/` based on review findings. Pattern files are domain-specific: `spec-patterns.md`, `plan-patterns.md`, `code-patterns.md`, `doc-patterns.md`. Do NOT write to the legacy `review-patterns.md`.
 
-### 14a. Read existing patterns
+### 14a. Determine target domain file
 
-Read the patterns file. If it does not exist, create it with the initial structure:
+Map each finding to a domain-specific file based on the skill that produced it:
+
+| Skill | Domain | Target file |
+|-------|--------|------------|
+| `review-spec` | spec | `.sdd/reviews/spec-patterns.md` |
+| `review-spec-completeness` | spec | `.sdd/reviews/spec-patterns.md` |
+| `review-security` | code | `.sdd/reviews/code-patterns.md` |
+| `review-quality` | code | `.sdd/reviews/code-patterns.md` |
+| `review-tests` | code | `.sdd/reviews/code-patterns.md` |
+| `review-architecture` | code | `.sdd/reviews/code-patterns.md` |
+| `review-performance` | code | `.sdd/reviews/code-patterns.md` |
+| `review-docs` | doc | `.sdd/reviews/doc-patterns.md` |
+| `review-deps` | code | `.sdd/reviews/code-patterns.md` |
+| Process compliance (`PROC-*`, `ENC-*`) | code | `.sdd/reviews/code-patterns.md` |
+
+If the domain cannot be determined for a finding, place the pattern in the closest-matching domain file with a `[NEEDS REVIEW]` tag.
+
+### 14b. Read existing patterns
+
+For each domain file that will be modified, read it using `read_file`. If a domain file does not exist, create it with the initial structure:
 
 ```markdown
-# Review Patterns
-
-> Last updated: <timestamp>
-> Last review: <WP-id>
-
-Coder: read this file before implementing any WP. These patterns document
-mistakes caught in previous reviews. Avoid repeating them.
+# [Domain] Patterns
 
 ## Active Patterns
 
-(none yet)
+(none)
 
-## Resolved
+## Retired Patterns
 
-(none yet)
+(none)
 ```
 
-### 14b. Add new patterns from FAIL findings
+### 14c. Track finding recurrence and automated curation (FR-013)
 
-For each FAIL finding in the current review (coordinator-owned + skill findings):
+Track finding categories across reviews to detect recurrence:
 
-1. Check if an existing active pattern matches this finding (same category + similar description).
-2. If a matching active pattern exists: increment its `Occurrences` count. Update its `Source` field with the new finding ID.
-3. If no matching pattern exists: create a new pattern entry:
+1. For each FAIL finding in the current review, determine its finding category (the checklist item or finding type, e.g., "missing error behavior", "incomplete OWASP coverage").
+2. Check if the same finding category has appeared in 3 or more reviews (check the finding's category against existing patterns' triggers and sources, and against prior review findings in `.sdd/reviews/`).
+3. If a finding category has appeared in 3 or more reviews and no existing active pattern covers it:
+   - Create a new pattern entry in the relevant domain-specific file
+   - Use the next available `PAT-{DOMAIN}-XXX` number in the target file (scan existing IDs to find the highest)
+   - Pattern entry format (FR-009):
 
 ```markdown
-### PAT-<NNN> [<category>] <title>
-- **First seen**: <WP-id> (<YYYY-MM-DD>)
-- **Occurrences**: 1
-- **Pattern**: <description of the mistake in general terms>
-- **Fix**: <how to avoid this mistake>
-- **Source**: <skill-name> <finding-id>
+### PAT-{DOMAIN}-XXX: [Pattern Title]
+- **Status**: active
+- **Added**: YYYY-MM-DD
+- **Source**: Review of WP<NN> -- <skill-name> <finding-id>, Review of WP<YY> -- <skill-name> <finding-id>, ...
+- **Trigger**: [What symptoms indicate this pattern is occurring]
+- **Prevention**: [What the agent should do to avoid this pattern]
+- **Example**: [Concrete example of the pattern and its fix from the recurring findings]
 ```
 
-Where:
-- `<NNN>` is the next sequential pattern number (never reuse, even after resolution).
-- `<category>` is one of: `security`, `spec-adherence`, `quality`, `tests`, `architecture`, `performance`, `docs`, `deps`, `process`.
-- Category is derived from the skill that produced the finding (e.g., `review-security` -> `security`, `review-spec` -> `spec-adherence`).
-- For coordinator-owned findings: `PROC-*` -> `process`, `ENC-*` -> `process`.
+4. If a matching active pattern already exists: update its `Source` field to include the new review reference.
 
-### 14c. Resolve patterns that no longer recur
+### 14d. Pattern retirement (FR-014)
 
-For each active pattern in the file:
+After curation, check for patterns that should be retired:
 
-1. Check if any finding in the current review matches this pattern.
-2. If zero findings match: move the pattern to the `## Resolved` section.
-3. Add a `- **Resolved**: <WP-id> (<YYYY-MM-DD>)` line to the resolved pattern.
+1. For each active pattern in every domain file:
+   - Count how many consecutive reviews have occurred since the pattern was last triggered (i.e., since the last review that produced a finding matching the pattern).
+   - A pattern is "triggered" if any finding in the current review matches the pattern's trigger description or category.
+2. If an active pattern has NOT been triggered in 10 consecutive reviews:
+   - Move the pattern from the "Active Patterns" section to the "Retired Patterns" section.
+   - Set `**Status**` to `retired`.
+   - Add a `- **Retired**: YYYY-MM-DD (untriggered for 10 consecutive reviews)` line.
+3. If review count tracking is unavailable (e.g., no historical review data accessible), defer retirement processing. Log: "Pattern retirement deferred -- insufficient review history."
 
-### 14d. Do NOT add patterns from WARN findings (FR-019)
+### 14e. Do NOT add patterns from WARN findings
 
-Only FAIL findings generate patterns. WARN findings are informational and do not enter the patterns file.
+Only FAIL findings that recur across 3+ reviews generate new patterns. WARN findings are informational and do not enter the patterns file.
 
-### 14e. Update file header
+### 14f. Pattern curation commit (FR-015)
 
-Update the `Last updated` and `Last review` fields in the file header.
+After modifying any domain-specific pattern file, commit the changes immediately with explicit file paths:
+
+For new patterns:
+```
+git add .sdd/reviews/<domain>-patterns.md
+git commit -m "docs(patterns): add PAT-<DOMAIN>-XXX <pattern title>"
+```
+
+For pattern retirement:
+```
+git add .sdd/reviews/<domain>-patterns.md
+git commit -m "docs(patterns): retire PAT-<DOMAIN>-XXX <pattern title>"
+```
+
+If the commit fails, retry once. If it fails again, report the error and continue with the review commit (Step 15).
 
 ## Step 15 - Commit (FR-020)
 
@@ -432,7 +494,7 @@ Commit all review artifacts. Build the explicit file list:
 - The WP file: `.sdd/plans/<WP-filename>.md`
 
 **Include if modified**:
-- `.sdd/reviews/review-patterns.md`
+- Domain-specific pattern files: `.sdd/reviews/spec-patterns.md`, `.sdd/reviews/plan-patterns.md`, `.sdd/reviews/code-patterns.md`, `.sdd/reviews/doc-patterns.md` (only those modified in Step 14)
 - The spec file (only if status was changed per FR-017)
 - All findings files in `.sdd/reviews/<WP-id>/`
 
