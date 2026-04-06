@@ -1,5 +1,6 @@
 ---
 lane: done
+docs_completed: true
 ---
 
 # WP42 - Return Handoff Schemas & Shared Base
@@ -198,6 +199,7 @@ FR-021, FR-022, FR-023, FR-024, FR-025, FR-026, FR-027, FR-049, FR-050, FR-051, 
 - 2026-04-07T00:02:01Z - coder - T42-03 completed - Created coder-complete-to-orchestrator.schema.yaml
 - 2026-04-07T00:02:02Z - coder - T42-04 completed - Created docs-agent-to-orchestrator.schema.yaml
 - 2026-04-07T00:03:00Z - coder - T42-05 completed - Linked spec-to-planner and coder-to-reviewer schemas to base
+- 2026-04-07T00:10:00Z - docs-agent - docs-complete - Documentation generated for WP42
 - 2026-04-07T00:04:00Z - coder - T42-06 completed - Verified structural consistency across all schemas
 - 2026-04-07T00:05:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria met
 - 2026-04-07T00:10:00Z - review-coordinator - lane=done - Verdict: Approved with Findings (1 WARNs)
