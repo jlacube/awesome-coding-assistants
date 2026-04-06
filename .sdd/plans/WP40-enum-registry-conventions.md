@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP40 - Enum Registry & Canonical Conventions
@@ -32,13 +32,13 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 - **Spec refs**: FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-020, Section 7.2
 - **Parallel**: No (foundation for all subsequent tasks)
 - **Acceptance criteria**:
-  - [ ] File exists at `.github/schemas/enums.yaml` and is valid YAML (FR-008)
-  - [ ] `lane` enum group defines exactly: planned, doing, for_review, to_do, done, blocked (FR-010)
-  - [ ] `spec_status` enum group defines exactly: Draft, Validated, Approved (FR-011)
-  - [ ] `pipeline_stage` enum group defines exactly: idle, ideation, specification, planning, implementation, review, documentation, complete (FR-012)
-  - [ ] `review_status` enum group defines exactly: pending, has_feedback, acknowledged, approved (FR-013)
-  - [ ] `conventions.activity_log_format` contains the template: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>` (FR-020)
-  - [ ] No extra enum values beyond those specified in the spec
+  - [x] File exists at `.github/schemas/enums.yaml` and is valid YAML (FR-008)
+  - [x] `lane` enum group defines exactly: planned, doing, for_review, to_do, done, blocked (FR-010)
+  - [x] `spec_status` enum group defines exactly: Draft, Validated, Approved (FR-011)
+  - [x] `pipeline_stage` enum group defines exactly: idle, ideation, specification, planning, implementation, review, documentation, complete (FR-012)
+  - [x] `review_status` enum group defines exactly: pending, has_feedback, acknowledged, approved (FR-013)
+  - [x] `conventions.activity_log_format` contains the template: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>` (FR-020)
+  - [x] No extra enum values beyond those specified in the spec
 - **Test requirements**: content (YAML parse + value comparison)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -161,3 +161,4 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T00:01:00Z - coder - lane=doing - Starting implementation

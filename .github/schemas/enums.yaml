@@ -1,0 +1,39 @@
+# Enum Registry -- Single source of truth for all pipeline enum values.
+# All agent and schema files SHALL reference this file for enum values.
+# Error E-010 (ENUM_REGISTRY_NOT_FOUND): agents halt if this file is missing.
+# Error E-013 (ENUM_PARSE_ERROR): agents halt if this file has malformed YAML.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-020
+
+lane:
+  - planned
+  - doing
+  - for_review
+  - to_do
+  - done
+  - blocked
+
+spec_status:
+  - Draft
+  - Validated
+  - Approved
+
+pipeline_stage:
+  - idle
+  - ideation
+  - specification
+  - planning
+  - implementation
+  - review
+  - documentation
+  - complete
+
+review_status:
+  - pending
+  - has_feedback
+  - acknowledged
+  - approved
+
+conventions:
+  activity_log_format: "<ISO-8601-timestamp> - <agent-name> - <action> - <details>"
