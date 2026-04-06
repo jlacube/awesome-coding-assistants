@@ -39,6 +39,8 @@ You do NOT write documentation yourself -- that is delegated to doc skills via `
 
 ## Step 1 - Validate Trigger Context (FR-001)
 
+<!-- Enum source: .github/schemas/enums.yaml -->
+
 The Docs Agent is triggered after a WP is reviewed and approved (lane = done). The trigger SHALL include:
 
 1. The approved WP file path
@@ -192,7 +194,25 @@ git commit -m "docs(docs): update documentation for WP<NN>"
 - If `git add` or `git commit` fails, report the error to the invoker.
 - Do not retry -- report the error and halt.
 
-## Step 8 - Summary Report
+## Step 8 - Activity Log Protocol
+
+Canonical format (from `.github/schemas/enums.yaml` conventions): `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`
+
+After committing documentation changes (Step 7), append an Activity Log entry to the WP file:
+
+```
+- <ISO-8601-timestamp> - docs-agent - docs-complete - Documentation generated for WP<NN>
+```
+
+If no documentation was produced (all skills failed or no output), append:
+
+```
+- <ISO-8601-timestamp> - docs-agent - docs-skipped - No documentation updates produced
+```
+
+Always append at the end of the Activity Log (newest entry last). Do NOT prepend or insert mid-list.
+
+## Step 9 - Summary Report
 
 After completing all steps, produce a summary:
 

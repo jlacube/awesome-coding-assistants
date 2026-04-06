@@ -122,9 +122,9 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 - **Spec refs**: FR-014, FR-016, FR-019, Section 4.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Docs Agent file contains `<!-- Enum source: .github/schemas/enums.yaml -->` comment (FR-014)
-  - [ ] Activity Log entries use the canonical format: `<ISO-8601-timestamp> - docs-agent - <action> - <details>` (FR-016, FR-019)
-  - [ ] Agent name in log entries is `docs-agent` (lowercase with hyphen)
+  - [x] Docs Agent file contains `<!-- Enum source: .github/schemas/enums.yaml -->` comment (FR-014)
+  - [x] Activity Log entries use the canonical format: `<ISO-8601-timestamp> - docs-agent - <action> - <details>` (FR-016, FR-019)
+  - [x] Agent name in log entries is `docs-agent` (lowercase with hyphen)
 - **Test requirements**: content (grep search)
 - **Depends on**: T40-01
 - **Implementation Guidance**:
