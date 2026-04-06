@@ -1,5 +1,5 @@
 ---
-lane: for_review
+lane: done
 ---
 
 # WP36 - Orchestrator V2: Pipeline Sequence, Sequential Execution & Error Recovery
@@ -199,8 +199,15 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - T36-03 (Docs Agent handoff) can run in parallel with T36-04 (sequential execution) -- they modify independent sections (YAML frontmatter vs workflow body)
 - T36-07 (review failure) can run in parallel with T36-08 (MVP completion) -- they are independent decision logic branches
 
+## Risks & Mitigations
+
+- **Risk**: Decision table becomes too complex with 11 rows. **Mitigation**: Copy directly from spec Section 4.3 to ensure accuracy.
+- **Risk**: Pre-queuing fix is insufficiently explicit. **Mitigation**: T36-04 adds both positive instructions (do this) and negative constraints (never do that).
+- **Risk**: Docs Agent integration requires docs-agent.agent.md to exist. **Mitigation**: The Docs Agent is created by Spec 007 / WP30-31. If not yet implemented, the handoff will fail gracefully with "agent not found."
+
 ## Activity Log
 
+- 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-06T00:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-06T00:00:00Z - coder - T36-01 - completed - Updated pipeline sequence diagram with per-WP Docs Agent loop
 - 2026-04-06T00:00:00Z - coder - T36-02 - completed - Replaced decision table with 12-row V2 table including Docs Agent, error recovery, escalation
@@ -212,13 +219,46 @@ FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, Section 4.3 (Dec
 - 2026-04-06T00:00:00Z - coder - T36-08 - completed - Added MVP completion check and pipeline halt logic
 - 2026-04-06T00:00:00Z - coder - T36-09 - completed - Integration verification passed all BDD scenarios
 - 2026-04-06T00:00:00Z - coder - lane=for_review - All tasks complete, tests passing, coverage met
+- 2026-04-06T12:00:00Z - review-coordinator - lane=done - Verdict: Approved with Findings (3 WARNs)
 
-## Risks & Mitigations
+## Review
 
-- **Risk**: Decision table becomes too complex with 11 rows. **Mitigation**: Copy directly from spec Section 4.3 to ensure accuracy.
-- **Risk**: Pre-queuing fix is insufficiently explicit. **Mitigation**: T36-04 adds both positive instructions (do this) and negative constraints (never do that).
-- **Risk**: Docs Agent integration requires docs-agent.agent.md to exist. **Mitigation**: The Docs Agent is created by Spec 007 / WP30-31. If not yet implemented, the handoff will fail gracefully with "agent not found."
+> **Reviewed by**: Review Coordinator (v2)
+> **Date**: 2026-04-06T12:00:00Z
+> **Verdict**: Approved with Findings
+> **Skills dispatched**: review-spec (PASS), review-security (PASS), review-quality (WARN), review-tests (PASS), review-architecture (PASS), review-performance (PASS), review-docs (WARN), review-deps (PASS)
+> **Review round**: 1
 
-## Activity Log
+### Process Compliance
+- [PASS] Spec Compliance Checklist: All 40 acceptance criteria checked across 9 tasks
+- [PASS] Activity Log: Lane transitions present (planned -> doing -> for_review)
+- [WARN] Commit granularity: All 9 tasks committed in a single bulk commit
+- [PASS] Encoding: No violations found
 
-- 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+### Review Feedback
+
+> No FAIL findings. No remediation required.
+
+### Warnings
+- [WARN] Duplicate Activity Log section in WP file -- two separate "## Activity Log" headings exist. Should be consolidated. (review-quality QUAL-009, review-docs DOC-003) -- consolidated by reviewer.
+- [WARN] All 9 tasks committed in single bulk commit "feat(orchestrator): add V2 pipeline, sequential execution, error recovery (WP36 T36-01..T36-09)". Best practice is one commit per task for easier bisection. (review-quality QUAL-010, process PROC-003)
+- [WARN] Decision table has 12 rows while spec Section 4.3 defines 11. The extra row 8 (lane=doing -> Resume implementation) is a reasonable edge case handler that is a superset of the spec, not a deviation. (review-spec observation)
+
+### Cross-Correlation Notes
+- QUAL-009 and DOC-003 merged: both flag the duplicate Activity Log section in the WP file. Consolidated into single warning.
+- QUAL-010 and PROC-003 merged: both flag the single bulk commit. Consolidated into single warning.
+
+### Statistics
+| Dimension | Pass | Warn | Fail |
+|-----------|------|------|------|
+| Process Compliance | 3 | 1 | 0 |
+| Encoding | 1 | 0 | 0 |
+| review-spec | 12 | 0 | 0 |
+| review-security | 2 | 0 | 0 |
+| review-quality | 8 | 2 | 0 |
+| review-tests | 1 | 0 | 0 |
+| review-architecture | 4 | 0 | 0 |
+| review-performance | 1 | 0 | 0 |
+| review-docs | 2 | 1 | 0 |
+| review-deps | 0 | 0 | 0 |
+| **Total** | **34** | **4** | **0** |
