@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP34 - Code-Adjacent Doc Skills
@@ -32,10 +32,10 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-016, Section 4.2.5
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] doc-changelog SKILL.md has valid YAML frontmatter with `name: doc-changelog`
-  - [ ] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
-  - [ ] Output contract specifies `.sdd/docs/CHANGELOG.md` as the target file
-  - [ ] Execution sequence defines the step-by-step process for generating changelog entries
+  - [x] doc-changelog SKILL.md has valid YAML frontmatter with `name: doc-changelog`
+  - [x] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
+  - [x] Output contract specifies `.sdd/docs/CHANGELOG.md` as the target file
+  - [x] Execution sequence defines the step-by-step process for generating changelog entries
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,12 +49,12 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-016
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL append to CHANGELOG.md with WP identifier and title (FR-016.1)
-  - [ ] The skill SHALL include the date of the changelog entry (FR-016.2)
-  - [ ] The skill SHALL include a list of changes derived from the WP task list and descriptions (FR-016.3)
-  - [ ] The skill SHALL include breaking changes if any (FR-016.4)
-  - [ ] The skill SHALL include dependencies added or changed (FR-016.5)
-  - [ ] BDD: Given WP03 is approved, When the Docs Agent runs, Then CHANGELOG.md has a new entry for WP03 (Section 11.2 Scenario 1)
+  - [x] The skill SHALL append to CHANGELOG.md with WP identifier and title (FR-016.1)
+  - [x] The skill SHALL include the date of the changelog entry (FR-016.2)
+  - [x] The skill SHALL include a list of changes derived from the WP task list and descriptions (FR-016.3)
+  - [x] The skill SHALL include breaking changes if any (FR-016.4)
+  - [x] The skill SHALL include dependencies added or changed (FR-016.5)
+  - [x] BDD: Given WP03 is approved, When the Docs Agent runs, Then CHANGELOG.md has a new entry for WP03 (Section 11.2 Scenario 1)
 - **Test requirements**: BDD
 - **Depends on**: T34-01
 - **Implementation Guidance**:
@@ -68,9 +68,9 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-017
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Changelog entries SHALL be prepended (newest first), not appended (FR-017)
-  - [ ] The most recent WP entry appears first in CHANGELOG.md after the file header
-  - [ ] Existing entries are preserved in their original order below the new entry
+  - [x] Changelog entries SHALL be prepended (newest first), not appended (FR-017)
+  - [x] The most recent WP entry appears first in CHANGELOG.md after the file header
+  - [x] Existing entries are preserved in their original order below the new entry
 - **Test requirements**: BDD
 - **Depends on**: T34-02
 - **Implementation Guidance**:
@@ -180,3 +180,4 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T01:00:00Z - coder - lane=doing - Starting implementation
