@@ -98,6 +98,60 @@ After delivering a verdict, the coordinator offers handoff buttons:
 | **Update Specification** | Spec Architect | Spec gaps found during review |
 | **Revise Plan** | Planner | Plan-level issues found during review |
 
+## Central Enum Registry (WP40)
+
+All pipeline-wide enumeration values are defined in a single registry file at `.github/schemas/enums.yaml`. This file is the authoritative source for valid values of `lane`, `spec_status`, `pipeline_stage`, and `review_status`.
+
+**What it does**: Provides a single source of truth for enum values used across all agents, eliminating inconsistencies from scattered inline value lists.
+
+**When to use it**: Reference this file whenever you need to know the valid values for WP lane states, spec statuses, pipeline stages, or review statuses.
+
+### Enum Groups
+
+| Group | Valid Values |
+|-------|-------------|
+| `lane` | planned, doing, for_review, to_do, done, blocked |
+| `spec_status` | Draft, Validated, Approved |
+| `pipeline_stage` | idle, ideation, specification, planning, implementation, review, documentation, complete |
+| `review_status` | pending, has_feedback, acknowledged, approved |
+
+## Canonical Activity Log Format (WP40)
+
+All agents write Activity Log entries in WP files using a standardized format:
+
+```
+<ISO-8601-timestamp> - <agent-name> - <action> - <details>
+```
+
+Fields are separated by ` - ` (space-hyphen-space). Agent names use lowercase with hyphens (e.g., `coder`, `review-coordinator`, `docs-agent`).
+
+The canonical format template is stored in `.github/schemas/enums.yaml` under `conventions.activity_log_format`.
+
+## Troubleshooting
+
+### Enum Registry Errors (WP40)
+
+#### "Enum registry not found at .github/schemas/enums.yaml"
+
+**Cause**: The central enum registry file is missing from the workspace.
+
+**Resolution**:
+1. Verify the file exists at `.github/schemas/enums.yaml`
+2. If deleted accidentally, restore it from version control
+
+**Prevention**: Do not delete or move `.github/schemas/enums.yaml` -- all agents depend on it.
+
+#### "Enum group '<name>' not found in enums.yaml"
+
+**Cause**: A required enum group (`lane`, `spec_status`, `pipeline_stage`, or `review_status`) is missing from the registry file.
+
+**Resolution**:
+1. Open `.github/schemas/enums.yaml`
+2. Verify all four enum groups are present with their required values
+3. Fix any YAML formatting issues
+
+**Prevention**: Do not remove enum groups from the registry. Adding new values requires a spec change.
+
 ## Where to Find Detailed Findings
 
 - **Summary**: In the WP file under `## Review`

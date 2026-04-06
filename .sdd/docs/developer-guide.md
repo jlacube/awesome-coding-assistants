@@ -8,8 +8,19 @@
     review-coordinator.agent.md     # Review orchestration agent
     orchestrator.agent.md           # Pipeline orchestration agent
     coder.agent.md                  # Implementation coordinator (dispatches coding skills)
+    docs-agent.agent.md             # Documentation generation agent
     spec-architect.agent.md         # Specification agent
     planner.agent.md                # Planning agent
+  schemas/
+    enums.yaml                      # Central enum registry -- single source of truth for pipeline enums and conventions (WP40)
+    orchestrator-handoff.schema.yaml
+    coder-to-reviewer.schema.yaml
+    reviewer-to-coder.schema.yaml
+    reviewer-to-spec.schema.yaml
+    planner-to-coder.schema.yaml
+    planner-to-spec.schema.yaml
+    spec-to-planner.schema.yaml
+    ideation-to-spec.schema.yaml
   skills/                           # VS Code Copilot Chat skill definitions
     code-env-setup/SKILL.md         # Environment setup coding skill
     code-implementation/SKILL.md    # Core implementation coding skill
@@ -151,3 +162,7 @@ The coordinator maintains `.sdd/reviews/review-patterns.md` with patterns extrac
 - All files use **plain ASCII** -- no em dashes, smart quotes, curly apostrophes, or non-breaking spaces
 - Git commits use **explicit file listing** (`git add <file1> <file2>`) -- never `git add .`
 - WP lifecycle: `planned` -> `doing` -> `for_review` -> `done` (or `to_do` for feedback, `blocked` for stalled cycles)
+- **Enum values** are defined in `.github/schemas/enums.yaml` -- this is the single source of truth for `lane`, `spec_status`, `pipeline_stage`, and `review_status` values (WP40)
+- Agent files referencing enum values include `<!-- Enum source: .github/schemas/enums.yaml -->` near those references (WP40)
+- **Activity Log entries** use the canonical format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>` with ` - ` (space-hyphen-space) separators. Agent names are lowercase with hyphens (e.g., `coder`, `review-coordinator`, `docs-agent`) (WP40)
+- The `spec_status` enum no longer includes "Final" -- valid values are Draft, Validated, Approved (WP40)

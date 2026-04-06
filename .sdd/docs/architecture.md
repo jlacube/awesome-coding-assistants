@@ -94,31 +94,45 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 3. **No pipeline orchestration**: The coordinator presents its verdict and stops. The Orchestrator handles next steps.
 4. **Persistent findings**: Per-WP per-skill findings preserved in `.sdd/reviews/<WP-id>/` for audit trail.
 5. **Active pattern curation**: FAIL findings generate patterns in `.sdd/reviews/review-patterns.md` that teach the Coder to avoid recurring mistakes.
+6. **Central enum registry** (WP40): All pipeline-wide enumeration values (`lane`, `spec_status`, `pipeline_stage`, `review_status`) are defined in a single file at `.github/schemas/enums.yaml`. Agents reference this file as the authoritative source via `<!-- Enum source: .github/schemas/enums.yaml -->` comments. This eliminates scattered, potentially inconsistent inline value lists.
+7. **Canonical Activity Log format** (WP40): All agents use the same log entry format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`. The canonical template is stored in `enums.yaml` under `conventions.activity_log_format`.
 
 ## Directory Structure
 
 ```
 .github/
   agents/
-    review-coordinator.agent.md     # Coordinator agent
-    reviewer.agent.md.deprecated    # Old monolithic reviewer (kept for reference)
+    orchestrator.agent.md           # Pipeline orchestration agent
+    coder.agent.md                  # Implementation coordinator
+    review-coordinator.agent.md     # Review orchestration agent
+    docs-agent.agent.md             # Documentation generation agent
+    planner.agent.md                # Planning agent
+    spec-architect.agent.md         # Specification agent
+  schemas/
+    enums.yaml                      # Central enum registry (WP40) -- single source of truth for lane, spec_status, pipeline_stage, review_status, and canonical Activity Log format
+    orchestrator-handoff.schema.yaml
+    coder-to-reviewer.schema.yaml
+    reviewer-to-coder.schema.yaml
+    reviewer-to-spec.schema.yaml
+    planner-to-coder.schema.yaml
+    planner-to-spec.schema.yaml
+    spec-to-planner.schema.yaml
+    ideation-to-spec.schema.yaml
   skills/
-    review-spec/SKILL.md            # Spec adherence skill
-    review-security/SKILL.md        # Security skill
-    review-quality/SKILL.md         # Code quality skill
-    review-tests/SKILL.md           # Test quality skill
-    review-architecture/SKILL.md    # Architecture skill
-    review-performance/SKILL.md     # Performance skill
-    review-docs/SKILL.md            # Documentation skill
-    review-deps/SKILL.md            # Dependency skill
+    review-*/SKILL.md               # Review skills (8 dimensions)
+    code-*/SKILL.md                 # Coding skills (5 phases)
+    doc-*/SKILL.md                  # Documentation skills (6 types)
+    semantic-commit/SKILL.md        # Commit grouping skill
 
 .sdd/
+  ideas/                            # Ideation briefs
+  specs/                            # Specifications
+  plans/                            # Work packages and contracts
   reviews/
-    review-patterns.md              # Active + resolved patterns
+    review-patterns.md              # Active + resolved review patterns
+    doc-patterns.md                 # Active + resolved doc patterns
     <WP-id>/                        # Per-WP findings directory
-      review-spec-findings.md       # One findings file per dispatched skill
-      review-security-findings.md
-      ...
+  docs/                             # Generated documentation
 ```
 
 ## Technology Stack
