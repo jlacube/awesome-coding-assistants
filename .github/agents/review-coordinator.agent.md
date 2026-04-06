@@ -123,11 +123,11 @@ If the directory already exists (re-review), proceed without error.
 
 If directory creation fails, halt and report the filesystem error.
 
-## Step 4 - Process Compliance Checks (FR-005)
+## Step 4 - Process Compliance Checks (FR-005) -- Accountable/Verifier (checker)
 
-Before dispatching any review skill, verify the Coder's process compliance directly. Check:
+Before dispatching any review skill, verify the Coder's process compliance directly. The Review Coordinator is Accountable/Verifier (checker) for acceptance criteria -- it independently confirms that the Coder's checked-off boxes match actual implementation. This is intentional dual-touch, not redundancy. Check:
 
-1. **Spec Compliance**: For each task in the WP file, verify that acceptance criteria checkboxes exist and are checked off (`- [x]`). Unchecked or missing acceptance criteria indicate incomplete work.
+1. **Spec Compliance**: For each task in the WP file, verify that acceptance criteria checkboxes exist and are checked off (`- [x]`). Unchecked or missing acceptance criteria indicate incomplete work. The Coder is Responsible (maker) for checking these boxes; the Reviewer verifies them.
 
 2. **Activity Log consistency**: Verify the WP file's Activity Log section contains entries showing lane transitions. Expected sequence: `lane=planned` -> `lane=doing` -> `lane=for_review`. Missing or inconsistent entries indicate process gaps.
 

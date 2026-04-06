@@ -85,9 +85,9 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 - **Spec refs**: FR-032, Section 4.6
 - **Parallel**: Yes (with T43-03)
 - **Acceptance criteria**:
-  - [ ] Review Coordinator instructions label acceptance criteria handling as "Accountable/Verifier (checker)" (FR-032)
-  - [ ] The existing verification behavior is preserved -- only the label is added
-  - [ ] The role description clarifies this is intentional dual-touch, not redundancy
+  - [x] Review Coordinator instructions label acceptance criteria handling as "Accountable/Verifier (checker)" (FR-032)
+  - [x] The existing verification behavior is preserved -- only the label is added
+  - [x] The role description clarifies this is intentional dual-touch, not redundancy
 - **Test requirements**: content (grep search)
 - **Depends on**: none
 - **Implementation Guidance**:
