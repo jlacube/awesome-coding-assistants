@@ -69,10 +69,10 @@ FR-014, FR-015, US-01, Section 4.2.3, Section 4.2.4, Section 7.1
 - **Spec refs**: FR-015, Section 4.2.4
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] doc-developer-guide SKILL.md has valid YAML frontmatter with `name: doc-developer-guide`
-  - [ ] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
-  - [ ] Output contract specifies `.sdd/docs/developer-guide.md` as the target file
-  - [ ] Execution sequence defines the step-by-step process for generating developer guide docs
+  - [x] doc-developer-guide SKILL.md has valid YAML frontmatter with `name: doc-developer-guide`
+  - [x] Input contract references DOC-SKILL-CONTRACT.md and lists all 6 context items from FR-005
+  - [x] Output contract specifies `.sdd/docs/developer-guide.md` as the target file
+  - [x] Execution sequence defines the step-by-step process for generating developer guide docs
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -86,12 +86,12 @@ FR-014, FR-015, US-01, Section 4.2.3, Section 4.2.4, Section 7.1
 - **Spec refs**: FR-015
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The skill SHALL produce/update `.sdd/docs/developer-guide.md` with development environment setup (FR-015.1)
-  - [ ] The skill SHALL include project structure overview (FR-015.2)
-  - [ ] The skill SHALL include coding conventions in use (FR-015.3)
-  - [ ] The skill SHALL include testing approach and commands (FR-015.4)
-  - [ ] The skill SHALL include how to add new features following the project's patterns (FR-015.5)
-  - [ ] On incremental updates, the skill SHALL update affected sections without overwriting unrelated sections (inherits FR-011 pattern)
+  - [x] The skill SHALL produce/update `.sdd/docs/developer-guide.md` with development environment setup (FR-015.1)
+  - [x] The skill SHALL include project structure overview (FR-015.2)
+  - [x] The skill SHALL include coding conventions in use (FR-015.3)
+  - [x] The skill SHALL include testing approach and commands (FR-015.4)
+  - [x] The skill SHALL include how to add new features following the project's patterns (FR-015.5)
+  - [x] On incremental updates, the skill SHALL update affected sections without overwriting unrelated sections (inherits FR-011 pattern)
 - **Test requirements**: BDD
 - **Depends on**: T33-03
 - **Implementation Guidance**:
@@ -137,3 +137,5 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 - 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-06T12:01:00Z - coder - T33-01 - completed - doc-user-guide SKILL.md structure created with frontmatter, input/output contracts, execution sequence
 - 2026-04-06T12:02:00Z - coder - T33-02 - completed - User guide generation sections written: features, usage instructions, configuration, workflows, troubleshooting, incremental update protocol
+- 2026-04-06T12:03:00Z - coder - T33-03 - completed - doc-developer-guide SKILL.md structure created with frontmatter, input/output contracts, execution sequence
+- 2026-04-06T12:04:00Z - coder - T33-04 - completed - Developer guide generation sections written: env setup, project structure, conventions, testing, adding features, incremental update protocol
