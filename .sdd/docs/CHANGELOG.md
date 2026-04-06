@@ -4,6 +4,21 @@
 
 ---
 
+## [WP41] - WP Frontmatter Extensions (2026-04-07)
+
+### Changes
+
+- Added optional `review_cycles` (integer, default 0) and `docs_completed` (boolean, default false) frontmatter fields to WP files, replacing Activity Log text parsing with structured YAML state
+- Updated the Review Coordinator to increment `review_cycles` by 1 each time it sets a WP's lane to `to_do` (rework requested)
+- Updated the Docs Agent to set `docs_completed: true` in WP frontmatter upon successful documentation generation
+- Updated the Orchestrator to read `review_cycles` from frontmatter for escalation decisions (`review_cycles >= 3`) instead of scanning Activity Log entries
+- Updated the Orchestrator to read `docs_completed` from frontmatter to determine whether to invoke the Docs Agent, instead of scanning Activity Log entries
+- All agents treat absent fields as their defaults (0 and false), maintaining backward compatibility with existing WP files
+
+### Breaking Changes
+
+None.
+
 ## [WP40] - Enum Registry & Canonical Conventions (2026-04-07)
 
 ### Changes

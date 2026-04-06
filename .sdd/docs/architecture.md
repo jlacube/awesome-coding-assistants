@@ -96,6 +96,7 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 5. **Active pattern curation**: FAIL findings generate patterns in `.sdd/reviews/review-patterns.md` that teach the Coder to avoid recurring mistakes.
 6. **Central enum registry** (WP40): All pipeline-wide enumeration values (`lane`, `spec_status`, `pipeline_stage`, `review_status`) are defined in a single file at `.github/schemas/enums.yaml`. Agents reference this file as the authoritative source via `<!-- Enum source: .github/schemas/enums.yaml -->` comments. This eliminates scattered, potentially inconsistent inline value lists.
 7. **Canonical Activity Log format** (WP40): All agents use the same log entry format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`. The canonical template is stored in `enums.yaml` under `conventions.activity_log_format`.
+8. **Structured WP frontmatter for state tracking** (WP41): Two optional YAML frontmatter fields -- `review_cycles` (integer, default 0) and `docs_completed` (boolean, default false) -- replace Activity Log text parsing for review cycle counting and documentation completion status. The Review Coordinator increments `review_cycles` on each rework cycle. The Docs Agent sets `docs_completed: true` on completion. The Orchestrator reads both fields from frontmatter instead of scanning Activity Log entries. This eliminates fragile text parsing and provides machine-readable state.
 
 ## Directory Structure
 
