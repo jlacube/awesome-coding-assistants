@@ -65,12 +65,12 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 - **Spec refs**: FR-036, FR-037, Section 6.4 (steps 6-8)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] code-unit-tests skill reads `coverage_code` and `coverage_branch` from WP frontmatter (FR-036)
-  - [ ] Coverage thresholds used for enforcement match WP frontmatter values (FR-036)
-  - [ ] When frontmatter fields are absent, skill uses defaults: 80% code, 90% branch (FR-037)
-  - [ ] Given a WP with `coverage_code: 60` and `coverage_branch: 70`, the skill enforces 60/70 (US-04 Scenario 1)
-  - [ ] Given a WP with no coverage fields, the skill enforces 80/90 (US-04 Scenario 2)
-  - [ ] Given `coverage_code: 60` but no `coverage_branch`, the skill uses 60/90 (US-04 Edge Case 1)
+  - [x] code-unit-tests skill reads `coverage_code` and `coverage_branch` from WP frontmatter (FR-036)
+  - [x] Coverage thresholds used for enforcement match WP frontmatter values (FR-036)
+  - [x] When frontmatter fields are absent, skill uses defaults: 80% code, 90% branch (FR-037)
+  - [x] Given a WP with `coverage_code: 60` and `coverage_branch: 70`, the skill enforces 60/70 (US-04 Scenario 1)
+  - [x] Given a WP with no coverage fields, the skill enforces 80/90 (US-04 Scenario 2)
+  - [x] Given `coverage_code: 60` but no `coverage_branch`, the skill uses 60/90 (US-04 Edge Case 1)
 - **Test requirements**: BDD (US-04 Scenarios 1-3, Edge Case 1), content
 - **Depends on**: T44-01, T44-02
 - **Implementation Guidance**:
