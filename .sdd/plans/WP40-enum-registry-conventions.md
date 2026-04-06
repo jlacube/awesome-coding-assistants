@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP40 - Enum Registry & Canonical Conventions
@@ -162,3 +162,4 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, 
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-06T00:01:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T00:10:00Z - coder - lane=for_review - All tasks complete, content verified
