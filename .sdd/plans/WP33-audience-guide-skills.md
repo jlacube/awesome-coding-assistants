@@ -106,10 +106,10 @@ FR-014, FR-015, US-01, Section 4.2.3, Section 4.2.4, Section 7.1
 - **Spec refs**: FR-003, FR-004
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator discovers both skills via `doc-*/SKILL.md` glob
-  - [ ] doc-user-guide is dispatched at canonical position 3 (after doc-api-reference)
-  - [ ] doc-developer-guide is dispatched at canonical position 4 (after doc-user-guide)
-  - [ ] Both skills receive all 6 context items defined in FR-005
+  - [x] Coordinator discovers both skills via `doc-*/SKILL.md` glob
+  - [x] doc-user-guide is dispatched at canonical position 3 (after doc-api-reference)
+  - [x] doc-developer-guide is dispatched at canonical position 4 (after doc-user-guide)
+  - [x] Both skills receive all 6 context items defined in FR-005
 - **Test requirements**: BDD
 - **Depends on**: T33-01, T33-02, T33-03, T33-04
 - **Implementation Guidance**:
@@ -139,3 +139,4 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 - 2026-04-06T12:02:00Z - coder - T33-02 - completed - User guide generation sections written: features, usage instructions, configuration, workflows, troubleshooting, incremental update protocol
 - 2026-04-06T12:03:00Z - coder - T33-03 - completed - doc-developer-guide SKILL.md structure created with frontmatter, input/output contracts, execution sequence
 - 2026-04-06T12:04:00Z - coder - T33-04 - completed - Developer guide generation sections written: env setup, project structure, conventions, testing, adding features, incremental update protocol
+- 2026-04-06T12:05:00Z - coder - T33-05 - completed - Integration verified: glob discovers both skills, canonical positions 3 and 4 correct, all 6 FR-005 context items passed in dispatch prompt
