@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP32 - Technical Reference Doc Skills
@@ -139,10 +139,10 @@ FR-010, FR-011, FR-012, FR-013, US-01, US-02, Section 4.2.1, Section 4.2.2, Sect
 - **Spec refs**: FR-003, FR-004
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator discovers both skills via `doc-*/SKILL.md` glob
-  - [ ] doc-architecture is dispatched before doc-api-reference (canonical order position 1 vs 2)
-  - [ ] Both skills receive all 6 context items defined in FR-005
-  - [ ] BDD: Given WP03 adds 2 new API endpoints, When the Docs Agent runs, Then architecture.md is updated And api-reference.md has 2 new endpoint sections (Section 11.2 Scenario 1)
+  - [x] Coordinator discovers both skills via `doc-*/SKILL.md` glob
+  - [x] doc-architecture is dispatched before doc-api-reference (canonical order position 1 vs 2)
+  - [x] Both skills receive all 6 context items defined in FR-005
+  - [x] BDD: Given WP03 adds 2 new API endpoints, When the Docs Agent runs, Then architecture.md is updated And api-reference.md has 2 new endpoint sections (Section 11.2 Scenario 1)
 - **Test requirements**: BDD
 - **Depends on**: T32-01, T32-02, T32-03, T32-04, T32-05, T32-06
 - **Implementation Guidance**:
@@ -165,3 +165,8 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:10:00Z - coder - T32-01/02/03 - completed - doc-architecture SKILL.md fully implemented with frontmatter, input/output contract, 6 generation sections, and incremental update protocol
+- 2026-04-06T12:20:00Z - coder - T32-04/05/06 - completed - doc-api-reference SKILL.md fully implemented with contract discovery, multi-language parsing, 6 endpoint doc sections, accuracy rules, and incremental updates
+- 2026-04-06T12:25:00Z - coder - T32-07 - completed - Integration verified: coordinator discovers both skills via glob, canonical order correct (pos 1 and 2), all 6 FR-005 context items present
+- 2026-04-06T12:25:00Z - coder - lane=for_review - All tasks complete, all acceptance criteria met

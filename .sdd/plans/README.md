@@ -840,7 +840,7 @@ Cross-WP consistency audit performed. No inconsistencies found:
 |----|-------|----------|--------|------------|----------------|
 | [WP30](WP30-foundation-doc-skills.md) | Foundation & Doc Skill Scaffolding | P0 | Complete | none | - |
 | [WP31](WP31-docs-agent-coordinator.md) | Docs Agent Coordinator | P1 | Complete | WP30 | No |
-| [WP32](WP32-technical-reference-skills.md) | Technical Reference Doc Skills | P1 | Not Started | WP30, WP31 | Yes |
+| [WP32](WP32-technical-reference-skills.md) | Technical Reference Doc Skills | P1 | For Review | WP30, WP31 | Yes |
 | [WP33](WP33-audience-guide-skills.md) | Audience Guide Doc Skills | P1 | Not Started | WP30, WP31 | Yes |
 | [WP34](WP34-code-adjacent-doc-skills.md) | Code-Adjacent Doc Skills | P1 | Not Started | WP30, WP31 | Yes |
 
