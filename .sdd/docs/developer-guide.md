@@ -175,3 +175,21 @@ The coordinator maintains `.sdd/reviews/review-patterns.md` with patterns extrac
 - **WP frontmatter extended fields** (WP41): Two optional fields track review and documentation state in WP YAML frontmatter, replacing Activity Log text parsing with structured data:
   - `review_cycles` (integer, default 0) -- number of review-rework cycles completed. The Review Coordinator increments this by 1 each time it sets `lane: to_do`. The Orchestrator reads this for escalation decisions (`review_cycles >= 3` triggers escalation). If absent, treat as 0. If present but not a non-negative integer, treat as 0 and log a warning.
   - `docs_completed` (boolean, default false) -- whether documentation has been generated for this WP. The Docs Agent sets this to `true` upon successful completion. The Orchestrator reads this to decide whether to invoke the Docs Agent. If absent, treat as false. If present but not a boolean, treat as false and log a warning.
+
+## Acceptance Criteria Ownership
+
+Acceptance criteria checkboxes in WP files (`- [ ]` / `- [x]`) follow a maker/checker pattern with two agents touching them independently:
+
+| Role | Agent | Action |
+|------|-------|--------|
+| **Responsible (maker)** | Coder | Checks off boxes (`- [ ]` to `- [x]`) as each criterion is verified during implementation |
+| **Accountable/Verifier (checker)** | Review Coordinator | Independently confirms that checked-off criteria match actual implementation |
+
+This is intentional dual-touch, not redundancy. The Coder marks criteria complete based on implementation work. The Reviewer independently verifies those claims against the actual artifacts. If a maintainer removes either side's responsibility, the quality assurance loop breaks:
+
+- Without the Coder marking boxes: the Reviewer has no signal of what the Coder believes is done, making review less focused.
+- Without the Reviewer verifying boxes: checked boxes become unchecked claims with no independent validation.
+
+Both roles are documented in their respective agent instruction files:
+- Coder: `.github/agents/coder.agent.md` (rules section and Step 8c)
+- Review Coordinator: `.github/agents/review-coordinator.agent.md` (Step 4)

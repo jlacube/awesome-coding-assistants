@@ -101,10 +101,10 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 - **Spec refs**: FR-033, Section 4.6
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Developer guide contains an "Acceptance Criteria Ownership" section (FR-033)
-  - [ ] The section documents: Coder = Responsible (maker), Reviewer = Accountable/Verifier (checker)
-  - [ ] The section explains this is intentional dual-touch, not redundancy
-  - [ ] Given a maintainer reads the developer guide, they find the maker/checker pattern explanation (US-09 Scenario 2)
+  - [x] Developer guide contains an "Acceptance Criteria Ownership" section (FR-033)
+  - [x] The section documents: Coder = Responsible (maker), Reviewer = Accountable/Verifier (checker)
+  - [x] The section explains this is intentional dual-touch, not redundancy
+  - [x] Given a maintainer reads the developer guide, they find the maker/checker pattern explanation (US-09 Scenario 2)
 - **Test requirements**: content (grep search), BDD (US-09 Scenario 2)
 - **Depends on**: none
 - **Implementation Guidance**:
