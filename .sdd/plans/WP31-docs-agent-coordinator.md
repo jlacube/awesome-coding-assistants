@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP31 - Docs Agent Coordinator
@@ -32,10 +32,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-001, Section 8.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] YAML frontmatter includes `name`, `description`, `model`, `tools`, `handoffs`, and `argument-hint` fields
-  - [ ] `description` mentions triggering after WP approval and documentation generation
-  - [ ] `tools` list includes `agent/runSubagent` for skill dispatch
-  - [ ] `handoffs` includes a handoff back to the Coder or Review Coordinator if needed
+  - [x] YAML frontmatter includes `name`, `description`, `model`, `tools`, `handoffs`, and `argument-hint` fields
+  - [x] `description` mentions triggering after WP approval and documentation generation
+  - [x] `tools` list includes `agent/runSubagent` for skill dispatch
+  - [x] `handoffs` includes a handoff back to the Coder or Review Coordinator if needed
 - **Test requirements**: none
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -49,10 +49,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-001, FR-002
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL be triggered after a WP is reviewed and approved (lane = done) with the WP file path, spec path, contracts directory, and implementation source files (FR-001)
-  - [ ] The coordinator SHALL read the approved WP file and its task list, the spec, contract files, implementation source files from git diff, and existing documentation in `.sdd/docs/` (FR-002)
-  - [ ] If no WP path is provided, the coordinator SHALL halt with a descriptive error message (FR-001 error)
-  - [ ] If a referenced file does not exist, the coordinator SHALL log a warning and proceed with available files; if the WP file itself is missing, the coordinator SHALL halt (FR-002 error)
+  - [x] The coordinator SHALL be triggered after a WP is reviewed and approved (lane = done) with the WP file path, spec path, contracts directory, and implementation source files (FR-001)
+  - [x] The coordinator SHALL read the approved WP file and its task list, the spec, contract files, implementation source files from git diff, and existing documentation in `.sdd/docs/` (FR-002)
+  - [x] If no WP path is provided, the coordinator SHALL halt with a descriptive error message (FR-001 error)
+  - [x] If a referenced file does not exist, the coordinator SHALL log a warning and proceed with available files; if the WP file itself is missing, the coordinator SHALL halt (FR-002 error)
 - **Test requirements**: BDD
 - **Depends on**: T31-01
 - **Implementation Guidance**:
@@ -68,9 +68,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-003
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL discover doc skills by scanning `.github/skills/doc-*/SKILL.md` (FR-003)
-  - [ ] If zero skills are found, the coordinator SHALL halt and report "No doc skills found" (FR-003 error)
-  - [ ] Discovery results are logged showing which skills were found
+  - [x] The coordinator SHALL discover doc skills by scanning `.github/skills/doc-*/SKILL.md` (FR-003)
+  - [x] If zero skills are found, the coordinator SHALL halt and report "No doc skills found" (FR-003 error)
+  - [x] Discovery results are logged showing which skills were found
 - **Test requirements**: BDD
 - **Depends on**: T31-02
 - **Implementation Guidance**:
@@ -84,10 +84,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-004, FR-005, FR-006
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL dispatch skills in canonical order: doc-architecture, doc-api-reference, doc-user-guide, doc-developer-guide, doc-changelog, doc-inline-code (FR-004)
-  - [ ] Each skill SHALL be dispatched as a subagent with: skill file path, WP file path and task list, spec path and contract files, implementation source files, existing docs directory, active doc-domain patterns (FR-005)
-  - [ ] Skills SHALL execute sequentially, each reading existing docs before writing updates (FR-006)
-  - [ ] Skills that are discovered but not in the canonical list SHALL be dispatched after all canonical skills, in alphabetical order
+  - [x] The coordinator SHALL dispatch skills in canonical order: doc-architecture, doc-api-reference, doc-user-guide, doc-developer-guide, doc-changelog, doc-inline-code (FR-004)
+  - [x] Each skill SHALL be dispatched as a subagent with: skill file path, WP file path and task list, spec path and contract files, implementation source files, existing docs directory, active doc-domain patterns (FR-005)
+  - [x] Skills SHALL execute sequentially, each reading existing docs before writing updates (FR-006)
+  - [x] Skills that are discovered but not in the canonical list SHALL be dispatched after all canonical skills, in alphabetical order
 - **Test requirements**: BDD
 - **Depends on**: T31-03
 - **Implementation Guidance**:
@@ -102,10 +102,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-007
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] If a skill fails, the coordinator SHALL log the failure and continue to the next skill (FR-007)
-  - [ ] The failure log includes the skill name and a description of the error
-  - [ ] A failed skill does not prevent subsequent skills from executing
-  - [ ] BDD: Given doc-changelog encounters an error, When the coordinator detects the failure, Then it logs the error And continues to doc-inline-code (Section 11.2 Scenario 3)
+  - [x] If a skill fails, the coordinator SHALL log the failure and continue to the next skill (FR-007)
+  - [x] The failure log includes the skill name and a description of the error
+  - [x] A failed skill does not prevent subsequent skills from executing
+  - [x] BDD: Given doc-changelog encounters an error, When the coordinator detects the failure, Then it logs the error And continues to doc-inline-code (Section 11.2 Scenario 3)
 - **Test requirements**: BDD
 - **Depends on**: T31-04
 - **Implementation Guidance**:
@@ -119,9 +119,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-008
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] The coordinator SHALL read `.sdd/reviews/doc-patterns.md` before dispatching skills (FR-008)
-  - [ ] If doc-patterns.md does not exist, the coordinator proceeds without patterns (no error)
-  - [ ] Active patterns are passed to each skill as part of the dispatch context (FR-005)
+  - [x] The coordinator SHALL read `.sdd/reviews/doc-patterns.md` before dispatching skills (FR-008)
+  - [x] If doc-patterns.md does not exist, the coordinator proceeds without patterns (no error)
+  - [x] Active patterns are passed to each skill as part of the dispatch context (FR-005)
 - **Test requirements**: none
 - **Depends on**: T31-01
 - **Implementation Guidance**:
@@ -135,10 +135,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: FR-009
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] After all skills complete, the coordinator SHALL commit documentation changes with `git add .sdd/docs/ <modified source files>` followed by `git commit -m "docs(docs): update documentation for WP<NN>"` (FR-009)
-  - [ ] If no documentation files were modified (all skills produced no output), the coordinator SHALL skip the commit and log that no updates were needed (FR-009 error)
-  - [ ] If the git commit fails, the coordinator SHALL report the error to the invoker (FR-009 error)
-  - [ ] Source files modified by doc-inline-code are included in the commit
+  - [x] After all skills complete, the coordinator SHALL commit documentation changes with `git add .sdd/docs/ <modified source files>` followed by `git commit -m "docs(docs): update documentation for WP<NN>"` (FR-009)
+  - [x] If no documentation files were modified (all skills produced no output), the coordinator SHALL skip the commit and log that no updates were needed (FR-009 error)
+  - [x] If the git commit fails, the coordinator SHALL report the error to the invoker (FR-009 error)
+  - [x] Source files modified by doc-inline-code are included in the commit
 - **Test requirements**: BDD
 - **Depends on**: T31-04
 - **Implementation Guidance**:
@@ -153,9 +153,9 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, Section 
 - **Spec refs**: Section 9.1
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] docs-agent.agent.md is UTF-8 encoded with no BOM
-  - [ ] All line endings are LF (not CRLF)
-  - [ ] No em dashes, smart quotes, or curly apostrophes appear in the file
+  - [x] docs-agent.agent.md is UTF-8 encoded with no BOM
+  - [x] All line endings are LF (not CRLF)
+  - [x] No em dashes, smart quotes, or curly apostrophes appear in the file
 - **Test requirements**: none
 - **Depends on**: T31-01, T31-02, T31-03, T31-04, T31-05, T31-06, T31-07
 - **Implementation Guidance**:
@@ -178,3 +178,4 @@ All implementation artifacts are markdown files. "Testing" means manually invoki
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
