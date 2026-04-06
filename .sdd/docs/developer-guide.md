@@ -183,6 +183,68 @@ The coordinator maintains `.sdd/reviews/review-patterns.md` with patterns extrac
   - `coverage_branch` (integer 0-100, default 90) -- minimum branch coverage percentage for the WP. Same reading, validation, and fallback behavior as `coverage_code`, but with a default of 90. If present but out of range or not an integer, the reading skill SHALL halt with: "Invalid coverage_branch value '<value>'. Must be an integer 0-100."
 - **Dependency-aware WP ordering** (WP45): The Orchestrator selects the next WP using topological sort over the `depends_on` dependency graph, not purely by WP number. WP files may include an optional `depends_on` field in YAML frontmatter (a list of WP identifiers, e.g., `depends_on: [WP01, WP02]`). WPs with no `depends_on` field or `depends_on: []` are treated as having no dependencies. The Orchestrator validates references (halts with E-051 if a dependency does not exist), detects circular dependencies (halts with E-050), and reports when all WPs are blocked (E-052). Among equally eligible WPs, the lowest WP number is selected as tiebreaker. When no WPs have `depends_on` fields, ordering matches the previous lowest-number-first behavior.
 
+## Schema Versioning Protocol
+
+Every handoff schema file in `.github/schemas/` includes a `version_history` section at the end of the file. This section tracks all changes to the schema over time.
+
+### version_history Format
+
+Each entry in the `version_history` YAML array contains three fields:
+
+```yaml
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-04"
+    description: "Initial version"
+  - version: "handoff/v2"
+    date: "2026-05-15"
+    description: "Removed deprecated field 'legacy_path'"
+```
+
+- `version` (string) -- the schema version identifier (e.g., "handoff/v1", "base/v1")
+- `date` (ISO-8601 date string) -- date of the change
+- `description` (string) -- brief summary of what changed
+
+Entries are ordered chronologically (newest last).
+
+### When to Increment the Version
+
+**Breaking changes** require incrementing the version from `handoff/vN` to `handoff/v(N+1)`:
+
+- Removing a required field
+- Changing a field's type (e.g., string to integer)
+- Removing an enum value
+- Renaming a field
+
+Example: removing the `contracts_dir` field from `planner-to-coder.schema.yaml` is breaking. Increment from `handoff/v1` to `handoff/v2` in the `schema:` field and add a `version_history` entry.
+
+### When to Keep the Version
+
+**Additive changes** retain the current version number:
+
+- Adding a new optional field
+- Adding a new enum value
+- Adding a new optional validation rule
+
+Example: adding an optional `priority` context field to `coder-to-reviewer.schema.yaml` is additive. Keep `schema: handoff/v1` unchanged but add a `version_history` entry documenting the addition.
+
+### Both Change Types Require a version_history Entry
+
+Whether the change is breaking or additive, always append a new entry to the `version_history` array describing the change. This ensures the full history of modifications is recorded.
+
+### Path Placeholder Patterns
+
+Schemas that use path placeholders in `required_artifacts` (e.g., `{NN}`, `{slug}`, `{NNN}`, `{name}`) include a `placeholder_patterns` section mapping each placeholder to its validation regex:
+
+| Placeholder | Regex Pattern | Description |
+|-------------|---------------|-------------|
+| `{NNN}` | `\d{2,3}` | 2-3 digit number (spec/idea number) |
+| `{name}` | `[a-z0-9-]+` | Lowercase alphanumeric with hyphens |
+| `{slug}` | `[a-z0-9-]+` | Lowercase alphanumeric with hyphens |
+| `{NN}` | `\d{2}` | 2 digit number (WP number) |
+
+If a placeholder does not match its regex during validation, the agent halts with: "Artifact path '<path>' does not match expected pattern for placeholder '<placeholder>'."
+
 ## Acceptance Criteria Ownership
 
 Acceptance criteria checkboxes in WP files (`- [ ]` / `- [x]`) follow a maker/checker pattern with two agents touching them independently:

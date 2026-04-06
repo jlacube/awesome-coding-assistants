@@ -86,12 +86,12 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - **Spec refs**: FR-046, FR-047, NFR-013
 - **Parallel**: Yes (with T46-01, T46-02, T46-03)
 - **Acceptance criteria**:
-  - [ ] Developer guide contains a "Schema Versioning Protocol" section (NFR-013)
-  - [ ] Breaking changes (removing fields, changing types, removing enum values, renaming fields) require version increment from handoff/vN to handoff/v(N+1) (FR-046)
-  - [ ] Additive changes (new optional fields, new enum values, new optional rules) retain current version (FR-047)
-  - [ ] Both breaking and additive changes require a version_history entry
-  - [ ] Given a maintainer removes a required field, they know to increment the version (US-10 Scenario 2)
-  - [ ] Given a maintainer adds an optional field, they know to keep the version (US-10 Scenario 3)
+  - [x] Developer guide contains a "Schema Versioning Protocol" section (NFR-013)
+  - [x] Breaking changes (removing fields, changing types, removing enum values, renaming fields) require version increment from handoff/vN to handoff/v(N+1) (FR-046)
+  - [x] Additive changes (new optional fields, new enum values, new optional rules) retain current version (FR-047)
+  - [x] Both breaking and additive changes require a version_history entry
+  - [x] Given a maintainer removes a required field, they know to increment the version (US-10 Scenario 2)
+  - [x] Given a maintainer adds an optional field, they know to keep the version (US-10 Scenario 3)
 - **Test requirements**: content (grep search), BDD (US-10 Scenario 2, Scenario 3)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -134,3 +134,4 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - 2026-04-07T00:01:00Z - coder - T46-01 completed - Added version_history to 8 existing forward schemas
 - 2026-04-07T00:01:00Z - coder - T46-02 completed - Added version_history to 4 new schemas (base, 3 return schemas)
 - 2026-04-07T00:02:00Z - coder - T46-03 completed - Added placeholder_patterns to 10 schemas with path placeholders
+- 2026-04-07T00:03:00Z - coder - T46-04 completed - Added Schema Versioning Protocol section to developer guide
