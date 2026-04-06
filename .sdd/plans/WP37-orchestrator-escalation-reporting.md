@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP37 - Orchestrator V2: Escalation Support & Status Reporting
@@ -32,10 +32,10 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 - **Spec refs**: FR-014
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] When a delegated agent reports an escalation, the Orchestrator SHALL record it in the state file with last_result: escalated (FR-014 step 1)
-  - [ ] The Orchestrator SHALL present the escalation to the user with full context (FR-014 step 2)
-  - [ ] The Orchestrator SHALL wait for user response before continuing (FR-014 step 3)
-  - [ ] Escalation support applies to ANY agent (Ideation, Spec Architect, Planner, Coder, Review Coordinator, Docs Agent) (FR-014)
+  - [x] When a delegated agent reports an escalation, the Orchestrator SHALL record it in the state file with last_result: escalated (FR-014 step 1)
+  - [x] The Orchestrator SHALL present the escalation to the user with full context (FR-014 step 2)
+  - [x] The Orchestrator SHALL wait for user response before continuing (FR-014 step 3)
+  - [x] Escalation support applies to ANY agent (Ideation, Spec Architect, Planner, Coder, Review Coordinator, Docs Agent) (FR-014)
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -50,9 +50,9 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 - **Spec refs**: FR-015
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] When the user resolves an escalation, the Orchestrator SHALL determine which agent to re-invoke based on the resolution (FR-015)
-  - [ ] The re-invoked agent is not necessarily the same agent that escalated (FR-015)
-  - [ ] The Orchestrator reads the resolution, re-assesses state, and invokes the appropriate agent based on updated understanding
+  - [x] When the user resolves an escalation, the Orchestrator SHALL determine which agent to re-invoke based on the resolution (FR-015)
+  - [x] The re-invoked agent is not necessarily the same agent that escalated (FR-015)
+  - [x] The Orchestrator reads the resolution, re-assesses state, and invokes the appropriate agent based on updated understanding
 - **Test requirements**: BDD
 - **Depends on**: T37-01
 - **Implementation Guidance**:
@@ -67,11 +67,11 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 - **Spec refs**: FR-016
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] After every agent completion, the Orchestrator SHALL display a status report (FR-016)
-  - [ ] Status report includes: last action ({agent} completed {what it did}), result ({success/needs-fixes/blocked/escalated}), retries ({retry_count}/2) (FR-016)
-  - [ ] Status report includes a stage table with all pipeline stages and per-WP status (FR-016)
-  - [ ] Status report includes next action description (FR-016)
-  - [ ] Report format matches the template in Section 4.7 exactly
+  - [x] After every agent completion, the Orchestrator SHALL display a status report (FR-016)
+  - [x] Status report includes: last action ({agent} completed {what it did}), result ({success/needs-fixes/blocked/escalated}), retries ({retry_count}/2) (FR-016)
+  - [x] Status report includes a stage table with all pipeline stages and per-WP status (FR-016)
+  - [x] Status report includes next action description (FR-016)
+  - [x] Report format matches the template in Section 4.7 exactly
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -85,9 +85,9 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 - **Spec refs**: FR-017
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] The Orchestrator SHALL use manage_todo_list to maintain a high-level pipeline tracker visible to the user throughout the session (FR-017)
-  - [ ] The tracker updates after every agent completion to reflect current pipeline state
-  - [ ] The tracker shows each pipeline stage with its current status
+  - [x] The Orchestrator SHALL use manage_todo_list to maintain a high-level pipeline tracker visible to the user throughout the session (FR-017)
+  - [x] The tracker updates after every agent completion to reflect current pipeline state
+  - [x] The tracker shows each pipeline stage with its current status
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -101,9 +101,9 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 - **Spec refs**: FR-004 (edge case from Section 5)
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] When .sdd/state.md has corrupted or invalid YAML, the Orchestrator SHALL recreate it from WP frontmatter ground truth (Edge case, Section 5)
-  - [ ] The Orchestrator SHALL log a warning about the corrupted state file
-  - [ ] After recreation, the state file accurately reflects the actual state of all WPs
+  - [x] When .sdd/state.md has corrupted or invalid YAML, the Orchestrator SHALL recreate it from WP frontmatter ground truth (Edge case, Section 5)
+  - [x] The Orchestrator SHALL log a warning about the corrupted state file
+  - [x] After recreation, the state file accurately reflects the actual state of all WPs
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -117,15 +117,15 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 - **Spec refs**: FR-001 to FR-017, Section 6.1-6.4 (User Flows), Section 11.2 (BDD Scenarios)
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] State file: created on first run, updated after each agent, cross-verified against WP frontmatter on startup
-  - [ ] Sequential execution: one agent at a time, state read after completion, decision made from fresh state
-  - [ ] Docs Agent: invoked after WP approval (lane=done), skipped when lane=to_do
-  - [ ] Error recovery: retry on failure (retry_count < 2), escalate on max retries (retry_count >= 2)
-  - [ ] Review failure: halt after 3 review cycles returning lane=to_do
-  - [ ] Escalation: recorded in state file, presented to user, pipeline waits for resolution
-  - [ ] Status report: displayed after every agent completion with correct format
-  - [ ] Todo list: updated after every agent completion
-  - [ ] Corrupted state: recreated from WP frontmatter ground truth
+  - [x] State file: created on first run, updated after each agent, cross-verified against WP frontmatter on startup
+  - [x] Sequential execution: one agent at a time, state read after completion, decision made from fresh state
+  - [x] Docs Agent: invoked after WP approval (lane=done), skipped when lane=to_do
+  - [x] Error recovery: retry on failure (retry_count < 2), escalate on max retries (retry_count >= 2)
+  - [x] Review failure: halt after 3 review cycles returning lane=to_do
+  - [x] Escalation: recorded in state file, presented to user, pipeline waits for resolution
+  - [x] Status report: displayed after every agent completion with correct format
+  - [x] Todo list: updated after every agent completion
+  - [x] Corrupted state: recreated from WP frontmatter ground truth
 - **Test requirements**: BDD (all Section 11.2 scenarios)
 - **Depends on**: T37-01 to T37-05
 - **Implementation Guidance**:
@@ -153,3 +153,4 @@ FR-014, FR-015, FR-016, FR-017, Section 4.6 (Universal Escalation), Section 4.7 
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation

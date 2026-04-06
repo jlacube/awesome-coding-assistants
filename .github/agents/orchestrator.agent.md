@@ -228,7 +228,29 @@ Check if `.sdd/state.md` exists:
   Pipeline initialized. No work in progress.
   ```
 - If the file cannot be created (e.g., filesystem permission error), halt and report: "Cannot create state file at .sdd/state.md"
-- If `.sdd/state.md` already exists: read it and proceed to Step 2.
+- If `.sdd/state.md` already exists: read it. If the YAML frontmatter cannot be parsed (corrupted or invalid YAML), handle as follows:
+
+#### Corrupted State File Recovery (Edge Case, Section 5)
+
+When `.sdd/state.md` exists but has corrupted or invalid YAML frontmatter:
+
+1. **Log a warning**: "State file at .sdd/state.md has corrupted YAML. Recreating from WP frontmatter ground truth."
+2. **Scan WP frontmatter**: Read all `.sdd/plans/WP*.md` files and extract their `lane:` values to determine actual pipeline state.
+3. **Reconstruct state**: Create a new state file replacing the corrupted one:
+   - `pipeline_stage`: Derive from the WP `lane` values (e.g., if any WP has `lane: doing` or `lane: planned`, set to `implementation`; if any has `lane: for_review`, set to `review`; if all are `lane: done`, check documentation status)
+   - `current_wp`: Set to the lowest-numbered WP that is not `lane: done` (or null if all are done)
+   - `current_spec`: Derive from `.sdd/specs/` directory (the spec referenced by the current WP)
+   - `last_agent`, `last_result`: Set to null (unknown after corruption)
+   - `retry_count`: Set to 0
+   - `error_log`: Set to empty array (history is lost)
+   - `updated_at`: Set to current ISO 8601 timestamp
+4. **Write the reconstructed state file** using the same format as the initialization template.
+5. **Verify accuracy**: After reconstruction, the state file SHALL accurately reflect the actual state of all WPs as determined by their frontmatter `lane:` values.
+6. **Proceed to Step 2** to cross-verify the reconstructed state.
+
+Treat both partial corruption (some fields readable but YAML is invalid) and total corruption (completely unparseable) the same way: delete the content and recreate from WP frontmatter ground truth.
+
+- If the YAML is valid: proceed to Step 2 normally.
 
 ### Step 2: Verify State Against WP Frontmatter
 
@@ -253,10 +275,17 @@ Build a mental model of: what exists, what's complete, what's next.
 
 ### Step 4: Update Pipeline Tracker
 
-Use #tool:todo to create/update a high-level tracker showing:
-- Each pipeline stage and its status
+Use #tool:todo to create/update a high-level pipeline tracker visible to the user throughout the session (FR-017). The tracker SHALL be updated:
+- On startup (after state assessment)
+- After every agent completion (in Step 8a, after displaying the status report)
+
+The tracker SHALL show:
+- Each pipeline stage and its current status
+- Per-WP status (implementation, review, docs) for every WP
 - The specific next action to take
 - Any blockers or decisions needed
+
+The tracker provides a persistent visual summary that complements the status report. While the status report is displayed once after each agent, the todo list remains visible in the UI throughout the session.
 
 ### Step 5: Determine Next Action
 
@@ -323,7 +352,8 @@ After updating the state file, handle the result based on success or failure:
 1. Reset `retry_count` to 0 in `.sdd/state.md`
 2. Read the updated `.sdd/` state (WP frontmatter)
 3. Display status report (see `<output_format>` section)
-4. Return to Step 3
+4. Update the pipeline tracker via #tool:todo to reflect the new state (FR-017)
+5. Return to Step 3
 
 #### Step 8b: On Failure -- Error Recording and Retry (FR-011)
 
@@ -356,12 +386,16 @@ When `retry_count` >= 2, the Orchestrator SHALL escalate to the user and SHALL N
 
 #### Step 8d: On Escalation from Agent (FR-014)
 
-When a delegated agent reports an escalation (e.g., spec ambiguity, environment issue, unresolvable conflict):
+Universal escalation support applies to ANY delegated agent: Ideation, Spec Architect, Planner, Coder, Review Coordinator, or Docs Agent. When any of these agents reports an escalation (e.g., spec ambiguity, environment issue, unresolvable conflict, missing dependency, permission error):
 
 1. Record the escalation in `.sdd/state.md`: set `last_result: escalated`
-2. Present the escalation to the user with full context
-3. Wait for user response before continuing
-4. When the user resolves the escalation, determine which agent to re-invoke based on the resolution (not necessarily the same agent that escalated) (FR-015)
+2. Present the escalation to the user via `#tool:vscode/askQuestions` with full context:
+   - **Agent name**: Which agent escalated
+   - **WP identifier**: Which WP was being processed (if applicable)
+   - **Escalation reason**: The specific issue reported by the agent
+   - **Current pipeline state**: The relevant pipeline stage and progress
+3. Wait for user response before continuing -- the pipeline halts until the user provides a resolution
+4. When the user resolves the escalation, follow the Escalation Resolution Protocol (Step 8f)
 
 #### Step 8e: Review Failure Escalation (FR-012)
 
@@ -375,6 +409,18 @@ Track review cycles per WP. When the same WP fails review 3 times (3 review cycl
 3. Wait for user guidance before continuing
 
 To count review cycles: count the number of Activity Log entries in the WP file where the Review Coordinator set `lane: to_do`. If this count reaches 3, trigger escalation instead of invoking the Coder again.
+
+#### Step 8f: Escalation Resolution Protocol (FR-015)
+
+When the user resolves an escalation (from Step 8c or Step 8d), the Orchestrator SHALL determine which agent to re-invoke. The re-invoked agent is NOT necessarily the same agent that escalated.
+
+1. **Read the user's resolution**: Understand what the user decided or changed.
+2. **Reset state**: Set `last_result` to null and `retry_count` to 0 in `.sdd/state.md`.
+3. **Re-read state from disk**: Re-run the State Assessment Protocol (Step 3). Do NOT rely on cached state -- the user may have modified files manually (e.g., fixing a spec ambiguity, editing a WP, updating code).
+4. **Re-assess pipeline state**: Based on the fresh state read, use the Decision Table (Step 5) to determine the next action. The decision table will naturally route to the correct agent based on current WP lane values and pipeline state.
+5. **Invoke the determined agent**: Proceed to Step 6 with the agent selected by the decision table.
+
+**Key invariant**: The Orchestrator does NOT assume the resolution means "retry the same agent." The user may have resolved the issue by modifying the spec (route to Planner), fixing code manually (route to Review Coordinator), or providing guidance that changes which WP to work on next.
 
 ### Step 9: MVP Completion and Pipeline Halt
 
@@ -403,17 +449,19 @@ When ALL WPs (MVP and non-MVP, or only MVP if user chose to halt) have `lane: do
 |---------|----------|----------|
 | Agent fails, `retry_count` < 2 | Log error, increment retry, retry same agent | FR-011 steps 1-3 |
 | Agent fails, `retry_count` >= 2 | Escalate to user with full error log | FR-011 step 4 |
-| Agent reports escalation | Record, present to user, wait for resolution | FR-014 |
+| Agent reports escalation | Record, present to user, wait for resolution, re-assess state | FR-014, FR-015 |
+| Escalation resolved by user | Reset state, re-read from disk, use decision table for next agent | FR-015 |
 | Same WP fails review 3 times | Halt, present all feedback, ask user | FR-012 |
 | Circular dependency detected | Halt, report the cycle, ask user to resolve | -- |
 | Spec ambiguity blocks coder | Route to Spec Architect for clarification | FR-015 |
 | State file write failure | Halt with last known state and failed update | FR-003 |
+| State file corrupted YAML | Recreate from WP frontmatter ground truth, log warning | Section 5 |
 </workflow>
 
 <output_format>
 ## Status Reporting
 
-After each agent delegation, report in this format (FR-016):
+After every agent completion, the Orchestrator SHALL display a status report in this exact format (FR-016):
 
 ```
 ## Pipeline Status
@@ -424,13 +472,21 @@ After each agent delegation, report in this format (FR-016):
 
 | Stage | Status |
 |-------|--------|
-| Ideation | {done/in-progress/pending} |
-| Specification | {done/in-progress/pending} |
-| Planning | {done/in-progress/pending} |
-| WP{NN} Implementation | {done/for_review/doing/to_do/planned} |
+| Ideation | {done/pending} |
+| Spec | {done/pending} |
+| Planning | {done/pending} |
+| WP{NN} Impl | {lane value} |
 | WP{NN} Review | {passed/failed/pending} |
 | WP{NN} Docs | {done/pending} |
 
-**Next action**: Delegate to {agent} to {action}
+**Next action**: {description of next action}
 ```
+
+**Dynamic stage table**: The WP rows in the stage table SHALL be generated dynamically based on actual WPs discovered from `.sdd/plans/WP*.md` files. Show one set of rows (Impl, Review, Docs) for every WP that exists, not a fixed template. WP rows use the WP number from the filename (e.g., WP01, WP14, WP35).
+
+**Status values**:
+- **Ideation/Spec/Planning**: `done` when complete, `pending` when not yet reached
+- **WP{NN} Impl**: The WP's `lane` frontmatter value (planned, doing, for_review, to_do, done)
+- **WP{NN} Review**: `passed` (lane=done), `failed` (lane=to_do after review), `pending` (not yet reviewed)
+- **WP{NN} Docs**: `done` (Docs Agent invoked after approval), `pending` (not yet documented)
 </output_format>
