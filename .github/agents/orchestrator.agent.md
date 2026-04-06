@@ -46,6 +46,7 @@ You are a state machine. You read the current state of `.sdd/`, determine what n
 - ALWAYS respect the dependency order in .sdd/plans/README.md -- never start a WP whose dependencies aren't lane=done
 - MINIMIZE context -- pass only the relevant WP ID or spec path to each agent, not the full project history
 - NEVER pre-queue or batch multiple agent invocations -- execute ONE agent at a time, then re-assess state before deciding the next action
+- NEVER implement multiple WPs before reviewing the first -- each WP MUST complete its full cycle (Coder -> Review Coordinator -> Docs Agent) before starting the next WP. This prevents multiple WPs from accumulating at `lane: for_review` simultaneously, which causes VS Code to queue duplicate reviewer requests.
 - NEVER assume the outcome of an agent invocation -- always read .sdd/ state after each delegation to check for feedback, failures, or lane changes before proceeding
 - NEVER modify WP file frontmatter (lane, review_status, etc.) directly -- only Coder (sets lane=doing, for_review) and Review Coordinator (sets lane=done, to_do) modify WP frontmatter. The Orchestrator reads WP frontmatter for state verification but never writes it.
 - The Orchestrator DOES modify `.sdd/state.md` (its own state file). The read-only constraint applies specifically to WP files in `.sdd/plans/WP*.md`.
@@ -299,7 +300,7 @@ Use the Decision Table to identify what to do. Evaluate conditions in this prior
 
 **Priority 2 -- Standard routing**:
 1. Feedback fixes (`lane: to_do`) -- unblock reviewed WPs first
-2. Reviews (`lane: for_review`) -- clear the review queue
+2. Reviews (`lane: for_review`) -- invoke Review Coordinator for the next ready WP (one at a time)
 3. Documentation (`lane: done`, not yet documented) -- invoke Docs Agent for approved WPs (FR-007)
 4. Implementation (`lane: planned`, dependencies met) -- advance new work
 5. Planning/Spec/Ideation -- upstream work
@@ -321,9 +322,9 @@ Agent prompt templates:
 - **Ideation**: "Create an ideation brief for: {user's feature description}"
 - **Spec Architect**: "Develop the brainstorming session output into a full specification. The brief is at {brief_path}"
 - **Planner**: "Decompose the specification into work packages. The spec is at {spec_path}"
-- **Coder**: "Implement {wp_id} - {wp_title}. The plan is at {wp_path}. Dependency {dep_wp} is lane=done (approved)."
-- **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. The plan is at {wp_path}"
-- **Docs Agent**: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Update documentation." (Section 8.1)
+- **Coder**: "Implement {wp_id} - {wp_title}. The plan is at {wp_path}. Dependency {dep_wp} is lane=done (approved). IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons or invoke the reviewer directly."
+- **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. The plan is at {wp_path}. IMPORTANT: When done, report the verdict and return control -- do NOT use handoff buttons or invoke the coder directly."
+- **Docs Agent**: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Update documentation. IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons." (Section 8.1)
 
 The Docs Agent is ONLY invoked for WPs with `lane: done` (FR-008). The Docs Agent is NOT invoked for unapproved WPs.
 

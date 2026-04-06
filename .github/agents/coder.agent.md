@@ -7,7 +7,7 @@ handoffs:
   - label: Request Review
     agent: 5. Review Coordinator
     prompt: "Review the implemented work package"
-    send: true
+    send: false
   - label: Clarify Specification
     agent: 2. Spec Architect
     prompt: "There is a spec ambiguity that is blocking implementation"
@@ -284,7 +284,7 @@ After all skills complete and all tests pass:
 
 **NO SELF-REVIEW (FR-015)**: The coordinator SHALL NOT perform any self-assessment, self-review, or quality evaluation of the code. No review checklists, no quality scores, no "verified implementation quality" statements. The Reviewer agent is the sole quality gate. The Coder's job ends at "tests pass + coverage met".
 
-5. **Handoff to Reviewer (FR-014.4)**: Invoke `#agent:5. Review Coordinator` with:
+5. **Handoff to Reviewer (FR-014.4)**: Report completion and recommend the Review Coordinator handoff button. Output:
 
 ```
 WP<NN> implementation complete. All tests passing.
@@ -293,7 +293,7 @@ WP file: <wp_path>
 Lane: for_review
 ```
 
-This handoff is automatic -- the coordinator does not ask the user for permission to request a review.
+When running under the Orchestrator (dispatched via `runSubagent`), do NOT use the handoff button or invoke the reviewer directly -- simply report completion and return control to the Orchestrator, which manages the pipeline flow. When running standalone (user invoked the Coder directly), recommend the **Request Review** handoff button.
 
 ## Step 10 - Commit Per Task and Handle Reviewer Feedback (FR-016)
 
@@ -352,7 +352,7 @@ At the end of every interaction, check the current state of ALL work packages by
 
 ### Handoff Templates
 
-**Request Review** (to `#agent:5. Review Coordinator`):
+**Request Review** (to Review Coordinator):
 ```
 WP<NN> implementation complete. All tests passing.
 Coverage: <code_coverage>% code, <branch_coverage>% branch.
@@ -360,13 +360,13 @@ WP file: <wp_path>
 Lane: for_review
 ```
 
-**Clarify Specification** (to `#agent:2. Spec Architect`):
+**Clarify Specification** (to Spec Architect):
 ```
 Spec ambiguity blocking implementation of task T<NN>-XX.
 Issue: <description>
 Spec ref: <FR-XXX>
 ```
 
-Always use the handoff buttons when available. Default to recommending **Reviewer** once a WP reaches `lane: for_review`.
+When running standalone (user-invoked), use the handoff buttons to recommend the next agent. When running as a subagent (dispatched by the Orchestrator via `runSubagent`), do NOT use handoff buttons -- simply report completion and return control to the caller.
 
 </workflow>
