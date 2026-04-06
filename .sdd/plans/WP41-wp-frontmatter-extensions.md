@@ -118,10 +118,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-006, Section 6.2 (steps 1-2)
 - **Parallel**: No (modifies orchestrator.agent.md, sequential with T41-05)
 - **Acceptance criteria**:
-  - [ ] Orchestrator SHALL read `docs_completed` from WP frontmatter to determine documentation status (FR-006)
-  - [ ] Documentation status decision is based on `docs_completed == true` from frontmatter (FR-006)
-  - [ ] If `docs_completed` is absent or unparseable, the Orchestrator SHALL treat it as false (FR-006)
-  - [ ] Given a WP with `lane: done` and `docs_completed: false`, the Orchestrator invokes the Docs Agent (US-02 Scenario 1)
+  - [x] Orchestrator SHALL read `docs_completed` from WP frontmatter to determine documentation status (FR-006)
+  - [x] Documentation status decision is based on `docs_completed == true` from frontmatter (FR-006)
+  - [x] If `docs_completed` is absent or unparseable, the Orchestrator SHALL treat it as false (FR-006)
+  - [x] Given a WP with `lane: done` and `docs_completed: false`, the Orchestrator invokes the Docs Agent (US-02 Scenario 1)
 - **Test requirements**: BDD (US-02 Scenario 1, Scenario 2), E2E (Section 11.4 row 2)
 - **Depends on**: T41-05
 - **Implementation Guidance**:

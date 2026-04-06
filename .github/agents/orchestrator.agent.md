@@ -308,7 +308,7 @@ Use the Decision Table to identify what to do. Evaluate conditions in this prior
 1. All MVP WPs `lane: done` AND documented, non-MVP remain -- ask user whether to continue (Decision Table row 10)
 2. All WPs `lane: done` AND documented -- pipeline complete, halt (Decision Table row 9)
 
-**Documentation tracking**: A WP is "documented" when the Docs Agent has been invoked for it after its lane was set to `done`. Track this by checking the WP's Activity Log for a Docs Agent entry, or by recording it in the state file's human-readable summary section.
+**Documentation tracking**: A WP is "documented" when its frontmatter contains `docs_completed: true`. Read the `docs_completed` field from WP frontmatter. If the field is absent or not a boolean, treat it as false (not yet documented). Do NOT scan the Activity Log for Docs Agent entries -- use the frontmatter field as the authoritative source.
 
 **WPs with no dependencies listed**: These are always eligible for implementation (Edge case from Section 5).
 
