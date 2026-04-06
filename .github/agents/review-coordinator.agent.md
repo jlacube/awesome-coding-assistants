@@ -372,11 +372,15 @@ Based on the verdict:
 
 ### 13b. Append Activity Log entry
 
+<!-- Enum source: .github/schemas/enums.yaml -->
+
+Canonical format: `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`
+
 Append one of the following to the WP file's `## Activity Log` section:
 
-- Approved: `<timestamp> - review-coordinator - lane=done - Verdict: Approved`
-- Approved with Findings: `<timestamp> - review-coordinator - lane=done - Verdict: Approved with Findings (<N> WARNs)`
-- Changes Required: `<timestamp> - review-coordinator - lane=to_do - Verdict: Changes Required (<N> FAILs) -- awaiting remediation`
+- Approved: `<ISO-8601-timestamp> - review-coordinator - lane=done - Verdict: Approved`
+- Approved with Findings: `<ISO-8601-timestamp> - review-coordinator - lane=done - Verdict: Approved with Findings (<N> WARNs)`
+- Changes Required: `<ISO-8601-timestamp> - review-coordinator - lane=to_do - Verdict: Changes Required (<N> FAILs) -- awaiting remediation`
 
 Always append at the end of the Activity Log (newest entry last).
 
@@ -557,7 +561,7 @@ After determining the verdict on a re-review:
 
 3. If any FB-XX items have persisted across 3 consecutive rounds:
    - Set `lane: blocked` in the WP frontmatter.
-   - Append Activity Log: `<timestamp> - review-coordinator - lane=blocked - Cycle stalled: <FB-XX IDs> unresolved after 3 rounds`
+   - Append Activity Log: `<ISO-8601-timestamp> - review-coordinator - lane=blocked - Cycle stalled: <FB-XX IDs> unresolved after 3 rounds`
    - Commit the WP file.
    - Escalate to the user via `askQuestions`: "WP<NN> review cycle is stalled. The following issues remain unresolved after 3 rounds: <list>. How would you like to proceed?"
    - HALT. Do not produce a new verdict or dispatch further skills.
