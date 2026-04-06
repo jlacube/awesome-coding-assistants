@@ -55,6 +55,11 @@ validation_rules:
     expected: "for_review"
     error: "Coder completion handoff has invalid lane_confirmation. Expected 'for_review'."
 
+placeholder_patterns:
+  # Regex patterns for path placeholders used in required_artifacts
+  "{NN}": "\\d{2}"       # 2 digit WP number
+  "{slug}": "[a-z0-9-]+"  # lowercase alphanumeric with hyphens
+
 version_history:
   - version: "handoff/v1"
     date: "2026-04-04"

@@ -34,6 +34,11 @@ validation_rules:
     target: "spec_path"
     error: "Spec file does not exist at {spec_path}"
 
+placeholder_patterns:
+  # Regex patterns for path placeholders used in required_artifacts
+  "{NNN}": "\\d{2,3}"   # 2-3 digit spec number
+  "{name}": "[a-z0-9-]+"  # lowercase alphanumeric with hyphens
+
 version_history:
   - version: "handoff/v1"
     date: "2026-04-04"

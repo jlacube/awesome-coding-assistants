@@ -29,6 +29,10 @@ validation_rules:
     target: "brief_path"
     error: "Idea brief does not exist at {brief_path}"
 
+placeholder_patterns:
+  # Regex patterns for path placeholders used in required_artifacts
+  "{NNN}": "\\d{2,3}"  # 2-3 digit spec number
+
 version_history:
   - version: "handoff/v1"
     date: "2026-04-04"

@@ -66,12 +66,12 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - **Spec refs**: FR-048, Section 7.3
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Schemas with path placeholders have `placeholder_patterns` section (FR-048)
-  - [ ] `{NNN}` has pattern `\d{2,3}` (FR-048)
-  - [ ] `{name}` has pattern `[a-z0-9-]+` (FR-048)
-  - [ ] `{slug}` has pattern `[a-z0-9-]+` (FR-048)
-  - [ ] `{NN}` has pattern `\d{2}` (FR-048)
-  - [ ] If a placeholder does not match its regex during validation, the agent halts with descriptive error
+  - [x] Schemas with path placeholders have `placeholder_patterns` section (FR-048)
+  - [x] `{NNN}` has pattern `\d{2,3}` (FR-048)
+  - [x] `{name}` has pattern `[a-z0-9-]+` (FR-048)
+  - [x] `{slug}` has pattern `[a-z0-9-]+` (FR-048)
+  - [x] `{NN}` has pattern `\d{2}` (FR-048)
+  - [x] If a placeholder does not match its regex during validation, the agent halts with descriptive error
 - **Test requirements**: content (YAML parse)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -133,3 +133,4 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
 - 2026-04-07T00:01:00Z - coder - T46-01 completed - Added version_history to 8 existing forward schemas
 - 2026-04-07T00:01:00Z - coder - T46-02 completed - Added version_history to 4 new schemas (base, 3 return schemas)
+- 2026-04-07T00:02:00Z - coder - T46-03 completed - Added placeholder_patterns to 10 schemas with path placeholders
