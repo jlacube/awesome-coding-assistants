@@ -118,9 +118,9 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 - **Spec refs**: FR-031, FR-032, FR-033, Section 11.3
 - **Parallel**: No (verification task)
 - **Acceptance criteria**:
-  - [ ] RACI descriptions are consistent across coder.agent.md, review-coordinator.agent.md, and developer-guide.md
-  - [ ] Coder is labeled "Responsible (maker)" in all locations
-  - [ ] Reviewer is labeled "Accountable/Verifier (checker)" in all locations
+  - [x] RACI descriptions are consistent across coder.agent.md, review-coordinator.agent.md, and developer-guide.md
+  - [x] Coder is labeled "Responsible (maker)" in all locations
+  - [x] Reviewer is labeled "Accountable/Verifier (checker)" in all locations
 - **Test requirements**: integration (cross-file comparison)
 - **Depends on**: T43-03, T43-04, T43-05
 - **Implementation Guidance**:
