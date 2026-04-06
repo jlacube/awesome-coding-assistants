@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP29 - Agent Coordinator Integration
@@ -32,12 +32,12 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-004, FR-005
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Spec Architect coordinator SHALL validate incoming handoff against the relevant schema before proceeding (FR-004)
-  - [ ] Schema validation SHALL be the FIRST action performed after receiving a handoff, before any research or skill dispatch (FR-005)
-  - [ ] Validation SHALL check required_artifacts exist and pass their validation rules (FR-004.1)
-  - [ ] Validation SHALL check required_state conditions are met (FR-004.2)
-  - [ ] Validation SHALL check context_fields are present and have valid values (FR-004.3)
-  - [ ] If any validation fails, the coordinator SHALL halt and report which checks failed with the schema's error messages (FR-004 error)
+  - [x] Spec Architect coordinator SHALL validate incoming handoff against the relevant schema before proceeding (FR-004)
+  - [x] Schema validation SHALL be the FIRST action performed after receiving a handoff, before any research or skill dispatch (FR-005)
+  - [x] Validation SHALL check required_artifacts exist and pass their validation rules (FR-004.1)
+  - [x] Validation SHALL check required_state conditions are met (FR-004.2)
+  - [x] Validation SHALL check context_fields are present and have valid values (FR-004.3)
+  - [x] If any validation fails, the coordinator SHALL halt and report which checks failed with the schema's error messages (FR-004 error)
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -54,11 +54,11 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-004, FR-005
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Planner coordinator SHALL validate incoming handoff against `spec-to-planner.schema.yaml` before proceeding (FR-004)
-  - [ ] Schema validation SHALL be the FIRST action, before spec selection or any research (FR-005)
-  - [ ] Validation SHALL verify spec file exists and has Status: Validated
-  - [ ] Validation SHALL verify companion artifacts directory exists with at least 1 file
-  - [ ] If validation fails, the coordinator SHALL halt with error "Spec must be Validated before planning" (FR-003 example)
+  - [x] Planner coordinator SHALL validate incoming handoff against `spec-to-planner.schema.yaml` before proceeding (FR-004)
+  - [x] Schema validation SHALL be the FIRST action, before spec selection or any research (FR-005)
+  - [x] Validation SHALL verify spec file exists and has Status: Validated
+  - [x] Validation SHALL verify companion artifacts directory exists with at least 1 file
+  - [x] If validation fails, the coordinator SHALL halt with error "Spec must be Validated before planning" (FR-003 example)
 - **Test requirements**: BDD (Scenario: Invalid handoff fails schema - Draft spec)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -74,11 +74,11 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-004, FR-005
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Coder coordinator SHALL validate incoming handoff against the relevant schema before proceeding (FR-004)
-  - [ ] Schema validation SHALL be the FIRST action, before WP selection or artifact loading (FR-005)
-  - [ ] Validation SHALL verify WP file exists
-  - [ ] Validation SHALL verify spec and contracts context is provided
-  - [ ] If validation fails, the coordinator SHALL halt and report failed checks (FR-004 error)
+  - [x] Coder coordinator SHALL validate incoming handoff against the relevant schema before proceeding (FR-004)
+  - [x] Schema validation SHALL be the FIRST action, before WP selection or artifact loading (FR-005)
+  - [x] Validation SHALL verify WP file exists
+  - [x] Validation SHALL verify spec and contracts context is provided
+  - [x] If validation fails, the coordinator SHALL halt and report failed checks (FR-004 error)
 - **Test requirements**: BDD
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -92,10 +92,10 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-004, FR-005
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Review Coordinator SHALL validate incoming handoff against `coder-to-reviewer.schema.yaml` before proceeding (FR-004)
-  - [ ] Schema validation SHALL be the FIRST action, before scope selection or artifact loading (FR-005)
-  - [ ] Validation SHALL verify implementation artifacts exist
-  - [ ] If validation fails with missing implementation, the coordinator SHALL report "missing implementation" error (US-01 Scenario 3)
+  - [x] Review Coordinator SHALL validate incoming handoff against `coder-to-reviewer.schema.yaml` before proceeding (FR-004)
+  - [x] Schema validation SHALL be the FIRST action, before scope selection or artifact loading (FR-005)
+  - [x] Validation SHALL verify implementation artifacts exist
+  - [x] If validation fails with missing implementation, the coordinator SHALL report "missing implementation" error (US-01 Scenario 3)
 - **Test requirements**: BDD (Scenario: Invalid handoff fails schema - missing implementation)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -109,11 +109,11 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-011, FR-012
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Each agent coordinator SHALL read its domain-specific patterns file at startup before any skill dispatch (FR-011)
-  - [ ] Active patterns from the domain file SHALL be included in the prompt for every skill that agent dispatches (FR-011)
-  - [ ] Spec Architect reads ONLY `spec-patterns.md`; Planner reads ONLY `plan-patterns.md`; Coder reads ONLY `code-patterns.md` (FR-012)
-  - [ ] If the patterns file does not exist, the agent SHALL proceed without patterns and log a warning (FR-008 error, FR-011 error)
-  - [ ] If cross-domain patterns are detected in an agent's prompt, the coordinator SHALL strip them before skill dispatch (FR-012 error)
+  - [x] Each agent coordinator SHALL read its domain-specific patterns file at startup before any skill dispatch (FR-011)
+  - [x] Active patterns from the domain file SHALL be included in the prompt for every skill that agent dispatches (FR-011)
+  - [x] Spec Architect reads ONLY `spec-patterns.md`; Planner reads ONLY `plan-patterns.md`; Coder reads ONLY `code-patterns.md` (FR-012)
+  - [x] If the patterns file does not exist, the agent SHALL proceed without patterns and log a warning (FR-008 error, FR-011 error)
+  - [x] If cross-domain patterns are detected in an agent's prompt, the coordinator SHALL strip them before skill dispatch (FR-012 error)
 - **Test requirements**: BDD (Scenario: Agent reads domain patterns at startup; Scenario: Agent ignores other domain patterns)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -130,11 +130,11 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-013
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Review Coordinator SHALL track finding recurrence across reviews (FR-013)
-  - [ ] When the same finding category appears in 3 or more reviews, the coordinator SHALL create a new pattern entry in the relevant domain-specific file (FR-013.1)
-  - [ ] New patterns SHALL have status set to "active" (FR-013.2)
-  - [ ] New patterns SHALL include trigger, prevention, and example from the recurring findings (FR-013.3)
-  - [ ] If the coordinator cannot determine the target domain, the pattern SHALL be placed in the closest-matching domain file with a `[NEEDS REVIEW]` tag (FR-013 error)
+  - [x] The Review Coordinator SHALL track finding recurrence across reviews (FR-013)
+  - [x] When the same finding category appears in 3 or more reviews, the coordinator SHALL create a new pattern entry in the relevant domain-specific file (FR-013.1)
+  - [x] New patterns SHALL have status set to "active" (FR-013.2)
+  - [x] New patterns SHALL include trigger, prevention, and example from the recurring findings (FR-013.3)
+  - [x] If the coordinator cannot determine the target domain, the pattern SHALL be placed in the closest-matching domain file with a `[NEEDS REVIEW]` tag (FR-013 error)
 - **Test requirements**: BDD (Scenario: Pattern curation on recurring finding)
 - **Depends on**: T29-05
 - **Implementation Guidance**:
@@ -150,11 +150,11 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-014
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] The Review Coordinator SHALL retire patterns not triggered in 10 consecutive reviews (FR-014)
-  - [ ] Retired patterns SHALL be moved to the "Retired Patterns" section (FR-014.1)
-  - [ ] Retired patterns SHALL have status set to "retired" (FR-014.2)
-  - [ ] Retired patterns SHALL include a retirement date (FR-014.3)
-  - [ ] If review count tracking is unavailable, retirement processing SHALL be deferred (FR-014 error)
+  - [x] The Review Coordinator SHALL retire patterns not triggered in 10 consecutive reviews (FR-014)
+  - [x] Retired patterns SHALL be moved to the "Retired Patterns" section (FR-014.1)
+  - [x] Retired patterns SHALL have status set to "retired" (FR-014.2)
+  - [x] Retired patterns SHALL include a retirement date (FR-014.3)
+  - [x] If review count tracking is unavailable, retirement processing SHALL be deferred (FR-014 error)
 - **Test requirements**: BDD
 - **Depends on**: T29-06
 - **Implementation Guidance**:
@@ -170,9 +170,9 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-015
 - **Parallel**: Yes
 - **Acceptance criteria**:
-  - [ ] Pattern file changes SHALL be committed with explicit file paths: `git add .sdd/reviews/<domain>-patterns.md` (FR-015)
-  - [ ] Commit message SHALL follow the format: `docs(patterns): add PAT-<DOMAIN>-XXX <pattern title>` (FR-015)
-  - [ ] If the commit fails, the coordinator SHALL retry once and report the failure if it persists (FR-015 error)
+  - [x] Pattern file changes SHALL be committed with explicit file paths: `git add .sdd/reviews/<domain>-patterns.md` (FR-015)
+  - [x] Commit message SHALL follow the format: `docs(patterns): add PAT-<DOMAIN>-XXX <pattern title>` (FR-015)
+  - [x] If the commit fails, the coordinator SHALL retry once and report the failure if it persists (FR-015 error)
 - **Test requirements**: none
 - **Depends on**: T29-06
 - **Implementation Guidance**:
@@ -187,9 +187,9 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-004, FR-005, US-01 Scenario 2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Given a spec with status "Draft", when the Planner receives the handoff, then schema validation fails with error "Spec must be Validated before planning" (US-01 Scenario 2)
-  - [ ] Given a validated spec with companion artifacts, when the Planner receives the handoff, then schema validation passes and planning proceeds (US-01 Scenario 1)
-  - [ ] Given a WP with no implementation files, when the Reviewer receives the handoff, then schema validation fails with error about missing implementation (US-01 Scenario 3)
+  - [x] Given a spec with status "Draft", when the Planner receives the handoff, then schema validation fails with error "Spec must be Validated before planning" (US-01 Scenario 2)
+  - [x] Given a validated spec with companion artifacts, when the Planner receives the handoff, then schema validation passes and planning proceeds (US-01 Scenario 1)
+  - [x] Given a WP with no implementation files, when the Reviewer receives the handoff, then schema validation fails with error about missing implementation (US-01 Scenario 3)
 - **Test requirements**: BDD
 - **Depends on**: T29-01, T29-02, T29-03, T29-04
 - **Implementation Guidance**:
@@ -203,10 +203,10 @@ FR-004, FR-005, FR-011, FR-012, FR-013, FR-014, FR-015, Section 6.1, Section 6.2
 - **Spec refs**: FR-012, FR-013, US-02 Scenario 2
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Given `code-patterns.md` has 5 active patterns, when the Spec Architect starts, then code patterns are NOT included in prompts (US-02 Scenario 2)
-  - [ ] Given `spec-patterns.md` has 3 active patterns, when the Spec Architect starts, then all 3 patterns are included in skill prompts (US-02 Scenario 1)
-  - [ ] Given no patterns file exists for a domain, when the agent runs, then it proceeds without patterns and logs a warning (US-02 Scenario 3)
-  - [ ] Pattern curation places new patterns in the correct domain-specific file
+  - [x] Given `code-patterns.md` has 5 active patterns, when the Spec Architect starts, then code patterns are NOT included in prompts (US-02 Scenario 2)
+  - [x] Given `spec-patterns.md` has 3 active patterns, when the Spec Architect starts, then all 3 patterns are included in skill prompts (US-02 Scenario 1)
+  - [x] Given no patterns file exists for a domain, when the agent runs, then it proceeds without patterns and logs a warning (US-02 Scenario 3)
+  - [x] Pattern curation places new patterns in the correct domain-specific file
 - **Test requirements**: BDD
 - **Depends on**: T29-05, T29-06
 - **Implementation Guidance**:
@@ -240,3 +240,4 @@ T29-01 through T29-04 can all be worked in parallel (each modifies a different a
 ## Activity Log
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation

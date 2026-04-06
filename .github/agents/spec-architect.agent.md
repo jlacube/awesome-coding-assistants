@@ -66,6 +66,39 @@ Research findings are summarized and passed to each skill via the dispatch promp
 
 <workflow>
 
+## Step 0 - Schema Validation (FR-004, FR-005)
+
+Before any other action, validate the incoming handoff against the relevant schema. This MUST be the FIRST step -- do not proceed to brief selection, research, or skill dispatch until validation passes.
+
+1. **Determine schema**: Based on the handoff source:
+   - If the handoff comes from Ideation/Brainstorming: read `.github/schemas/ideation-to-spec.schema.yaml`
+   - If the handoff comes from the Review Coordinator (spec gaps): read `.github/schemas/reviewer-to-spec.schema.yaml`
+   - If the handoff comes from the Planner (auto-loop): read `.github/schemas/planner-to-spec.schema.yaml`
+   - Determine the source by examining the handoff prompt context (e.g., mentions of "spec gaps", "review findings", "gap report", or "ideation brief").
+
+2. **Read the schema file** using `read_file`. If the schema file does not exist, halt with: "Schema file not found at `<path>`. Cannot validate handoff."
+
+3. **Validate required_artifacts**: For each entry in the schema's `required_artifacts`:
+   - Verify the file or directory exists at the specified path (substituting actual values for template variables like `{NNN}`, `{name}`).
+   - If the artifact has validation rules (e.g., `field: "Status"`, `value: "Validated"`), read the file and check those field values.
+   - If `min_files` is specified for a directory, verify it contains at least that many files.
+
+4. **Validate required_state**: For each condition in `required_state`:
+   - Evaluate the condition against the current state.
+   - If any condition fails, halt with the schema's error message for that condition.
+
+5. **Validate context_fields**: For each field in `context_fields` where `required: true`:
+   - Verify the field is present in the handoff prompt with a non-empty value.
+   - If any required field is missing, halt with: "Missing required context field: `<name>` -- <description>"
+
+6. **Run validation_rules**: For each rule in `validation_rules`:
+   - Execute the check (e.g., `file_exists`, `field_value`).
+   - If any check fails, halt with the schema's error message.
+
+7. **On any failure**: Halt immediately. Report ALL failed checks (not just the first). Include the schema's error messages. Do not proceed to Step 1.
+
+8. **On success**: Log "Schema validation passed for <schema_file>" and proceed to Step 1.
+
 ## Step 1 - Brief Selection (FR-001, FR-002)
 
 1. Use `list_dir` to scan `.sdd/ideas/` for all `.md` files.
@@ -126,12 +159,13 @@ If answers significantly change scope or reveal a fundamentally different archit
 
 Do NOT proceed to Step 4 until all critical gaps are resolved. Minor gaps may be noted as assumptions.
 
-## Step 4 - Patterns Consumption (FR-019)
+## Step 4 - Patterns Consumption (FR-019, FR-011, FR-012)
 
-Read `.sdd/reviews/spec-patterns.md` using `read_file`.
+Read `.sdd/reviews/spec-patterns.md` using `read_file`. This is the ONLY patterns file the Spec Architect reads. Do NOT read `plan-patterns.md`, `code-patterns.md`, or `doc-patterns.md` -- those belong to other agents.
 
-- If the file exists: extract the "Active Patterns" section. These are mistakes from prior spec generations to avoid.
-- If the file does not exist: set patterns to "No active patterns" and continue without error.
+- If the file exists: extract the "Active Patterns" section. These are mistakes from prior spec generations to avoid. Active patterns SHALL be included in the prompt for every skill this agent dispatches.
+- If the file does not exist: set patterns to "No active patterns" and continue without error. Log a warning: "spec-patterns.md not found, proceeding without patterns."
+- If cross-domain patterns are detected in the prompt context, strip them before skill dispatch.
 
 Keep pattern summaries concise (1-2 lines each) for inclusion in skill prompts.
 
