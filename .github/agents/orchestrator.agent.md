@@ -401,16 +401,17 @@ Universal escalation support applies to ANY delegated agent: Ideation, Spec Arch
 
 #### Step 8e: Review Failure Escalation (FR-012)
 
-Track review cycles per WP. When the same WP fails review 3 times (3 review cycles where Review Coordinator returns `lane: to_do`):
+Track review cycles per WP using the `review_cycles` frontmatter field. When a WP's `review_cycles` reaches 3 or more, escalate instead of re-invoking the Coder.
 
-1. **Halt** -- do NOT continue retrying
-2. **Escalate to the user** via `#tool:vscode/askQuestions` with:
-   - All review feedback from all 3 review cycles (read from the WP file's Review section and Activity Log)
-   - The WP file path
-   - A summary of what was attempted in each cycle
-3. Wait for user guidance before continuing
-
-To count review cycles: count the number of Activity Log entries in the WP file where the Review Coordinator set `lane: to_do`. If this count reaches 3, trigger escalation instead of invoking the Coder again.
+1. **Read `review_cycles` from WP frontmatter**. If the field is absent or not a non-negative integer, treat it as 0.
+2. **If `review_cycles >= 3`**:
+   - **Halt** -- do NOT continue retrying
+   - **Escalate to the user** via `#tool:vscode/askQuestions` with:
+     - All review feedback from all review cycles (read from the WP file's Review section and Activity Log)
+     - The WP file path
+     - A summary of what was attempted in each cycle
+   - Wait for user guidance before continuing
+3. **If `review_cycles < 3`**: Invoke the Coder to fix the feedback items. The Review Coordinator has already incremented `review_cycles` when it set `lane: to_do`.
 
 #### Step 8f: Escalation Resolution Protocol (FR-015)
 

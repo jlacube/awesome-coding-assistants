@@ -100,10 +100,10 @@ FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, Section 7.1 (WP Frontmat
 - **Spec refs**: FR-005, Section 6.1 (steps 3-5)
 - **Parallel**: No (modifies orchestrator.agent.md)
 - **Acceptance criteria**:
-  - [ ] Orchestrator SHALL read `review_cycles` from WP frontmatter to count review cycles (FR-005)
-  - [ ] Escalation decision is based on `review_cycles >= 3` from frontmatter, not Activity Log entry counting (FR-005)
-  - [ ] If `review_cycles` is absent or unparseable, the Orchestrator SHALL treat it as 0 (FR-005)
-  - [ ] No Activity Log scanning logic remains for review_cycles determination
+  - [x] Orchestrator SHALL read `review_cycles` from WP frontmatter to count review cycles (FR-005)
+  - [x] Escalation decision is based on `review_cycles >= 3` from frontmatter, not Activity Log entry counting (FR-005)
+  - [x] If `review_cycles` is absent or unparseable, the Orchestrator SHALL treat it as 0 (FR-005)
+  - [x] No Activity Log scanning logic remains for review_cycles determination
 - **Test requirements**: BDD (US-01 Scenario 1, Scenario 2), E2E (Section 11.4 row 1)
 - **Depends on**: T41-01
 - **Implementation Guidance**:
