@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP39 - Agent Integration
@@ -32,10 +32,10 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: FR-008, Section 6.1 (User Flow steps 2-6)
 - **Parallel**: No (foundational change to ideation workflow)
 - **Acceptance criteria**:
-  - [ ] The Ideation Agent SHALL dispatch the Research Skill with scope `[web, codebase]` after the user describes their idea, before asking clarifying questions (FR-008)
-  - [ ] The dispatch SHALL use the prompt template from Section 8.1 with topic derived from the user's idea description
-  - [ ] If the Research Skill dispatch fails, the Ideation Agent SHALL log the failure and proceed without research, noting "Research unavailable" in the brief (FR-008 Error)
-  - [ ] Given a user describes "build a CLI tool for database migrations," when the Ideation Agent processes the idea, then it dispatches the Research Skill (US-01 Scenario 1)
+  - [x] The Ideation Agent SHALL dispatch the Research Skill with scope `[web, codebase]` after the user describes their idea, before asking clarifying questions (FR-008)
+  - [x] The dispatch SHALL use the prompt template from Section 8.1 with topic derived from the user's idea description
+  - [x] If the Research Skill dispatch fails, the Ideation Agent SHALL log the failure and proceed without research, noting "Research unavailable" in the brief (FR-008 Error)
+  - [x] Given a user describes "build a CLI tool for database migrations," when the Ideation Agent processes the idea, then it dispatches the Research Skill (US-01 Scenario 1)
 - **Test requirements**: BDD (Feature: Ideation with Research)
 - **Depends on**: none (within this WP)
 - **Implementation Guidance**:
@@ -62,12 +62,12 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: FR-009, FR-010, Section 7.2 (Research Output Sections)
 - **Parallel**: No (depends on T39-01)
 - **Acceptance criteria**:
-  - [ ] The Ideation Agent SHALL include a "Research Findings" section in the brief output, sourced from the Research Skill's output file (FR-009)
-  - [ ] If the research output file is empty or missing, the section SHALL state "No research findings available" with the reason (FR-009 Error)
-  - [ ] The brief output format SHALL include a "Research Findings" section covering competitive landscape, analogous solutions, technology feasibility (FR-010.1)
-  - [ ] The brief output format SHALL include a "Risk Assessment" section with risks identified from research with likelihood and impact (FR-010.2)
-  - [ ] The brief output format SHALL include a "Technical Feasibility" section with confirmed feasible vs needs validation, with evidence from research (FR-010.3)
-  - [ ] Given the user describes an idea, when the Ideation Agent completes the brief, then the brief contains a Research Findings section (BDD: Brief includes research findings)
+  - [x] The Ideation Agent SHALL include a "Research Findings" section in the brief output, sourced from the Research Skill's output file (FR-009)
+  - [x] If the research output file is empty or missing, the section SHALL state "No research findings available" with the reason (FR-009 Error)
+  - [x] The brief output format SHALL include a "Research Findings" section covering competitive landscape, analogous solutions, technology feasibility (FR-010.1)
+  - [x] The brief output format SHALL include a "Risk Assessment" section with risks identified from research with likelihood and impact (FR-010.2)
+  - [x] The brief output format SHALL include a "Technical Feasibility" section with confirmed feasible vs needs validation, with evidence from research (FR-010.3)
+  - [x] Given the user describes an idea, when the Ideation Agent completes the brief, then the brief contains a Research Findings section (BDD: Brief includes research findings)
 - **Test requirements**: BDD (Scenario: Brief includes research findings)
 - **Depends on**: T39-01
 - **Implementation Guidance**:
@@ -96,11 +96,11 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: FR-011
 - **Parallel**: Yes (independent of T39-04)
 - **Acceptance criteria**:
-  - [ ] The Ideation Agent SHALL cite sources in the brief (FR-011)
-  - [ ] Every claim about an external technology, competitor, or pattern SHALL have a source URL (FR-011)
-  - [ ] If no sources were found for a claim, the claim SHALL be prefixed with "[Unverified]" and omit the source citation (FR-011 Error)
-  - [ ] Given the Research Skill finds 3 competing tools, when the brief is written, then each competitor has a source URL (US-01 Scenario 2)
-  - [ ] The brief SHALL contain at least 2 cited sources (BDD: Brief includes research findings -- "at least 2 sources are cited")
+  - [x] The Ideation Agent SHALL cite sources in the brief (FR-011)
+  - [x] Every claim about an external technology, competitor, or pattern SHALL have a source URL (FR-011)
+  - [x] If no sources were found for a claim, the claim SHALL be prefixed with "[Unverified]" and omit the source citation (FR-011 Error)
+  - [x] Given the Research Skill finds 3 competing tools, when the brief is written, then each competitor has a source URL (US-01 Scenario 2)
+  - [x] The brief SHALL contain at least 2 cited sources (BDD: Brief includes research findings -- "at least 2 sources are cited")
 - **Test requirements**: BDD (Scenario: Brief includes research findings)
 - **Depends on**: T39-02
 - **Implementation Guidance**:
@@ -120,10 +120,10 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: FR-012, Section 6.2 (User Flow steps 1-4)
 - **Parallel**: Yes (independent of T39-03)
 - **Acceptance criteria**:
-  - [ ] The Brainstorming Agent SHALL dispatch the Research Skill with scope `[web, codebase, packages]` when exploring technology alternatives (FR-012.1)
-  - [ ] The Brainstorming Agent SHALL dispatch the Research Skill when evaluating competing approaches (FR-012.2)
-  - [ ] The Brainstorming Agent SHALL dispatch the Research Skill when validating assumptions about external systems (FR-012.3)
-  - [ ] If the Research Skill dispatch fails, the Brainstorming Agent SHALL log the failure and continue without research-backed data, noting the limitation to the user (FR-012 Error)
+  - [x] The Brainstorming Agent SHALL dispatch the Research Skill with scope `[web, codebase, packages]` when exploring technology alternatives (FR-012.1)
+  - [x] The Brainstorming Agent SHALL dispatch the Research Skill when evaluating competing approaches (FR-012.2)
+  - [x] The Brainstorming Agent SHALL dispatch the Research Skill when validating assumptions about external systems (FR-012.3)
+  - [x] If the Research Skill dispatch fails, the Brainstorming Agent SHALL log the failure and continue without research-backed data, noting the limitation to the user (FR-012 Error)
 - **Test requirements**: BDD (Feature: Brainstorming with Research)
 - **Depends on**: none (within this WP)
 - **Implementation Guidance**:
@@ -141,10 +141,10 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: FR-013
 - **Parallel**: No (depends on T39-04)
 - **Acceptance criteria**:
-  - [ ] Research findings SHALL inform the brainstorming Q&A (FR-013)
-  - [ ] When presenting alternatives, the agent SHALL include research-backed pros/cons (FR-013)
-  - [ ] If no alternatives were found by research, the agent SHALL present user-provided alternatives and note "No research data available for comparison" (FR-013 Error)
-  - [ ] Given a brainstorming session reaches a technology decision, when the agent dispatches the Research Skill, then alternatives are presented with version numbers and status, and sources are cited (BDD: Technology comparison backed by research)
+  - [x] Research findings SHALL inform the brainstorming Q&A (FR-013)
+  - [x] When presenting alternatives, the agent SHALL include research-backed pros/cons (FR-013)
+  - [x] If no alternatives were found by research, the agent SHALL present user-provided alternatives and note "No research data available for comparison" (FR-013 Error)
+  - [x] Given a brainstorming session reaches a technology decision, when the agent dispatches the Research Skill, then alternatives are presented with version numbers and status, and sources are cited (BDD: Technology comparison backed by research)
 - **Test requirements**: BDD (Scenario: Technology comparison backed by research)
 - **Depends on**: T39-04
 - **Implementation Guidance**:
@@ -161,10 +161,10 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: FR-014
 - **Parallel**: No (depends on T39-05)
 - **Acceptance criteria**:
-  - [ ] The Brainstorming Agent SHALL produce a brief with the same enriched format as the Ideation Agent (FR-014, same as FR-010)
-  - [ ] If no research was performed during the session, the Research Findings section SHALL state "No research performed" (FR-014 Error)
-  - [ ] If no research was performed during the session, the Risk Assessment section SHALL state "Not assessed" (FR-014 Error)
-  - [ ] Source citations SHALL follow the same format as the Ideation Agent ([Title](URL), consulted date)
+  - [x] The Brainstorming Agent SHALL produce a brief with the same enriched format as the Ideation Agent (FR-014, same as FR-010)
+  - [x] If no research was performed during the session, the Research Findings section SHALL state "No research performed" (FR-014 Error)
+  - [x] If no research was performed during the session, the Risk Assessment section SHALL state "Not assessed" (FR-014 Error)
+  - [x] Source citations SHALL follow the same format as the Ideation Agent ([Title](URL), consulted date)
 - **Test requirements**: BDD (Section 11.2)
 - **Depends on**: T39-05
 - **Implementation Guidance**:
@@ -180,11 +180,11 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 - **Spec refs**: SC-001, SC-002, SC-003
 - **Parallel**: No (final verification task)
 - **Acceptance criteria**:
-  - [ ] Ideation and Brainstorming agents use the Research Skill for all research tasks; no raw `fetch_webpage` or `grep_search` calls for research outside the skill (SC-001)
-  - [ ] Brief output includes competitive analysis, technology evaluation, and risk assessment sourced from research; every brief has a "Research Findings" section with cited sources (SC-002)
-  - [ ] A third agent can invoke the Research Skill by dispatching it as a subagent with zero changes to the skill (SC-003)
-  - [ ] The dispatch prompt used by both agents matches the template in Section 8.1
-  - [ ] Both agents' enriched brief sections match the EnrichedBriefSections structure from the data model artifact
+  - [x] Ideation and Brainstorming agents use the Research Skill for all research tasks; no raw `fetch_webpage` or `grep_search` calls for research outside the skill (SC-001)
+  - [x] Brief output includes competitive analysis, technology evaluation, and risk assessment sourced from research; every brief has a "Research Findings" section with cited sources (SC-002)
+  - [x] A third agent can invoke the Research Skill by dispatching it as a subagent with zero changes to the skill (SC-003)
+  - [x] The dispatch prompt used by both agents matches the template in Section 8.1
+  - [x] Both agents' enriched brief sections match the EnrichedBriefSections structure from the data model artifact
 - **Test requirements**: BDD (all scenarios from Section 11.2)
 - **Depends on**: T39-03, T39-06
 - **Implementation Guidance**:
@@ -198,6 +198,18 @@ FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, Section 5 (US-01, US-02)
 
 - This WP modifies two existing agent files and does not create any new files
 - Both agent files are extensive (~300+ lines each); modifications target specific sections (Discovery phase, web_research_policy, brief_template)
+
+## Activity Log
+
+- 2026-04-06 - coder - lane=doing - Starting implementation
+- 2026-04-06 - coder - T39-01 - completed - Added Research Skill dispatch to Ideation Agent Discovery phase
+- 2026-04-06 - coder - T39-02 - completed - Added enriched brief format sections to Ideation Agent
+- 2026-04-06 - coder - T39-03 - completed - Added source citation requirements to Ideation Agent
+- 2026-04-06 - coder - T39-04 - completed - Added Research Skill dispatch to Brainstorming Agent
+- 2026-04-06 - coder - T39-05 - completed - Added research-backed pros/cons to Brainstorming Agent
+- 2026-04-06 - coder - T39-06 - completed - Added enriched brief format to Brainstorming Agent
+- 2026-04-06 - coder - T39-07 - completed - Verified both agents dispatch Research Skill correctly
+- 2026-04-06 - coder - lane=for_review - All tasks complete, verification passed
 - The Ideation Agent dispatches research once at the start (scope: web, codebase); the Brainstorming Agent dispatches on-demand during the session (scope: web, codebase, packages)
 - Both agents retain their existing `web_research_policy` sections but reference the Research Skill as the primary mechanism
 - The enriched brief format must be identical across both agents (FR-014 explicitly references FR-010)

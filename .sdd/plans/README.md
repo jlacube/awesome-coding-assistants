@@ -1072,7 +1072,7 @@ Cross-WP consistency audit performed. No inconsistencies found:
 | ID | Title | Priority | Status | Depends On | Parallelisable |
 |----|-------|----------|--------|------------|----------------|
 | [WP38](WP38-research-skill.md) | Research Skill | P1 | Complete | none | No |
-| [WP39](WP39-agent-integration.md) | Agent Integration | P1 | Not Started | WP38 | No |
+| [WP39](WP39-agent-integration.md) | Agent Integration | P1 | Complete | WP38 | No |
 
 ### MVP Scope
 
