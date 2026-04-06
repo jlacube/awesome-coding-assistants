@@ -54,6 +54,8 @@ You are a state machine. You read the current state of `.sdd/`, determine what n
 <state_schema>
 ## Persistent State File -- `.sdd/state.md`
 
+<!-- Enum source: .github/schemas/enums.yaml -->
+
 The Orchestrator maintains a persistent state file at `.sdd/state.md` with YAML frontmatter for cross-session pipeline state tracking. This file enables the Orchestrator to resume from the correct pipeline stage after VS Code restarts.
 
 ### Schema Definition
