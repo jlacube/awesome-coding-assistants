@@ -1,0 +1,45 @@
+# Handoff Schema: Docs Agent -> Orchestrator (completion signal)
+#
+# Maintenance (FR-006): When the Docs Agent or Orchestrator interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-025, FR-026, FR-027, Section 7.7
+
+schema: handoff/v1
+source_agent: "6. Docs Agent"
+target_agent: "1. Orchestrator"
+description: "Handoff from Docs Agent to Orchestrator after documentation completes"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "documentation generation completed"
+    error: "Documentation must be generated before signaling completion"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the documented work package file"
+
+  - name: "docs_completed"
+    type: "boolean"
+    required: true
+    description: "Confirms documentation was generated (must be true)"
+
+validation_rules:
+  # Inline rules (fallback if base schema is unavailable)
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+  - check: "literal_value"
+    target: "docs_completed"
+    expected: true
+    error: "docs_completed must be true. False is not a valid completion signal."

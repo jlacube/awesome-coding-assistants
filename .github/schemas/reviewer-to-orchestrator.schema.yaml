@@ -1,0 +1,65 @@
+# Handoff Schema: Review Coordinator -> Orchestrator (completion signal)
+#
+# Maintenance (FR-006): When the Review Coordinator or Orchestrator interface
+# changes, update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-021, FR-022, FR-027, Section 7.7
+
+schema: handoff/v1
+source_agent: "5. Reviewer"
+target_agent: "1. Orchestrator"
+description: "Handoff from Review Coordinator to Orchestrator after review completes"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+      - field: "lane"
+        value_one_of: ["done", "to_do"]
+
+required_state:
+  - condition: "wp.lane in ['done', 'to_do']"
+    error: "WP must have lane=done (approved) or lane=to_do (changes_required) after review"
+  - condition: "review report exists in WP file"
+    error: "Review report must be present in the WP file"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the reviewed work package file"
+
+  - name: "verdict"
+    type: "string"
+    required: true
+    enum: ["approved", "changes_required"]
+    description: "Review outcome: approved (lane->done) or changes_required (lane->to_do)"
+
+  - name: "updated_lane"
+    type: "string"
+    required: true
+    enum_ref: ".github/schemas/enums.yaml#lane"
+    description: "Lane value set by the reviewer (done or to_do)"
+
+validation_rules:
+  # Inline rules (fallback if base schema is unavailable)
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+  - check: "field_value_in"
+    target: "wp_path"
+    field: "lane"
+    expected: ["done", "to_do"]
+    error: "WP lane must be 'done' or 'to_do' after review"
+
+  - check: "verdict_lane_consistency"
+    rule: "approved -> done, changes_required -> to_do"
+    error: "updated_lane does not match verdict: approved->done, changes_required->to_do"
+
+  - check: "field_not_empty"
+    target: "verdict"
+    error: "Verdict must be specified (approved or changes_required)"

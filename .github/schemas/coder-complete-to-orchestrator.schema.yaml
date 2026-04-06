@@ -1,0 +1,56 @@
+# Handoff Schema: Coder -> Orchestrator (completion signal)
+#
+# Maintenance (FR-006): When the Coder or Orchestrator interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-023, FR-024, FR-027, Section 7.7
+
+schema: handoff/v1
+source_agent: "4. Coder"
+target_agent: "1. Orchestrator"
+description: "Handoff from Coder to Orchestrator after implementation completes"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+      - field: "lane"
+        value: "for_review"
+
+required_state:
+  - condition: "wp.lane == 'for_review'"
+    error: "WP must have lane=for_review before signaling completion to Orchestrator"
+  - condition: "all tests passing"
+    error: "All tests must pass before signaling completion"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the implemented work package file"
+
+  - name: "lane_confirmation"
+    type: "string"
+    required: true
+    literal: "for_review"
+    description: "Confirms lane was set to for_review"
+
+validation_rules:
+  # Inline rules (fallback if base schema is unavailable)
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+  - check: "field_value"
+    target: "wp_path"
+    field: "lane"
+    expected: "for_review"
+    error: "WP lane is not 'for_review'"
+
+  - check: "literal_value"
+    target: "lane_confirmation"
+    expected: "for_review"
+    error: "Coder completion handoff has invalid lane_confirmation. Expected 'for_review'."
