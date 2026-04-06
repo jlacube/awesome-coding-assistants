@@ -5,12 +5,14 @@
 ```
 .github/
   agents/                           # VS Code Copilot Chat agent definitions
-    review-coordinator.agent.md     # Review orchestration agent
-    orchestrator.agent.md           # Pipeline orchestration agent
+    brainstorming.agent.md          # Collaborative brainstorming agent
     coder.agent.md                  # Implementation coordinator (dispatches coding skills)
     docs-agent.agent.md             # Documentation generation agent
-    spec-architect.agent.md         # Specification agent
+    ideation.agent.md               # Ideation and idea exploration agent
+    orchestrator.agent.md           # Pipeline orchestration agent
     planner.agent.md                # Planning agent
+    review-coordinator.agent.md     # Review orchestration agent
+    spec-architect.agent.md         # Specification agent
   schemas/
     enums.yaml                      # Central enum registry -- single source of truth for pipeline enums and conventions (WP40)
     base-handoff.schema.yaml        # Shared base schema with reusable validation patterns (WP42)
@@ -172,6 +174,7 @@ The coordinator maintains `.sdd/reviews/review-patterns.md` with patterns extrac
 - The `spec_status` enum no longer includes "Final" -- valid values are Draft, Validated, Approved (WP40)
 - **Shared base handoff schema** (WP42): Common validation patterns (WP file existence, lane validation, file path format) are defined in `.github/schemas/base-handoff.schema.yaml`. Individual handoff schemas reference it via a `base_schema` field. If the base schema is missing, schemas fall back to inline validation rules.
 - **Return handoff schemas** (WP42): Three return handoff schemas (reviewer-to-orchestrator, coder-complete-to-orchestrator, docs-agent-to-orchestrator) formalize completion signals from agents back to the Orchestrator. All follow the handoff/v1 format.
+- **Error-handling policy** (WP43): Each agent file contains a reference comment `<!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->` pointing to the centralized error-handling categorization in the architecture doc. Critical-path agents (Spec Architect, Planner, Coder, Orchestrator) HALT on failure; advisory agents (Review Coordinator, Docs Agent, Ideation, Brainstorming) continue best-effort.
 - **WP frontmatter extended fields** (WP41): Two optional fields track review and documentation state in WP YAML frontmatter, replacing Activity Log text parsing with structured data:
   - `review_cycles` (integer, default 0) -- number of review-rework cycles completed. The Review Coordinator increments this by 1 each time it sets `lane: to_do`. The Orchestrator reads this for escalation decisions (`review_cycles >= 3` triggers escalation). If absent, treat as 0. If present but not a non-negative integer, treat as 0 and log a warning.
   - `docs_completed` (boolean, default false) -- whether documentation has been generated for this WP. The Docs Agent sets this to `true` upon successful completion. The Orchestrator reads this to decide whether to invoke the Docs Agent. If absent, treat as false. If present but not a boolean, treat as false and log a warning.

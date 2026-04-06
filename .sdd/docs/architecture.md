@@ -99,6 +99,8 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 8. **Structured WP frontmatter for state tracking** (WP41): Two optional YAML frontmatter fields -- `review_cycles` (integer, default 0) and `docs_completed` (boolean, default false) -- replace Activity Log text parsing for review cycle counting and documentation completion status. The Review Coordinator increments `review_cycles` on each rework cycle. The Docs Agent sets `docs_completed: true` on completion. The Orchestrator reads both fields from frontmatter instead of scanning Activity Log entries. This eliminates fragile text parsing and provides machine-readable state.
 9. **Return handoff schemas** (WP42): Three return handoff schemas formalize the completion signals from Reviewer, Coder, and Docs Agent back to the Orchestrator. Each schema follows the handoff/v1 format and defines required context fields and validation rules for the return path. This completes the handoff schema coverage so every directional agent-to-agent path has an explicit contract.
 10. **Shared base handoff schema** (WP42): A shared base schema at `.github/schemas/base-handoff.schema.yaml` defines reusable validation patterns (wp_file_exists, lane_value_valid, file_path_format) that individual handoff schemas reference via a `base_schema` field. If the base schema file is missing, individual schemas fall back to inline rules. This eliminates duplicated validation logic across schemas.
+11. **Error-handling policy** (WP43): Pipeline agents are categorized as critical-path (HALT on failure) or advisory (best-effort). Critical-path agents (Spec Architect, Planner, Coder, Orchestrator) halt because downstream agents depend on their output for correctness. Advisory agents (Review Coordinator, Docs Agent, Ideation, Brainstorming) continue past failures because partial output is still valuable. See the "Design Decision: Error-Handling Policy" subsection below for detailed rationale per agent.
+12. **Acceptance criteria maker/checker RACI** (WP43): Acceptance criteria checkboxes follow a maker/checker pattern: the Coder is Responsible (maker) for checking boxes during implementation, and the Review Coordinator is Accountable/Verifier (checker) for confirming they match actual implementation. This intentional dual-touch prevents silent regressions where a box is checked but the work is incomplete.
 
 ### Design Decision: Error-Handling Policy
 
@@ -129,11 +131,13 @@ This asymmetry is intentional: critical-path agents produce artifacts that downs
 ```
 .github/
   agents/
-    orchestrator.agent.md           # Pipeline orchestration agent
+    brainstorming.agent.md          # Collaborative brainstorming agent
     coder.agent.md                  # Implementation coordinator
-    review-coordinator.agent.md     # Review orchestration agent
     docs-agent.agent.md             # Documentation generation agent
+    ideation.agent.md               # Ideation and idea exploration agent
+    orchestrator.agent.md           # Pipeline orchestration agent
     planner.agent.md                # Planning agent
+    review-coordinator.agent.md     # Review orchestration agent
     spec-architect.agent.md         # Specification agent
   schemas/
     enums.yaml                      # Central enum registry (WP40) -- single source of truth for lane, spec_status, pipeline_stage, review_status, and canonical Activity Log format

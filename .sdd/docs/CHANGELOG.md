@@ -4,6 +4,19 @@
 
 ---
 
+## [WP43] - Error-Handling Policy & Acceptance Criteria RACI (2026-04-07)
+
+### Changes
+
+- Documented error-handling policy as a design decision in `.sdd/docs/architecture.md`, categorizing each pipeline agent as critical-path (HALT on failure) or advisory (best-effort)
+- Added error policy reference comment to all 8 agent files pointing to the centralized architecture documentation
+- Labeled the Coder's acceptance criteria checkbox role as "Responsible (maker)" in its agent instructions
+- Labeled the Review Coordinator's acceptance criteria verification role as "Accountable/Verifier (checker)" in its agent instructions
+- Added "Acceptance Criteria Ownership" section to the developer guide documenting the maker/checker pattern as intentional dual-touch
+- Verified cross-file RACI consistency across coder.agent.md, review-coordinator.agent.md, and developer-guide.md
+
+---
+
 ## [WP42] - Return Handoff Schemas & Shared Base (2026-04-07)
 
 ### Changes
