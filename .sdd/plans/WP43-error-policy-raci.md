@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP43 - Error-Handling Policy & Acceptance Criteria RACI
@@ -32,12 +32,12 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 - **Spec refs**: FR-028, FR-029, Section 4.5
 - **Parallel**: No (foundation for T43-02)
 - **Acceptance criteria**:
-  - [ ] `.sdd/docs/architecture.md` contains a subsection titled "Design Decision: Error-Handling Policy" (FR-028)
-  - [ ] Critical-path agents listed with HALT behavior: Spec Architect, Planner, Coder (FR-029)
-  - [ ] Advisory agents listed with best-effort behavior: Review Coordinator, Docs Agent (FR-029)
-  - [ ] Orchestrator, Ideation, and Brainstorming agents are also categorized (FR-029)
-  - [ ] Rationale is provided for each categorization
-  - [ ] Given a user reads architecture.md, they find error-handling guidance with every agent categorized (US-03 Scenario 1)
+  - [x] `.sdd/docs/architecture.md` contains a subsection titled "Design Decision: Error-Handling Policy" (FR-028)
+  - [x] Critical-path agents listed with HALT behavior: Spec Architect, Planner, Coder (FR-029)
+  - [x] Advisory agents listed with best-effort behavior: Review Coordinator, Docs Agent (FR-029)
+  - [x] Orchestrator, Ideation, and Brainstorming agents are also categorized (FR-029)
+  - [x] Rationale is provided for each categorization
+  - [x] Given a user reads architecture.md, they find error-handling guidance with every agent categorized (US-03 Scenario 1)
 - **Test requirements**: content (grep search), BDD (US-03 Scenario 1)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -143,3 +143,4 @@ FR-028, FR-029, FR-030, FR-031, FR-032, FR-033, Section 4.5 (Error-Handling Poli
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation

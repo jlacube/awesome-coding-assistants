@@ -100,6 +100,30 @@ The coordinator communicates with other agents exclusively via handoff buttons -
 9. **Return handoff schemas** (WP42): Three return handoff schemas formalize the completion signals from Reviewer, Coder, and Docs Agent back to the Orchestrator. Each schema follows the handoff/v1 format and defines required context fields and validation rules for the return path. This completes the handoff schema coverage so every directional agent-to-agent path has an explicit contract.
 10. **Shared base handoff schema** (WP42): A shared base schema at `.github/schemas/base-handoff.schema.yaml` defines reusable validation patterns (wp_file_exists, lane_value_valid, file_path_format) that individual handoff schemas reference via a `base_schema` field. If the base schema file is missing, individual schemas fall back to inline rules. This eliminates duplicated validation logic across schemas.
 
+### Design Decision: Error-Handling Policy
+
+Pipeline agents fall into two categories based on how they handle skill or step failures:
+
+**Critical-path agents (HALT on failure)**:
+
+| Agent | Rationale |
+|-------|-----------|
+| Spec Architect | Spec errors produce ambiguous or contradictory requirements that compound in every downstream artifact. Halting prevents cascading specification debt. |
+| Planner | Planning errors produce incorrect task decompositions, missing contracts, or wrong dependency ordering. Downstream agents cannot recover from a flawed plan. |
+| Coder | Implementation errors produce broken code that fails tests. Continuing past a failed skill (e.g., env-setup) would cause every subsequent skill to fail on the same root cause. |
+| Orchestrator | The Orchestrator sequences the entire pipeline. If it cannot determine the next step or encounters an unrecoverable state, continuing risks data loss or corrupted WP state. |
+
+**Advisory agents (best-effort on failure)**:
+
+| Agent | Rationale |
+|-------|-----------|
+| Review Coordinator | Partial review output is still valuable. If one review skill fails (e.g., review-deps), the remaining skills (review-spec, review-security, etc.) still produce actionable findings. The coordinator records the failure and continues. |
+| Docs Agent | Partial documentation is better than none. If one doc skill fails (e.g., doc-changelog), the other skills (doc-api-reference, doc-architecture, etc.) still produce useful output. The agent records the failure and continues. |
+| Ideation | Ideation is exploratory. A failure in research or alternative generation does not invalidate the ideas already captured. The agent records the issue and presents partial results. |
+| Brainstorming | Brainstorming is collaborative and iterative. A failure in one research thread does not prevent the session from producing useful output from other threads. |
+
+This asymmetry is intentional: critical-path agents produce artifacts that downstream agents depend on for correctness, so errors must be surfaced immediately. Advisory agents produce artifacts that are consumed by humans, so partial output is preferable to no output.
+
 ## Directory Structure
 
 ```
