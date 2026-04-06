@@ -85,9 +85,9 @@ FR-034, FR-035, FR-036, FR-037, FR-038, FR-039, Section 7.1 (WP Frontmatter Exte
 - **Spec refs**: FR-038, FR-037, Section 6.4 (steps 3-5)
 - **Parallel**: Yes (with T44-03)
 - **Acceptance criteria**:
-  - [ ] code-env-setup skill reads `coverage_code` and `coverage_branch` from WP frontmatter (FR-038)
-  - [ ] Coverage tool configuration uses WP-specific or default thresholds (FR-038)
-  - [ ] Fallback defaults match: 80% code, 90% branch (FR-037)
+  - [x] code-env-setup skill reads `coverage_code` and `coverage_branch` from WP frontmatter (FR-038)
+  - [x] Coverage tool configuration uses WP-specific or default thresholds (FR-038)
+  - [x] Fallback defaults match: 80% code, 90% branch (FR-037)
 - **Test requirements**: content
 - **Depends on**: T44-01, T44-02
 - **Implementation Guidance**:

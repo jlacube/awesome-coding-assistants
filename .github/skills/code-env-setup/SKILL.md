@@ -193,24 +193,36 @@ cargo build
 
 ---
 
-## Step 4 -- Install Coverage Tooling (FR-022)
+## Step 4 -- Install Coverage Tooling (FR-022, FR-038, FR-037)
 
 Install the coverage tooling appropriate for the target language and configure minimum thresholds.
 
-### Python (pytest-cov)
+### 4a. Read Coverage Thresholds from WP Frontmatter
+
+Before configuring coverage tooling, read the minimum thresholds from the WP file's YAML frontmatter:
+
+1. Read `coverage_code` from WP frontmatter. If the field is absent, use the default: **80**.
+2. Read `coverage_branch` from WP frontmatter. If the field is absent, use the default: **90**.
+3. Each field is independent -- specifying one does not require specifying the other. An absent field always uses its own default.
+4. **Validation**: If either field is present but is not an integer or is outside the range 0-100, halt with: "Invalid coverage_code value '<value>'. Must be an integer 0-100." (or the equivalent message for `coverage_branch`).
+5. A value of 0 is valid (no coverage enforcement for prototyping WPs).
+
+Use the resolved `coverage_code` and `coverage_branch` values (from frontmatter or defaults) in all configuration examples below, replacing the placeholder `<coverage_code>` and `<coverage_branch>`.
+
+### 4b. Python (pytest-cov)
 
 Install:
 ```bash
 pip install pytest-cov
 ```
 
-Configure in `pytest.ini`, `pyproject.toml`, or `setup.cfg`:
+Configure in `pytest.ini`, `pyproject.toml`, or `setup.cfg` using the resolved thresholds:
 ```ini
 [tool:pytest]
-addopts = --cov --cov-branch --cov-fail-under=80
+addopts = --cov --cov-branch --cov-fail-under=<coverage_code>
 
 [coverage:report]
-fail_under = 80
+fail_under = <coverage_code>
 
 [coverage:run]
 branch = True
@@ -219,30 +231,30 @@ branch = True
 If using `pyproject.toml`:
 ```toml
 [tool.pytest.ini_options]
-addopts = "--cov --cov-branch --cov-fail-under=80"
+addopts = "--cov --cov-branch --cov-fail-under=<coverage_code>"
 
 [tool.coverage.report]
-fail_under = 80
+fail_under = <coverage_code>
 
 [tool.coverage.run]
 branch = true
 ```
 
-**Thresholds**: 80% code coverage, 90% branch coverage. These are exact minimums as specified in FR-022.
+**Thresholds**: Use the `coverage_code` and `coverage_branch` values read from WP frontmatter (defaults: 80% code, 90% branch per FR-037).
 
-### Node.js (Istanbul/nyc or c8)
+### 4c. Node.js (Istanbul/nyc or c8)
 
-For Jest projects, add to `jest.config.js` or `package.json`:
+For Jest projects, add to `jest.config.js` or `package.json` using the resolved thresholds:
 ```json
 {
   "jest": {
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "statements": 80,
-        "branches": 90,
-        "functions": 80,
-        "lines": 80
+        "statements": <coverage_code>,
+        "branches": <coverage_branch>,
+        "functions": <coverage_code>,
+        "lines": <coverage_code>
       }
     }
   }
@@ -254,28 +266,28 @@ Create or update `.nycrc`:
 ```json
 {
   "check-coverage": true,
-  "statements": 80,
-  "branches": 90,
-  "functions": 80,
-  "lines": 80
+  "statements": <coverage_code>,
+  "branches": <coverage_branch>,
+  "functions": <coverage_code>,
+  "lines": <coverage_code>
 }
 ```
 
-### Go
+### 4d. Go
 
 Go has built-in coverage. No additional tool installation needed. Configure coverage thresholds in the test runner script or CI configuration:
 ```bash
 go test -coverprofile=coverage.out -covermode=atomic ./...
 ```
 
-### Rust
+### 4e. Rust
 
 Install:
 ```bash
 cargo install cargo-tarpaulin
 ```
 
-**Note**: Only install or configure coverage tooling if it is not already present. Do not overwrite existing coverage configuration unless the thresholds are below the minimums.
+**Note**: Only install or configure coverage tooling if it is not already present. Do not overwrite existing coverage configuration unless the thresholds are below the WP-specified minimums.
 
 ---
 
@@ -318,7 +330,7 @@ Append an entry to the WP Activity Log documenting:
 
 Format:
 ```
-- <timestamp> - code-env-setup - Environment: <language> <version>, <framework> <version>. Venv: <type>. Dependencies: <count> installed. Baseline: <test_summary>. Coverage: <tool> configured (80% code / 90% branch).
+- <timestamp> - code-env-setup - Environment: <language> <version>, <framework> <version>. Venv: <type>. Dependencies: <count> installed. Baseline: <test_summary>. Coverage: <tool> configured (<coverage_code>% code / <coverage_branch>% branch).
 ```
 
 ---
