@@ -105,9 +105,9 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - **Spec refs**: FR-044, Section 11.1
 - **Parallel**: No (verification task)
 - **Acceptance criteria**:
-  - [ ] All handoff schema files in `.github/schemas/` have version_history sections
-  - [ ] No schema file is missing version_history (grep verification)
-  - [ ] version_history entries are ordered chronologically (newest last)
+  - [x] All handoff schema files in `.github/schemas/` have version_history sections
+  - [x] No schema file is missing version_history (grep verification)
+  - [x] version_history entries are ordered chronologically (newest last)
 - **Test requirements**: content (grep search across all schema files)
 - **Depends on**: T46-01, T46-02
 - **Implementation Guidance**:
@@ -135,3 +135,4 @@ FR-044, FR-045, FR-046, FR-047, FR-048, Section 4.9 (Schema Versioning Protocol)
 - 2026-04-07T00:01:00Z - coder - T46-02 completed - Added version_history to 4 new schemas (base, 3 return schemas)
 - 2026-04-07T00:02:00Z - coder - T46-03 completed - Added placeholder_patterns to 10 schemas with path placeholders
 - 2026-04-07T00:03:00Z - coder - T46-04 completed - Added Schema Versioning Protocol section to developer guide
+- 2026-04-07T00:04:00Z - coder - T46-05 completed - Verified all 12 schema files have version_history
