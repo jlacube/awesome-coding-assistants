@@ -2,7 +2,7 @@
 
 > **Source brief**: `.sdd/ideas/002-sdd-pipeline-v2-universal-skill-architecture.md`
 > **Feature branch**: `008-orchestrator-v2`
-> **Status**: Validated
+> **Status**: Approved
 > **Version**: 1.1
 
 ---
