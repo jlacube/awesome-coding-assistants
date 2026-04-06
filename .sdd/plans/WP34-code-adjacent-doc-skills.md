@@ -152,11 +152,11 @@ FR-016, FR-017, FR-018, FR-019, FR-020, US-01, Section 4.2.5, Section 4.2.6, Sec
 - **Spec refs**: FR-003, FR-004, FR-009
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator discovers both skills via `doc-*/SKILL.md` glob
-  - [ ] doc-changelog is dispatched at canonical position 5 (after doc-developer-guide)
-  - [ ] doc-inline-code is dispatched at canonical position 6 (last)
-  - [ ] Both skills receive all 6 context items defined in FR-005
-  - [ ] Source files modified by doc-inline-code are included in the coordinator's commit alongside `.sdd/docs/` changes (FR-009)
+  - [x] Coordinator discovers both skills via `doc-*/SKILL.md` glob
+  - [x] doc-changelog is dispatched at canonical position 5 (after doc-developer-guide)
+  - [x] doc-inline-code is dispatched at canonical position 6 (last)
+  - [x] Both skills receive all 6 context items defined in FR-005
+  - [x] Source files modified by doc-inline-code are included in the coordinator's commit alongside `.sdd/docs/` changes (FR-009)
 - **Test requirements**: BDD
 - **Depends on**: T34-01, T34-02, T34-03, T34-04, T34-05, T34-06, T34-07
 - **Implementation Guidance**:
@@ -181,3 +181,6 @@ All implementation artifacts are markdown SKILL.md files. "Testing" means manual
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-06T01:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T01:10:00Z - coder - T34-01/T34-02/T34-03 - completed - doc-changelog SKILL.md implemented with prepend ordering
+- 2026-04-06T01:20:00Z - coder - T34-04/T34-05/T34-06/T34-07 - completed - doc-inline-code SKILL.md implemented with convention detection and no-logic constraint
+- 2026-04-06T01:30:00Z - coder - T34-08 - completed - Integration verification passed: both skills discovered, correct canonical positions, all 6 context items, source files in commit
