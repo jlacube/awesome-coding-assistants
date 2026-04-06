@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: for_review
 ---
 
 # WP47 - Pattern File Propagation
@@ -11,7 +11,7 @@ lane: planned
 | Lane | planned |
 | Depends on | WP40 |
 | Goal | Enable mid-cycle pattern propagation by adding version tracking to pattern files and version-check-before-dispatch to coordinators |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Have the Review Coordinator add a pattern to code-patterns.md and increment patterns_version. Dispatch the Coder for the next skill. Verify the Coder detects the version change and reloads patterns before dispatch. |
 | Parallelisable | Yes (with WP46, WP48) |
 | Prompt | `.sdd/plans/WP47-pattern-propagation.md` |
@@ -32,9 +32,9 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 - **Spec refs**: FR-052, Section 7.5
 - **Parallel**: Yes (with T47-02, T47-03, T47-04)
 - **Acceptance criteria**:
-  - [ ] spec-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
-  - [ ] Existing content is preserved
-  - [ ] `patterns_version` is a positive integer
+  - [x] spec-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [x] Existing content is preserved
+  - [x] `patterns_version` is a positive integer
 - **Test requirements**: content (YAML frontmatter parse)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -48,8 +48,8 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 - **Spec refs**: FR-052, Section 7.5
 - **Parallel**: Yes (with T47-01, T47-03, T47-04)
 - **Acceptance criteria**:
-  - [ ] plan-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
-  - [ ] Existing content is preserved
+  - [x] plan-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [x] Existing content is preserved
 - **Test requirements**: content (YAML frontmatter parse)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -61,8 +61,8 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 - **Spec refs**: FR-052, Section 7.5
 - **Parallel**: Yes (with T47-01, T47-02, T47-04)
 - **Acceptance criteria**:
-  - [ ] code-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
-  - [ ] Existing content is preserved
+  - [x] code-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [x] Existing content is preserved
 - **Test requirements**: content (YAML frontmatter parse)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -74,8 +74,8 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 - **Spec refs**: FR-052, Section 7.5
 - **Parallel**: Yes (with T47-01, T47-02, T47-03)
 - **Acceptance criteria**:
-  - [ ] doc-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
-  - [ ] Existing content is preserved
+  - [x] doc-patterns.md has `patterns_version: 1` in YAML frontmatter (FR-052)
+  - [x] Existing content is preserved
 - **Test requirements**: content (YAML frontmatter parse)
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -87,10 +87,10 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 - **Spec refs**: FR-053, Section 4.11
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Review Coordinator SHALL increment `patterns_version` by 1 each time it modifies a patterns file (FR-053)
-  - [ ] If `patterns_version` is missing, the Review Coordinator SHALL add it with value 1 (FR-053)
-  - [ ] The increment applies to add, modify, and retire operations
-  - [ ] Given the Review Coordinator adds a pattern and increments patterns_version, the version in the file increases by 1 (US-12 Scenario 1)
+  - [x] Review Coordinator SHALL increment `patterns_version` by 1 each time it modifies a patterns file (FR-053)
+  - [x] If `patterns_version` is missing, the Review Coordinator SHALL add it with value 1 (FR-053)
+  - [x] The increment applies to add, modify, and retire operations
+  - [x] Given the Review Coordinator adds a pattern and increments patterns_version, the version in the file increases by 1 (US-12 Scenario 1)
 - **Test requirements**: BDD (US-12 Scenario 1)
 - **Depends on**: T47-01 through T47-04
 - **Implementation Guidance**:
@@ -104,13 +104,13 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 - **Spec refs**: FR-054, Section 4.11, Section 8.4
 - **Parallel**: No
 - **Acceptance criteria**:
-  - [ ] Coordinator agents SHALL record `patterns_version` when first reading the patterns file (FR-054)
-  - [ ] Before each skill dispatch, coordinators SHALL check if `patterns_version` has changed (FR-054)
-  - [ ] If version has changed, coordinator re-reads the file and uses updated patterns (FR-054)
-  - [ ] If the patterns file is unreadable on re-check, the coordinator SHALL use last cached patterns and log a warning (FR-054)
-  - [ ] If frontmatter is missing, treating `patterns_version` as 0 triggers a reload every time (safe default)
-  - [ ] Given the Coder coordinator dispatches the next skill after a version change, it detects the change and reloads (US-12 Scenario 1)
-  - [ ] Given the patterns file is unreadable, the coordinator uses cached patterns (US-12 Scenario 2)
+  - [x] Coordinator agents SHALL record `patterns_version` when first reading the patterns file (FR-054)
+  - [x] Before each skill dispatch, coordinators SHALL check if `patterns_version` has changed (FR-054)
+  - [x] If version has changed, coordinator re-reads the file and uses updated patterns (FR-054)
+  - [x] If the patterns file is unreadable on re-check, the coordinator SHALL use last cached patterns and log a warning (FR-054)
+  - [x] If frontmatter is missing, treating `patterns_version` as 0 triggers a reload every time (safe default)
+  - [x] Given the Coder coordinator dispatches the next skill after a version change, it detects the change and reloads (US-12 Scenario 1)
+  - [x] Given the patterns file is unreadable, the coordinator uses cached patterns (US-12 Scenario 2)
 - **Test requirements**: BDD (US-12 Scenario 1, Scenario 2)
 - **Depends on**: T47-05
 - **Implementation Guidance**:
@@ -136,3 +136,8 @@ FR-052, FR-053, FR-054, Section 4.11 (Pattern File Propagation), Section 7.5 (Pa
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-07T00:00:01Z - coder - T47-01,T47-02,T47-03,T47-04 completed - Added patterns_version: 1 frontmatter to all 4 domain pattern files
+- 2026-04-07T00:00:02Z - coder - T47-05 completed - Added patterns_version increment logic to Review Coordinator
+- 2026-04-07T00:00:03Z - coder - T47-06 completed - Added version-check-before-dispatch to all 4 coordinators
+- 2026-04-07T00:00:04Z - coder - lane=for_review - All tasks complete, submitted for review

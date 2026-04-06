@@ -1170,7 +1170,7 @@ Cross-WP consistency audit performed. No inconsistencies found:
 | [WP44](WP44-coverage-thresholds.md) | Configurable Coverage Thresholds | P2 | For Review | WP41 | Yes |
 | [WP45](WP45-dependency-ordering.md) | Dependency-Aware WP Ordering | P2 | Complete | WP40 | Yes |
 | [WP46](WP46-schema-versioning.md) | Schema Versioning Protocol | P2 | Complete | WP42 | Yes |
-| [WP47](WP47-pattern-propagation.md) | Pattern File Propagation | P3 | Not Started | WP40 | Yes |
+| [WP47](WP47-pattern-propagation.md) | Pattern File Propagation | P3 | Complete | WP40 | Yes |
 | [WP48](WP48-contract-validation-pilot.md) | Contract Validation Pilot | P3 | Not Started | none | Yes |
 
 ### MVP Scope
