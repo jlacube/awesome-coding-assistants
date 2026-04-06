@@ -1152,3 +1152,201 @@ Cross-WP consistency audit performed. No inconsistencies found:
 - **Error handling**: Dispatch failure handling is consistent across both agents: log failure, proceed without research, note limitation in brief. Defaults differ appropriately: ideation uses "No research findings available" (research is automatic), brainstorming uses "No research performed" (research is on-demand).
 - **Scope differences**: Ideation dispatches with scope `[web, codebase]` (FR-008); Brainstorming dispatches with scope `[web, codebase, packages]` (FR-012). This difference is intentional per spec.
 - **Test consistency**: All tasks use manual invocation testing against BDD scenarios from Section 11.2.
+
+---
+
+## Spec 010 -- SDD Pipeline Hardening
+
+> **Spec**: `.sdd/specs/010-sdd-pipeline-hardening.spec.md`
+
+### Work Packages
+
+| ID | Title | Priority | Status | Depends On | Parallelisable |
+|----|-------|----------|--------|------------|----------------|
+| [WP40](WP40-enum-registry-conventions.md) | Enum Registry & Canonical Conventions | P1 | Not Started | none | No |
+| [WP41](WP41-wp-frontmatter-extensions.md) | WP Frontmatter Extensions | P1 | Not Started | WP40 | Yes |
+| [WP42](WP42-return-schemas-base.md) | Return Handoff Schemas & Shared Base | P1 | Not Started | WP40 | Yes |
+| [WP43](WP43-error-policy-raci.md) | Error-Handling Policy & Acceptance Criteria RACI | P1 | Not Started | WP40 | Yes |
+| [WP44](WP44-coverage-thresholds.md) | Configurable Coverage Thresholds | P2 | Not Started | WP41 | Yes |
+| [WP45](WP45-dependency-ordering.md) | Dependency-Aware WP Ordering | P2 | Not Started | WP40 | Yes |
+| [WP46](WP46-schema-versioning.md) | Schema Versioning Protocol | P2 | Not Started | WP42 | Yes |
+| [WP47](WP47-pattern-propagation.md) | Pattern File Propagation | P3 | Not Started | WP40 | Yes |
+| [WP48](WP48-contract-validation-pilot.md) | Contract Validation Pilot | P3 | Not Started | none | Yes |
+
+### MVP Scope
+
+The following work packages constitute the minimum releasable increment: **WP40, WP41, WP42, WP43**.
+
+- WP40 (P1) creates the central enum registry and standardizes Activity Log format -- foundation for the entire hardening pass
+- WP41 (P1) adds review_cycles and docs_completed frontmatter fields, replacing fragile Activity Log parsing
+- WP42 (P1) creates 3 return handoff schemas and the shared base schema, completing handoff coverage
+- WP43 (P1) documents the error-handling policy and RACI pattern, making implicit conventions explicit
+
+WP44-WP46 (P2) add configurable coverage thresholds, dependency-aware WP ordering, and schema versioning. These improve robustness but are not blocking for pipeline operation.
+
+WP47-WP48 (P3) add pattern file propagation and a contract validation pilot. These are long-term investments that improve mid-cycle pattern updates and validate real-code workflows.
+
+### Dependency & Execution Summary
+
+- **Sequence**: WP40 -> {WP41, WP42, WP43, WP45, WP47} -> {WP44, WP46} -> WP48
+- **Parallelization**: After WP40 completes, WP41, WP42, WP43, WP45, and WP47 can all run in parallel (they modify different files or different sections). WP44 depends on WP41. WP46 depends on WP42. WP48 has no dependencies and can run anytime.
+- **Critical path**: WP40 -> WP41 -> WP44 (or WP40 -> WP42 -> WP46, whichever finishes last)
+
+### Sequencing Notes
+
+WP40 is the foundation WP. It creates enums.yaml -- the central registry that all other WPs reference. It also updates all agent files with enum reference comments and canonical Activity Log format. No other WP can run before WP40 is complete.
+
+After WP40, five WPs are eligible for parallel execution:
+- WP41 modifies Orchestrator, Review Coordinator, and Docs Agent for frontmatter reads/writes
+- WP42 creates new schema files (does not modify agent files)
+- WP43 modifies architecture.md, developer-guide.md, and adds reference comments to agent files
+- WP45 modifies Orchestrator's WP selection section
+- WP47 adds frontmatter to pattern files and updates coordinator dispatch logic
+
+WP41 and WP43 both modify some of the same agent files (orchestrator, coder, review-coordinator, docs-agent), but they modify different sections. The Coder implements one WP at a time, so file-level conflicts are not an issue. However, if both are implemented, the second one should verify the first's changes are intact.
+
+WP44 depends on WP41 because coverage fields follow the same frontmatter extension pattern. WP46 depends on WP42 because version_history is added to schemas including the new return schemas.
+
+WP48 (contract validation pilot) has no dependencies and creates a standalone test document. It can be implemented at any time.
+
+All implementation artifacts are markdown (.agent.md, SKILL.md, .md) and YAML (.schema.yaml) files. There is no executable code, build system, or test framework. "Testing" means verifying file contents, cross-file consistency, and pipeline behavior through controlled runs.
+
+### Task Index
+
+| Task ID | Summary | Work Package | Parallel? |
+|---------|---------|--------------|-----------|
+| T40-01 | Create enums.yaml with enum groups and conventions | WP40 | No |
+| T40-02 | Update Planner: remove "Final", add enum reference | WP40 | Yes |
+| T40-03 | Update Orchestrator: add enum references | WP40 | Yes |
+| T40-04 | Update Coder: enum references and canonical log format | WP40 | Yes |
+| T40-05 | Update Review Coordinator: enum references and canonical log format | WP40 | Yes |
+| T40-06 | Update Docs Agent: enum references and canonical log format | WP40 | Yes |
+| T40-07 | Update Spec Architect: add enum reference | WP40 | Yes |
+| T41-01 | Define review_cycles frontmatter field | WP41 | Yes |
+| T41-02 | Define docs_completed frontmatter field | WP41 | Yes |
+| T41-03 | Update Review Coordinator to increment review_cycles | WP41 | No |
+| T41-04 | Update Docs Agent to set docs_completed | WP41 | No |
+| T41-05 | Update Orchestrator to read review_cycles from frontmatter | WP41 | No |
+| T41-06 | Update Orchestrator to read docs_completed from frontmatter | WP41 | No |
+| T41-07 | Verify backward compatibility | WP41 | No |
+| T42-01 | Create base-handoff.schema.yaml | WP42 | No |
+| T42-02 | Create reviewer-to-orchestrator.schema.yaml | WP42 | Yes |
+| T42-03 | Create coder-complete-to-orchestrator.schema.yaml | WP42 | Yes |
+| T42-04 | Create docs-agent-to-orchestrator.schema.yaml | WP42 | Yes |
+| T42-05 | Link existing schemas to base schema | WP42 | No |
+| T42-06 | Verify schema structural consistency | WP42 | No |
+| T43-01 | Add error-handling policy to architecture.md | WP43 | No |
+| T43-02 | Add error policy reference to all agent files | WP43 | Yes |
+| T43-03 | Add Responsible (maker) label to Coder agent | WP43 | Yes |
+| T43-04 | Add Accountable/Verifier (checker) label to Review Coordinator | WP43 | Yes |
+| T43-05 | Document maker/checker pattern in developer guide | WP43 | No |
+| T43-06 | Verify cross-file RACI consistency | WP43 | No |
+| T44-01 | Define coverage_code frontmatter field | WP44 | Yes |
+| T44-02 | Define coverage_branch frontmatter field | WP44 | Yes |
+| T44-03 | Update code-unit-tests skill for configurable thresholds | WP44 | No |
+| T44-04 | Update code-env-setup skill for configurable thresholds | WP44 | Yes |
+| T44-05 | Update spec-test-strategy skill for configurable references | WP44 | Yes |
+| T44-06 | Verify threshold consistency across skills | WP44 | No |
+| T45-01 | Write topological sort algorithm in Orchestrator | WP45 | No |
+| T45-02 | Add lowest-number tiebreaker | WP45 | No |
+| T45-03 | Add circular dependency detection | WP45 | No |
+| T45-04 | Handle missing or empty depends_on | WP45 | Yes |
+| T45-05 | Verify all-blocked reporting | WP45 | No |
+| T46-01 | Add version_history to existing forward schemas | WP46 | No |
+| T46-02 | Add version_history to new schemas | WP46 | Yes |
+| T46-03 | Add path placeholder regex patterns | WP46 | Yes |
+| T46-04 | Document versioning protocol in developer guide | WP46 | Yes |
+| T46-05 | Verify version_history completeness | WP46 | No |
+| T47-01 | Add patterns_version to spec-patterns.md | WP47 | Yes |
+| T47-02 | Add patterns_version to plan-patterns.md | WP47 | Yes |
+| T47-03 | Add patterns_version to code-patterns.md | WP47 | Yes |
+| T47-04 | Add patterns_version to doc-patterns.md | WP47 | Yes |
+| T47-05 | Update Review Coordinator to increment patterns_version | WP47 | No |
+| T47-06 | Update coordinator agents for version-check-before-dispatch | WP47 | No |
+| T48-01 | Create test document structure | WP48 | No |
+| T48-02 | Define contract-first implementation scenario | WP48 | Yes |
+| T48-03 | Define coverage enforcement scenario | WP48 | Yes |
+| T48-04 | Define debug retry loop scenario | WP48 | Yes |
+| T48-05 | Record results and categorize findings | WP48 | No |
+
+**Total**: 9 work packages, 52 tasks
+
+### FR Traceability
+
+Every FR from Spec 010 is assigned to exactly one task (or documented multi-task spans):
+
+| FR | Task(s) | WP | Status |
+|----|---------|-----|--------|
+| FR-001 | T41-01 | WP41 | Covered |
+| FR-002 | T41-03 | WP41 | Covered |
+| FR-003 | T41-02 | WP41 | Covered |
+| FR-004 | T41-04 | WP41 | Covered |
+| FR-005 | T41-05 | WP41 | Covered |
+| FR-006 | T41-06 | WP41 | Covered |
+| FR-007 | T41-07 | WP41 | Covered |
+| FR-008 | T40-01 | WP40 | Covered |
+| FR-009 | T40-01 | WP40 | Covered |
+| FR-010 | T40-01 | WP40 | Covered |
+| FR-011 | T40-01 | WP40 | Covered |
+| FR-012 | T40-01 | WP40 | Covered |
+| FR-013 | T40-01 | WP40 | Covered |
+| FR-014 | T40-02, T40-03, T40-04, T40-05, T40-06, T40-07 | WP40 | Covered (one per agent) |
+| FR-015 | T40-02 | WP40 | Covered |
+| FR-016 | T40-04, T40-05, T40-06 | WP40 | Covered (one per agent) |
+| FR-017 | T40-04 | WP40 | Covered |
+| FR-018 | T40-05 | WP40 | Covered |
+| FR-019 | T40-06 | WP40 | Covered |
+| FR-020 | T40-01 | WP40 | Covered |
+| FR-021 | T42-02 | WP42 | Covered |
+| FR-022 | T42-02 | WP42 | Covered |
+| FR-023 | T42-03 | WP42 | Covered |
+| FR-024 | T42-03 | WP42 | Covered |
+| FR-025 | T42-04 | WP42 | Covered |
+| FR-026 | T42-04 | WP42 | Covered |
+| FR-027 | T42-02, T42-03, T42-04, T42-06 | WP42 | Covered (format per schema) |
+| FR-028 | T43-01 | WP43 | Covered |
+| FR-029 | T43-01 | WP43 | Covered |
+| FR-030 | T43-02 | WP43 | Covered |
+| FR-031 | T43-03 | WP43 | Covered |
+| FR-032 | T43-04 | WP43 | Covered |
+| FR-033 | T43-05 | WP43 | Covered |
+| FR-034 | T44-01 | WP44 | Covered |
+| FR-035 | T44-02 | WP44 | Covered |
+| FR-036 | T44-03 | WP44 | Covered |
+| FR-037 | T44-03 | WP44 | Covered |
+| FR-038 | T44-04 | WP44 | Covered |
+| FR-039 | T44-05 | WP44 | Covered |
+| FR-040 | T45-01 | WP45 | Covered |
+| FR-041 | T45-02 | WP45 | Covered |
+| FR-042 | T45-03 | WP45 | Covered |
+| FR-043 | T45-04 | WP45 | Covered |
+| FR-044 | T46-01, T46-02 | WP46 | Covered (existing + new schemas) |
+| FR-045 | T46-01, T46-02 | WP46 | Covered |
+| FR-046 | T46-04 | WP46 | Covered |
+| FR-047 | T46-04 | WP46 | Covered |
+| FR-048 | T46-03 | WP46 | Covered |
+| FR-049 | T42-01 | WP42 | Covered |
+| FR-050 | T42-01 | WP42 | Covered |
+| FR-051 | T42-02, T42-03, T42-04, T42-05 | WP42 | Covered |
+| FR-052 | T47-01, T47-02, T47-03, T47-04 | WP47 | Covered (one per file) |
+| FR-053 | T47-05 | WP47 | Covered |
+| FR-054 | T47-06 | WP47 | Covered |
+| FR-055 | T48-01 | WP48 | Covered |
+| FR-056 | T48-02, T48-03, T48-04 | WP48 | Covered (one per capability) |
+| FR-057 | T48-05 | WP48 | Covered |
+
+**FR coverage**: 57/57 FRs assigned (100%).
+
+### Consistency Notes
+
+Cross-WP consistency audit performed. No inconsistencies found:
+
+- **Data contracts**: All WPs reference the same WP frontmatter schema from Section 7.1. New field names (`review_cycles`, `docs_completed`, `coverage_code`, `coverage_branch`) are used consistently across WP41, WP44, and all agent modification tasks. Default values (0, false, 80, 90) are consistent everywhere.
+- **Enum values**: WP40 creates the canonical enum registry. All subsequent WPs reference the same values. No WP introduces values not in the registry.
+- **Handoff schemas**: WP42 creates 3 return schemas and 1 base schema following handoff/v1 format. WP46 adds version_history to all schemas including these. Context field names match between schemas and agent instructions.
+- **Agent file modifications**: Multiple WPs modify the same agent files (especially orchestrator.agent.md, coder.agent.md, review-coordinator.agent.md, docs-agent.agent.md) but target different sections. WP40: enum refs + log format. WP41: frontmatter reads/writes. WP43: error policy + RACI. WP45: WP selection. WP47: patterns version check. No section overlap.
+- **Dependency graph**: No circular dependencies. WP40 -> {WP41, WP42, WP43, WP45, WP47}, WP41 -> WP44, WP42 -> WP46, WP48 independent. All `Depends on` declarations verified valid.
+- **Configuration**: enums.yaml path (`.github/schemas/enums.yaml`), schema directory (`.github/schemas/`), pattern file paths (`.sdd/reviews/*-patterns.md`) are consistent across all WPs.
+- **Error handling**: Error codes from the error catalog (E-001 through E-052) are referenced consistently. Critical-path vs advisory distinction from WP43 aligns with error behaviors in WP41 (Docs Agent = advisory, Orchestrator = critical-path).
+- **Test consistency**: All WPs use content verification and BDD scenario testing. Coverage thresholds (80% code, 90% branch) are referenced as configurable defaults in WP44.
+- **Spec traceability**: All 57 FRs assigned. FR-014 (enum reference comments) spans 6 tasks by design (one per agent). FR-016 (canonical format) spans 3 tasks (one per log-writing agent). FR-027, FR-044/045, FR-051, FR-052, FR-056 span multiple tasks by design.
