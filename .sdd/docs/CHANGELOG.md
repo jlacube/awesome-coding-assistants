@@ -4,6 +4,20 @@
 
 ---
 
+## [WP46] - Schema Versioning Protocol (2026-04-07)
+
+### Changes
+
+- Added `version_history` sections to all 12 handoff schema files in `.github/schemas/`, each with an initial version entry tracking schema evolution over time
+- Added `placeholder_patterns` sections to 10 schemas with artifact path placeholders, mapping each placeholder ({NNN}, {name}, {slug}, {NN}) to its validation regex pattern
+- Added Schema Versioning Protocol section to the developer guide documenting when to increment schema versions (breaking changes) and when to keep them unchanged (additive changes)
+
+### Breaking Changes
+
+None.
+
+---
+
 ## [WP45] - Dependency-Aware WP Ordering (2026-04-07)
 
 ### Changes
