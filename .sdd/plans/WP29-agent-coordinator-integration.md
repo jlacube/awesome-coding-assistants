@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: for_review
 ---
 
 # WP29 - Agent Coordinator Integration
@@ -11,7 +11,7 @@ lane: doing
 | Lane | planned |
 | Depends on | WP27, WP28 |
 | Goal | All agent coordinators validate handoffs against schemas and consume domain-specific patterns; Review Coordinator curates patterns automatically |
-| Status | Not Started |
+| Status | Complete |
 | Independent Test | Attempt a handoff to the Planner with a Draft spec; verify schema validation blocks it. Start the Spec Architect; verify only spec-patterns are loaded. Submit 3 reviews with the same finding; verify a new pattern is created. |
 | Parallelisable | No |
 | Prompt | `.sdd/plans/WP29-agent-coordinator-integration.md` |
@@ -241,3 +241,14 @@ T29-01 through T29-04 can all be worked in parallel (each modifies a different a
 
 - 2026-04-05T00:00:00Z - planner - lane=planned - Work package created
 - 2026-04-06T12:00:00Z - coder - lane=doing - Starting implementation
+- 2026-04-06T12:01:00Z - coder - T29-01 - completed - Schema validation added to Spec Architect
+- 2026-04-06T12:02:00Z - coder - T29-02 - completed - Schema validation added to Planner
+- 2026-04-06T12:03:00Z - coder - T29-03 - completed - Schema validation added to Coder
+- 2026-04-06T12:04:00Z - coder - T29-04 - completed - Schema validation added to Review Coordinator
+- 2026-04-06T12:05:00Z - coder - T29-05 - completed - Domain-specific pattern isolation formalized
+- 2026-04-06T12:06:00Z - coder - T29-06 - completed - Automated pattern curation with domain files
+- 2026-04-06T12:07:00Z - coder - T29-07 - completed - Pattern retirement logic added
+- 2026-04-06T12:08:00Z - coder - T29-08 - completed - Pattern curation commit format added
+- 2026-04-06T12:09:00Z - coder - T29-09 - completed - Schema validation blocking verified by inspection
+- 2026-04-06T12:10:00Z - coder - T29-10 - completed - Pattern isolation verified by inspection
+- 2026-04-06T12:11:00Z - coder - lane=for_review - All tasks complete, verification passed
