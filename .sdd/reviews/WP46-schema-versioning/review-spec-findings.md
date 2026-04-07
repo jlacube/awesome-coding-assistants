@@ -1,47 +1,56 @@
 ---
 skill: review-spec
 wp: WP46-schema-versioning
-date: "2026-04-07T00:10:00Z"
-status: PASS
-files_reviewed:
-  - .github/schemas/ideation-to-spec.schema.yaml
-  - .github/schemas/spec-to-planner.schema.yaml
-  - .github/schemas/planner-to-coder.schema.yaml
-  - .github/schemas/coder-to-reviewer.schema.yaml
-  - .github/schemas/reviewer-to-coder.schema.yaml
-  - .github/schemas/reviewer-to-spec.schema.yaml
-  - .github/schemas/planner-to-spec.schema.yaml
-  - .github/schemas/orchestrator-handoff.schema.yaml
-  - .github/schemas/reviewer-to-orchestrator.schema.yaml
-  - .github/schemas/coder-complete-to-orchestrator.schema.yaml
-  - .github/schemas/docs-agent-to-orchestrator.schema.yaml
-  - .github/schemas/base-handoff.schema.yaml
-  - .sdd/docs/developer-guide.md
+spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+reviewed_at: 2026-04-07T12:00:00Z
+status: completed
 finding_counts:
   pass: 6
   warn: 0
   fail: 0
   na: 0
+files_reviewed:
+  - .github/schemas/base-handoff.schema.yaml
+  - .github/schemas/coder-complete-to-orchestrator.schema.yaml
+  - .github/schemas/coder-to-reviewer.schema.yaml
+  - .github/schemas/docs-agent-to-orchestrator.schema.yaml
+  - .github/schemas/ideation-to-spec.schema.yaml
+  - .github/schemas/orchestrator-handoff.schema.yaml
+  - .github/schemas/planner-to-coder.schema.yaml
+  - .github/schemas/planner-to-spec.schema.yaml
+  - .github/schemas/reviewer-to-coder.schema.yaml
+  - .github/schemas/reviewer-to-orchestrator.schema.yaml
+  - .github/schemas/reviewer-to-spec.schema.yaml
+  - .github/schemas/spec-to-planner.schema.yaml
+  - .sdd/docs/developer-guide.md
 ---
 
-# review-spec Findings -- WP46-schema-versioning
+# review-spec Findings for WP46-schema-versioning (Re-review Round 2)
 
-## Checklist
+## Findings
 
-### SPEC-001 [PASS] FR-044: version_history in all schema files
-All 12 schema files in `.github/schemas/` contain a `version_history` YAML array with at least one entry.
+### SPEC-001 [PASS]
+**FR-044**: Each handoff schema file SHALL include a version_history section.
+All 12 schema files in .github/schemas/ contain a version_history YAML array. Verified via grep search confirming matches in every file.
 
-### SPEC-002 [PASS] FR-045: version_history entry structure
-Every version_history entry contains the required three fields: `version` (string), `date` (ISO-8601), `description` (string). Base schema correctly uses "base/v1" instead of "handoff/v1".
+### SPEC-002 [PASS]
+**FR-045**: A version history entry SHALL contain: version, date, description.
+All 12 schema files verified. Every version_history entry contains all three required fields: version (string), date (ISO-8601), description (string). Base schema uses "base/v1" per T46-02; all others use "handoff/v1".
 
-### SPEC-003 [PASS] FR-046: Breaking changes require version increment
-Developer guide "When to Increment the Version" section documents breaking changes (removing fields, changing types, removing enum values, renaming fields) with concrete example. `.sdd/docs/developer-guide.md#L214-L222`.
+### SPEC-003 [PASS]
+**FR-046**: Breaking changes SHALL increment the schema version.
+Developer guide at .sdd/docs/developer-guide.md#L191 documents breaking change rules matching spec exactly.
 
-### SPEC-004 [PASS] FR-047: Additive changes retain version
-Developer guide "When to Keep the Version" section documents additive changes (new optional fields, new enum values, new optional rules) with concrete example. `.sdd/docs/developer-guide.md#L224-L232`.
+### SPEC-004 [PASS]
+**FR-047**: Additive changes SHALL retain the current schema version number.
+Developer guide documents additive change rules. Both breaking and additive changes require a version_history entry. Matches spec.
 
-### SPEC-005 [PASS] FR-048: Placeholder regex patterns
-10 schemas with path placeholders have `placeholder_patterns` sections. All four spec-defined placeholders are correctly mapped: `{NNN}` -> `\d{2,3}`, `{name}` -> `[a-z0-9-]+`, `{slug}` -> `[a-z0-9-]+`, `{NN}` -> `\d{2}`. Two schemas without artifact path placeholders (orchestrator-handoff, base-handoff) correctly omit the section.
+### SPEC-005 [PASS]
+**FR-048**: Each schema SHALL validate artifact path placeholders using defined regex patterns.
+10 schemas with path placeholders have placeholder_patterns sections. 2 schemas without path placeholders (base-handoff, orchestrator-handoff) correctly omit the section. All 4 spec-defined patterns verified correct.
 
-### SPEC-006 [PASS] SC-009: Success criteria met
-Schema files contain version_history metadata and the versioning protocol is documented in the developer guide.
+Note: planner-to-coder.schema.yaml uses {WP-slug} in contracts path but this placeholder is not in FR-048's defined set. This is a spec gap, not an implementation defect.
+
+### SPEC-006 [PASS]
+**SC-009**: Schema versioning protocol documented and schema files contain version_history sections.
+Developer guide contains versioning protocol section; all 12 schema files contain version_history entries. SC-009 fully satisfied.

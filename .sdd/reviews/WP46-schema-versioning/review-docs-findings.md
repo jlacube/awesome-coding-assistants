@@ -1,26 +1,45 @@
 ---
 skill: review-docs
 wp: WP46-schema-versioning
-date: "2026-04-07T00:10:00Z"
-status: PASS
-files_reviewed:
-  - .sdd/docs/developer-guide.md
+spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+reviewed_at: 2026-04-07T12:00:00Z
+status: completed
 finding_counts:
   pass: 3
   warn: 0
   fail: 0
-  na: 0
+  na: 6
+files_reviewed:
+  - .sdd/docs/developer-guide.md
 ---
 
-# review-docs Findings -- WP46-schema-versioning
+# review-docs Findings for WP46-schema-versioning (Re-review Round 2)
 
-## Checklist
+## Findings
 
-### DOCS-001 [PASS] Schema Versioning Protocol section exists
-Developer guide contains "Schema Versioning Protocol" section at line 186 with version_history format, breaking/additive change rules, and placeholder patterns table.
+### DOC-001 [PASS]
+**Developer Guide - Schema Versioning Protocol**: Section exists at .sdd/docs/developer-guide.md#L191 with substantive content covering: version_history format, when to increment version (breaking changes), when to keep version (additive changes), version_history entry requirement for both change types, and path placeholder patterns table with all 4 FR-048 patterns.
 
-### DOCS-002 [PASS] Content accuracy
-Breaking change examples (removing fields, changing types, removing enum values, renaming fields) match FR-046. Additive change examples (new optional fields, new enum values, new optional rules) match FR-047. Placeholder regex patterns match FR-048.
+### DOC-002 [PASS]
+**Developer Guide - Breaking vs Additive Examples**: Concrete examples provided: removing contracts_dir field as breaking change example, adding optional priority field as additive change example. These align with FR-046 and FR-047 spec requirements.
 
-### DOCS-003 [PASS] Cross-references
-Section correctly references `.github/schemas/` directory and uses concrete file examples (coder-to-reviewer.schema.yaml, planner-to-coder.schema.yaml).
+### DOC-003 [PASS]
+**Developer Guide - Placeholder Patterns Table**: Accurate table documents all 4 placeholder patterns ({NNN}, {name}, {slug}, {NN}) with regex and descriptions matching FR-048.
+
+### DOC-004 [N/A]
+**Architecture Docs**: N/A -- WP46 does not modify architecture.md. No new components introduced.
+
+### DOC-005 [N/A]
+**API Reference**: N/A -- No API endpoints in WP46.
+
+### DOC-006 [N/A]
+**Configuration Guide**: N/A -- No environment variables or configuration introduced.
+
+### DOC-007 [N/A]
+**User Guide**: N/A -- No user-facing features in WP46.
+
+### DOC-008 [N/A]
+**Staleness**: N/A -- No stale references detected in modified documentation.
+
+### DOC-009 [N/A]
+**Deployment Guide**: N/A -- No deployment changes in WP46.
