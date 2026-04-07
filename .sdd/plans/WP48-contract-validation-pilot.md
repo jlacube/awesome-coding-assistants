@@ -1,5 +1,5 @@
 ---
-lane: planned
+lane: doing
 ---
 
 # WP48 - Contract Validation Pilot
@@ -8,10 +8,10 @@ lane: planned
 |-------|-------|
 | Spec | `.sdd/specs/010-sdd-pipeline-hardening.spec.md` |
 | Priority | P3 |
-| Lane | planned |
+| Lane | doing |
 | Depends on | none |
 | Goal | Create an integration test document that validates the Coder's contract-first workflow against real source code |
-| Status | Not Started |
+| Status | In Progress |
 | Independent Test | Read `.sdd/tests/contract-validation-pilot.md` and verify it contains test scenarios for contract-first implementation, coverage enforcement, and debug retry loops. |
 | Parallelisable | Yes (with WP47) |
 | Prompt | `.sdd/plans/WP48-contract-validation-pilot.md` |
@@ -32,9 +32,9 @@ FR-055, FR-056, FR-057, Section 4.12 (Contract File Validation Pilot), US-13
 - **Spec refs**: FR-055
 - **Parallel**: No (foundation for T48-02 through T48-04)
 - **Acceptance criteria**:
-  - [ ] File exists at `.sdd/tests/contract-validation-pilot.md` (FR-055)
-  - [ ] Document contains scenario description, expected outcomes, and results sections
-  - [ ] The pipeline has been used to build itself (prerequisite noted)
+  - [x] File exists at `.sdd/tests/contract-validation-pilot.md` (FR-055)
+  - [x] Document contains scenario description, expected outcomes, and results sections
+  - [x] The pipeline has been used to build itself (prerequisite noted)
 - **Test requirements**: content
 - **Depends on**: none
 - **Implementation Guidance**:
@@ -48,9 +48,9 @@ FR-055, FR-056, FR-057, Section 4.12 (Contract File Validation Pilot), US-13
 - **Spec refs**: FR-056
 - **Parallel**: Yes (with T48-03, T48-04)
 - **Acceptance criteria**:
-  - [ ] Test scenario for contract-first implementation exists with pass/fail criteria (FR-056)
-  - [ ] Scenario describes: input contract file, expected implementation output, verification method
-  - [ ] If no suitable codebase is available, the document records this limitation with a reason
+  - [x] Test scenario for contract-first implementation exists with pass/fail criteria (FR-056)
+  - [x] Scenario describes: input contract file, expected implementation output, verification method
+  - [x] If no suitable codebase is available, the document records this limitation with a reason
 - **Test requirements**: content, BDD (US-13 Scenario 1)
 - **Depends on**: T48-01
 - **Implementation Guidance**:
@@ -63,9 +63,9 @@ FR-055, FR-056, FR-057, Section 4.12 (Contract File Validation Pilot), US-13
 - **Spec refs**: FR-056
 - **Parallel**: Yes (with T48-02, T48-04)
 - **Acceptance criteria**:
-  - [ ] Test scenario for coverage threshold enforcement exists with pass/fail criteria (FR-056)
-  - [ ] Scenario describes: WP with specific coverage thresholds, expected test behavior, verification method
-  - [ ] If capability cannot be tested, document why and propose alternative validation (FR-056)
+  - [x] Test scenario for coverage threshold enforcement exists with pass/fail criteria (FR-056)
+  - [x] Scenario describes: WP with specific coverage thresholds, expected test behavior, verification method
+  - [x] If capability cannot be tested, document why and propose alternative validation (FR-056)
 - **Test requirements**: content, BDD (US-13 Scenario 1)
 - **Depends on**: T48-01
 - **Implementation Guidance**:
@@ -78,9 +78,9 @@ FR-055, FR-056, FR-057, Section 4.12 (Contract File Validation Pilot), US-13
 - **Spec refs**: FR-056
 - **Parallel**: Yes (with T48-02, T48-03)
 - **Acceptance criteria**:
-  - [ ] Test scenario for debug retry loops exists with pass/fail criteria (FR-056)
-  - [ ] Scenario describes: intentional test failure, expected debug behavior, max retry count, verification method
-  - [ ] If capability cannot be tested, document why and propose alternative validation (FR-056)
+  - [x] Test scenario for debug retry loops exists with pass/fail criteria (FR-056)
+  - [x] Scenario describes: intentional test failure, expected debug behavior, max retry count, verification method
+  - [x] If capability cannot be tested, document why and propose alternative validation (FR-056)
 - **Test requirements**: content, BDD (US-13 Scenario 1)
 - **Depends on**: T48-01
 - **Implementation Guidance**:
@@ -93,10 +93,10 @@ FR-055, FR-056, FR-057, Section 4.12 (Contract File Validation Pilot), US-13
 - **Spec refs**: FR-057
 - **Parallel**: No (depends on scenario definitions)
 - **Acceptance criteria**:
-  - [ ] Results section records outcomes for each scenario or states "Not yet executed" with a reason (FR-057)
-  - [ ] Each finding is categorized as: blocking, degraded, or cosmetic (FR-057)
-  - [ ] If the test was not executed, the results section explains why (FR-057)
-  - [ ] Given no suitable test codebase, the document records this as a known limitation (US-13 Scenario 2)
+  - [x] Results section records outcomes for each scenario or states "Not yet executed" with a reason (FR-057)
+  - [x] Each finding is categorized as: blocking, degraded, or cosmetic (FR-057)
+  - [x] If the test was not executed, the results section explains why (FR-057)
+  - [x] Given no suitable test codebase, the document records this as a known limitation (US-13 Scenario 2)
 - **Test requirements**: content, BDD (US-13 Scenario 2)
 - **Depends on**: T48-02, T48-03, T48-04
 - **Implementation Guidance**:
@@ -120,3 +120,4 @@ FR-055, FR-056, FR-057, Section 4.12 (Contract File Validation Pilot), US-13
 ## Activity Log
 
 - 2026-04-06T00:00:00Z - planner - lane=planned - Work package created
+- 2026-04-07T00:00:00Z - coder - lane=doing - Starting implementation
