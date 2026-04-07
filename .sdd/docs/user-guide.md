@@ -232,3 +232,22 @@ The following skills read these fields:
 - **code-unit-tests** -- uses thresholds for coverage enforcement
 - **code-env-setup** -- uses thresholds when configuring coverage tooling
 - **spec-test-strategy** -- references configurable thresholds in test requirements
+
+## Mid-Cycle Pattern Propagation (WP47)
+
+When the Review Coordinator discovers a new pattern during a review, that pattern can take effect within the same pipeline run -- without restarting coordinators.
+
+### How It Works
+
+Each domain pattern file (`spec-patterns.md`, `plan-patterns.md`, `code-patterns.md`, `doc-patterns.md`) has a `patterns_version` integer in its YAML frontmatter. Before each skill dispatch, coordinator agents check whether `patterns_version` has changed since they last read the file. If it has, the coordinator reloads the patterns and uses the updated content for subsequent skills.
+
+### What You See
+
+- **Automatic**: Pattern propagation is transparent. You do not need to restart or re-invoke coordinators.
+- **Review adds a pattern**: When the Review Coordinator adds, modifies, or retires a pattern, it increments `patterns_version` in that file automatically.
+- **Next skill picks it up**: The next skill dispatch by any coordinator detects the version change and reloads the patterns.
+
+### Error Handling
+
+- If a patterns file becomes unreadable during a re-check, the coordinator uses the last successfully cached patterns and logs a warning.
+- If a patterns file has no YAML frontmatter, `patterns_version` is treated as 0, causing a reload on every dispatch (safe default).

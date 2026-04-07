@@ -50,6 +50,10 @@
   plans/                            # Work package plans + README.md index
   reviews/                          # Review artifacts
     review-patterns.md              # Active + resolved review patterns
+    spec-patterns.md                # Spec-domain patterns (with patterns_version frontmatter)
+    plan-patterns.md                # Plan-domain patterns (with patterns_version frontmatter)
+    code-patterns.md                # Code-domain patterns (with patterns_version frontmatter)
+    doc-patterns.md                 # Doc-domain patterns (with patterns_version frontmatter)
     <WP-id>/                        # Per-WP findings (one dir per reviewed WP)
   docs/                             # Project documentation (this directory)
 ```
@@ -262,3 +266,30 @@ This is intentional dual-touch, not redundancy. The Coder marks criteria complet
 Both roles are documented in their respective agent instruction files:
 - Coder: `.github/agents/coder.agent.md` (rules section and Step 8c)
 - Review Coordinator: `.github/agents/review-coordinator.agent.md` (Step 4)
+
+## Pattern File Versioning (WP47)
+
+All four domain pattern files in `.sdd/reviews/` include a `patterns_version` integer in their YAML frontmatter:
+
+```yaml
+---
+patterns_version: 1
+---
+```
+
+### Rules
+
+- **Review Coordinator increments**: When the Review Coordinator adds, modifies, or retires a pattern in any domain file, it increments `patterns_version` by 1 in that file's frontmatter.
+- **If missing, add it**: If `patterns_version` is absent when the Review Coordinator modifies a patterns file, it adds the field with value 1.
+- **Coordinators check before dispatch**: Before each skill dispatch, coordinator agents (Spec Architect, Planner, Coder, Docs Agent) compare `patterns_version` against their last recorded value and re-read the file if changed.
+- **Missing frontmatter**: If a patterns file has no frontmatter, `patterns_version` is treated as 0, causing a reload on every dispatch (safe default, E-032).
+- **Unreadable file**: If the patterns file cannot be read on re-check, the coordinator uses cached patterns and logs a warning (E-031).
+
+### Affected Files
+
+| File | Domain | Consumed By |
+|------|--------|-------------|
+| `.sdd/reviews/spec-patterns.md` | Specification | Spec Architect |
+| `.sdd/reviews/plan-patterns.md` | Planning | Planner |
+| `.sdd/reviews/code-patterns.md` | Implementation | Coder |
+| `.sdd/reviews/doc-patterns.md` | Documentation | Docs Agent |

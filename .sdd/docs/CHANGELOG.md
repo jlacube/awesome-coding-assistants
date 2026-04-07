@@ -4,6 +4,21 @@
 
 ---
 
+## [WP47] - Pattern File Propagation (2026-04-07)
+
+### Changes
+
+- Added `patterns_version` integer to the YAML frontmatter of all four domain pattern files (`spec-patterns.md`, `plan-patterns.md`, `code-patterns.md`, `doc-patterns.md`) for version tracking
+- Updated the Review Coordinator to increment `patterns_version` by 1 each time it adds, modifies, or retires a pattern in a domain file
+- Updated all four coordinator agents (Spec Architect, Planner, Coder, Docs Agent) to check `patterns_version` before each skill dispatch and reload patterns if the version has changed
+- Added fallback handling: if a patterns file is unreadable on re-check (E-031), coordinators use cached patterns; if frontmatter is missing, `patterns_version` is treated as 0 (E-032)
+
+### Breaking Changes
+
+None.
+
+---
+
 ## [WP46] - Schema Versioning Protocol (2026-04-07)
 
 ### Changes
