@@ -55,6 +55,7 @@
     code-patterns.md                # Code-domain patterns (with patterns_version frontmatter)
     doc-patterns.md                 # Doc-domain patterns (with patterns_version frontmatter)
     <WP-id>/                        # Per-WP findings (one dir per reviewed WP)
+  tests/                            # Integration and validation test documents (WP48)
   docs/                             # Project documentation (this directory)
 ```
 

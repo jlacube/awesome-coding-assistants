@@ -171,6 +171,7 @@ This asymmetry is intentional: critical-path agents produce artifacts that downs
     review-patterns.md              # Active + resolved review patterns
     doc-patterns.md                 # Active + resolved doc patterns
     <WP-id>/                        # Per-WP findings directory
+  tests/                            # Integration and validation test documents
   docs/                             # Generated documentation
 ```
 

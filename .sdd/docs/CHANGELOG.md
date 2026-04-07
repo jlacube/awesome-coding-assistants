@@ -4,6 +4,22 @@
 
 ---
 
+## [WP48] - Contract Validation Pilot (2026-04-07)
+
+### Changes
+
+- Created contract validation pilot test document at `.sdd/tests/contract-validation-pilot.md` with integration test scenarios for three Coder agent capabilities
+- Defined contract-first implementation scenario: verifies the Coder reads TypeScript interface contracts and produces matching implementations
+- Defined coverage threshold enforcement scenario: verifies the Coder's test skills enforce configurable coverage thresholds against real code
+- Defined debug retry loop scenario: verifies the Coder's debug skill diagnoses test failures and retries within the retry budget
+- Recorded results as "Not yet executed" with rationale (no suitable real codebase in current workspace) and proposed future validation path
+
+### Breaking Changes
+
+None.
+
+---
+
 ## [WP47] - Pattern File Propagation (2026-04-07)
 
 ### Changes
