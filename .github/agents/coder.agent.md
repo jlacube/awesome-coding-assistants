@@ -115,9 +115,21 @@ Before dispatching any skill, read the full context chain:
 1. Read `.sdd/plans/README.md` for sequencing context and dependency status.
 2. Read the spec section(s) referenced in the WP's `Spec` field using `read_file`.
 3. Extract the WP slug from the filename (e.g., `WP03-review-spec.md` -> slug is `review-spec`). Read contract files in `.sdd/plans/contracts/<WP-slug>/` using `list_dir` then `read_file` for each file.
-4. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
-5. **Research context**: Extract the `## Research Context` section from the WP file (if present). This contains technology-specific gotchas, library version notes, and known pitfalls collected during the Planner's research phase. Include this in skill dispatch prompts.
-6. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
+4. **Read shared contracts**: Read `.sdd/plans/contracts/shared/` using `list_dir` then `read_file` for each file. These contain entity types and interfaces shared across WPs. If the directory does not exist or is empty, proceed without error.
+5. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
+6. **Extract target language and framework**: Read `target_language` and `target_framework` from the WP file's YAML frontmatter. If `target_language` is absent, fall back to reading the spec's Section 9.2 Technology Stack. If still undetermined, halt with: "Cannot determine target language. Set `target_language` in WP frontmatter or spec Section 9.2." Store these values for use in the Step 6 dispatch template.
+7. **Research context**: Extract the `## Research Context` section from the WP file (if present). This contains technology-specific gotchas, library version notes, and known pitfalls collected during the Planner's research phase. Include this in skill dispatch prompts.
+8. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
+
+## Step 2d - Read Dependency Source Context
+
+For WPs with dependencies (`depends_on` is non-empty), build a compact dependency source context:
+
+1. For each completed dependency WP, read its Activity Log to identify which source files it created or modified.
+2. Use `list_dir` and `read_file` to read the key source files (entry points, main modules, exported interfaces) from each dependency WP's scope. Limit to the first 5 key files per dependency -- focus on public API surface, not internals.
+3. Build a `dependency_source_summary` string listing: (a) actual file paths of modules produced by dependency WPs, (b) exported symbols (classes, functions, types) from those modules, (c) actual import paths for consuming these modules.
+4. Include `dependency_source_summary` in the Step 6 dispatch prompt via the `<dependency_source_summary>` substitution value.
+5. If the WP has no dependencies (WP01 or `depends_on: []`), set `dependency_source_summary` to "No dependency source context (foundation WP)."
 
 ## Step 2b - Detect Rework Mode
 
@@ -190,7 +202,64 @@ Dispatch each discovered skill (except `code-debug`, handled in Step 7) one at a
 
 Before each skill dispatch, read `patterns_version` from `.sdd/reviews/code-patterns.md` YAML frontmatter. If it differs from `last_patterns_version`, re-read the full file, extract the updated "Active Patterns" section, and update `last_patterns_version`. If the file is unreadable on re-check (E-031), use the last successfully read patterns and log a warning. If frontmatter is missing, treat `patterns_version` as 0 (triggers reload every time as a safe default).
 
-For each skill, use this prompt template:
+### Per-task dispatch for `code-implementation` (FR-009a)
+
+The `code-implementation` skill is dispatched **once per task**, not once for the entire WP. This prevents context overflow and improves implementation fidelity.
+
+1. Extract the ordered task list from the WP file (Task 1, Task 2, ..., Task N).
+2. For each task in sequence:
+   a. Build the prompt using the **single-task prompt template** below, substituting only that task's data.
+   b. Dispatch `code-implementation` via `runSubagent` and wait for completion.
+   c. On success: record files modified and move to the next task.
+   d. On failure: halt the WP immediately. Do NOT proceed to the next task or other skills.
+3. After ALL tasks complete successfully, proceed to Step 6a (contract compliance spot-check) and then test skills.
+
+### Dispatch for other skills (code-env-setup, code-unit-tests, code-integration-tests)
+
+All other skills are dispatched once per WP using the **WP-level prompt template** below.
+
+### Single-task prompt template (for `code-implementation`)
+
+```
+Implement: code-implementation (Task <task_number>/<total_tasks>)
+
+1. Read the skill instructions at: <skill_path>
+2. Read the WP file at: <wp_path>
+3. Read contract files at: <contracts_dir>
+4. Read shared contracts at: <shared_contracts_dir>
+5. Read spec sections: <spec_refs>
+6. Active patterns to avoid: <patterns>
+7. Target: <target_language> with <target_framework>
+8. Task to implement (ONLY this task -- do not implement other tasks):
+
+### Task <task_number>: <task_title>
+<task_description>
+**Spec refs**: <task_spec_refs>
+**Acceptance criteria**:
+<task_acceptance_criteria>
+**Implementation Guidance**:
+<task_implementation_guidance>
+
+9. Artifact summary (for orientation -- read full files for implementation detail):
+<artifact_summary>
+10. Research context (technology gotchas and known pitfalls):
+<research_context>
+11. Dependency source context (actual file paths and exports from dependency WPs):
+<dependency_source_summary>
+12. Files already created by prior tasks in this WP: <prior_task_files>
+
+Rules:
+- Implement contract-first: signatures, types, fields MUST match contract files exactly
+- Contract files are READ-ONLY -- do NOT modify any file in .sdd/plans/contracts/
+- Check off acceptance criteria in the WP file as you complete this task
+- Follow existing codebase conventions
+- Do NOT add features not in the spec
+- Do NOT implement tasks other than the one specified above
+- Do NOT perform self-review or quality assessment
+- Report files modified, task completed, test results, and issues
+```
+
+### WP-level prompt template (for other skills)
 
 ```
 Implement: <skill_name>
@@ -198,14 +267,17 @@ Implement: <skill_name>
 1. Read the skill instructions at: <skill_path>
 2. Read the WP file at: <wp_path>
 3. Read contract files at: <contracts_dir>
-4. Read spec sections: <spec_refs>
-5. Active patterns to avoid: <patterns>
-6. Target: <target_language> with <target_framework>
-7. Tasks: <task_list_with_acceptance_criteria>
-8. Artifact summary (for orientation -- read full files for implementation detail):
+4. Read shared contracts at: <shared_contracts_dir>
+5. Read spec sections: <spec_refs>
+6. Active patterns to avoid: <patterns>
+7. Target: <target_language> with <target_framework>
+8. Tasks: <task_list_with_acceptance_criteria>
+9. Artifact summary (for orientation -- read full files for implementation detail):
 <artifact_summary>
-9. Research context (technology gotchas and known pitfalls):
+10. Research context (technology gotchas and known pitfalls):
 <research_context>
+11. Dependency source context (actual file paths and exports from dependency WPs):
+<dependency_source_summary>
 
 Rules:
 - Implement contract-first: signatures, types, fields MUST match contract files exactly
@@ -221,17 +293,21 @@ Rules:
 - `<skill_path>`: Full path to the skill's SKILL.md (e.g., `.github/skills/code-env-setup/SKILL.md`)
 - `<wp_path>`: Path to the WP file being implemented
 - `<contracts_dir>`: `.sdd/plans/contracts/<WP-slug>/`
+- `<shared_contracts_dir>`: `.sdd/plans/contracts/shared/` (cross-WP entity types and interfaces)
 - `<spec_refs>`: Spec file path and section references from the WP
 - `<patterns>`: Active patterns from Step 4 (or "No active patterns")
-- `<target_language>`: Programming language from WP or spec (e.g., TypeScript, Python)
-- `<target_framework>`: Framework from WP or spec (e.g., Express, FastAPI, React)
-- `<task_list_with_acceptance_criteria>`: All tasks from the WP with their acceptance criteria and spec refs
+- `<target_language>`: Programming language from WP frontmatter (Step 2 item 6), e.g., TypeScript, Python
+- `<target_framework>`: Framework from WP frontmatter (Step 2 item 6), e.g., Express, FastAPI, React
+- `<task_list_with_acceptance_criteria>`: All tasks from the WP with their acceptance criteria and spec refs (WP-level template only)
+- `<task_number>`, `<total_tasks>`, `<task_title>`, `<task_description>`, `<task_spec_refs>`, `<task_acceptance_criteria>`, `<task_implementation_guidance>`: Fields from the specific task being dispatched (single-task template only)
+- `<prior_task_files>`: Cumulative list of files created/modified by prior task dispatches in this WP (single-task template only, empty for Task 1)
 - `<artifact_summary>`: Pre-read artifact summary from Step 2c (contract signatures, FR list, pattern IDs)
 - `<research_context>`: Research Context section from the WP file (Step 2.5), or "No research context available"
+- `<dependency_source_summary>`: Dependency source context from Step 2d, or "No dependency source context (foundation WP)"
 
 **Context forwarding (FR-009)**: Each skill reads the current state of the codebase (files created or modified by prior skills) before executing. This is automatic since each subagent reads the filesystem fresh.
 
-**Failure handling**: If any skill reports failure (environment setup or implementation), halt the WP immediately. Do NOT dispatch remaining skills. Report the failure with full context to the user via `vscode_askQuestions`.
+**Failure handling**: If any skill dispatch reports failure (environment setup, implementation, or tests), halt the WP immediately. Do NOT dispatch remaining skills or tasks. Report the failure with full context to the user via `vscode_askQuestions`.
 
 ## Step 6a - Contract Compliance Spot-Check
 
@@ -396,7 +472,7 @@ Do NOT prepend or insert mid-list -- always append to the end.
 
 After all skills complete and all tests pass:
 
-1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
+1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds. Read `coverage_code` and `coverage_branch` from the WP file's YAML frontmatter. If these fields are absent, use defaults: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
 2. **Set lane (FR-014.2)**: Update the WP file's `lane:` frontmatter to `for_review`.
 3. **Activity Log**: Append: `<ISO-8601-timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
 4. **Update plan index**: Update the WP's status in `.sdd/plans/README.md` to reflect completion.

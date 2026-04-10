@@ -21,11 +21,13 @@ This skill is dispatched by the Coder Coordinator during Phase 2. It implements 
 | 1 | `skill_path` | Path to this SKILL.md file |
 | 2 | `wp_path` | Path to the WP file being implemented |
 | 3 | `contracts_dir` | Path to contract files for this WP (`.sdd/plans/contracts/<WP-slug>/`) |
-| 4 | `spec_path` | Path to the source spec file |
+| 4 | `shared_contracts_dir` | Path to shared cross-WP contracts (`.sdd/plans/contracts/shared/`) |
+| 5 | `spec_path` | Path to the source spec file |
 | 5 | `patterns` | Active code-domain patterns to avoid (from `code-patterns.md`) |
 | 6 | `target_language` | Programming language (e.g., TypeScript, Python) |
 | 7 | `target_framework` | Framework (e.g., Express, FastAPI, React) |
 | 8 | `task_list` | Tasks with acceptance criteria and spec refs |
+| 9 | `dependency_source_summary` | Actual file paths, exports, and import paths from completed dependency WPs |
 
 ---
 
@@ -81,7 +83,9 @@ Before implementing each task, read the contract files it references. Contract f
 
 The `<ext>` matches the target language (e.g., `.ts`, `.py`, `.go`).
 
-**Missing contract file handling**: If a task references a contract file that does not exist in `contracts_dir`:
+**Shared contracts**: Also read contract files from `shared_contracts_dir` (`.sdd/plans/contracts/shared/`). These contain entity types and interfaces defined by earlier WPs that the current WP may depend on. Import shared types from the shared contracts rather than re-defining them.
+
+**Missing contract file handling**: If a task references a contract file that does not exist in `contracts_dir` or `shared_contracts_dir`:
 - Report failure immediately
 - Set `status: failure` and `failure_reason: "Contract file <path> referenced by task <task_id> not found"`
 - Do NOT continue with the remaining tasks -- halt and let the coordinator handle it
@@ -90,11 +94,17 @@ The `<ext>` matches the target language (e.g., `.ts`, `.py`, `.go`).
 
 ## Step 3 -- Implement Contract-First (FR-023, FR-024)
 
-For each task, implement the code that satisfies every acceptance criterion. Follow this sequence:
+Implement the code that satisfies every acceptance criterion for the assigned task. The Coder dispatches this skill once per task, so focus on implementing ONLY the task specified in the prompt. Follow this sequence:
 
-### 3a. Read Spec Refs and Acceptance Criteria
+### 3a. Read Spec Refs, Acceptance Criteria, and Implementation Guidance
 
 Read the task's spec refs (FR-XXX, Section N.X) from the spec file. Understand every SHALL obligation, precondition, postcondition, and error path.
+
+Read the task's **Implementation Guidance** section from the WP file. This section contains specific instructions, recommended libraries, doc links, patterns, and constraints for how to implement this task. Follow its guidance precisely -- it was written by the Planner with knowledge of the target stack and architecture.
+
+### 3a.1. Directory Structure (Greenfield)
+
+If this is the first task of the first WP (no existing source files), read the spec's **Section 9.3 Directory Structure** to determine where files should be placed. Create directories as needed. For subsequent tasks and WPs, follow the directory structure already established by prior tasks.
 
 ### 3b. Copy Interface/Type Definitions Verbatim (FR-024.1, FR-024.2)
 
@@ -154,6 +164,14 @@ Match the existing codebase style:
 - Logging patterns (if the codebase uses a logger, use the same one)
 
 If the codebase is empty (greenfield), follow the conventions specified in the spec or standard conventions for the target language/framework.
+
+### 3g.1. Import from Dependency WPs
+
+When the current WP depends on modules from earlier WPs (per `dependency_source_summary` input):
+- Use the actual file paths and import paths listed in the dependency source summary
+- Do NOT guess import paths -- use the exact module paths from the summary
+- If a needed symbol is listed in the dependency exports, import it directly
+- If a needed symbol is NOT in the dependency exports, check shared contracts first, then report as an issue
 
 ### 3h. Check Off Acceptance Criteria (FR-023.7)
 
