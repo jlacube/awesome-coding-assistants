@@ -145,17 +145,25 @@ For module-level exports:
 
 ---
 
-## Step 4 - Scope Contracts to WP (FR-037, FR-038)
+## Step 4 - Scope Contracts to WP and Write Shared Contracts (FR-037, FR-038)
 
 Each WP's interface file MUST contain ONLY the interfaces that WP introduces or modifies:
 
 - Do NOT duplicate interfaces from other WPs
 - If a WP extends an interface from a prior WP, import the base interface and re-export the extended version
-- If an interface is shared across WPs, the first WP (lowest number) defines it; subsequent WPs import from the first WP's contracts directory
+
+### Shared interface contracts
+
+For interfaces that will be consumed by subsequent WPs:
+
+1. Write the interface definition to BOTH `<contracts_dir>/<WP-slug>/interfaces.<ext>` AND `<contracts_dir>/shared/interfaces.<ext>`.
+2. The shared file accumulates interface definitions across WPs -- append new interfaces to it; do NOT overwrite existing content.
+3. Subsequent WPs' contract files SHALL import shared interfaces from `../shared/interfaces` rather than from the owning WP's directory.
+4. If `<contracts_dir>/shared/interfaces.<ext>` does not exist, create it with the standard manifest header.
 
 Import syntax by language:
-- TypeScript: `import { UserService } from '../WP01-user-management/interfaces';`
-- Python: `from ..wp01_user_management.interfaces import UserService`
+- TypeScript: `import { UserService } from '../shared/interfaces';`
+- Python: `from ..shared.interfaces import UserService`
 
 ---
 

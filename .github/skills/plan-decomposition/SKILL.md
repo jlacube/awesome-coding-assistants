@@ -135,6 +135,10 @@ Write one file per work package at `<plan_dir>/WP<NN>-<slug>.md` with this struc
 lane: planned
 depends_on: []
 docs_scope: []
+target_language: <target_language>
+target_framework: <target_framework>
+coverage_code: 80
+coverage_branch: 90
 ---
 
 # WP<NN> - <Title>
@@ -143,7 +147,6 @@ docs_scope: []
 |-------|-------|
 | Spec | `<spec_path>` |
 | Priority | P0 / P1 / P2 |
-| Lane | planned |
 | Depends on | WP<NN> or none |
 | Goal | One-sentence user-observable outcome |
 | Status | Not Started |
@@ -188,6 +191,10 @@ docs_scope: []
 - Feature WPs with source code: `docs_scope: [architecture, api-reference, user-guide, developer-guide, changelog, inline-code]`
 - Infrastructure/config WPs: `docs_scope: [changelog, developer-guide]`
 - Documentation-only WPs: `docs_scope: [changelog]`
+
+**YAML frontmatter `target_language` and `target_framework`**: Set these to the WP's implementation language and framework (e.g., `target_language: TypeScript`, `target_framework: Express`). Derive from the spec's Section 9.2 Technology Stack. These values are read by the Coder to dispatch skills with the correct language context. Every WP MUST have `target_language` set.
+
+**YAML frontmatter `coverage_code` and `coverage_branch`**: Set code and branch coverage thresholds as integers (defaults: 80 and 90). Adjust per WP if the spec defines different thresholds or if the WP is infrastructure-heavy (lower thresholds may be appropriate for config/setup WPs).
 
 ---
 

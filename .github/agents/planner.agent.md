@@ -319,7 +319,16 @@ After all skills have completed, validate the plan:
 4. Contract file references per task (Phase 2 only)
 5. No ambiguous language ("should", "appropriate", "reasonable", "as needed", "etc.", "similar")
 
-Fix any issues found inline. Document corrections in README under "Consistency Notes".
+### 10c. Fix Validation Issues via Targeted Re-Dispatch
+
+If issues are found in 10a or 10b:
+
+1. **WP file issues** (task count, acceptance criteria, guidance): Re-dispatch `plan-acceptance` with a targeted prompt specifying only the affected WPs and the specific issues to fix. The skill updates existing WP files.
+2. **Contract file issues** (field mismatches, missing contracts): Re-dispatch the specific Phase 2 skill responsible for the contract type (e.g., `plan-data-schemas` for entity field inconsistencies, `plan-interface-contracts` for signature mismatches). Include the validation finding in the dispatch prompt so the skill knows exactly what to fix.
+3. **Dependency issues**: Fix directly by updating the affected WP files' `depends_on` frontmatter and markdown table.
+4. **Max fix attempts**: Re-dispatch up to 2 times per issue. If an issue persists after 2 re-dispatch attempts, document it in the README under "Consistency Notes" and proceed.
+
+Document all corrections in README under "Consistency Notes".
 
 ## Step 11 - Presentation and Approval (FR-020, FR-021)
 
