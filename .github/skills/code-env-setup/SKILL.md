@@ -92,6 +92,23 @@ Check for an existing development environment by scanning for these indicators i
 - If an environment exists and appears functional: proceed to Step 3 (dependency installation)
 - If no environment exists: proceed to Step 2 (environment creation)
 - If multiple language indicators exist: use `target_language` from the input to determine the primary environment
+- If an environment exists but appears broken: proceed to Step 1b (environment recovery)
+
+### Step 1b -- Environment Recovery (Broken/Corrupted Environment)
+
+If an environment directory exists (e.g., `node_modules/`, `.venv/`) but a basic health check fails, the environment is considered broken. Health checks:
+
+- **Node.js**: Run `node -e "require('./package.json')"` and `npx --version`. If either fails, the environment is broken.
+- **Python**: Run `<venv>/bin/python --version` (or `<venv>\Scripts\python --version` on Windows) and verify it exits 0. If it fails, the environment is broken.
+- **Go**: Run `go env GOPATH` and verify it exits 0.
+- **Rust**: Run `cargo --version` and verify it exits 0.
+
+Recovery procedure:
+1. Log: "Environment appears broken. Removing and recreating."
+2. Delete the broken environment directory (e.g., `rm -rf node_modules` or `rm -rf .venv`).
+3. Proceed to Step 2 (environment creation) as if no environment existed.
+
+Do NOT attempt to repair a broken environment -- always delete and recreate.
 
 ---
 
