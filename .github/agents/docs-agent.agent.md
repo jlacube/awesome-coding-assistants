@@ -106,7 +106,15 @@ Sort discovered skills into the canonical dispatch order:
 - Skills from the canonical list that are NOT discovered: skip without error.
 - Skills discovered but NOT in the canonical list: dispatch AFTER all canonical skills, in alphabetical order.
 
-Log the final dispatch order.
+### 5b. Apply docs_scope Filter
+
+After ordering, check the WP file's YAML frontmatter for a `docs_scope` field:
+
+- **If `docs_scope` is present** (e.g., `docs_scope: [changelog, developer-guide]`): filter the dispatch list to include ONLY skills whose short name (after `doc-` prefix) matches a value in `docs_scope`. This allows WPs to declare which documentation is relevant, avoiding unnecessary skill dispatches for infrastructure or config-only WPs.
+- **If `docs_scope` is absent or empty**: dispatch ALL discovered skills (default behavior, backward compatible).
+- **Auto-detection fallback**: If `docs_scope` is absent AND the WP produced no executable source files (only markdown, YAML, or config files), automatically skip `doc-api-reference` and `doc-inline-code` (they have nothing to document). Log: "Auto-skipping doc-api-reference and doc-inline-code -- no source files in WP scope."
+
+Log the final dispatch order after filtering.
 
 ## Step 6 - Sequential Skill Dispatch (FR-005, FR-006, FR-007)
 
@@ -198,20 +206,19 @@ git commit -m "docs(docs): update documentation for WP<NN>"
 ### 7d. Error handling
 
 - If `git add` or `git commit` fails, report the error to the invoker.
-- Do not retry -- report the error and halt.
 
-## Step 7e - Set docs_completed Frontmatter (FR-004)
+### 7e. Set docs_completed Frontmatter (FR-004)
 
 After committing documentation changes (Step 7c), set `docs_completed: true` in the WP file's YAML frontmatter. If the `docs_completed` field is absent, add it. This signals to the Orchestrator that documentation has been generated for this WP.
 
 - If the WP file cannot be written, log the error and report it in the completion signal. Do NOT halt -- the Docs Agent is advisory (best-effort).
-- If no documentation was produced (Step 7a found no modified files), still set `docs_completed: true` because the Docs Agent invocation completed (skills may have determined no updates were needed).
+- If no documentation was produced (Step 7a found no modified files), still set `docs_completed: true` because the Docs Agent invocation completed (skills may have determined no updates were needed). However, if ALL skills FAILED (not "no updates needed" but actual errors), set `docs_completed: false` and report the failures.
 
 ## Step 8 - Activity Log Protocol
 
 Canonical format (from `.github/schemas/enums.yaml` conventions): `<ISO-8601-timestamp> - <agent-name> - <action> - <details>`
 
-After committing documentation changes (Step 7), append an Activity Log entry to the WP file:
+After setting docs_completed (Step 7e), append an Activity Log entry to the WP file:
 
 ```
 - <ISO-8601-timestamp> - docs-agent - docs-complete - Documentation generated for WP<NN>
@@ -225,7 +232,25 @@ If no documentation was produced (all skills failed or no output), append:
 
 Always append at the end of the Activity Log (newest entry last). Do NOT prepend or insert mid-list.
 
-## Step 9 - Summary Report
+## Step 9 - Report Completion and Return Control
+
+After updating the Activity Log:
+
+**Subagent mode**: When running under the Orchestrator (dispatched via `runSubagent`), return a structured completion message and hand control back:
+
+```
+Documentation updated for WP<NN>.
+Skills dispatched: <count successful> / <count total>
+Files modified: <list>
+Failed skills: <list or "none">
+```
+
+Do NOT use handoff buttons or invoke other agents. The Orchestrator manages pipeline routing.
+
+**Standalone mode**: When invoked directly by a user, recommend the next logical handoff (Return to Coder or Return to Review Coordinator as appropriate).
+- Do not retry -- report the error and halt.
+
+## Step 10 - Summary Report
 
 After completing all steps, produce a summary:
 
