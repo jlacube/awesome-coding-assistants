@@ -133,6 +133,8 @@ Write one file per work package at `<plan_dir>/WP<NN>-<slug>.md` with this struc
 ```markdown
 ---
 lane: planned
+depends_on: []
+docs_scope: []
 ---
 
 # WP<NN> - <Title>
@@ -165,6 +167,10 @@ lane: planned
 
 <Key technical decisions, known pitfalls, sequencing rationale>
 
+## Research Context
+
+<Compact summary of technology-specific research findings relevant to this WP's tasks. Include: library version gotchas, API migration notes, framework-specific patterns, known pitfalls with cited sources. This section is forwarded to the Coder to prevent known-issue regressions. If no WP-specific research applies, write "See spec for general research context.">
+
 ## Risks & Mitigations
 
 <Known risks with mitigation strategies>
@@ -175,6 +181,13 @@ lane: planned
 ```
 
 **WP numbering**: Use two-digit zero-padded numbers (WP01, WP02, ...). If the plan directory already has WP files from a prior spec, continue from the highest existing WP number + 1.
+
+**YAML frontmatter `depends_on`**: The `depends_on` array in YAML frontmatter MUST list all WP dependencies as strings (e.g., `depends_on: [WP01, WP03]`). Use an empty array `depends_on: []` for WPs with no dependencies. This field is read by the Orchestrator's topological sort to determine execution order. The markdown table's "Depends on" field is for human readability; the YAML frontmatter is the machine-readable source of truth.
+
+**YAML frontmatter `docs_scope`**: The `docs_scope` array controls which doc skills the Docs Agent dispatches for this WP. Valid values: `architecture`, `api-reference`, `user-guide`, `developer-guide`, `changelog`, `inline-code`. Use an empty array `docs_scope: []` to let the Docs Agent auto-detect (default). Guidance:
+- Feature WPs with source code: `docs_scope: [architecture, api-reference, user-guide, developer-guide, changelog, inline-code]`
+- Infrastructure/config WPs: `docs_scope: [changelog, developer-guide]`
+- Documentation-only WPs: `docs_scope: [changelog]`
 
 ---
 
