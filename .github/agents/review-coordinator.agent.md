@@ -186,11 +186,32 @@ Log the discovery result: list all discovered skill names in dispatch order.
 
 ## Step 7 - Skill Dispatch (FR-007, FR-009)
 
-Dispatch each discovered skill sequentially using `runSubagent`. For each skill:
+### 7a. Determine dispatch mode
 
-### 7a. Construct the dispatch prompt
+Check the review round number (from Step 11 preview -- count `review-coordinator` entries in the Activity Log):
 
-Use the following prompt template (substitute the actual values):
+- **Round 1 (first review)**: Dispatch ALL discovered skills (full review). Use sequential or batch dispatch.
+- **Round 2+ (re-review)**: Use **Re-Review Scoping** (see below) to dispatch ONLY the minimum set of skills needed. This is mandatory on re-reviews to reduce cycle time.
+
+### 7b. Re-Review Scoping (round 2+)
+
+On re-reviews, determine the minimum skill dispatch set:
+
+1. **Identify previously FAILed skills**: Read existing findings files in `.sdd/reviews/<WP-id>/`. For each file, check YAML frontmatter `finding_counts.fail`. Skills with `fail > 0` are in the re-dispatch set.
+
+2. **Capture the diff**: Run `git diff <last-review-commit>..HEAD -- <WP-scope-files>` to get all changes since the last review. To find the last review commit, run `git log --oneline --grep="docs(review): <WP-id>" -1` and use the **most recent** matching commit hash. If no matching commit exists, fall back to the Activity Log timestamp closest to the previous review entry and use `git log --oneline --before=<timestamp> -1`. Store the diff output.
+
+3. **Cross-reference for regression risk**: For each skill that PASSed previously, check if ANY of its `files_reviewed` (from findings file frontmatter) overlap with files in the diff. If yes, add that skill to the re-dispatch set (regression risk).
+
+4. **Re-dispatch set**: The union of (previously FAILed skills) + (PASSed skills whose reviewed files were modified).
+
+5. **Preserve non-re-dispatched findings**: Do NOT overwrite findings files for skills outside the re-dispatch set. Their previous findings are preserved and included in aggregation.
+
+Log: "Re-review scoping: dispatching <N> of <total> skills. Skipping: <list of skipped skills> (no changes to their reviewed files)."
+
+### 7c. Construct the dispatch prompt
+
+For first-review skills, use the standard prompt template:
 
 ```
 Review <WP-id> using the <skill-name> review skill.
@@ -211,33 +232,56 @@ Important:
 - Mark checklist items as N/A (with justification) if they do not apply.
 ```
 
+For re-review skills (round 2+), use the diff-aware re-review prompt:
+
+```
+Re-review <WP-id> using the <skill-name> review skill (round <N>).
+
+1. Read the skill file at: <skill_path>
+2. Read the specification at: <spec_path>
+3. Read the previous findings at: <previous_findings_path>
+4. Review the changes made since last review:
+<git_diff_output>
+5. Discover and read all implementation code relevant to this skill's domain for <WP-id>.
+   The WP file is at: <wp_path>
+6. Focus your evaluation on:
+   - Whether previous FAIL items (FB-XX) have been resolved
+   - Whether fixes introduced NEW issues in the changed code
+   - Regressions in previously-PASSing items whose files were modified
+7. Write your findings to: <output_path>
+8. Return a brief summary (counts of PASS/WARN/FAIL/N/A) and a delta (resolved/new/regression).
+
+Important:
+- Do NOT modify any source code, the WP file, or the spec file.
+- Only write to the specified output path.
+- Prioritize reviewing changed code over re-checking unchanged code.
+```
+
 Where:
 - `<skill_path>`: e.g., `.github/skills/review-spec/SKILL.md`
 - `<spec_path>`: the spec file path from the WP's `Spec` field
 - `<wp_path>`: the WP plan file path
 - `<output_path>`: `.sdd/reviews/<WP-id>/<skill-name>-findings.md`
+- `<previous_findings_path>`: existing findings file in `.sdd/reviews/<WP-id>/`
+- `<git_diff_output>`: the captured diff from step 7b.2 (truncated to 500 lines max to avoid context overflow)
 
-### 7b. Re-review variant
+### 7d. Batch Dispatch
 
-If this is a re-review (previous findings files exist in `.sdd/reviews/<WP-id>/`), append the following to the prompt for re-dispatched skills:
+Dispatch skills in batches to optimize re-review scoping. Review skills are read-only and independent -- they do not modify source code or each other's output files.
 
-```
-This is a re-review. Previous findings are at: <previous_findings_path>
-Focus on:
-- Whether previous FAIL items have been resolved
-- Whether fixes introduced new issues
-- Any regressions in previously-PASSing items
-```
+**Batch structure** (dispatch all skills within a batch sequentially before moving to the next):
 
-### 7c. Dispatch
+| Batch | Skills | Rationale |
+|-------|--------|-----------|
+| 1 (Correctness) | `review-spec`, `review-tests` | Core spec adherence and test validity |
+| 2 (Safety) | `review-security`, `review-deps`, `review-architecture`, `review-performance` | Non-functional requirements |
+| 3 (Polish) | `review-quality`, `review-docs` | Code quality and documentation |
 
-Invoke `runSubagent` with:
-- `prompt`: the constructed prompt above
-- `description`: `Review <skill-name> for <WP-id>`
+Within each batch, dispatch skills sequentially using `runSubagent` (subagents run synchronously -- parallel dispatch is not supported).
 
-Wait for the subagent to return before dispatching the next skill (FR-009 - sequential execution).
+On re-reviews, only dispatch batches that contain at least one skill from the re-dispatch set. Skip entire batches where no skill needs re-review.
 
-### 7d. Error handling
+### 7e. Error handling
 
 If a subagent invocation fails (tool error, timeout, or returns an error message):
 - Record a WARN finding with ID `DISPATCH-<skill-name>` (e.g., `DISPATCH-review-spec`).
@@ -528,7 +572,21 @@ Present the review results to the user:
 4. If spec gaps were found: note that the "Update Specification" handoff button is available.
 5. If plan issues were found: note that the "Revise Plan" handoff button is available.
 
-**STOP.** Do not scan for other WPs. Do not invoke other agents. The handoff buttons provide the transition paths.
+**Subagent mode**: When running under the Orchestrator (dispatched via `runSubagent`), do NOT use handoff buttons or invoke the Coder/Spec Architect directly. Instead, return a structured completion message and hand control back to the Orchestrator:
+
+```
+Review complete for WP<NN>.
+Verdict: <Approved | Approved with Findings | Changes Required>
+FAILs: <count>, WARNs: <count>
+Lane updated to: <done | to_do>
+WP file: <wp_path>
+```
+
+The Orchestrator manages all pipeline routing.
+
+**Standalone mode**: When invoked directly by a user (not via `runSubagent`), present the handoff buttons as described above.
+
+**STOP.** Do not scan for other WPs. Do not invoke other agents. Present the verdict and return control.
 
 </workflow>
 
@@ -536,19 +594,9 @@ Present the review results to the user:
 
 ## Re-Review Scoping (FR-021)
 
-When a WP returns to `lane: for_review` after remediation:
+Re-review scoping is now integrated into Step 7b as the mandatory default for round 2+ reviews. The scoping logic in Step 7b determines the minimum dispatch set. This section is retained as a reference for the algorithm.
 
-1. **Identify previously FAILed skills**: Read existing findings files in `.sdd/reviews/<WP-id>/`. For each file, check the YAML frontmatter `finding_counts.fail` value. Skills with `fail > 0` are in the re-dispatch set.
-
-2. **Identify modified files**: Run `git diff` to find files modified since the last review commit. The last review commit can be identified by its message pattern `docs(review): <WP-id>` or by the Activity Log timestamp.
-
-3. **Cross-reference for regression risk**: For each skill that PASSed in the previous review, check if ANY of its `files_reviewed` (from findings file frontmatter) overlap with the set of modified files. If yes, add that skill to the re-dispatch set (regression risk).
-
-4. **Re-dispatch set**: The union of (previously FAILed skills) + (PASSed skills whose files were modified).
-
-5. **Preserve non-re-dispatched findings**: Do NOT overwrite findings files for skills that are not in the re-dispatch set. Their previous findings are preserved and included in the new aggregation.
-
-6. **Re-dispatch with previous findings reference**: When dispatching re-review skills, use the re-review prompt variant (Step 7b) that includes the previous findings path.
+Key principle: On re-reviews, dispatch ONLY skills whose previously-reviewed files were modified OR that previously produced FAIL findings. Never re-dispatch all 8 skills for a targeted fix.
 
 </re_review_scoping>
 
