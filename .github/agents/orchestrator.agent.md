@@ -58,57 +58,11 @@ You are a state machine. You read the current state of `.sdd/`, determine what n
 
 <!-- Enum source: .github/schemas/enums.yaml -->
 
-The Orchestrator maintains a persistent state file at `.sdd/state.md` with YAML frontmatter for cross-session pipeline state tracking. This file enables the Orchestrator to resume from the correct pipeline stage after VS Code restarts.
+The Orchestrator maintains `.sdd/state.md` with YAML frontmatter for cross-session pipeline state tracking. For the full schema definition, field types, and constraints, read `.github/agents/orchestrator-reference.md` Section 4 using `read_file`.
 
-### Schema Definition
+**Quick reference** -- required fields: `pipeline_stage` (enum), `current_spec` (path|null), `current_wp` (WP ID|null), `last_agent` (string|null), `last_result` (success|failed|escalated|null), `retry_count` (int >= 0), `error_log` (array, max 50), `updated_at` (ISO 8601).
 
-```yaml
----
-pipeline_stage: "idle"       # REQUIRED. One of: idle, ideation, specification, planning, implementation, review, documentation, complete
-current_spec: null           # REQUIRED. Path to the active spec file (string) or null
-current_wp: null             # REQUIRED. Current WP identifier (format: WP followed by 2 digits, e.g., WP01) or null
-last_agent: null             # REQUIRED. Name of the last agent invoked (string) or null
-last_result: null            # REQUIRED. Result of the last agent invocation: success, failed, escalated, or null
-retry_count: 0               # REQUIRED. Number of retries attempted for the current agent (integer >= 0)
-error_log: []                # REQUIRED. Array of ErrorEntry objects (max 50 entries, oldest pruned when exceeded)
-updated_at: "2026-01-01T00:00:00Z"  # REQUIRED. ISO 8601 timestamp of last state update
----
-
-# Pipeline State
-
-Human-readable summary of current state for cross-session continuity.
-```
-
-### Field Definitions
-
-| Field | Type | Default | Validation |
-|-------|------|---------|------------|
-| pipeline_stage | string (enum) | "idle" | One of: idle, ideation, specification, planning, implementation, review, documentation, complete |
-| current_spec | string or null | null | Valid file path or null |
-| current_wp | string or null | null | Format: WP followed by 2 digits (e.g., WP01) or null |
-| last_agent | string or null | null | Agent name or null |
-| last_result | string (enum) or null | null | One of: success, failed, escalated, or null |
-| retry_count | integer | 0 | >= 0 |
-| error_log | array of ErrorEntry | [] | Max 50 entries (oldest pruned when exceeded) |
-| updated_at | string (ISO 8601) | creation time | Valid ISO 8601 timestamp |
-
-### ErrorEntry Schema
-
-Each entry in `error_log` is an ErrorEntry object with these fields:
-
-| Field | Type | Required | Validation |
-|-------|------|----------|------------|
-| agent | string | yes | Agent name (e.g., "4. Coder") |
-| wp | string or null | yes | WP identifier (e.g., "WP01") or null if not WP-scoped |
-| error_summary | string | yes | 1-500 characters. Human-readable error description. SHALL NOT contain full stack traces with sensitive paths. |
-| timestamp | string (ISO 8601) | yes | Valid ISO 8601 timestamp |
-
-### Constraints
-
-- `error_log` SHALL contain a maximum of 50 entries. When a new entry would exceed this limit, prune the oldest entry before adding the new one.
-- `retry_count` is reset to 0 after a successful agent invocation.
-- `updated_at` SHALL be set to the current ISO 8601 timestamp on every state file update.
-- Precondition: `.sdd/` directory must exist. Do NOT create the directory -- only the state file.
+**Constraints**: `error_log` max 50 entries (prune oldest). `retry_count` resets to 0 on success. `.sdd/` must exist. Do NOT create the directory -- only the state file.
 </state_schema>
 
 <state_machine>
@@ -203,71 +157,11 @@ Before every decision, read these files to determine current state:
 
 <!-- Spec refs: FR-040, FR-041, FR-042, FR-043; Section 6.5; Section 8.6 -->
 
-The Orchestrator SHALL select the next WP for implementation using a topological sort of the dependency graph derived from `depends_on` frontmatter fields in WP files (FR-040). This replaces simple lowest-number-first ordering. When no WPs have `depends_on` fields, the sort degenerates to lowest-number-first (backward compatible).
+The Orchestrator SHALL select the next WP using a dependency-aware topological sort. For the full algorithm (Kahn's algorithm with cycle detection, dependency validation, eligibility filtering, and tiebreaking), read `.github/agents/orchestrator-reference.md` Section 1 using `read_file` when performing WP selection.
 
-Follow these steps in order:
+**Summary**: Read all WP `depends_on` frontmatter, validate references, detect cycles (halt on E-050), topologically sort, filter to `lane: planned` WPs with all deps `lane: done`, select lowest WP number. WPs with no `depends_on` are always eligible.
 
-#### Step A: Read all WP files and build the dependency graph
-
-1. Read all `.sdd/plans/WP*.md` files. For each WP, extract `lane` and `depends_on` from YAML frontmatter.
-2. If a WP has no `depends_on` field or has `depends_on: []`, treat it as having no dependencies -- it is immediately eligible when its lane is `planned` (FR-043).
-3. Build an adjacency list representing the dependency graph. Each edge goes from a dependency to the WP that depends on it (e.g., if WP03 depends on WP01, the edge is WP01 -> WP03).
-4. Compute the in-degree for each WP (the number of dependencies it has).
-
-#### Step B: Validate dependency references
-
-For each WP's `depends_on` list, verify that every referenced WP identifier corresponds to an existing WP file. If any reference is invalid:
-- **Halt** with error E-051 (MISSING_DEPENDENCY): "{wp} depends on {dep} which does not exist."
-- Example: If WP03 has `depends_on: [WP99]` and no WP99 file exists, halt with: "WP03 depends on WP99 which does not exist."
-- Do NOT proceed to WP selection.
-
-#### Step C: Detect circular dependencies
-
-Use Kahn's algorithm to detect cycles (FR-042). After processing all nodes with in-degree 0 (Step D), if there are still unprocessed WPs remaining in the graph, a circular dependency exists.
-
-If a cycle is detected:
-- **Halt** with error E-050 (CIRCULAR_DEPENDENCY): "Circular dependency detected: WP-A -> WP-B -> ... -> WP-A. Cannot determine execution order."
-- To identify the cycle: from the unprocessed WPs, pick one and follow its `depends_on` chain until a WP is visited twice. Report the cycle path.
-- Example: If WP01 depends on WP02 and WP02 depends on WP01, halt with: "Circular dependency detected: WP01 -> WP02 -> WP01."
-- Do NOT proceed to WP selection.
-
-Cycle detection runs BEFORE WP selection, not after.
-
-#### Step D: Perform topological sort (Kahn's algorithm)
-
-1. Initialize a queue with all WPs that have in-degree 0 (no dependencies).
-2. While the queue is not empty:
-   a. Remove a WP from the queue.
-   b. Add it to the sorted order.
-   c. For each WP that depends on the removed WP, decrement its in-degree by 1. If the in-degree reaches 0, add it to the queue.
-3. After the queue is empty, if the number of WPs in the sorted order is less than the total number of WPs, a cycle exists (see Step C).
-
-This completes in O(V+E) time where V is the number of WPs and E is the number of dependency edges (NFR-002).
-
-#### Step E: Filter to eligible WPs
-
-From the topological order, filter to WPs that meet ALL of these conditions:
-1. The WP has `lane: planned` (not doing, done, for_review, to_do, or blocked).
-2. ALL of the WP's dependencies have `lane: done`. A WP with no dependencies automatically satisfies this condition (FR-043).
-
-#### Step F: Apply tiebreaker and select
-
-Among the eligible WPs, select the one with the **lowest WP number** (FR-041). This is deterministic -- the same input always produces the same output.
-
-- Example: Given WP03, WP01, and WP02 all with no dependencies and `lane: planned`, select WP01.
-- Example: Given WP01 depends on WP02, both with `lane: planned`, WP01 is not eligible (WP02 is not done). WP02 is eligible (no unmet deps). Select WP02.
-
-If two or more WPs can run in parallel and have no shared files, note this to the user but still execute sequentially (agents are single-threaded).
-
-#### Step G: Handle no-eligible-WP cases
-
-If no WPs are eligible after filtering:
-
-- **No WPs with `lane: planned` at all**: This is normal (all WPs are in progress, under review, or done). No action needed for WP selection.
-- **WPs with `lane: planned` exist but ALL have unmet dependencies** (at least one dependency is not `lane: done`): Report error E-052 (ALL_WPS_BLOCKED): "No WPs are ready. Blocked WPs: {list with unmet deps}."
-  - The report SHALL list each blocked WP and which of its dependencies are not yet `lane: done`.
-  - Example: "No WPs are ready. Blocked WPs: WP03 (waiting on WP01 [lane: doing], WP02 [lane: for_review]), WP05 (waiting on WP04 [lane: planned])."
-  - This is a report, not a halt -- the Orchestrator continues processing other pipeline states (e.g., reviews, documentation) via the Decision Table.
+**Error codes**: E-050 (circular dependency - halt), E-051 (missing dependency - halt), E-052 (all WPs blocked - report and continue).
 </state_machine>
 
 <workflow>
@@ -300,23 +194,7 @@ Check if `.sdd/state.md` exists:
 
 #### Corrupted State File Recovery (Edge Case, Section 5)
 
-When `.sdd/state.md` exists but has corrupted or invalid YAML frontmatter:
-
-1. **Log a warning**: "State file at .sdd/state.md has corrupted YAML. Recreating from WP frontmatter ground truth."
-2. **Scan WP frontmatter**: Read all `.sdd/plans/WP*.md` files and extract their `lane:` values to determine actual pipeline state.
-3. **Reconstruct state**: Create a new state file replacing the corrupted one:
-   - `pipeline_stage`: Derive from the WP `lane` values (e.g., if any WP has `lane: doing` or `lane: planned`, set to `implementation`; if any has `lane: for_review`, set to `review`; if all are `lane: done`, check documentation status)
-   - `current_wp`: Set to the lowest-numbered WP that is not `lane: done` (or null if all are done)
-   - `current_spec`: Derive from `.sdd/specs/` directory (the spec referenced by the current WP)
-   - `last_agent`, `last_result`: Set to null (unknown after corruption)
-   - `retry_count`: Set to 0
-   - `error_log`: Set to empty array (history is lost)
-   - `updated_at`: Set to current ISO 8601 timestamp
-4. **Write the reconstructed state file** using the same format as the initialization template.
-5. **Verify accuracy**: After reconstruction, the state file SHALL accurately reflect the actual state of all WPs as determined by their frontmatter `lane:` values.
-6. **Proceed to Step 2** to cross-verify the reconstructed state.
-
-Treat both partial corruption (some fields readable but YAML is invalid) and total corruption (completely unparseable) the same way: delete the content and recreate from WP frontmatter ground truth.
+When `.sdd/state.md` exists but has corrupted or invalid YAML frontmatter, reconstruct it from WP frontmatter ground truth. For the detailed reconstruction procedure, read `.github/agents/orchestrator-reference.md` Section 2 using `read_file`.
 
 - If the YAML is valid: proceed to Step 2 normally.
 
@@ -382,14 +260,16 @@ Use the Decision Table to identify what to do. Evaluate conditions in this prior
 
 Invoke exactly ONE agent with a precise prompt. The Orchestrator SHALL NEVER invoke a second agent without completing Steps 7-8 first (FR-009).
 
-Agent prompt templates:
+Agent prompt templates (include ALL required context_fields from the target agent's handoff schema):
 
 - **Ideation**: "Create an ideation brief for: {user's feature description}"
 - **Spec Architect**: "Develop the brainstorming session output into a full specification. The brief is at {brief_path}"
-- **Planner**: "Decompose the specification into work packages. The spec is at {spec_path}"
-- **Coder**: "Implement {wp_id} - {wp_title}. The plan is at {wp_path}. Dependency {dep_wp} is lane=done (approved). IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons or invoke the reviewer directly."
-- **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. The plan is at {wp_path}. IMPORTANT: When done, report the verdict and return control -- do NOT use handoff buttons or invoke the coder directly."
-- **Docs Agent**: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Update documentation. IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons." (Section 8.1)
+- **Planner**: "Decompose the specification into work packages. The spec is at {spec_path}. Companion artifacts are at: {artifacts_dir}"
+- **Coder**: "Implement {wp_id} - {wp_title}. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Dependency {dep_wp} is lane=done (approved). IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons or invoke the reviewer directly."
+- **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. IMPORTANT: When done, report the verdict and return control -- do NOT use handoff buttons or invoke the coder directly."
+- **Docs Agent**: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Update documentation. IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons." (Section 8.1)
+
+The Orchestrator derives `spec_path` from the WP file's `Spec` field, and `contracts_dir` from `.sdd/plans/contracts/<WP-slug>/`. Read the WP file to extract these before constructing the prompt.
 
 The Docs Agent is ONLY invoked for WPs with `lane: done` (FR-008). The Docs Agent is NOT invoked for unapproved WPs.
 
@@ -425,71 +305,19 @@ After updating the state file, handle the result based on success or failure:
 
 #### Step 8b: On Failure -- Error Recording and Retry (FR-011)
 
-When an agent invocation fails (agent reports error, produces no output, or times out):
+Record the failure in `error_log`, increment `retry_count`. If `retry_count` < 2, retry same agent. If >= 2, escalate to user with full error log via `askQuestions`. For detailed error recording format and escalation protocol, read `.github/agents/orchestrator-reference.md` Section 3 using `read_file`.
 
-1. **Record the failure** in `error_log` in `.sdd/state.md` with:
-   - `agent`: Name of the failed agent (e.g., "4. Coder")
-   - `wp`: WP identifier (e.g., "WP03") or null if not WP-scoped
-   - `error_summary`: Human-readable summary, 1-500 characters. SHALL NOT contain full stack traces with sensitive paths.
-   - `timestamp`: Current ISO 8601 timestamp
-   - If `error_log` would exceed 50 entries, prune the oldest entry before adding the new one.
+#### Step 8c-8f: Escalation Protocols
 
-2. **Increment `retry_count`** in `.sdd/state.md`
+**8c (Max retries)**: Present error summary, agent name, WP ID, and full error log to user. Wait for response. Reset retry_count to 0 on resolution.
 
-3. **Evaluate retry threshold**:
-   - If `retry_count` < 2: Retry the same agent with the same input. Log: "Retrying {agent} for {wp} (attempt {retry_count + 1} of 2)". Return to Step 6 with the same agent and prompt.
-   - If `retry_count` >= 2: **Escalate to user** (see Step 8c)
+**8d (Agent escalation)**: Any agent can report escalation. Set `last_result: escalated`, present to user, halt until resolved.
 
-#### Step 8c: Escalation on Max Retries (FR-011 step 4)
+**8e (Review cycle stall)**: If WP `review_cycles >= 3`, halt and escalate with all review feedback from all cycles. This fires before the Review Coordinator's own stall detection (round >= 4), providing defense-in-depth.
 
-When `retry_count` >= 2, the Orchestrator SHALL escalate to the user and SHALL NOT retry further:
+**8f (Resolution)**: Reset state, re-read ALL files from disk (user may have modified them), use Decision Table to determine next action. The re-invoked agent may NOT be the same one that escalated.
 
-1. Present to the user via `#tool:vscode/askQuestions`:
-   - **Error summary**: What failed and why
-   - **Agent name**: Which agent failed
-   - **WP identifier**: Which WP was being processed (if applicable)
-   - **Full error log**: ALL `error_log` entries for the current agent/WP, not just the latest failure
-2. Wait for user response before continuing
-3. When the user responds, determine which agent to re-invoke based on the user's guidance (FR-015). Reset `retry_count` to 0 before re-invoking.
-
-#### Step 8d: On Escalation from Agent (FR-014)
-
-Universal escalation support applies to ANY delegated agent: Ideation, Spec Architect, Planner, Coder, Review Coordinator, or Docs Agent. When any of these agents reports an escalation (e.g., spec ambiguity, environment issue, unresolvable conflict, missing dependency, permission error):
-
-1. Record the escalation in `.sdd/state.md`: set `last_result: escalated`
-2. Present the escalation to the user via `#tool:vscode/askQuestions` with full context:
-   - **Agent name**: Which agent escalated
-   - **WP identifier**: Which WP was being processed (if applicable)
-   - **Escalation reason**: The specific issue reported by the agent
-   - **Current pipeline state**: The relevant pipeline stage and progress
-3. Wait for user response before continuing -- the pipeline halts until the user provides a resolution
-4. When the user resolves the escalation, follow the Escalation Resolution Protocol (Step 8f)
-
-#### Step 8e: Review Failure Escalation (FR-012)
-
-Track review cycles per WP using the `review_cycles` frontmatter field. When a WP's `review_cycles` reaches 3 or more, escalate instead of re-invoking the Coder.
-
-1. **Read `review_cycles` from WP frontmatter**. If the field is absent or not a non-negative integer, treat it as 0.
-2. **If `review_cycles >= 3`**:
-   - **Halt** -- do NOT continue retrying
-   - **Escalate to the user** via `#tool:vscode/askQuestions` with:
-     - All review feedback from all review cycles (read from the WP file's Review section and Activity Log)
-     - The WP file path
-     - A summary of what was attempted in each cycle
-   - Wait for user guidance before continuing
-3. **If `review_cycles < 3`**: Invoke the Coder to fix the feedback items. The Review Coordinator has already incremented `review_cycles` when it set `lane: to_do`.
-
-#### Step 8f: Escalation Resolution Protocol (FR-015)
-
-When the user resolves an escalation (from Step 8c or Step 8d), the Orchestrator SHALL determine which agent to re-invoke. The re-invoked agent is NOT necessarily the same agent that escalated.
-
-1. **Read the user's resolution**: Understand what the user decided or changed.
-2. **Reset state**: Set `last_result` to null and `retry_count` to 0 in `.sdd/state.md`.
-3. **Re-read state from disk**: Re-run the State Assessment Protocol (Step 3). Do NOT rely on cached state -- the user may have modified files manually (e.g., fixing a spec ambiguity, editing a WP, updating code).
-4. **Re-assess pipeline state**: Based on the fresh state read, use the Decision Table (Step 5) to determine the next action. The decision table will naturally route to the correct agent based on current WP lane values and pipeline state.
-5. **Invoke the determined agent**: Proceed to Step 6 with the agent selected by the decision table.
-
-**Key invariant**: The Orchestrator does NOT assume the resolution means "retry the same agent." The user may have resolved the issue by modifying the spec (route to Planner), fixing code manually (route to Review Coordinator), or providing guidance that changes which WP to work on next.
+For full details on each protocol, read `.github/agents/orchestrator-reference.md` Section 3.
 
 ### Step 9: MVP Completion and Pipeline Halt
 
