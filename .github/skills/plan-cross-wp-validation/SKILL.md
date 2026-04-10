@@ -46,7 +46,7 @@ This skill requires the broadest read scope of any plan skill:
 1. **Plan files**: `plan_dir/README.md` and all `plan_dir/WP*.md` files
 2. **Contract files**: All files under `contracts_dir/` (per-WP and shared directories)
 3. **Spec**: Full spec at `spec_path`
-4. **Spec artifacts**: All files under `spec_artifacts_dir/` (interfaces, data-models, api-contracts, state-machines, error-catalog)
+4. **Spec artifacts**: All files under `spec_artifacts_dir/` (interfaces, data-schemas, api-contracts, state-machines, error-catalog)
 
 ---
 
@@ -248,7 +248,7 @@ Cross-WP consistency audit performed. No inconsistencies found across all 7 chec
 
 Compare spec companion artifacts against generated contract files:
 
-1. **Entities**: Every entity in `spec_artifacts_dir/data-models.<ext>` must appear in at least one WP's `data-schemas.<ext>`
+1. **Entities**: Every entity in `spec_artifacts_dir/data-schemas.<ext>` must appear in at least one WP's `data-schemas.<ext>`
 2. **Endpoints**: Every endpoint in `spec_artifacts_dir/api-contracts.<ext>` must appear in at least one WP's `api-contracts.<ext>`
 3. **Error codes**: Every error code in `spec_artifacts_dir/error-catalog.<ext>` must appear in at least one WP's `error-catalog.<ext>`
 4. **State machines**: Every state machine in `spec_artifacts_dir/state-machines.<ext>` must appear in at least one WP's `state-machines.<ext>`

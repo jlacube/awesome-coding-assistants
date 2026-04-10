@@ -285,8 +285,8 @@ Rules:
 |-------|----------|-----------|
 | spec-requirements | 4, 10, 12, 13 | none |
 | spec-user-stories | 5, 6 | none |
-| spec-data-model | 7 | `data-models.<ext>`, `state-machines.<ext>` |
-| spec-api-design | 8 | `api-contracts.<ext>`, `error-catalog.<ext>` |
+| spec-data-model | 7 | `data-schemas.<ext>`, `state-machines.<ext>` |
+| spec-api-design | 8 | `api-contracts.<ext>`, `error-catalog.<ext>`, `interfaces.<ext>` |
 | spec-architecture | 9 | `config-schema.<ext>` |
 | spec-security | 10.2 (expand) | none |
 | spec-test-strategy | 11 | none |
@@ -294,7 +294,7 @@ Rules:
 
 ### 7c. Companion artifact rules
 
-- Artifact file naming: `data-models.<ext>`, `state-machines.<ext>`, `api-contracts.<ext>`, `error-catalog.<ext>`, `interfaces.<ext>`, `config-schema.<ext>`
+- Artifact file naming: `data-schemas.<ext>`, `state-machines.<ext>`, `api-contracts.<ext>`, `error-catalog.<ext>`, `interfaces.<ext>`, `config-schema.<ext>`
 - Extensions match target language: TypeScript = `.ts`, Python = `.py`, SQL = `.sql`
 - Artifacts contain TYPE DEFINITIONS ONLY -- no I/O, no network, no filesystem operations
 - Every artifact file includes a manifest comment header:

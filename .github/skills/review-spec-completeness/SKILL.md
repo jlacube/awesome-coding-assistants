@@ -212,7 +212,7 @@ Circuit breaker is "if applicable" -- only flag if the integration pattern warra
 
 Verify that companion artifact files exist in `.sdd/specs/artifacts/<spec-slug>/` and are consistent with the prose spec:
 
-1. **Data model artifacts** -- Every entity in Section 7 has a corresponding type definition in `data-models.<ext>`
+1. **Data model artifacts** -- Every entity in Section 7 has a corresponding type definition in `data-schemas.<ext>`
 2. **API contract artifacts** -- Every API endpoint in Section 8 has corresponding request/response types in `api-contracts.<ext>`
 3. **Error catalog artifacts** -- Every error code in Section 4 has a corresponding entry in `error-catalog.<ext>`
 4. **Field name and type match** -- Field names are identical (case-sensitive) and types match semantically between prose and artifacts
