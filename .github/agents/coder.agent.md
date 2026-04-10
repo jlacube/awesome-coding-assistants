@@ -116,7 +116,35 @@ Before dispatching any skill, read the full context chain:
 2. Read the spec section(s) referenced in the WP's `Spec` field using `read_file`.
 3. Extract the WP slug from the filename (e.g., `WP03-review-spec.md` -> slug is `review-spec`). Read contract files in `.sdd/plans/contracts/<WP-slug>/` using `list_dir` then `read_file` for each file.
 4. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
-5. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
+5. **Research context**: Extract the `## Research Context` section from the WP file (if present). This contains technology-specific gotchas, library version notes, and known pitfalls collected during the Planner's research phase. Include this in skill dispatch prompts.
+6. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
+
+## Step 2b - Detect Rework Mode
+
+After loading the artifact chain, determine whether this is a fresh implementation or a rework cycle (WP returned from review):
+
+1. Read the WP's `lane` frontmatter value and `review_status` field.
+2. Check if the WP file contains a `## Review` section with `FB-XX` items.
+3. **Rework Mode**: If `lane: to_do` AND FB-XX items exist in the Review section, enter Rework Mode. Set `rework_mode = true`. Skip Steps 3-6 and proceed directly to **Step 6b (Rework Fast Path)**.
+4. **Standard Mode**: If `lane: planned`, `lane: doing`, or no review feedback exists, set `rework_mode = false`. Proceed to Step 3.
+
+Rework Mode avoids re-running the full 5-skill pipeline (env-setup, implementation, unit-tests, integration-tests, debug) for targeted fixes. Only the affected code is modified and only affected tests are re-run. This is critical for fast Coder-Review-Fix cycles.
+
+## Step 2c - Pre-Read Artifact Cache
+
+To avoid redundant I/O across skill dispatches, pre-read critical artifacts once and hold them in memory:
+
+1. Read the WP file content (already loaded in Step 1).
+2. Read all contract files from `contracts_dir` and store their content keyed by filename.
+3. Read the spec sections referenced by the WP.
+4. Read the active patterns (from Step 4).
+
+Build a compact `artifact_summary` string from the pre-read content:
+- Contract signatures: list exported types/functions/interfaces from each contract file (first 3-5 lines of each)
+- Spec requirements: list FR-XXX identifiers and their one-line descriptions from the referenced spec sections
+- Pattern list: active pattern IDs and trigger descriptions
+
+This `artifact_summary` is included in the Step 6 dispatch prompt via the `<artifact_summary>` substitution value. Skills still read files fresh for full implementation detail, but the summary provides immediate orientation.
 
 ## Step 3 - Validate Contract Files (FR-003)
 
@@ -174,6 +202,10 @@ Implement: <skill_name>
 5. Active patterns to avoid: <patterns>
 6. Target: <target_language> with <target_framework>
 7. Tasks: <task_list_with_acceptance_criteria>
+8. Artifact summary (for orientation -- read full files for implementation detail):
+<artifact_summary>
+9. Research context (technology gotchas and known pitfalls):
+<research_context>
 
 Rules:
 - Implement contract-first: signatures, types, fields MUST match contract files exactly
@@ -194,10 +226,91 @@ Rules:
 - `<target_language>`: Programming language from WP or spec (e.g., TypeScript, Python)
 - `<target_framework>`: Framework from WP or spec (e.g., Express, FastAPI, React)
 - `<task_list_with_acceptance_criteria>`: All tasks from the WP with their acceptance criteria and spec refs
+- `<artifact_summary>`: Pre-read artifact summary from Step 2c (contract signatures, FR list, pattern IDs)
+- `<research_context>`: Research Context section from the WP file (Step 2.5), or "No research context available"
 
 **Context forwarding (FR-009)**: Each skill reads the current state of the codebase (files created or modified by prior skills) before executing. This is automatic since each subagent reads the filesystem fresh.
 
 **Failure handling**: If any skill reports failure (environment setup or implementation), halt the WP immediately. Do NOT dispatch remaining skills. Report the failure with full context to the user via `vscode_askQuestions`.
+
+## Step 6a - Contract Compliance Spot-Check
+
+After `code-implementation` completes and BEFORE dispatching test skills, run a lightweight structural check to catch contract drift early:
+
+1. For each contract file in `<contracts_dir>`, extract the exported symbol names (types, interfaces, functions, classes, enums).
+2. Use `grep_search` or `textSearch` to verify each exported contract symbol exists in the implementation source files created by the skill.
+3. **Missing symbols**: If any contract symbol is not found in the implementation, log a warning: "Contract drift detected: `<symbol>` from `<contract_file>` not found in implementation. The Reviewer will flag this as a FAIL."
+4. **Extra exports**: Do NOT flag extra symbols in implementation -- the contract defines the minimum, not the maximum.
+
+This is a fast heuristic (symbol-name grep, not type-checking). It catches obvious omissions (forgot to implement an endpoint, missing entity type) before investing time in test writing. If drift is detected, the coordinator MAY re-dispatch `code-implementation` for the missing symbols before proceeding to test skills.
+
+## Step 6b - Rework Fast Path (Targeted FB-XX Fixes)
+
+This step executes ONLY in Rework Mode (detected in Step 2b). It replaces the full 5-skill pipeline (Steps 3-7) with targeted fixes for specific review feedback items.
+
+### 6b.1 Parse Review Feedback
+
+1. Read the WP file's `## Review` section.
+2. Extract all `FB-XX` items: for each, record the finding ID, dimension tag, file path, line range, and expected fix description.
+3. Build a list of affected files from all FB-XX items.
+4. Update `review_status: acknowledged` in the WP frontmatter.
+5. Set `lane: doing` and append Activity Log: `<ISO-8601-timestamp> - coder - lane=doing - Rework mode: addressing <N> FB-XX items`
+6. Use `manage_todo_list` to create a todo item for each FB-XX.
+
+### 6b.2 Capture Diff Context
+
+Run `git log --oneline -10` and `git diff` to understand the implementation context. This helps the debug skill understand what was implemented and what the reviewer found wrong. Store the diff summary for inclusion in the dispatch prompt.
+
+### 6b.3 Dispatch Targeted Fixes
+
+Dispatch `code-debug` (or `code-implementation` if the FB-XX requires new code rather than a bug fix) with a rework-specific prompt:
+
+```
+Fix review feedback items for <WP-id>.
+
+1. Read the skill instructions at: <skill_path>
+2. Read the WP file at: <wp_path> -- focus on the ## Review section's FB-XX items
+3. Read contract files at: <contracts_dir>
+4. Read spec sections: <spec_refs>
+5. Active patterns to avoid: <patterns>
+
+Review feedback items to fix:
+<FB-XX list with file paths, line ranges, and expected fixes>
+
+Recent implementation diff context:
+<diff_summary>
+
+Rules:
+- Address EVERY FB-XX item -- do not skip, defer, or partially fix
+- For each FB-XX, modify ONLY the affected file(s) at the cited location(s)
+- Prefer minimal, surgical fixes over broad refactoring
+- Contract files are READ-ONLY -- do NOT modify any file in .sdd/plans/contracts/
+- Re-run tests after EACH fix to verify no regressions
+- Commit each FB-XX fix individually:
+  git add <only affected files>
+  git commit -m "fix(<scope>): address FB-<NN> <description> (WP<NN>)"
+- Report: which FB-XX items were fixed, which tests were re-run, any regressions
+```
+
+If the skill reports that an FB-XX item requires deeper changes (new functions, new modules), dispatch `code-implementation` for that specific task only -- not the entire WP.
+
+### 6b.4 Re-run Affected Tests
+
+After all FB-XX fixes are applied:
+
+1. Identify test files that cover the modified source files.
+2. Run ONLY those test files as a fast verification pass.
+3. If any targeted tests fail: dispatch `code-debug` with the failing output (max 3 attempts, same retry logic as Step 7).
+4. After targeted tests pass: run the FULL test suite once as a regression check.
+5. If the full suite passes: proceed to Step 9 (coverage verification and lane update).
+6. If the full suite has NEW failures (tests that passed before rework): dispatch `code-debug` to fix regressions.
+
+### 6b.5 Mark FB-XX Items as Resolved
+
+After all fixes are applied and tests pass:
+1. Check off each FB-XX checkbox in the WP's `## Review` section (`- [ ]` to `- [x]`).
+2. Mark each FB-XX todo item as completed.
+3. Proceed to Step 9 to set `lane: for_review`.
 
 ## Step 7 - Check Test Results and Conditional Debug (FR-010)
 
@@ -283,7 +396,7 @@ Do NOT prepend or insert mid-list -- always append to the end.
 
 After all skills complete and all tests pass:
 
-1. **Coverage verification (FR-014.1)**: Run a final coverage report. Verify thresholds: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
+1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
 2. **Set lane (FR-014.2)**: Update the WP file's `lane:` frontmatter to `for_review`.
 3. **Activity Log**: Append: `<ISO-8601-timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
 4. **Update plan index**: Update the WP's status in `.sdd/plans/README.md` to reflect completion.
@@ -296,6 +409,8 @@ After all skills complete and all tests pass:
 WP<NN> implementation complete. All tests passing.
 Coverage: <code_coverage>% code, <branch_coverage>% branch.
 WP file: <wp_path>
+Spec: <spec_path>
+Contracts: <contracts_dir>
 Lane: for_review
 ```
 
@@ -329,19 +444,17 @@ git commit -m "docs(plan): mark WP<NN> complete, submit for review"
 
 ### 10c. Handle Reviewer Feedback
 
-If the Reviewer returns the WP with `lane: to_do` (verdict: Changes Required):
+If the Reviewer returns the WP with `lane: to_do` (verdict: Changes Required), the Coder enters **Rework Mode** (Step 2b detects this automatically on reinvocation). The Rework Fast Path (Step 6b) handles all FB-XX items with targeted fixes instead of re-running the full 5-skill pipeline.
 
-1. Read the full review report in the WP file under `## Review`.
-2. Address every FB-XX item flagged by the reviewer -- do not skip, defer, or partially fix.
-3. Update `review_status: acknowledged` in the WP frontmatter.
-4. Set `lane: doing` and append an Activity Log entry: `<ISO-8601-timestamp> - coder - lane=doing - Addressing reviewer feedback (FB-XX, FB-XX, ...)`
-5. Re-dispatch the appropriate skill(s) to fix each FB-XX item, re-running tests after each fix.
-6. For each fixed FB-XX item, commit immediately:
-   ```
-   git add <only the files changed to fix this FB-XX item>
-   git commit -m "fix(<scope>): address FB-<NN> <brief description> (WP<NN>)"
-   ```
-7. When all feedback items are resolved, return to Step 9 -- set `lane: for_review` and request a re-review.
+When the Coder is reinvoked for rework (by the Orchestrator or manually), the flow is:
+
+```
+Step 0 (schema validation) -> Step 1 (select WP) -> Step 2 (load artifacts)
+  -> Step 2b (detect rework = true) -> Step 6b (rework fast path)
+  -> Step 9 (coverage + lane update to for_review)
+```
+
+Steps 3-6 (contract validation, patterns, skill discovery, full skill dispatch) are SKIPPED in rework mode. This ensures fast fix-review cycles without unnecessary overhead.
 
 ## Step 11 - Propose Next Steps
 
