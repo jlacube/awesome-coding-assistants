@@ -158,15 +158,17 @@ Before every decision, read these files to determine current state:
 | 6 | WP with `lane: done`, not yet documented | Generate docs | **6. Docs Agent** | documentation |
 | 7 | WP has `lane: to_do` (changes requested) | Fix feedback | **4. Coder** | implementation |
 | 8 | WP has `lane: doing` (in progress) | Resume implementation | **4. Coder** | implementation |
-| 9 | All WPs have `lane: done` AND documented | Pipeline complete | **None (halt)** | complete |
-| 10 | All MVP WPs done, non-MVP remain | Ask user to continue | **User decision** | idle |
-| 11 | Agent failure, `retry_count` < 2 | Retry failed agent | **Same agent** | same |
-| 12 | Agent failure, `retry_count` >= 2 | Escalate to user | **User** | same |
+| 9 | WP has `lane: blocked` | Escalate to user with blocking reason | **User** | same |
+| 10 | All WPs have `lane: done` AND documented | Pipeline complete | **None (halt)** | complete |
+| 11 | All MVP WPs done, non-MVP remain | Ask user to continue | **User decision** | idle |
+| 12 | Agent failure, `retry_count` < 2 | Retry failed agent | **Same agent** | same |
+| 13 | Agent failure, `retry_count` >= 2 | Escalate to user | **User** | same |
 
 **Key invariants**:
 - After Review Coordinator sets WP lane to `done`, the Orchestrator SHALL invoke Docs Agent before advancing to next WP (FR-007, row 6)
 - When WP lane is `to_do`, the Orchestrator SHALL invoke Coder, NOT Docs Agent (FR-008, row 7)
-- Error recovery rows (11-12) are evaluated before standard routing when `last_result` is `failed` (FR-011)
+- When WP lane is `blocked`, the Orchestrator SHALL escalate to user with the blocking reason from WP frontmatter/Activity Log (row 9)
+- Error recovery rows (12-13) are evaluated before standard routing when `last_result` is `failed` (FR-011)
 
 ### WP Selection Priority -- Dependency-Aware Topological Sort
 
@@ -257,11 +259,13 @@ Use the Decision Table to identify what to do. Evaluate conditions in this prior
 2. If `last_result` is `failed` and `retry_count` >= 2: escalate to user (Decision Table row 12). See Step 8b.
 
 **Priority 2 -- Standard routing**:
-1. Feedback fixes (`lane: to_do`) -- unblock reviewed WPs first
-2. Reviews (`lane: for_review`) -- invoke Review Coordinator for the next ready WP (one at a time)
-3. Documentation (`lane: done`, not yet documented) -- invoke Docs Agent for approved WPs (FR-007)
-4. Implementation (`lane: planned`, dependencies met) -- advance new work
-5. Planning/Spec/Ideation -- upstream work
+1. Blocked WPs (`lane: blocked`) -- escalate to user immediately (Decision Table row 9)
+2. Stalled reviews (`lane: for_review` AND `review_cycles >= 2`) -- escalate to user (Step 8e)
+3. Feedback fixes (`lane: to_do`) -- unblock reviewed WPs first
+4. Reviews (`lane: for_review`) -- invoke Review Coordinator for the next ready WP (one at a time)
+5. Documentation (`lane: done`, not yet documented) -- invoke Docs Agent for approved WPs (FR-007)
+6. Implementation (`lane: planned`, dependencies met) -- advance new work
+7. Planning/Spec/Ideation -- upstream work
 
 **Priority 3 -- Completion checks**:
 1. All MVP WPs `lane: done` AND documented, non-MVP remain -- ask user whether to continue (Decision Table row 10)
@@ -281,7 +285,7 @@ Agent prompt templates (include ALL required context_fields from the target agen
 - **Spec Architect**: "Develop the brainstorming session output into a full specification. The brief is at {brief_path}"
 - **Planner**: "Decompose the specification into work packages. The spec is at {spec_path}. Companion artifacts are at: {artifacts_dir}"
 - **Coder**: "Implement {wp_id} - {wp_title}. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Dependency {dep_wp} is lane=done (approved). IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons or invoke the reviewer directly."
-- **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. IMPORTANT: When done, report the verdict and return control -- do NOT use handoff buttons or invoke the coder directly."
+- **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Test status: check WP Activity Log for latest test results. IMPORTANT: When done, report the verdict and return control -- do NOT use handoff buttons or invoke the coder directly."
 - **Docs Agent**: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Update documentation. IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons." (Section 8.1)
 
 The Orchestrator derives `spec_path` from the WP file's `Spec` field, and `contracts_dir` from `.sdd/plans/contracts/<WP-slug>/`. Read the WP file to extract these before constructing the prompt.
@@ -328,7 +332,7 @@ Record the failure in `error_log`, increment `retry_count`. If `retry_count` < 2
 
 **8d (Agent escalation)**: Any agent can report escalation. Set `last_result: escalated`, present to user, halt until resolved.
 
-**8e (Review cycle stall)**: If WP `review_cycles >= 3`, halt and escalate with all review feedback from all cycles. This fires before the Review Coordinator's own stall detection (round >= 4), providing defense-in-depth.
+**8e (Review cycle stall)**: If WP `review_cycles >= 2`, halt and escalate with all review feedback from all cycles. This fires before the Review Coordinator's own stall detection (round >= 3), providing defense-in-depth.
 
 **8f (Resolution)**: Reset state, re-read ALL files from disk (user may have modified them), use Decision Table to determine next action. The re-invoked agent may NOT be the same one that escalated.
 
@@ -363,6 +367,8 @@ When ALL WPs (MVP and non-MVP, or only MVP if user chose to halt) have `lane: do
 | Agent fails, `retry_count` >= 2 | Escalate to user with full error log | FR-011 step 4 |
 | Agent reports escalation | Record, present to user, wait for resolution, re-assess state | FR-014, FR-015 |
 | Escalation resolved by user | Reset state, re-read from disk, use decision table for next agent | FR-015 |
+| WP lane set to `blocked` | Escalate to user with blocking reason from WP Activity Log | Decision Table row 9 |
+| WP `review_cycles >= 2` at `for_review` | Escalate to user before dispatching another review | Step 8e |
 | Same WP fails review 3 times | Halt, present all feedback, ask user | FR-012 |
 | Circular dependency detected | Halt with cycle description (E-050), ask user to resolve | FR-042 |
 | Missing dependency reference | Halt with "{wp} depends on {dep} which does not exist" (E-051) | FR-042 |
