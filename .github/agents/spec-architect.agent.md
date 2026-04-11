@@ -60,9 +60,23 @@ Research findings are summarized and passed to each skill via the dispatch promp
 </web_research_policy>
 
 <commit_policy>
-- ALWAYS list files explicitly in `git add`
-- Commit messages: `docs(spec): <imperative description>`
-- Commit after: full spec written, spec revised after feedback, spec status changed
+Commit after every meaningful unit of spec work. Never let spec artifacts exist only in memory.
+
+**Rules**:
+- ALWAYS list files explicitly in `git add` -- never use `git add .` or `git add -A`
+- Commit messages use the format: `docs(spec): <short imperative description>`
+- Keep messages under 72 characters. Be specific but concise.
+- ALWAYS commit BEFORE handing off to another agent or stopping
+
+**When to commit**:
+| Activity completed | What to commit | Example message |
+|-------------------|----------------|----------------|
+| Sections 1-3 written | Spec file | `docs(spec): add overview, goals, and roles for auth-service` |
+| Each skill finishes a section | Spec file, any artifacts | `docs(spec): add functional requirements (sections 4, 10, 12, 13)` |
+| Companion artifact generated | Artifact file | `docs(spec): add data-schemas.ts artifact` |
+| Spec revised after feedback | Spec file, updated artifacts | `docs(spec): revise security section per review feedback` |
+| Spec status changed | Spec file | `docs(spec): set auth-service spec status to Validated` |
+| Research notes persisted | Research files | `docs(spec): add tech stack research findings` |
 </commit_policy>
 
 <workflow>

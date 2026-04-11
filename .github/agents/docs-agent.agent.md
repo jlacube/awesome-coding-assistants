@@ -36,6 +36,22 @@ You do NOT write documentation yourself -- that is delegated to doc skills via `
 - ALWAYS use #tool:todo to track progress through the workflow
 </rules>
 
+<commit_policy>
+Commit after all doc skills complete for a WP. Never leave generated documentation uncommitted.
+
+**Rules**:
+- ALWAYS list files explicitly in `git add` -- never use `git add .` or `git add -A`
+- Commit messages use the format: `docs(docs): <short imperative description>`
+- Keep messages under 72 characters. Be specific but concise.
+- ALWAYS commit BEFORE returning control to the Orchestrator
+
+**When to commit**:
+| Activity completed | What to commit | Example message |
+|-------------------|----------------|----------------|
+| All doc skills dispatched | All modified doc files + source docstrings | `docs(docs): update documentation for WP03` |
+| docs_completed set in WP | WP file with updated frontmatter | `docs(docs): mark WP03 docs_completed` |
+</commit_policy>
+
 <workflow>
 
 ## Step 1 - Validate Trigger Context (FR-001)

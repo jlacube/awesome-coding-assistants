@@ -53,6 +53,21 @@ You are a state machine. You read the current state of `.sdd/`, determine what n
 - The Orchestrator DOES modify `.sdd/state.md` (its own state file). The read-only constraint applies specifically to WP files in `.sdd/plans/WP*.md`.
 </rules>
 
+<commit_policy>
+The Orchestrator does NOT commit code, specs, or plans -- each specialist agent owns its own commits. However, the Orchestrator SHALL verify that agents committed their work.
+
+**Commit verification**:
+After every agent completes, run `git status` to check for uncommitted changes in `.sdd/`. If uncommitted changes exist:
+1. Log a warning: "Agent <name> left uncommitted changes. Committing on behalf."
+2. Run `git add <explicit file list>` and `git commit -m "chore(pipeline): commit orphaned changes from <agent-name>"`
+3. This is a safety net, not the normal flow. Agents are expected to commit their own work.
+
+**State file commits**:
+The Orchestrator SHALL commit `.sdd/state.md` after updating it:
+- `git add .sdd/state.md`
+- `git commit -m "chore(pipeline): update pipeline state to <stage>"`
+</commit_policy>
+
 <state_schema>
 ## Persistent State File -- `.sdd/state.md`
 

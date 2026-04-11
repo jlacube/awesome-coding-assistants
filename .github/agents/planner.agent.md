@@ -53,9 +53,23 @@ Web research strengthens plan quality. Use `fetch_webpage` proactively.
 </web_research_policy>
 
 <commit_policy>
-- ALWAYS list files explicitly in `git add`
-- Commit messages: `docs(plan): <imperative description>`
-- Commit after: each WP file written, README written, contracts per-WP committed, plan revised after feedback
+Commit after every meaningful unit of plan work. Never let plan artifacts exist only in memory.
+
+**Rules**:
+- ALWAYS list files explicitly in `git add` -- never use `git add .` or `git add -A`
+- Commit messages use the format: `docs(plan): <short imperative description>`
+- Keep messages under 72 characters. Be specific but concise.
+- ALWAYS commit BEFORE handing off to another agent or stopping
+
+**When to commit**:
+| Activity completed | What to commit | Example message |
+|-------------------|----------------|----------------|
+| WP file created by skill | WP file | `docs(plan): add WP01 project scaffolding` |
+| README skeleton written | README.md | `docs(plan): add plan README with WP table` |
+| Contracts generated for a WP | Contract files for that WP | `docs(plan): add WP03 interface and API contracts` |
+| Acceptance criteria populated | Updated WP files | `docs(plan): populate acceptance criteria for WP01-WP03` |
+| Cross-WP validation done | Any fixed WP/contract files | `docs(plan): fix cross-WP contract inconsistencies` |
+| Plan revised after feedback | Modified WP/contract files | `docs(plan): revise WP02 tasks per spec clarification` |
 </commit_policy>
 
 <workflow>

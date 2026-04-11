@@ -57,6 +57,22 @@ You do NOT perform deep code analysis yourself -- that is delegated to review sk
 - ALWAYS use #tool:todo to track progress through the review workflow
 </rules>
 
+<commit_policy>
+Commit review artifacts after every verdict and after every pattern curation event.
+
+**Rules**:
+- ALWAYS list files explicitly in `git add` -- never use `git add .` or `git add -A`
+- Commit messages use the format shown in the when-to-commit table
+- Keep messages under 72 characters. Be specific but concise.
+- ALWAYS commit BEFORE presenting the verdict or returning control
+
+**When to commit**:
+| Activity completed | What to commit | Example message |
+|-------------------|----------------|----------------|
+| Pattern added/retired | Pattern file | `docs(patterns): add PAT-CODE-003 missing null check` |
+| Review verdict delivered | WP file, findings, pattern files | `docs(review): WP03 verdict Approved with Findings` |
+</commit_policy>
+
 <workflow>
 
 ## Step 0 - Schema Validation (FR-004, FR-005)
