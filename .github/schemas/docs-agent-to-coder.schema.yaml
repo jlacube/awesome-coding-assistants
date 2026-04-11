@@ -1,0 +1,46 @@
+# Handoff Schema: Docs Agent -> Coder
+#
+# Maintenance (FR-006): When the Docs Agent or Coder interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "6. Docs Agent"
+target_agent: "4. Coder"
+description: "Handoff from Docs Agent back to Coder after documentation generation completes"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+      - field: "docs_completed"
+        value_one_of: [true, false]
+
+required_state:
+  - condition: "documentation generation has completed (success or partial)"
+    error: "Docs Agent must complete documentation generation before handing off"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the WP file for which docs were generated"
+
+  - name: "docs_completed"
+    type: "boolean"
+    required: true
+    description: "Whether documentation was successfully generated"
+
+validation_rules:
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+placeholder_patterns:
+  "{NN}": "\\d{2}"
+  "{slug}": "[a-z0-9-]+"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-12"
+    description: "Initial version"

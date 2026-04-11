@@ -1,0 +1,27 @@
+# Handoff Schema: Brainstorming -> Ideation
+#
+# Maintenance (FR-006): When the Brainstorming or Ideation interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "1.1. Brainstorming"
+target_agent: "1. Ideation"
+description: "Handoff from Brainstorming to Ideation when session should continue as a focused ideation"
+
+required_state:
+  - condition: "brainstorming session has produced sufficient context for ideation"
+    error: "Brainstorming session context is required before transitioning to ideation"
+
+context_fields:
+  - name: "session_context"
+    type: "string"
+    required: true
+    description: "Summary of the brainstorming session to carry into ideation"
+
+validation_rules: []
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-12"
+    description: "Initial version"

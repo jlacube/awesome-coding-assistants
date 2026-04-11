@@ -1,0 +1,38 @@
+# Handoff Schema: Brainstorming -> Spec Architect
+#
+# Maintenance (FR-006): When the Brainstorming or Spec Architect interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "1.1. Brainstorming"
+target_agent: "2. Spec Architect"
+description: "Handoff from Brainstorming agent to Spec Architect with brainstorming session brief"
+
+required_artifacts:
+  - path: ".sdd/ideas/{NNN}-*.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "brief file exists at brief_path"
+    error: "Brainstorming brief does not exist at {brief_path}"
+
+context_fields:
+  - name: "brief_path"
+    type: "string"
+    required: true
+    description: "Path to the brainstorming session brief file"
+
+validation_rules:
+  - check: "file_exists"
+    target: "brief_path"
+    error: "Brainstorming brief does not exist at {brief_path}"
+
+placeholder_patterns:
+  "{NNN}": "\\d{2,3}"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-12"
+    description: "Initial version"

@@ -25,6 +25,21 @@ validation_patterns:
     pattern: "^\\.sdd/plans/WP\\d{2}-[a-z0-9-]+\\.md$"
     error: "File path '{path}' does not match expected format: .sdd/plans/WP<NN>-<slug>.md"
 
+# WP frontmatter fields managed by pipeline agents (not part of handoff validation,
+# but documented here as the canonical schema for pipeline-internal WP fields).
+wp_frontmatter_fields:
+  review_cycles:
+    type: "integer"
+    minimum: 0
+    description: "Number of review cycles completed. Incremented by Review Coordinator on each review round. Read by Orchestrator for stall detection (>= 2). If absent from WP frontmatter, treat as 0."
+    managed_by: ["5. Review Coordinator", "0. Orchestrator"]
+
+  docs_completed:
+    type: "boolean"
+    default: false
+    description: "Whether documentation has been generated for this WP. Set to true by Docs Agent after successful doc generation. Read by Orchestrator to determine if docs step is done. If absent, treat as false."
+    managed_by: ["6. Docs Agent", "0. Orchestrator"]
+
 version_history:
   - version: "base/v1"
     date: "2026-04-04"

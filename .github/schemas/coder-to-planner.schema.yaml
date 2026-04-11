@@ -1,0 +1,53 @@
+# Handoff Schema: Coder -> Planner
+#
+# Maintenance (FR-006): When the Coder or Planner interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "4. Coder"
+target_agent: "3. Planner"
+description: "Handoff from Coder to Planner to add or refine tasks for the work package"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "task refinement or addition is needed for the current WP"
+    error: "Task refinement description is required when escalating to Planner"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the WP file that needs task refinement"
+
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the source spec file"
+
+  - name: "refinement_request"
+    type: "string"
+    required: true
+    description: "Description of what tasks need to be added or refined"
+
+validation_rules:
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Spec file does not exist at {spec_path}"
+
+placeholder_patterns:
+  "{NN}": "\\d{2}"
+  "{slug}": "[a-z0-9-]+"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-12"
+    description: "Initial version"

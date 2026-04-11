@@ -1,0 +1,53 @@
+# Handoff Schema: Coder -> Spec Architect
+#
+# Maintenance (FR-006): When the Coder or Spec Architect interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+
+schema: handoff/v1
+source_agent: "4. Coder"
+target_agent: "2. Spec Architect"
+description: "Handoff from Coder to Spec Architect when a spec ambiguity blocks implementation"
+
+required_artifacts:
+  - path: ".sdd/plans/WP{NN}-{slug}.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "spec ambiguity identified that blocks implementation"
+    error: "Ambiguity description is required when escalating to Spec Architect"
+
+context_fields:
+  - name: "wp_path"
+    type: "string"
+    required: true
+    description: "Path to the WP file being implemented"
+
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the spec containing the ambiguity"
+
+  - name: "ambiguity_description"
+    type: "string"
+    required: true
+    description: "Description of the spec ambiguity blocking implementation"
+
+validation_rules:
+  - check: "file_exists"
+    target: "wp_path"
+    error: "WP file does not exist at {wp_path}"
+
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Spec file does not exist at {spec_path}"
+
+placeholder_patterns:
+  "{NN}": "\\d{2}"
+  "{slug}": "[a-z0-9-]+"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-12"
+    description: "Initial version"

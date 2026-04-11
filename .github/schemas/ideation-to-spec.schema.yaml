@@ -10,7 +10,7 @@ target_agent: "2. Spec Architect"
 description: "Handoff from Ideation agent to Spec Architect with idea brief"
 
 required_artifacts:
-  - path: ".sdd/ideas/{NNN}-*.md"
+  - path: ".sdd/ideas/*.md"
     validation:
       - exists: true
 
@@ -30,8 +30,10 @@ validation_rules:
     error: "Idea brief does not exist at {brief_path}"
 
 placeholder_patterns:
-  # Regex patterns for path placeholders used in required_artifacts
-  "{NNN}": "\\d{2,3}"  # 2-3 digit spec number
+  # Brief filenames follow the pattern <NNN>-<idea-name>.md where NNN is a
+  # sequentially assigned number. The path validation uses a simple glob
+  # because the numbering convention is enforced by the Ideation agent, not
+  # the schema.
 
 version_history:
   - version: "handoff/v1"
