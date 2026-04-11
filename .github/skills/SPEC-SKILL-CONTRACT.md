@@ -102,8 +102,8 @@ description: "<one-line purpose, 1-500 characters>"
 
 The coordinator discovers skills by scanning `spec-*/SKILL.md` via glob (FR-009) and dispatches them in the canonical order defined by FR-010:
 
-1. `spec-requirements` — Sections 4, 5 (functional requirements, NFRs, constraints)
-2. `spec-user-stories` — Section 6 (user stories, acceptance scenarios, edge cases)
+1. `spec-requirements` — Sections 4, 10, 12, 13 (functional requirements, NFRs, constraints, out-of-scope)
+2. `spec-user-stories` — Sections 5, 6 (user stories, acceptance scenarios, user flows)
 3. `spec-data-model` — Section 7 (data model, entity schemas, validation rules)
 4. `spec-api-design` — Section 8 (API endpoints, interface contracts, error catalog)
 5. `spec-architecture` — Section 9 (system architecture, tech stack, directory structure)

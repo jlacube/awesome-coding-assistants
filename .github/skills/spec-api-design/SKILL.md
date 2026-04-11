@@ -6,7 +6,7 @@ argument-hint: "Invoked by Spec Architect Coordinator - do not call directly"
 
 # spec-api-design - API / Interface Design Skill
 
-This skill is invoked by the Spec Architect Coordinator as a subagent. It produces Section 8 (API / Interface Design) of the specification and companion artifact files: `api-contracts.<ext>` and `error-catalog.<ext>`.
+This skill is invoked by the Spec Architect Coordinator as a subagent. It produces Section 8 (API / Interface Design) of the specification and companion artifact files: `api-contracts.<ext>`, `error-catalog.<ext>`, and `interfaces.<ext>`.
 
 ## Input Contract
 
@@ -29,7 +29,7 @@ This skill receives the following inputs via the coordinator's subagent prompt:
 2. **Read the accumulator** at `accumulator_path` to understand sections 1-7 (including Data Model)
 3. **Read the brief** at `brief_path` for context
 4. **Write Section 8** to the accumulator by APPENDING after existing content
-5. **Produce companion artifacts** in `artifacts_dir`: `api-contracts.<ext>` and `error-catalog.<ext>`
+5. **Produce companion artifacts** in `artifacts_dir`: `api-contracts.<ext>`, `error-catalog.<ext>`, and `interfaces.<ext>`
 
 ## Constraints
 
