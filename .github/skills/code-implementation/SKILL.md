@@ -102,6 +102,18 @@ Read the task's spec refs (FR-XXX, Section N.X) from the spec file. Understand e
 
 Read the task's **Implementation Guidance** section from the WP file. This section contains specific instructions, recommended libraries, doc links, patterns, and constraints for how to implement this task. Follow its guidance precisely -- it was written by the Planner with knowledge of the target stack and architecture.
 
+### 3a.1. Extract Business Logic from Spec
+
+Beyond the basic FR obligations, extract and implement ALL business logic specified:
+
+1. **Business rules & invariants**: Conditions the system must enforce at all times. These become validation checks, guards, or assertions in the implementation.
+2. **Decision logic**: If the FR includes a decision table or multi-branch conditional logic, implement ALL branches exactly as specified. Do NOT simplify or collapse branches.
+3. **Computed values**: If the FR specifies a formula or derivation (e.g., `total = sum(items.price * items.qty)`), implement the exact computation. Do NOT approximate or use different formulas.
+4. **Side effects**: If the FR specifies events to emit, notifications to send, cache operations, or audit logging, implement them as part of the operation. Side effects are NOT optional enhancements -- they are specified behavior.
+5. **Temporal rules**: If the FR specifies time-based constraints (cooldown periods, expiration windows, rate limits), implement the exact timing logic specified.
+
+If the spec references an invariant, decision table, or side effect but the task description does not repeat it, still implement it -- the spec is the source of truth.
+
 ### 3a.1. Directory Structure (Greenfield)
 
 If this is the first task of the first WP (no existing source files), read the spec's **Section 9.3 Directory Structure** to determine where files should be placed. Create directories as needed. For subsequent tasks and WPs, follow the directory structure already established by prior tasks.

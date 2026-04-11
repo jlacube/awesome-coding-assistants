@@ -75,6 +75,7 @@ Every user story SHALL follow this exact format:
 6. **Acceptance Scenarios** - Minimum 1 happy path + 1 error path per story, in Given/When/Then format.
 7. **Edge Cases** - Every story includes at least one edge case with its resolution.
 8. **Derived from FRs** - Every story SHALL trace back to at least one FR from Section 4.
+9. **Business Logic Scenarios** - When the backing FRs contain decision logic, invariants, or computed values, write acceptance scenarios that exercise EACH branch or rule. A story backed by an FR with a 4-row decision table needs at least 4 acceptance scenarios (one per decision outcome), not just 1 happy + 1 error.
 
 ### Priority Guideline
 

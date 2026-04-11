@@ -102,6 +102,15 @@ Each task SHALL include (FR-029):
 
 **Task ID format**: `T<WP-number>-<sequence>` (e.g., T01-01, T01-02, T03-05)
 
+### Business Logic Awareness in Task Descriptions
+
+Task descriptions SHALL capture the FULL business logic the Coder must implement, not just the surface-level CRUD operation. When decomposing spec FRs into tasks:
+
+1. **Carry forward business rules**: If the FR specifies invariants, decision logic, computed values, or temporal constraints, the task description MUST include them explicitly. Do NOT assume the Coder will re-read the spec for these details.
+2. **Include decision tables**: If the FR contains a decision table (e.g., discount tiers, approval routing), reproduce it in the task description or explicitly reference the FR number and say "implement decision logic per FR-XXX decision table."
+3. **List side effects**: If the FR specifies events, notifications, cache operations, or audit logging triggered by the operation, list them in the task description.
+4. **Separate business rule tasks**: When a feature area has complex business rules (more than 3 invariants or a multi-level decision tree), create a dedicated task for the business rule logic separate from the data persistence or API layer task.
+
 **Foundation WP special rule (FR-032)**: The first task of the foundation WP SHALL always be virtual environment setup for languages with package isolation:
 - Python: `python -m venv .venv` or poetry/conda
 - Node.js: local `node_modules` with lockfile
