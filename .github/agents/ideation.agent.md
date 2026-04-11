@@ -111,7 +111,9 @@ Questions:
 
 After dispatch returns, read the output file to inform your clarifying questions.
 
-**If the Research Skill dispatch fails**: Log the failure and proceed without research. Set `research_unavailable = true` and note "Research unavailable" in the brief's Research Findings section. Do NOT halt the ideation session due to a research failure.
+**Research file cleanup**: After reading the research output file, delete it using `run_in_terminal` with `Remove-Item <filepath>` (using the specific file path, not a wildcard). Research findings are synthesized into the brief -- the raw file is not needed after consumption.
+
+**If the Research Skill dispatch fails**: Log the failure and proceed without research. Set `research_unavailable = true` and note "Research unavailable" in the brief's Research Findings section. Do NOT halt the ideation session due to a research failure. Clean up any partial research file using `run_in_terminal` with `Remove-Item .sdd/research-*.md -ErrorAction SilentlyContinue`.
 
 Use research findings to:
 - Identify competitors and analogous solutions before asking clarifying questions
