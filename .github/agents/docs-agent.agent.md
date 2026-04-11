@@ -116,8 +116,10 @@ Sort discovered skills into the canonical dispatch order:
 | 2 | `doc-api-reference` | API endpoint documentation from contracts |
 | 3 | `doc-user-guide` | End-user documentation for features |
 | 4 | `doc-developer-guide` | Development setup, conventions, contributing |
-| 5 | `doc-changelog` | Changelog entry for the WP |
-| 6 | `doc-inline-code` | Code comments and docstrings in source files |
+| 5 | `doc-configuration` | Environment variables, config files, defaults |
+| 6 | `doc-deployment` | Deployment prerequisites, steps, operations |
+| 7 | `doc-changelog` | Changelog entry for the WP |
+| 8 | `doc-inline-code` | Code comments and docstrings in source files |
 
 - Skills from the canonical list that are NOT discovered: skip without error.
 - Skills discovered but NOT in the canonical list: dispatch AFTER all canonical skills, in alphabetical order.
