@@ -138,7 +138,7 @@ files_reviewed:
 
 ### QUAL-001 [FAIL]
 - **Checklist item**: Dead Code - Unused function
-- **Requirement**: FR-037 dimension 7
+- **Requirement**: Dimension 7 - Dead Code
 - **File**: <file_path>#L<start>-L<end>
 - **Description**: Function `process_legacy()` is defined but never called anywhere.
 - **Expected**: Remove unused function or document why it is retained.
@@ -146,7 +146,7 @@ files_reviewed:
 
 ### QUAL-002 [WARN]
 - **Checklist item**: Complexity - High cyclomatic complexity
-- **Requirement**: FR-037 dimension 2
+- **Requirement**: Dimension 2 - Complexity
 - **File**: <file_path>#L<start>-L<end>
 - **Description**: Function has estimated cyclomatic complexity of 14.
 - **Expected**: Refactor into smaller functions or simplify branching logic. Threshold: 10.
@@ -165,3 +165,16 @@ files_reviewed:
 - Every N/A finding MUST include: Checklist item, Justification.
 - `finding_counts` MUST accurately reflect the actual findings in the file.
 - `files_reviewed` MUST list every file read and evaluated during this review.
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] All 8 quality dimensions evaluated for every file
+- [ ] Cyclomatic complexity estimated for complex functions (threshold: 10)
+- [ ] Dead code verified via search (not just visual inspection)
+- [ ] Naming conventions checked against project style
+- [ ] `finding_counts` match actual findings in the output
+- [ ] `files_reviewed` lists every file read during this review

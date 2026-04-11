@@ -23,7 +23,7 @@ This skill is invoked by the Review Coordinator as a subagent. It compares docum
 
 ## Documentation Checklist
 
-The project maintains 8 standard documentation files under `.sdd/docs/`. For each file, compare the documented content against the actual implementation.
+The project maintains 7 standard documentation files under `.sdd/docs/`. For each file, compare the documented content against the actual implementation.
 
 ### Category 1: Architecture Docs (FR-046.1)
 - [ ] Does `.sdd/docs/architecture.md` exist and contain substantive content?
@@ -45,6 +45,9 @@ The project maintains 8 standard documentation files under `.sdd/docs/`. For eac
 - [ ] Are all configuration options used in the WP's code documented?
 
 ### Category 4: Data Model Docs (FR-046.4)
+
+Data model documentation may appear in spec contract artifacts, inline code docs, or within `architecture.md`. There is no standalone data-model doc file.
+
 - [ ] Are data entities, fields, and types documented accurately?
 - [ ] Do documented relationships match actual schema definitions?
 - [ ] Are validation rules documented and consistent with code?
@@ -77,8 +80,8 @@ The project maintains 8 standard documentation files under `.sdd/docs/`. For eac
 - [ ] Are breaking changes clearly marked?
 
 ### Category 10: Completeness (FR-046.10)
-- [ ] Do all 8 standard doc files exist under `.sdd/docs/`?
-- [ ] Are any of the 8 files empty or contain only boilerplate headers?
+- [ ] Do all 7 standard doc files exist under `.sdd/docs/`? (`architecture.md`, `api-reference.md`, `user-guide.md`, `developer-guide.md`, `configuration-guide.md`, `deployment-guide.md`, `CHANGELOG.md`)
+- [ ] Are any of the 7 files empty or contain only boilerplate headers?
 - [ ] Are all public APIs, config options, and workflows covered?
 
 ---
@@ -157,3 +160,16 @@ files_reviewed:
 - **Checklist item**: Deployment Guide - Prerequisites
 - **Justification**: No deployment changes in this WP. Deployment guide remains accurate.
 ```
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] All 7 standard doc files checked for existence and content
+- [ ] Code-to-docs accuracy verified (not just reading docs in isolation)
+- [ ] Stale/outdated content flagged against current implementation
+- [ ] New features from this WP reflected in relevant docs
+- [ ] `finding_counts` match actual findings in the output
+- [ ] `files_reviewed` lists every file read during this review

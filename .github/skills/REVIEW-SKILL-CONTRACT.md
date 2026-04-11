@@ -58,17 +58,36 @@ Skills MAY extend the frontmatter with additional fields (e.g., `contract_files_
 
 ### 3.2 Findings Body Format
 
-After the YAML frontmatter, each finding SHALL use this format:
+After the YAML frontmatter, findings SHALL use one of these formats based on severity:
 
+**FAIL / WARN findings:**
 ```markdown
-### <PREFIX>-<NNN>: <Short Title>
-
-**Severity**: FAIL | WARN | N/A
-**File**: `<file-path>` (line <N>)
-**Description**: <what was found>
-**Spec Ref**: <FR-NNN or section reference>
-**Recommendation**: <how to fix>
+### <PREFIX>-<NNN> [FAIL]
+- **Checklist item**: <what was checked>
+- **Requirement**: <FR-NNN, section reference, or spec obligation>
+- **File**: `<file-path>` (lines <N>-<M>)
+- **Description**: <what was found>
+- **Expected**: <what the spec/standard requires>
+- **Evidence**: <specific code/config that violates the requirement>
 ```
+
+**PASS findings:**
+```markdown
+### <PREFIX>-<NNN> [PASS]
+- **Checklist item**: <what was checked>
+- **Requirement**: <FR-NNN, section reference, or spec obligation>
+- **File**: `<file-path>`
+- **Description**: <brief confirmation of compliance>
+```
+
+**N/A findings:**
+```markdown
+### <PREFIX>-<NNN> [N/A]
+- **Checklist item**: <what was checked>
+- **Justification**: <why this item does not apply to this WP>
+```
+
+The severity tag appears in the heading (`[FAIL]`, `[WARN]`, `[PASS]`, `[N/A]`), not as a separate `**Severity**:` field.
 
 ### 3.3 Finding ID Prefixes
 

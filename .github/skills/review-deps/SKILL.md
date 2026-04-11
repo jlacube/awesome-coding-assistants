@@ -162,3 +162,17 @@ files_reviewed:
 - **Checklist item**: License Compatibility
 - **Justification**: Internal project with no distribution. License compatibility is not a concern.
 ```
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] Every dependency in lockfile and manifest was evaluated
+- [ ] CVE checks used current vulnerability databases
+- [ ] Abandoned packages flagged (>2 years no release)
+- [ ] License compatibility assessed for distribution model
+- [ ] Version pinning verified (exact versions, not ranges)
+- [ ] `finding_counts` match actual findings in the output
+- [ ] `files_reviewed` lists every file read during this review

@@ -168,3 +168,17 @@ files_reviewed:
 - **Checklist item**: Edge Case Coverage - Concurrent access
 - **Justification**: No concurrency requirements specified for this WP's scope.
 ```
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] Test validity checked (tests actually assert meaningful behavior)
+- [ ] Coverage thresholds evaluated against spec requirements
+- [ ] BDD scenarios matched to acceptance criteria
+- [ ] Edge cases from spec tested
+- [ ] Error paths have dedicated test cases
+- [ ] `finding_counts` match actual findings in the output
+- [ ] `files_reviewed` lists every file read during this review

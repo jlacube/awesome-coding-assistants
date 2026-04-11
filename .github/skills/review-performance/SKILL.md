@@ -123,3 +123,17 @@ files_reviewed:
 - **Checklist item**: Blocking in Async Contexts
 - **Justification**: No async code in this WP. All functions are synchronous.
 ```
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] N+1 query patterns checked in all database access paths
+- [ ] Unbounded data fetching flagged (missing LIMIT/pagination)
+- [ ] Blocking calls in async contexts identified
+- [ ] Missing indexes cross-referenced with query patterns
+- [ ] Caching opportunities evaluated for repeated computations
+- [ ] `finding_counts` match actual findings in the output
+- [ ] `files_reviewed` lists every file read during this review

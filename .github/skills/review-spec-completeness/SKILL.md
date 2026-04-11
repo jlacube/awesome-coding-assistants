@@ -322,10 +322,10 @@ spec: <spec_path>
 reviewed_at: <ISO-8601-timestamp>
 status: completed
 finding_counts:
-  pass: <count>
+  pass: 0
   warn: <count>
   fail: <count>
-  na: <count>
+  na: 0
 files_reviewed:
   - <spec_path>
   - <artifact_files>
@@ -365,3 +365,16 @@ Total findings: <count>
 ```
 
 If a check produces no findings, list it in the "Checks with No Findings" section with either "No issues found" or "N/A" with a brief justification.
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] All 9 completeness dimensions checked
+- [ ] Obligation language verified (SHALL/SHOULD/MAY usage)
+- [ ] Error behaviors have specific codes/messages, not just mentions
+- [ ] Data model has typed fields, not just entity names
+- [ ] API contracts have request/response schemas
+- [ ] `finding_counts` match actual findings in the output

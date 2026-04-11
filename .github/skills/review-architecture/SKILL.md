@@ -175,7 +175,7 @@ files_reviewed:
 
 Before completing, verify:
 
-- [ ] All 6 architecture dimensions are evaluated (component design, tech stack, directory structure, SOLID, dependency direction, scope discipline)
+- [ ] All 8 architecture dimensions are evaluated
 - [ ] Every finding references a specific checklist item and requirement
 - [ ] Evidence includes file paths with line numbers and code snippets
 - [ ] N/A findings include a justification

@@ -238,3 +238,17 @@ files_reviewed:
 - Every N/A finding MUST include: Checklist item, Justification.
 - `finding_counts` MUST accurately reflect the actual findings in the file.
 - `files_reviewed` MUST list every file read and evaluated during this review.
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] All 14 OWASP Secure Coding Practices categories evaluated
+- [ ] Spec security requirements cross-referenced
+- [ ] Input validation checked at all system boundaries
+- [ ] Authentication/authorization verified for all protected endpoints
+- [ ] Sensitive data exposure checked (logs, errors, responses)
+- [ ] `finding_counts` match actual findings in the output
+- [ ] `files_reviewed` lists every file read during this review
