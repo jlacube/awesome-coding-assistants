@@ -118,7 +118,31 @@ Commit after every meaningful phase or extraction milestone. Never let retro-spe
 
 ## Step 0 - Initialization and User Configuration
 
-Before any analysis, gather essential configuration from the user:
+Before any analysis, validate inputs and gather essential configuration:
+
+### 0a. Schema Validation
+
+If invoked via `runSubagent` with a handoff prompt, validate the incoming handoff against the applicable schema (e.g., `orchestrator-handoff.schema.yaml`):
+
+1. **Read the schema file**: Read `.github/schemas/` for any schema with `target_agent: "7. Retro-Spec"`.
+2. **Validate required_artifacts**: For each entry in `required_artifacts`, verify the file exists at the specified path.
+3. **Validate required_state**: For each entry in `required_state`, evaluate the condition.
+4. **Validate context_fields**: For each field in `context_fields` where `required: true`, verify it is present and non-empty.
+5. **Run validation_rules**: For each rule in `validation_rules`, execute the check and verify the result.
+6. **On any failure**: Halt immediately. Report ALL failed checks with the schema's error messages.
+7. **On success**: Log "Schema validation passed" and proceed to Step 0b.
+
+If no applicable schema is found, or if invoked directly by a user, skip schema validation and proceed to Step 0b.
+
+### 0b. Input Validation
+
+If invoked via `runSubagent` with a handoff prompt, validate the required context:
+- Verify `codebase_path` is present and non-empty. If missing, proceed to Step 0c to ask the user.
+- Verify the path exists using `list_dir`. If it does not exist, halt with: "Codebase path does not exist: <path>"
+
+If invoked directly by a user (no handoff prompt), proceed to Step 0c.
+
+### 0c. User Configuration
 
 1. **Check for existing retro state**: Use `list_dir` on `.sdd/retro/`. If it exists and contains files, ask the user whether to continue from prior state or start fresh.
 
@@ -200,7 +224,6 @@ Extract <skill-domain> from the legacy codebase.
 5. Target language for artifacts: <target_language>
 6. Project scope: <project_name>
 7. Module filter: <module_list or "all">
-8. Active patterns to avoid: <patterns>
 
 Write your extraction results to the accumulator.
 Produce companion artifacts in: <artifacts_dir>
@@ -233,8 +256,7 @@ Extract <skill-domain> for module: <module_name>
 6. Target language for artifacts: <target_language>
 7. Project scope: <project_name>
 8. Module filter: <module_name>
-9. Active patterns to avoid: <patterns>
-10. Extraction depth: MODULE-DEEP
+9. Extraction depth: MODULE-DEEP
 
 Focus on:
 - Every public AND internal function with full signatures and behavioral contracts

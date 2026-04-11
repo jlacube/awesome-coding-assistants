@@ -22,11 +22,10 @@ Every retro skill receives the following inputs in its subagent prompt from the 
 | 6 | `target_language` | String | The programming language for companion artifacts (for reimplementation, NOT the legacy language) |
 | 7 | `project_name` | String | Name of the project being analyzed |
 | 8 | `module_filter` | String | Which modules to analyze (`"all"` or comma-separated list) |
-| 9 | `patterns` | Text | Active retro-domain patterns to avoid (from `retro-patterns.md`) |
 
 > **Exception — `retro-discovery`**: Receives only 3 inputs (`skill_path`, `source_path`, `output_path`) because it bootstraps the pipeline before accumulators, manifests, or artifacts exist.
 
-> **Exception — `retro-assembly`**: Replaces `module_filter` with `scope` (full/project/overview) and adds `all_project_specs` (paths to all project-level accumulators) because it operates across all projects. It omits `patterns` because assembly does not extract new data.
+> **Exception — `retro-assembly`**: Replaces `module_filter` with `scope` (full/project/overview) and adds `all_project_specs` (paths to all project-level accumulators) because it operates across all projects.
 
 ---
 
