@@ -117,7 +117,21 @@ Before any other action, validate the incoming handoff against `spec-to-planner.
 
 ## Step 2 - Spec Completeness Pre-Check (FR-004, FR-005)
 
-Before decomposition, run a 7-point completeness check against the spec:
+Before decomposition, dispatch the `review-spec-completeness` skill for a structured completeness validation:
+
+1. **Dispatch `review-spec-completeness`** via `runSubagent`:
+   ```
+   Validate spec completeness before planning decomposition.
+
+   1. Read the skill instructions at: .github/skills/review-spec-completeness/SKILL.md
+   2. Read the spec at: <spec_path>
+   3. Read companion artifacts at: <spec_artifacts_dir>
+   4. Write findings to: .sdd/plans/spec-completeness-report.md
+   ```
+
+2. **Evaluate findings**: Read the output file. If any FAIL findings exist, create a structured gap report from them. If only PASS/WARN/N/A findings, proceed.
+
+Additionally, run a 7-point completeness check against the spec:
 
 1. **Traceability matrix**: Section 16 has no empty cells -- every FR maps to US, scenario, and test type
 2. **Error behaviors**: Every FR has defined error behavior, not just happy path
