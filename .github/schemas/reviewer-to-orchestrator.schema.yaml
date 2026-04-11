@@ -35,8 +35,8 @@ context_fields:
   - name: "verdict"
     type: "string"
     required: true
-    enum: ["approved", "changes_required"]
-    description: "Review outcome: approved (lane->done) or changes_required (lane->to_do)"
+    enum: ["approved", "approved_with_findings", "changes_required"]
+    description: "Review outcome: approved (zero FAILs, zero WARNs, lane->done), approved_with_findings (zero FAILs, has WARNs, lane->done), or changes_required (has FAILs, lane->to_do)"
 
   - name: "updated_lane"
     type: "string"
@@ -57,12 +57,12 @@ validation_rules:
     error: "WP lane must be 'done' or 'to_do' after review"
 
   - check: "verdict_lane_consistency"
-    rule: "approved -> done, changes_required -> to_do"
-    error: "updated_lane does not match verdict: approved->done, changes_required->to_do"
+    rule: "approved -> done, approved_with_findings -> done, changes_required -> to_do"
+    error: "updated_lane does not match verdict: approved->done, approved_with_findings->done, changes_required->to_do"
 
   - check: "field_not_empty"
     target: "verdict"
-    error: "Verdict must be specified (approved or changes_required)"
+    error: "Verdict must be specified (approved, approved_with_findings, or changes_required)"
 
 placeholder_patterns:
   # Regex patterns for path placeholders used in required_artifacts

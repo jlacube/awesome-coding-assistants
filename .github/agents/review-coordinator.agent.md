@@ -187,13 +187,13 @@ Discover available review skills:
 2. Extract the skill name from the directory path (e.g., `.github/skills/review-spec/SKILL.md` -> `review-spec`).
 3. Sort discovered skills into the canonical dispatch order:
    1. `review-spec`
-   2. `review-security`
-   3. `review-quality`
-   4. `review-tests`
-   5. `review-architecture`
-   6. `review-performance`
-   7. `review-docs`
-   8. `review-deps`
+   2. `review-architecture`
+   3. `review-security`
+   4. `review-quality`
+   5. `review-performance`
+   6. `review-tests`
+   7. `review-deps`
+   8. `review-docs`
 4. Skills present in the canonical list but not discovered are silently skipped.
 5. Skills discovered but NOT in the canonical list are appended after all canonical skills, sorted alphabetically.
 6. If zero skills are discovered, halt with error: "No review skills installed. Install at least one review skill in .github/skills/review-*/SKILL.md."
@@ -204,7 +204,7 @@ Log the discovery result: list all discovered skill names in dispatch order.
 
 ### 7a. Determine dispatch mode
 
-Check the review round number (from Step 11 preview -- count `review-coordinator` entries in the Activity Log):
+Compute the review round number by counting `review-coordinator` entries in the WP file's Activity Log. Store this as `round_number` for reuse in Step 11 (do NOT recompute it -- use this single computed value throughout the review).
 
 - **Round 1 (first review)**: Dispatch ALL discovered skills (full review). Use sequential or batch dispatch.
 - **Round 2+ (re-review)**: Use **Re-Review Scoping** (see below) to dispatch ONLY the minimum set of skills needed. This is mandatory on re-reviews to reduce cycle time.
@@ -289,9 +289,9 @@ Dispatch skills in batches to optimize re-review scoping. Review skills are read
 
 | Batch | Skills | Rationale |
 |-------|--------|-----------|
-| 1 (Correctness) | `review-spec`, `review-tests` | Core spec adherence and test validity |
-| 2 (Safety) | `review-security`, `review-deps`, `review-architecture`, `review-performance` | Non-functional requirements |
-| 3 (Polish) | `review-quality`, `review-docs` | Code quality and documentation |
+| 1 (Correctness) | `review-spec`, `review-architecture` | Spec adherence and architecture conformance |
+| 2 (Safety) | `review-security`, `review-quality`, `review-performance`, `review-tests` | Security, code quality, performance, and test validity |
+| 3 (Polish) | `review-deps`, `review-docs` | Dependency health and documentation accuracy |
 
 Within each batch, dispatch skills sequentially using `runSubagent` (subagents run synchronously -- parallel dispatch is not supported).
 
@@ -300,8 +300,8 @@ On re-reviews, only dispatch batches that contain at least one skill from the re
 ### 7e. Error handling
 
 If a subagent invocation fails (tool error, timeout, or returns an error message):
-- Record a WARN finding with ID `DISPATCH-<skill-name>` (e.g., `DISPATCH-review-spec`).
-- Description: "Skill dispatch failed: <error summary>"
+- For **critical skills** (`review-spec`, `review-security`): record a FAIL finding with ID `DISPATCH-<skill-name>` (e.g., `DISPATCH-review-spec`). Description: "Critical skill dispatch failed: <error summary>. Unevaluated correctness/security is not equivalent to passing."
+- For **all other skills**: record a WARN finding with ID `DISPATCH-<skill-name>` (e.g., `DISPATCH-review-quality`). Description: "Skill dispatch failed: <error summary>"
 - Continue with the next skill. Do not halt.
 
 ## Step 8 - Findings Aggregation (FR-010)
@@ -354,11 +354,7 @@ Count FAILs and WARNs across all findings (coordinator-owned + skill findings, a
 
 ## Step 11 - Review Round Tracking (FR-050)
 
-Determine the review round number:
-
-1. Read the WP file's Activity Log section.
-2. Count entries that contain `review-coordinator` in the agent field.
-3. Round number = count + 1.
+Use the `round_number` computed in Step 7a (do NOT recompute). The review round for the report is `round_number + 1` (this review is the next round after the counted entries).
 
 If a `## Review` section already exists in the WP file, it will be overwritten (not appended) in the next step.
 
@@ -622,18 +618,18 @@ Key principle: On re-reviews, dispatch ONLY skills whose previously-reviewed fil
 
 After determining the verdict on a re-review:
 
-1. Check the review round number (Step 11). If round >= 4 (i.e., this is the 4th review or later):
+1. Check the review round number (Step 11). If round >= 3 (i.e., this is the 3rd review or later):
 
 2. Compare the current FB-XX items against the previous review's FB-XX items:
    - Read the existing `## Review` section (before overwriting).
    - Extract FB-XX item identifiers (by requirement reference and file path).
    - Check if any FB-XX items from the previous review are still present (same requirement + same file).
 
-3. If any FB-XX items have persisted across 3 consecutive rounds:
+3. If any FB-XX items have persisted across 2 consecutive rounds:
    - Set `lane: blocked` in the WP frontmatter.
-   - Append Activity Log: `<ISO-8601-timestamp> - review-coordinator - lane=blocked - Cycle stalled: <FB-XX IDs> unresolved after 3 rounds`
+   - Append Activity Log: `<ISO-8601-timestamp> - review-coordinator - lane=blocked - Cycle stalled: <FB-XX IDs> unresolved after 2 consecutive rounds`
    - Commit the WP file.
-   - Escalate to the user via `askQuestions`: "WP<NN> review cycle is stalled. The following issues remain unresolved after 3 rounds: <list>. How would you like to proceed?"
+   - Escalate to the user via `askQuestions`: "WP<NN> review cycle is stalled. The following issues remain unresolved after 2 consecutive rounds: <list>. How would you like to proceed?"
    - HALT. Do not produce a new verdict or dispatch further skills.
 
 </stalled_cycle_escalation>

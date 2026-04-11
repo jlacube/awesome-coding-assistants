@@ -43,6 +43,7 @@ severity:
 
 verdict:
   - approved
+  - approved_with_findings
   - changes_required
 
 conventions:

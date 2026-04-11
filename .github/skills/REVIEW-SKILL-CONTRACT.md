@@ -161,5 +161,6 @@ The Review Coordinator aggregates findings across all skills to produce a verdic
 
 | Condition | Verdict |
 |-----------|---------|
-| Zero FAIL findings across all skills | `PASS` — WP lane set to `done` |
-| One or more FAIL findings | `FAIL` — WP lane set to `to_do` with feedback |
+| Zero FAIL findings AND zero WARN findings | `Approved` -- WP lane set to `done` |
+| Zero FAIL findings AND one or more WARN findings | `Approved with Findings` -- WP lane set to `done` |
+| One or more FAIL findings | `Changes Required` -- WP lane set to `to_do` with feedback |
