@@ -2,6 +2,10 @@
 
 This document defines the common input/output contract that all retro-spec skills (`retro-*/SKILL.md`) must follow. It serves as the developer guide for creating new retro skills.
 
+> **Note**: This contract is self-referencing — it defines the internal protocol for the retro-spec pipeline.
+> It does not trace to external specification FRs because the retro-spec agent is a bootstrapping tool
+> that reverse-engineers existing code into specifications.
+
 ---
 
 ## 1. Inputs
@@ -19,6 +23,10 @@ Every retro skill receives the following inputs in its subagent prompt from the 
 | 7 | `project_name` | String | Name of the project being analyzed |
 | 8 | `module_filter` | String | Which modules to analyze (`"all"` or comma-separated list) |
 | 9 | `patterns` | Text | Active retro-domain patterns to avoid (from `retro-patterns.md`) |
+
+> **Exception — `retro-discovery`**: Receives only 3 inputs (`skill_path`, `source_path`, `output_path`) because it bootstraps the pipeline before accumulators, manifests, or artifacts exist.
+
+> **Exception — `retro-assembly`**: Replaces `module_filter` with `scope` (full/project/overview) and adds `all_project_specs` (paths to all project-level accumulators) because it operates across all projects. It omits `patterns` because assembly does not extract new data.
 
 ---
 
@@ -74,6 +82,14 @@ Every claim in the output SHALL cite specific source evidence:
 
 If a skill encounters binary files, minified code, or generated code, it SHALL skip them with:
 `[SKIPPED: <reason> at <path>]`
+
+### 4.5 MODULE-DEEP Mode (`retro-business-logic`)
+
+The `retro-business-logic` skill supports an extended extraction mode triggered when the dispatch prompt contains `Extraction depth: MODULE-DEEP`. This mode performs exhaustive per-function code-path tracing within a single module and produces additional subsections (4B–4E: Business Rules, Decision Logic, Computed Values, Side Effects). Other skills are not affected by MODULE-DEEP.
+
+### 4.6 Test Annotations (`retro-test-analysis`)
+
+The `retro-test-analysis` skill adds inline annotations to prior sections' requirements using `[TEST VALIDATED: <test_file>:<test_name>]` or `[NO TEST COVERAGE]`. This is a controlled exception to §4.2 — annotations are additive metadata, not content modifications.
 
 ---
 

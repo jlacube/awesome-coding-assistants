@@ -209,3 +209,18 @@ Assemble and write the complete changelog entry.
 - Change descriptions SHALL NOT include task IDs (e.g., "T03-02") -- they are user-facing
 - A `---` horizontal rule separator SHALL appear between the new entry and the previous entry in the file. This separator belongs to the file structure (Step 5), not to the entry itself.
 - If the WP consists entirely of internal changes with no user-visible impact, write a single entry: `- Internal improvements with no user-visible changes`
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] Entry is prepended (newest first) after the file header
+- [ ] WP identifier and date are present in the heading
+- [ ] Change descriptions are user-facing (no task IDs)
+- [ ] Breaking changes subsection is present if applicable, omitted if not
+- [ ] Dependencies subsection is present if applicable, omitted if not
+- [ ] `---` separator appears between new and previous entry
+- [ ] Existing entries are preserved unmodified
+- [ ] No em dashes, smart quotes, or curly apostrophes in output

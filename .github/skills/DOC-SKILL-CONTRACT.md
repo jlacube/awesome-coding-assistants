@@ -43,9 +43,11 @@ Each skill SHALL produce one of the following:
 | `doc-architecture` | `.sdd/docs/architecture.md` | System design, components, decisions |
 | `doc-api-reference` | `.sdd/docs/api-reference.md` | Endpoint docs from contracts |
 | `doc-user-guide` | `.sdd/docs/user-guide.md` | Feature usage instructions |
-| `doc-developer-guide` | `.sdd/docs/developer-guide.md` | Dev setup, conventions || `doc-configuration` | `.sdd/docs/configuration-guide.md` | Env vars, config files, defaults |
-| `doc-deployment` | `.sdd/docs/deployment-guide.md` | Deploy steps, prerequisites, ops || `doc-changelog` | `.sdd/docs/CHANGELOG.md` | Version history entries (prepended, newest first) |
-| `doc-inline-code` | Source files (`*.ts`, `*.py`, `*.go`, `*.rs`) | Docstrings and comments in source files |
+| `doc-developer-guide` | `.sdd/docs/developer-guide.md` | Dev setup, conventions |
+| `doc-configuration` | `.sdd/docs/configuration-guide.md` | Env vars, config files, defaults |
+| `doc-deployment` | `.sdd/docs/deployment-guide.md` | Deploy steps, prerequisites, ops |
+| `doc-changelog` | `.sdd/docs/CHANGELOG.md` | Version history entries (prepended, newest first) |
+| `doc-inline-code` | Source files (`*.ts`, `*.py`, `*.go`, `*.rs`, `*.java`, `*.cs`) | Docstrings and comments in source files |
 
 ### 3.1 Incremental Updates
 

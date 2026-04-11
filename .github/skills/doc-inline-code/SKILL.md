@@ -10,7 +10,7 @@ This skill is invoked by the Docs Agent Coordinator as a subagent. It adds and u
 
 ## Input Contract (FR-005)
 
-This skill receives the following 6 inputs via the coordinator's subagent prompt, as defined in `DOC-SKILL-CONTRACT.md`:
+This skill receives the following 5 inputs via the coordinator's subagent prompt, as defined in `DOC-SKILL-CONTRACT.md`:
 
 | # | Input | Type | Description |
 |---|-------|------|-------------|
@@ -64,6 +64,17 @@ The skill SHALL NOT modify implementation logic. Only documentary content may be
 - **Deleting code**: Do not remove any existing code, even dead code or commented-out code
 
 If you discover a bug, a code smell, or an improvement opportunity, include it in your report to the coordinator but do NOT make the change.
+
+### Incremental Update Protocol
+
+When a WP modifies existing source files that already have documentation:
+
+1. **Preserve existing docstrings** that describe unchanged behavior
+2. **Update docstrings** only for functions/parameters whose behavior changed in this WP
+3. **Add new docstrings** for new functions, classes, or modules introduced by this WP
+4. **Do NOT strip or rewrite** documentation on code not touched by this WP
+
+The goal is surgical documentation updates, not wholesale rewrites.
 
 ---
 
@@ -329,3 +340,17 @@ Before completing, verify that no implementation logic was modified.
    - Typo fixed in existing docstring
 3. If any change modifies logic, undo it immediately
 4. Report the final list of files modified and the types of changes made
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] No implementation logic was modified (only docstrings, comments, type annotations)
+- [ ] Every public function/class/method has a docstring
+- [ ] Type annotations were added where inferable from contracts or tests
+- [ ] Existing accurate docstrings were preserved, not overwritten
+- [ ] `# DOCFIX: narrow type` markers used for uncertain types (not `# TODO`)
+- [ ] Module-level docstrings include purpose and key responsibilities
+- [ ] No em dashes, smart quotes, or curly apostrophes in output

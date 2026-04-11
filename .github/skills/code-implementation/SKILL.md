@@ -23,11 +23,11 @@ This skill is dispatched by the Coder Coordinator during Phase 2. It implements 
 | 3 | `contracts_dir` | Path to contract files for this WP (`.sdd/plans/contracts/<WP-slug>/`) |
 | 4 | `shared_contracts_dir` | Path to shared cross-WP contracts (`.sdd/plans/contracts/shared/`) |
 | 5 | `spec_path` | Path to the source spec file |
-| 5 | `patterns` | Active code-domain patterns to avoid (from `code-patterns.md`) |
-| 6 | `target_language` | Programming language (e.g., TypeScript, Python) |
-| 7 | `target_framework` | Framework (e.g., Express, FastAPI, React) |
-| 8 | `task_list` | Tasks with acceptance criteria and spec refs |
-| 9 | `dependency_source_summary` | Actual file paths, exports, and import paths from completed dependency WPs |
+| 6 | `patterns` | Active code-domain patterns to avoid (from `code-patterns.md`) |
+| 7 | `target_language` | Programming language (e.g., TypeScript, Python) |
+| 8 | `target_framework` | Framework (e.g., Express, FastAPI, React) |
+| 9 | `task_list` | Tasks with acceptance criteria and spec refs |
+| 10 | `dependency_source_summary` | Actual file paths, exports, and import paths from completed dependency WPs |
 
 ---
 

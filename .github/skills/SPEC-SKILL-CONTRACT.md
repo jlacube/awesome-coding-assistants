@@ -27,7 +27,7 @@ Every spec skill receives the following 8 inputs in its subagent prompt from the
 
 Every spec skill SHALL execute these 5 steps in order:
 
-1. **Read SKILL.md** - Load its own SKILL.md to get review instructions and guidelines
+1. **Read SKILL.md** - Load its own SKILL.md to get spec writing instructions and guidelines
 2. **Read accumulator** - Read the current accumulator file to understand what earlier skills have written
 3. **Read brief** - Read the source ideation brief for context
 4. **Write section(s)** - Write its assigned section(s) to the accumulator file (appending, not overwriting prior sections)
@@ -56,6 +56,8 @@ Skills SHALL NOT modify sections written by earlier skills. If a skill discovers
 2. Continue writing its own section
 
 The coordinator resolves cross-reference issues after all skills complete.
+
+> **Exception**: `spec-security` MAY overwrite Section 10.2 (originally written by `spec-requirements`) to expand security requirements with OWASP mitigations. This is the only permitted cross-section write.
 
 ### 4.2 No Modification of Coordinator Sections (FR-027)
 
@@ -98,4 +100,25 @@ description: "<one-line purpose, 1-500 characters>"
 ---
 ```
 
-The coordinator discovers skills by scanning `spec-*/SKILL.md` via glob (FR-009) and dispatches them in the canonical order defined by FR-010.
+The coordinator discovers skills by scanning `spec-*/SKILL.md` via glob (FR-009) and dispatches them in the canonical order defined by FR-010:
+
+1. `spec-requirements` — Sections 4, 5 (functional requirements, NFRs, constraints)
+2. `spec-user-stories` — Section 6 (user stories, acceptance scenarios, edge cases)
+3. `spec-data-model` — Section 7 (data model, entity schemas, validation rules)
+4. `spec-api-design` — Section 8 (API endpoints, interface contracts, error catalog)
+5. `spec-architecture` — Section 9 (system architecture, tech stack, directory structure)
+6. `spec-security` — Section 10.2 (security requirements, OWASP mitigations)
+7. `spec-test-strategy` — Section 11 (test requirements, BDD scenarios)
+8. `spec-traceability` — Sections 14–18 (traceability matrix, glossary, references, version history)
+
+---
+
+## 7. Output and Reporting
+
+Each spec skill writes its designated section(s) into the accumulator file (the `.spec.md` file at `spec_path`). Skills also produce companion artifacts (typed contracts, schemas, enum files) in `.sdd/specs/artifacts/`.
+
+Upon completion, the coordinator SHALL report:
+- Total skills dispatched and their status (success/failure)
+- Sections written
+- Cross-reference issues found (if any)
+- Companion artifacts generated
