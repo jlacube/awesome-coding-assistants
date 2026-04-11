@@ -5,7 +5,7 @@ model: Claude Opus 4.6 (copilot)
 tools: [vscode/askQuestions, execute/getTerminalOutput, execute/awaitTerminal, execute/killTerminal, execute/createAndRunTask, execute/runInTerminal, execute/runTests, execute/runNotebookCell, execute/testFailure, read/terminalSelection, read/terminalLastCommand, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web, web/fetch, web/githubRepo, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
 handoffs:
   - label: Request Review
-    agent: 5. Review Coordinator
+    agent: "5. Review Coordinator"
     prompt: "Review the implemented work package"
     send: false
   - label: Clarify Specification
@@ -472,7 +472,7 @@ Do NOT prepend or insert mid-list -- always append to the end.
 
 After all skills complete and all tests pass:
 
-1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds. Read `coverage_code` and `coverage_branch` from the WP file's YAML frontmatter. If these fields are absent, use defaults: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check.
+1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds. Read `coverage_code` and `coverage_branch` from the WP file's YAML frontmatter. If these fields are absent, use defaults: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check. Cap coverage remediation at 2 re-dispatches. If coverage still fails after 2 remediation attempts, escalate to the user via `askQuestions` with the full coverage report: "Coverage remains below threshold after 2 remediation attempts. Code: <actual>%/<required>%. Branch: <actual>%/<required>%. How would you like to proceed?" The user may lower thresholds, accept current coverage, or provide guidance.
 2. **Set lane (FR-014.2)**: Update the WP file's `lane:` frontmatter to `for_review`.
 3. **Activity Log**: Append: `<ISO-8601-timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
 4. **Update plan index**: Update the WP's status in `.sdd/plans/README.md` to reflect completion.
