@@ -1,0 +1,59 @@
+# Handoff Schema: Retro-Spec -> Planner
+#
+# When the Retro-Spec or Planner interface changes,
+# update this schema and commit it together with the agent changes.
+
+schema: handoff/v1
+source_agent: "7. Retro-Spec"
+target_agent: "3. Planner"
+description: "Handoff from Retro-Spec agent to Planner for reimplementation work package decomposition"
+
+required_artifacts:
+  - path: ".sdd/specs/{NNN}-*.spec.md"
+    validation:
+      - exists: true
+      - field: "Status"
+        value: "Validated"
+
+required_state:
+  - condition: "spec.status == 'Validated'"
+    error: "Spec must be Validated before planning. Retro-spec output requires review/validation first."
+
+context_fields:
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the validated specification file (copied from retro to specs)"
+  - name: "artifacts_dir"
+    type: "string"
+    required: true
+    description: "Path to the companion artifacts directory"
+  - name: "target_language"
+    type: "string"
+    required: false
+    description: "Target language for reimplementation"
+  - name: "legacy_path"
+    type: "string"
+    required: false
+    description: "Path to original legacy codebase for reference"
+
+validation_rules:
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Specification does not exist at {spec_path}"
+  - check: "field_value"
+    target: "spec_path"
+    field: "Status"
+    value: "Validated"
+    error: "Spec must be Validated before planning"
+  - check: "file_exists"
+    target: "artifacts_dir"
+    error: "Companion artifacts directory does not exist at {artifacts_dir}"
+
+placeholder_patterns:
+  "{NNN}": "\\d{2,3}"
+
+version_history:
+  - version: "handoff/v1"
+    date: "2026-04-11"
+    description: "Initial version"
