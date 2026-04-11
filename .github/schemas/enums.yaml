@@ -35,5 +35,11 @@ review_status:
   - acknowledged
   - approved
 
+severity:
+  - pass
+  - warn
+  - fail
+  - na
+
 conventions:
   activity_log_format: "<ISO-8601-timestamp> - <agent-name> - <action> - <details>"

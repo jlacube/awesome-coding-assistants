@@ -9,7 +9,7 @@
 
 schema: handoff/v1
 source_agent: "4. Coder"
-target_agent: "1. Orchestrator"
+target_agent: "0. Orchestrator"
 description: "Handoff from Coder to Orchestrator after implementation completes"
 base_schema: ".github/schemas/base-handoff.schema.yaml"
 

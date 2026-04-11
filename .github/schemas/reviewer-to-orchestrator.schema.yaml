@@ -8,8 +8,8 @@
 # Spec refs: FR-021, FR-022, FR-027, Section 7.7
 
 schema: handoff/v1
-source_agent: "5. Reviewer"
-target_agent: "1. Orchestrator"
+source_agent: "5. Review Coordinator"
+target_agent: "0. Orchestrator"
 description: "Handoff from Review Coordinator to Orchestrator after review completes"
 base_schema: ".github/schemas/base-handoff.schema.yaml"
 

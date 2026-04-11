@@ -9,7 +9,7 @@
 
 schema: handoff/v1
 source_agent: "6. Docs Agent"
-target_agent: "1. Orchestrator"
+target_agent: "0. Orchestrator"
 description: "Handoff from Docs Agent to Orchestrator after documentation completes"
 base_schema: ".github/schemas/base-handoff.schema.yaml"
 
