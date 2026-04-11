@@ -207,4 +207,5 @@ Assemble and write the complete changelog entry.
 - The "Dependencies" subsection SHALL be omitted if there are no dependency changes
 - Each change description SHALL be a single line starting with `- `
 - Change descriptions SHALL NOT include task IDs (e.g., "T03-02") -- they are user-facing
-- The entry SHALL end with a `---` horizontal rule separator before the next entry
+- A `---` horizontal rule separator SHALL appear between the new entry and the previous entry in the file. This separator belongs to the file structure (Step 5), not to the entry itself.
+- If the WP consists entirely of internal changes with no user-visible impact, write a single entry: `- Internal improvements with no user-visible changes`

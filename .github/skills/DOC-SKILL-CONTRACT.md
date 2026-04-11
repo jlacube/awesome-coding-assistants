@@ -19,6 +19,8 @@ Every doc skill receives the following 6 inputs in its subagent prompt from the 
 | 5 | `docs_dir` | Path | Path to existing documentation directory (`.sdd/docs/`) for incremental updates |
 | 6 | `patterns` | Text | Active doc-domain patterns to avoid (from `.sdd/reviews/doc-patterns.md`) |
 
+> **Exception**: `doc-inline-code` omits `docs_dir` (input #5) because it writes to source files, not to `.sdd/docs/`. Its input table has 5 entries.
+
 ---
 
 ## 2. Execution Sequence (FR-006)
@@ -41,8 +43,8 @@ Each skill SHALL produce one of the following:
 | `doc-architecture` | `.sdd/docs/architecture.md` | System design, components, decisions |
 | `doc-api-reference` | `.sdd/docs/api-reference.md` | Endpoint docs from contracts |
 | `doc-user-guide` | `.sdd/docs/user-guide.md` | Feature usage instructions |
-| `doc-developer-guide` | `.sdd/docs/developer-guide.md` | Dev setup, conventions |
-| `doc-changelog` | `.sdd/docs/CHANGELOG.md` | Version history entries (prepended, newest first) |
+| `doc-developer-guide` | `.sdd/docs/developer-guide.md` | Dev setup, conventions || `doc-configuration` | `.sdd/docs/configuration-guide.md` | Env vars, config files, defaults |
+| `doc-deployment` | `.sdd/docs/deployment-guide.md` | Deploy steps, prerequisites, ops || `doc-changelog` | `.sdd/docs/CHANGELOG.md` | Version history entries (prepended, newest first) |
 | `doc-inline-code` | Source files (`*.ts`, `*.py`, `*.go`, `*.rs`) | Docstrings and comments in source files |
 
 ### 3.1 Incremental Updates
@@ -77,8 +79,10 @@ The coordinator dispatches doc skills in this canonical order:
 | 2 | `doc-api-reference` | API endpoint documentation from contracts |
 | 3 | `doc-user-guide` | End-user documentation for features |
 | 4 | `doc-developer-guide` | Development setup, conventions, contributing |
-| 5 | `doc-changelog` | Changelog entry for the WP |
-| 6 | `doc-inline-code` | Code comments and docstrings in source files |
+| 5 | `doc-configuration` | Environment variables, config files, defaults |
+| 6 | `doc-deployment` | Deployment prerequisites, steps, operations |
+| 7 | `doc-changelog` | Changelog entry for the WP |
+| 8 | `doc-inline-code` | Code comments and docstrings in source files |
 
 Skills not present are skipped without error. Skills present but not in this list are dispatched after all known skills, in alphabetical order.
 

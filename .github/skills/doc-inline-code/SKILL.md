@@ -18,8 +18,7 @@ This skill receives the following 6 inputs via the coordinator's subagent prompt
 | 2 | `wp_path` | Path | Path to the approved WP file and its task list |
 | 3 | `spec_path` | Path | Path to the spec file; includes contract files directory (`.sdd/plans/contracts/<WP-slug>/`) |
 | 4 | `source_files` | List(Path) | Implementation source files modified by the WP |
-| 5 | `docs_dir` | Path | Path to existing documentation directory (`.sdd/docs/`) for incremental updates |
-| 6 | `patterns` | Text | Active doc-domain patterns to avoid (from `.sdd/reviews/doc-patterns.md`) |
+| 5 | `patterns` | Text | Active doc-domain patterns to avoid (from `.sdd/reviews/doc-patterns.md`) |
 
 ## Output Contract
 
@@ -311,7 +310,7 @@ Add type annotations where missing and the language supports them.
    - Contract files (interfaces, data schemas)
    - Function usage patterns in the codebase
    - Test files that show expected inputs/outputs
-6. If the type cannot be confidently determined, use the broader type (e.g., `Any` in Python, `unknown` in TypeScript) and add a `# TODO: narrow type` comment
+6. If the type cannot be confidently determined, use the broader type (e.g., `Any` in Python, `unknown` in TypeScript) and add a `# DOCFIX: narrow type` comment
 
 ---
 

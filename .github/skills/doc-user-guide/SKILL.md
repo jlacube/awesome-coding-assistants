@@ -116,14 +116,15 @@ Generate step-by-step instructions for using each feature.
 
 ## Section 3 -- Configuration Options (FR-014.3)
 
-Generate configuration documentation from config schema contracts.
+Generate configuration documentation from config schema contracts and source code.
 
 ### Instructions
 
-1. Check for config schema contract files:
-   a. Look in `.sdd/plans/contracts/<WP-slug>/` for `config-schema.<ext>` files
+1. Check for configuration information:
+   a. Look in `.sdd/plans/contracts/<WP-slug>/` for any config-related contract files
    b. Look in `.sdd/plans/contracts/shared/` for shared config schemas
    c. Check the spec for configuration sections (typically Section 9 or a "Configuration" section)
+   d. Search the source code for environment variable reads and config file parsing
 2. If config schema contracts exist:
    a. Extract each configuration option with its name, type, default value, and description
    b. Group options by category (e.g., general, security, performance, display)

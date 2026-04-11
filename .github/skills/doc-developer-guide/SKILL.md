@@ -198,7 +198,10 @@ Document the coding conventions in use, derived from the actual codebase.
 
 ### Formatting
 
-<linting/formatting tools in use and their configuration>
+- **Formatter**: `<tool>` (e.g., Prettier, Black, rustfmt)
+- **Linter**: `<tool>` (e.g., ESLint, Ruff, clippy)
+- **Config file**: `<path>` (e.g., `.prettierrc`, `pyproject.toml`)
+- **Auto-format on save**: <yes/no and how to configure>
 ```
 
 ---
