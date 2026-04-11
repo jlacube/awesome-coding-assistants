@@ -296,6 +296,8 @@ After all 10 checks complete, produce a verdict:
 
 Include finding counts by severity:
 
+**Severity mapping for YAML frontmatter**: Map internal HIGH→fail, MEDIUM→warn, LOW→warn in the `finding_counts` block. The Verdict section retains the original HIGH/MEDIUM/LOW counts for detail.
+
 ```
 ## Verdict
 
@@ -313,6 +315,22 @@ Include finding counts by severity:
 Produce the full output in this order:
 
 ```markdown
+---
+skill: review-spec-completeness
+wp: pre-planning
+spec: <spec_path>
+reviewed_at: <ISO-8601-timestamp>
+status: completed
+finding_counts:
+  pass: <count>
+  warn: <count>
+  fail: <count>
+  na: <count>
+files_reviewed:
+  - <spec_path>
+  - <artifact_files>
+---
+
 # review-spec-completeness Findings
 
 ## Summary

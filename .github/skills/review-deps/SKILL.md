@@ -11,11 +11,12 @@ This skill is invoked by the Review Coordinator as a subagent. It reviews projec
 **Input contract** (received via subagent prompt):
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file to understand dependency-relevant requirements (NFRs, security constraints, license requirements).
-3. Identify the project's dependency manifest files (see known patterns below).
-4. For each major dependency, use `#tool:web` to research known CVEs against trusted databases.
-5. Evaluate each checklist item below.
-6. Write structured findings to the specified output path.
-7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
+3. Read the WP file to identify what was implemented and scope the review.
+4. Identify the project's dependency manifest files (see known patterns below).
+5. For each major dependency, use `#tool:web` to research known CVEs against trusted databases.
+6. Evaluate each checklist item below.
+7. Write structured findings to the specified output path.
+8. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
 
 **Constraint**: Do NOT modify any source code, dependency files, the WP file, or the spec file. Only write to the specified output path (FR-028).
 

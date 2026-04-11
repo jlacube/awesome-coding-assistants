@@ -168,3 +168,17 @@ files_reviewed:
 - **Checklist item**: Dependency Direction - Module imports
 - **Justification**: WP does not introduce any new module dependencies. All files are standalone skills.
 ```
+
+---
+
+## Quality Checklist
+
+Before completing, verify:
+
+- [ ] All 6 architecture dimensions are evaluated (component design, tech stack, directory structure, SOLID, dependency direction, scope discipline)
+- [ ] Every finding references a specific checklist item and requirement
+- [ ] Evidence includes file paths with line numbers and code snippets
+- [ ] N/A findings include a justification
+- [ ] YAML frontmatter includes `finding_counts` and `files_reviewed`
+- [ ] Verdict follows REVIEW-SKILL-CONTRACT aggregation rules
+- [ ] No findings are duplicated across dimensions

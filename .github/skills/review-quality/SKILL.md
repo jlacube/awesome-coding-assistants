@@ -11,10 +11,11 @@ This skill is invoked by the Review Coordinator as a subagent. It evaluates impl
 **Input contract** (received via subagent prompt):
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file for context.
-3. Discover and read all implementation code relevant to this WP.
-4. Evaluate each checklist item below against the discovered code.
-5. Write structured findings to the specified output path.
-6. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
+3. Read the WP file to identify what was implemented and scope the review.
+4. Discover and read all implementation code relevant to this WP.
+5. Evaluate each checklist item below against the discovered code.
+6. Write structured findings to the specified output path.
+7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
 
 **Constraint**: Do NOT modify any source code, the WP file, or the spec file. Only write to the specified output path.
 

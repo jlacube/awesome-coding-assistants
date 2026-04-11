@@ -11,10 +11,11 @@ This skill is invoked by the Review Coordinator as a subagent. It audits impleme
 **Input contract** (received via subagent prompt):
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file to extract security requirements (Section 10.2).
-3. Discover and read all implementation code relevant to this WP.
-4. Evaluate each OWASP checklist item below against the discovered code.
-5. Write structured findings to the specified output path.
-6. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
+3. Read the WP file to identify what was implemented and scope the review.
+4. Discover and read all implementation code relevant to this WP.
+5. Evaluate each OWASP checklist item below against the discovered code.
+6. Write structured findings to the specified output path.
+7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
 
 **Constraints**:
 - Do NOT modify any source code, the WP file, or the spec file.

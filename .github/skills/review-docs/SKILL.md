@@ -23,7 +23,7 @@ This skill is invoked by the Review Coordinator as a subagent. It compares docum
 
 ## Documentation Checklist
 
-The project maintains 6 standard documentation files under `.sdd/docs/`. For each file, compare the documented content against the actual implementation.
+The project maintains 8 standard documentation files under `.sdd/docs/`. For each file, compare the documented content against the actual implementation.
 
 ### Category 1: Architecture Docs (FR-046.1)
 - [ ] Does `.sdd/docs/architecture.md` exist and contain substantive content?
@@ -71,9 +71,14 @@ The project maintains 6 standard documentation files under `.sdd/docs/`. For eac
 - [ ] Are there outdated code examples that no longer compile or run?
 - [ ] Are version numbers or dependency references current?
 
-### Category 9: Completeness (FR-046.9)
-- [ ] Do all 6 standard doc files exist under `.sdd/docs/`?
-- [ ] Are any of the 6 files empty or contain only boilerplate headers?
+### Category 9: Changelog (FR-046.9)
+- [ ] Does `.sdd/docs/CHANGELOG.md` exist and contain entries?
+- [ ] Does the latest entry correspond to the most recently approved WP?
+- [ ] Are breaking changes clearly marked?
+
+### Category 10: Completeness (FR-046.10)
+- [ ] Do all 8 standard doc files exist under `.sdd/docs/`?
+- [ ] Are any of the 8 files empty or contain only boilerplate headers?
 - [ ] Are all public APIs, config options, and workflows covered?
 
 ---
@@ -118,9 +123,10 @@ files_reviewed:
   - .sdd/docs/architecture.md
   - .sdd/docs/api-reference.md
   - .sdd/docs/configuration-guide.md
+  - .sdd/docs/deployment-guide.md
   - .sdd/docs/user-guide.md
   - .sdd/docs/developer-guide.md
-  - .sdd/docs/deployment-guide.md
+  - .sdd/docs/CHANGELOG.md
 ---
 
 # review-docs Findings for <WP-ID>
