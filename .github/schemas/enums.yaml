@@ -41,5 +41,9 @@ severity:
   - fail
   - na
 
+verdict:
+  - approved
+  - changes_required
+
 conventions:
   activity_log_format: "<ISO-8601-timestamp> - <agent-name> - <action> - <details>"

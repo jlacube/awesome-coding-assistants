@@ -13,7 +13,7 @@ required_artifacts:
     validation:
       - exists: true
       - field: "Status"
-        value: "Validated"
+        expected: "Validated"
 
 required_state:
   - condition: "spec.status == 'Validated'"
@@ -44,7 +44,7 @@ validation_rules:
   - check: "field_value"
     target: "spec_path"
     field: "Status"
-    value: "Validated"
+    expected: "Validated"
     error: "Spec must be Validated before planning"
   - check: "file_exists"
     target: "artifacts_dir"

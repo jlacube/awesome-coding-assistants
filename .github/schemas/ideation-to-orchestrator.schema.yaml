@@ -1,0 +1,37 @@
+# Handoff Schema: Ideation -> Orchestrator (completion signal)
+#
+# Maintenance (FR-006): When the Ideation agent or Orchestrator interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-027, Section 7.7
+
+schema: handoff/v1
+source_agent: "1. Ideation"
+target_agent: "0. Orchestrator"
+description: "Handoff from Ideation to Orchestrator after ideation brief completes"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
+
+required_artifacts:
+  - path: ".sdd/ideas/{slug}.md"
+    validation:
+      - exists: true
+
+required_state:
+  - condition: "ideation brief is complete"
+    error: "Ideation brief must be finalized before signaling completion"
+
+context_fields:
+  - name: "brief_path"
+    type: "string"
+    required: true
+    description: "Path to the ideation brief file"
+
+validation_rules:
+  - check: "file_exists"
+    target: "brief_path"
+    error: "Brief file does not exist at {brief_path}"
+
+placeholder_patterns:
+  "{slug}": "[a-z0-9-]+"

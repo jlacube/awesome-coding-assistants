@@ -1,0 +1,44 @@
+# Handoff Schema: Spec Architect -> Orchestrator (completion signal)
+#
+# Maintenance (FR-006): When the Spec Architect or Orchestrator interface changes,
+# update this schema and commit it together with the agent changes.
+# Version changes (FR-007): Increment to handoff/v2 for incompatible changes.
+#
+# Source spec: .sdd/specs/010-sdd-pipeline-hardening.spec.md
+# Spec refs: FR-027, Section 7.7
+
+schema: handoff/v1
+source_agent: "2. Spec Architect"
+target_agent: "0. Orchestrator"
+description: "Handoff from Spec Architect to Orchestrator after specification completes"
+base_schema: ".github/schemas/base-handoff.schema.yaml"
+
+required_artifacts:
+  - path: ".sdd/specs/{slug}.spec.md"
+    validation:
+      - exists: true
+      - field: "status"
+        expected: "Validated"
+
+required_state:
+  - condition: "spec status is Validated"
+    error: "Spec must have status=Validated before signaling completion"
+
+context_fields:
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the completed specification file"
+
+  - name: "artifacts_dir"
+    type: "string"
+    required: false
+    description: "Path to companion artifacts directory (if any)"
+
+validation_rules:
+  - check: "file_exists"
+    target: "spec_path"
+    error: "Spec file does not exist at {spec_path}"
+
+placeholder_patterns:
+  "{slug}": "[a-z0-9-]+"
