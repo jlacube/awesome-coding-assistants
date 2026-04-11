@@ -11,14 +11,14 @@ handoffs:
       The specification is at <spec_path>.
       Companion artifacts are at: <artifacts_dir>.
       Please review, refine, and validate the specification for SDD readiness.
-    send: true
+    send: false
   - label: Create Plan
     agent: "3. Planner"
     prompt: |
       Specification <spec_path> has been generated via retro-spec and validated.
       Companion artifacts are at: <artifacts_dir>.
       Please decompose into work packages with contracts for reimplementation.
-    send: true
+    send: false
 argument-hint: "Path to the legacy codebase root (or leave blank to analyze the current workspace)"
 ---
 <!-- Error policy: See .sdd/docs/architecture.md, Design Decision: Error-Handling Policy -->

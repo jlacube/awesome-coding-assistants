@@ -10,7 +10,7 @@ handoffs:
       Specification <spec_path> has been validated and approved.
       Companion artifacts are at: <artifacts_dir>
       Please decompose into work packages with contracts.
-    send: true
+    send: false
   - label: Return to Ideation
     agent: "1. Ideation"
     prompt: |

@@ -20,7 +20,7 @@ handoffs:
       3. Address every FB-XX item -- no skipping, deferring, or partial fixes
       4. Re-run tests after each fix
       5. When all FB-XX items are resolved, set lane=for_review and request a re-review
-    send: true
+    send: false
   - label: Update Specification
     agent: "2. Spec Architect"
     prompt: |

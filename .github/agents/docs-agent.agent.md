@@ -248,9 +248,26 @@ If no documentation was produced (all skills failed or no output), append:
 
 Always append at the end of the Activity Log (newest entry last). Do NOT prepend or insert mid-list.
 
+## Step 8a - Commit WP File Changes
+
+After updating `docs_completed` (Step 7e) and the Activity Log (Step 8), commit the WP file changes:
+
+```
+git add <wp_file_path>
+git commit -m "docs(docs): mark WP<NN> docs_completed"
+```
+
+This is a separate commit from Step 7c because WP file metadata changes are distinct from documentation content.
+
 ## Step 9 - Report Completion and Return Control
 
-After updating the Activity Log:
+After committing WP file changes, produce a summary and return control:
+
+1. List skills dispatched and their status (success/failure).
+2. List files modified.
+3. Note any skills that were skipped (not discovered) or failed.
+4. If a commit was made, include the commit message.
+5. If no commit was made, note why (no updates produced).
 
 **Subagent mode**: When running under the Orchestrator (dispatched via `runSubagent`), return a structured completion message and hand control back:
 
@@ -263,19 +280,6 @@ Failed skills: <list or "none">
 
 Do NOT use handoff buttons or invoke other agents. The Orchestrator manages pipeline routing.
 
-**Standalone mode**: When invoked directly by a user, recommend the next logical handoff (Return to Coder or Return to Review Coordinator as appropriate).
-- Do not retry -- report the error and halt.
-
-## Step 10 - Summary Report
-
-After completing all steps, produce a summary:
-
-1. List skills dispatched and their status (success/failure).
-2. List files modified.
-3. Note any skills that were skipped (not discovered) or failed.
-4. If a commit was made, include the commit message.
-5. If no commit was made, note why (no updates produced).
-
-Present the summary to the invoker. Use the handoff buttons if a return to the Coder or Review Coordinator is needed.
+**Standalone mode**: When invoked directly by a user, present the summary and recommend the next logical handoff (Return to Coder or Return to Review Coordinator as appropriate).
 
 </workflow>

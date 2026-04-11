@@ -207,7 +207,7 @@ Check if `.sdd/state.md` exists:
 - If the file cannot be created (e.g., filesystem permission error), halt and report: "Cannot create state file at .sdd/state.md"
 - If `.sdd/state.md` already exists: read it. If the YAML frontmatter cannot be parsed (corrupted or invalid YAML), handle as follows:
 
-#### Corrupted State File Recovery (Edge Case, Section 5)
+#### Corrupted State File Recovery (Edge Case, Section 2)
 
 When `.sdd/state.md` exists but has corrupted or invalid YAML frontmatter, reconstruct it from WP frontmatter ground truth. For the detailed reconstruction procedure, read `.github/agents/orchestrator-reference.md` Section 2 using `read_file`.
 
@@ -269,7 +269,7 @@ Use the Decision Table to identify what to do. Evaluate conditions in this prior
 
 **Documentation tracking**: A WP is "documented" when its frontmatter contains `docs_completed: true`. Read the `docs_completed` field from WP frontmatter. If the field is absent or not a boolean, treat it as false (not yet documented). Do NOT scan the Activity Log for Docs Agent entries -- use the frontmatter field as the authoritative source.
 
-**WPs with no dependencies listed**: These are always eligible for implementation (Edge case from Section 5).
+**WPs with no dependencies listed**: These are always eligible for implementation (Edge case from Section 1, Step E).
 
 ### Step 6: Delegate to Agent
 
@@ -369,7 +369,7 @@ When ALL WPs (MVP and non-MVP, or only MVP if user chose to halt) have `lane: do
 | All WPs blocked by unmet deps | Report blocked status with unmet dep list (E-052), continue | FR-040 |
 | Spec ambiguity blocks coder | Route to Spec Architect for clarification | FR-015 |
 | State file write failure | Halt with last known state and failed update | FR-003 |
-| State file corrupted YAML | Recreate from WP frontmatter ground truth, log warning | Section 5 |
+| State file corrupted YAML | Recreate from WP frontmatter ground truth, log warning | Section 2 |
 </workflow>
 
 <output_format>
