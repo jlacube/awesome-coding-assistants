@@ -33,7 +33,6 @@ review_status:
   - pending
   - has_feedback
   - acknowledged
-  - approved
 
 severity:
   - pass
@@ -41,6 +40,8 @@ severity:
   - fail
   - na
 
+# Verdict values are snake_case canonical forms. Agents use Title Case in prose output
+# (e.g., "Approved with Findings"). The Orchestrator normalizes before state comparison.
 verdict:
   - approved
   - approved_with_findings

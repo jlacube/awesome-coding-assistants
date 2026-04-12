@@ -28,6 +28,58 @@ validation_patterns:
 # WP frontmatter fields managed by pipeline agents (not part of handoff validation,
 # but documented here as the canonical schema for pipeline-internal WP fields).
 wp_frontmatter_fields:
+  lane:
+    type: "string"
+    enum_ref: ".github/schemas/enums.yaml#lane"
+    description: "Current WP lifecycle stage. Set by Coder (planned->doing->for_review) and Review Coordinator (for_review->done or for_review->to_do)."
+    managed_by: ["4. Coder", "5. Review Coordinator"]
+
+  depends_on:
+    type: "array"
+    items: "string"
+    description: "List of WP IDs this WP depends on (e.g., ['WP01']). Empty array means no dependencies."
+    managed_by: ["3. Planner"]
+
+  target_language:
+    type: "string"
+    description: "Primary programming language for this WP (e.g., 'TypeScript', 'Python'). Set by Planner from spec."
+    managed_by: ["3. Planner"]
+
+  target_framework:
+    type: "string"
+    description: "Primary framework for this WP (e.g., 'Next.js', 'FastAPI'). Set by Planner from spec. May be empty."
+    managed_by: ["3. Planner"]
+
+  docs_scope:
+    type: "array"
+    items: "string"
+    description: "List of doc skill names to run for this WP (e.g., ['doc-api-reference', 'doc-changelog']). Empty array means all doc skills."
+    managed_by: ["3. Planner"]
+
+  coverage_code:
+    type: "integer"
+    minimum: 0
+    maximum: 100
+    description: "Required line coverage percentage. Default 80."
+    managed_by: ["3. Planner"]
+
+  coverage_branch:
+    type: "integer"
+    minimum: 0
+    maximum: 100
+    description: "Required branch coverage percentage. Default 90."
+    managed_by: ["3. Planner"]
+
+  review_status:
+    type: "string"
+    description: "Review verdict from last review cycle. Set by Coder when processing review feedback. Absent on fresh WPs."
+    managed_by: ["4. Coder"]
+
+  Spec:
+    type: "string"
+    description: "Path to the specification file this WP implements. Set in the WP markdown table, not YAML frontmatter."
+    managed_by: ["3. Planner"]
+
   review_cycles:
     type: "integer"
     minimum: 0

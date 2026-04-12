@@ -17,8 +17,8 @@ required_artifacts:
   - path: ".sdd/specs/{slug}.spec.md"
     validation:
       - exists: true
-      - field: "status"
-        expected: "Validated"
+      - field: "Status"
+        value: "Validated"
 
 required_state:
   - condition: "spec status is Validated"

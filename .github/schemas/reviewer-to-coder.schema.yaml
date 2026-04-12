@@ -28,6 +28,16 @@ context_fields:
     required: true
     description: "Path to the work package file with review findings"
 
+  - name: "spec_path"
+    type: "string"
+    required: true
+    description: "Path to the specification file for this WP"
+
+  - name: "contracts_dir"
+    type: "string"
+    required: true
+    description: "Path to the contracts directory for this WP"
+
   - name: "review_report_path"
     type: "string"
     required: false
