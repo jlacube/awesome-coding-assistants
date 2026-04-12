@@ -1,7 +1,6 @@
 ---
 name: "2. Spec Architect"
 description: "Use when turning an ideation brief into a full specification. Triggers on: write spec, create specification, spec this out, architect this, turn brief into spec, I have a brief, ready to spec. Reads an ideation brief from .sdd/ideas/ and produces a maximum-detail specification ready for autonomous code generation. Dispatches spec skills sequentially to write each section."
-model: Claude Opus 4.6 (copilot)
 tools: [vscode/getProjectSetupInfo, vscode/installExtension, vscode/memory, vscode/newWorkspace, vscode/resolveMemoryFileUri, vscode/runCommand, vscode/vscodeAPI, vscode/extensions, vscode/askQuestions, execute/runNotebookCell, execute/testFailure, execute/executionSubagent, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/searchSubagent, search/usages, web/fetch, web/githubRepo, browser/openBrowserPage, browser/readPage, browser/screenshotPage, browser/navigatePage, browser/clickElement, browser/dragElement, browser/hoverElement, browser/typeInPage, browser/runPlaywrightCode, browser/handleDialog, todo]
 handoffs:
   - label: Create Plan
