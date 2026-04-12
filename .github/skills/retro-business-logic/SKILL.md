@@ -26,7 +26,7 @@ This skill is invoked by the Retro-Spec Coordinator as the fourth extraction ski
 1. **Read this SKILL.md**
 2. **Read discovery manifest**
 3. **Read accumulator** for architecture (Section 9), data model (Section 7), and API (Section 8) context
-4. **Analyze business logic** in the legacy source code
+4. **Analyze business logic** in the legacy source code. Use `#tool:search/usages` to trace function call chains and `#tool:search/searchSubagent` for broad logic flow discovery.
 5. **Write Sections 4, 5, 6** to the accumulator
 6. **If MODULE-DEEP mode**: also write Sections 4B (Business Rules), 4C (Decision Logic), 4D (Computed Values), 4E (Side Effects) to the accumulator
 

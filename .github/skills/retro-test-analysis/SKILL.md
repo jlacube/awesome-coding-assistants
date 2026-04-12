@@ -26,7 +26,7 @@ This skill is invoked by the Retro-Spec Coordinator as the sixth extraction skil
 1. **Read this SKILL.md**
 2. **Read discovery manifest** for test infrastructure details
 3. **Read the FULL accumulator** (all sections written by prior skills)
-4. **Analyze test files** in the legacy codebase
+4. **Analyze test files** in the legacy codebase. Use `#tool:search/searchSubagent` to discover all test files and `#tool:search/usages` to trace which source symbols are covered by tests.
 5. **Write Section 11** to the accumulator
 6. **Annotate prior sections** with test-validation markers (inline additions only, not modifications)
 

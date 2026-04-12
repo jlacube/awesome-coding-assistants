@@ -26,7 +26,7 @@ This skill is invoked by the Retro-Spec Coordinator as the third extraction skil
 1. **Read this SKILL.md**
 2. **Read discovery manifest** for entry points and framework info
 3. **Read accumulator** for architecture (Section 9) and data model (Section 7) context
-4. **Analyze APIs and interfaces** in the legacy source code
+4. **Analyze APIs and interfaces** in the legacy source code. Use `#tool:search/usages` to trace API handler references and `#tool:search/searchSubagent` for broad endpoint discovery.
 5. **Write Section 8** to the accumulator
 6. **Produce artifacts**: `api-contracts.<ext>` and `interfaces.<ext>` in the artifacts directory
 

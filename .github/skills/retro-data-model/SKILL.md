@@ -26,7 +26,7 @@ This skill is invoked by the Retro-Spec Coordinator as the second extraction ski
 1. **Read this SKILL.md**
 2. **Read discovery manifest** for database and ORM info
 3. **Read accumulator** for architecture context (Section 9)
-4. **Analyze data models** in the legacy source code
+4. **Analyze data models** in the legacy source code. Use `#tool:search/usages` to trace entity relationships and `#tool:search/searchSubagent` to discover model definitions.
 5. **Write Section 7** to the accumulator
 6. **Produce artifacts**: `data-schemas.<ext>` and `state-machines.<ext>` in the artifacts directory
 

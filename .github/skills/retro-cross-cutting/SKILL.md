@@ -26,7 +26,7 @@ This skill is invoked by the Retro-Spec Coordinator as the fifth extraction skil
 1. **Read this SKILL.md**
 2. **Read discovery manifest**
 3. **Read accumulator** for architecture, data model, API, and business logic context
-4. **Analyze cross-cutting concerns** in the legacy source code
+4. **Analyze cross-cutting concerns** in the legacy source code. Use `#tool:search/usages` to trace error handlers, auth middleware, and logging symbols across the codebase.
 5. **Write Sections 10, 12, 13** to the accumulator
 6. **Produce artifacts**: `error-catalog.<ext>` in the artifacts directory
 

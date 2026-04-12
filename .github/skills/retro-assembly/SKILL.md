@@ -25,8 +25,8 @@ This skill is invoked by the Retro-Spec Coordinator as the FINAL skill. It takes
 ## Execution Sequence
 
 1. **Read this SKILL.md**
-2. **Read ALL accumulators** (all project specs with their extracted sections)
-3. **Read ALL artifacts** (data-schemas, api-contracts, interfaces, state-machines, error-catalogs, dependency-graphs)
+2. **Read ALL accumulators** (all project specs with their extracted sections). Read multiple accumulators in parallel via concurrent tool calls.
+3. **Read ALL artifacts** (data-schemas, api-contracts, interfaces, state-machines, error-catalogs, dependency-graphs). Read multiple artifact files in parallel.
 4. **Read discovery manifest** for codebase topology
 5. **Finalize project-level specs**: Fill missing boilerplate sections (1-3, 14-18), ensure 18-section completeness
 6. **Produce global view spec**: Synthesize system-wide specification

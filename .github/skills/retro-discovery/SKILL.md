@@ -19,9 +19,9 @@ This skill is invoked by the Retro-Spec Coordinator as the FIRST skill in the pi
 ## Execution Sequence
 
 1. **Read this SKILL.md** to load instructions
-2. **Scan the codebase root** using `list_dir` recursively (max 3 levels initially)
+2. **Scan the codebase root** using `list_dir` recursively (max 3 levels initially). Use `#tool:search/searchSubagent` with the `Explore` agent for broad codebase structure questions.
 3. **Identify project boundaries** using marker files (package.json, go.mod, Cargo.toml, etc.)
-4. **Deep-scan each project** to identify modules, entry points, and configuration
+4. **Deep-scan each project** to identify modules, entry points, and configuration. Use `#tool:search/usages` to trace symbol references and dependency graphs.
 5. **Produce the discovery manifest** at `output_path`
 
 ## Constraints

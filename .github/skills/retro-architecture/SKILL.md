@@ -26,7 +26,7 @@ This skill is invoked by the Retro-Spec Coordinator as the FIRST extraction skil
 1. **Read this SKILL.md**
 2. **Read discovery manifest** to understand project topology
 3. **Read accumulator** (will be mostly empty at this point since this is the first extraction skill)
-4. **Analyze architecture** via static source analysis
+4. **Analyze architecture** via static source analysis. Use `#tool:search/searchSubagent` for broad codebase structure exploration and `#tool:search/usages` to trace component dependencies.
 5. **Write Section 9** to the accumulator
 6. **Produce artifacts**: `dependency-graph.md` in the artifacts directory
 
