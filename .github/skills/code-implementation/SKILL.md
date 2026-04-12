@@ -1,6 +1,6 @@
 ---
 name: code-implementation
-description: "Contract-first task implementation for all tasks in a work package"
+description: "Contract-first single-task implementation dispatched by Coder Coordinator"
 argument-hint: "Invoked by Coder Coordinator - do not call directly"
 ---
 
@@ -10,7 +10,7 @@ argument-hint: "Invoked by Coder Coordinator - do not call directly"
 > **Common contract**: `.github/skills/CODER-SKILL-CONTRACT.md`
 > **Spec refs**: FR-023, FR-024, FR-025, FR-026
 
-This skill is dispatched by the Coder Coordinator during Phase 2. It implements all tasks in a work package contract-first, matching function signatures, field names, types, and error codes from contract files verbatim. One invocation handles all tasks in one WP.
+This skill is dispatched by the Coder Coordinator during Phase 2. It implements a single task contract-first, matching function signatures, field names, types, and error codes from contract files verbatim. Each invocation handles one task as dispatched by the Coder agent.
 
 ---
 
@@ -241,11 +241,11 @@ Do NOT halt for ambiguous requirements. Flag, choose the best interpretation, an
 - Do NOT add review checklists or quality scores
 - The Reviewer agent is the sole quality gate
 
-### Single Invocation Per WP (FR-026)
+### Single Task Per Invocation (FR-026)
 
-- One `code-implementation` invocation handles all tasks in one WP
-- Tasks are processed sequentially in dependency order within the single invocation
-- Do NOT request multiple invocations for a single WP
+- Each `code-implementation` invocation handles a single task dispatched by the Coder agent
+- The Coder dispatches one invocation per task in dependency order
+- Do NOT attempt to process multiple tasks within a single invocation
 
 ---
 
