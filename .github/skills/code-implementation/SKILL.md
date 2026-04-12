@@ -127,6 +127,12 @@ Copy interface and type definitions from contract files into the implementation.
 - Do NOT add optional parameters not in the contract
 - Do NOT change type signatures
 
+**Tool guidance for implementation efficiency**:
+- Use `#tool:edit/editFiles` with multi-replace mode when making multiple independent edits across files in a single operation
+- Call `#tool:read/problems` after each file edit to catch syntax and type errors immediately -- do not wait until all edits are done
+- Read multiple contract files in parallel via concurrent tool calls
+- Use `#tool:search/usages` to verify contract symbol implementations when checking interface compliance
+
 **Example**: Given a contract defining:
 ```typescript
 createUser(input: CreateUserInput): Promise<User>

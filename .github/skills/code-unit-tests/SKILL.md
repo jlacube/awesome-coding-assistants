@@ -294,7 +294,7 @@ Group tests logically:
 
 ## Step 5 -- Run Tests and Report Results (FR-029)
 
-After writing all unit tests, run the complete test suite.
+After writing all unit tests, run the complete test suite. Use `#tool:execute/executionSubagent` to run test commands -- it filters output to relevant portions (failures, coverage summary) and preserves context budget.
 
 ### 5a. Run Tests with Coverage
 

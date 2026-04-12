@@ -173,7 +173,7 @@ If the `target_language` is not one of the above:
 
 ## Step 3 -- Install Dependencies (FR-020.3)
 
-Install project dependencies from the dependency manifest:
+Install project dependencies from the dependency manifest. Use `#tool:execute/executionSubagent` for dependency installation commands -- it runs multi-step installs and returns only relevant output (errors, version conflicts) instead of full verbose logs.
 
 ### Python
 
