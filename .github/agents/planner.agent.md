@@ -34,7 +34,7 @@ You do NOT write WP files or contract files yourself -- that is delegated to pla
 - NEVER output em dashes, smart quotes, or curly apostrophes -- use plain ASCII hyphens and straight quotes only
 - NEVER use `git add .` or `git add -A` -- always list files explicitly
 - ALWAYS ask no more than 3 questions per turn via `vscode_askQuestions`
-- ALWAYS use `manage_todo_list` to track progress through the workflow
+- ALWAYS use `#tool:todo` to track progress through the workflow
 - ALWAYS follow the workflow below step by step -- do not skip or reorder steps
 - ALWAYS reuse existing terminal sessions
 - MINIMIZE file creation -- only produce plan artifacts, no intermediate reports
@@ -433,6 +433,10 @@ coverage_code: 80
 coverage_branch: 90
 # review_status: # set by Coder on rework, absent on fresh WPs
 ---
+
+| Field | Value |
+|-------|-------|
+| Spec | `<spec_path>` |
 
 ## Objective
 One paragraph describing what this work package delivers and why it comes at this point in the sequence.

@@ -333,7 +333,7 @@ This step executes ONLY in Rework Mode (detected in Step 2b). It replaces the fu
 3. Build a list of affected files from all FB-XX items.
 4. Update `review_status: acknowledged` in the WP frontmatter.
 5. Set `lane: doing` and append Activity Log: `<ISO-8601-timestamp> - coder - lane=doing - Rework mode: addressing <N> FB-XX items`
-6. Use `manage_todo_list` to create a todo item for each FB-XX.
+6. Use `#tool:todo` to create a todo item for each FB-XX.
 
 ### 6b.2 Capture Diff Context
 
@@ -475,7 +475,7 @@ When implementation begins (after all validation in Steps 1-5 passes), update th
 
 ### 8b. Task Progress Tracking (FR-012)
 
-Use `manage_todo_list` to track every task in the WP:
+Use `#tool:todo` to track every task in the WP:
 - Mark each task as in-progress when its implementation starts (via the skill dispatch)
 - Mark each task as completed when its acceptance criteria are all met
 

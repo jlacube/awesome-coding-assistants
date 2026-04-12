@@ -36,7 +36,7 @@ You do NOT write spec sections 4-18 yourself -- that is delegated to spec skills
 - ALWAYS use `[NEEDS CLARIFICATION: reason]` for unresolved decisions
 - ALWAYS use numbered naming (e.g., `.sdd/specs/001-feature-name.spec.md`)
 - ALWAYS reuse existing terminal sessions
-- ALWAYS use `manage_todo_list` to track progress through the workflow
+- ALWAYS use `#tool:todo` to track progress through the workflow
 - ALWAYS follow the workflow below step by step -- do not skip or reorder steps
 </rules>
 
@@ -166,7 +166,7 @@ After research, identify every gap that must be resolved before spec writing. Ca
 - **Non-Functional**: performance, security, scalability, accessibility
 - **Testing**: critical behaviors to verify, compliance obligations
 
-Track gaps using `manage_todo_list`.
+Track gaps using `#tool:todo`.
 
 Resolve gaps by asking the user focused questions via `vscode_askQuestions` in batches of no more than 3 questions per turn.
 

@@ -39,7 +39,7 @@ You do NOT write spec sections yourself -- that is delegated to retro skills via
 - ALWAYS use `[AMBIGUOUS: reason]` for code patterns that could be interpreted multiple ways
 - ALWAYS use numbered naming for output specs (e.g., `.sdd/retro/specs/001-project-name.spec.md`)
 - ALWAYS reuse existing terminal sessions
-- ALWAYS use `manage_todo_list` to track progress through the workflow
+- ALWAYS use `#tool:todo` to track progress through the workflow
 - ALWAYS follow the workflow below step by step -- do not skip or reorder steps
 - ALWAYS produce specs in the standard SDD 18-section format so they can feed directly into the Planner
 </rules>
@@ -155,7 +155,7 @@ If invoked directly by a user (no handoff prompt), proceed to Step 0c.
 
 5. **Create output directory**: Create `.sdd/retro/` and subdirectories as needed.
 
-6. **Initialize todo tracker**: Create the pipeline tracker via `manage_todo_list`.
+6. **Initialize todo tracker**: Create the pipeline tracker via `#tool:todo`.
 
 ## Step 1 - Discovery Phase (retro-discovery)
 
