@@ -16,7 +16,7 @@ Every coding skill receives the following 8 inputs in its subagent prompt from t
 | 2 | `wp_path` | Path | Path to the WP file being implemented |
 | 3 | `contracts_dir` | Path | Path to contract files for this WP (`.sdd/plans/contracts/<WP-slug>/`) |
 | 4 | `spec_path` | Path | Path to the source spec file |
-| 5 | `patterns` | Text | Active code-domain patterns to avoid (from `code-patterns.md`) |
+| 5 | `patterns` | Text | Active code-domain patterns to avoid (from `.sdd/reviews/code-patterns.md`) |
 | 6 | `target_language` | String | Programming language (e.g., TypeScript, Python) |
 | 7 | `target_framework` | String | Framework (e.g., Express, FastAPI, React) |
 | 8 | `task_list` | Text | Tasks with acceptance criteria and spec refs |

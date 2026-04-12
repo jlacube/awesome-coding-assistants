@@ -18,7 +18,7 @@ Every spec skill receives the following 8 inputs in its subagent prompt from the
 | 4 | `brief_path` | Path | Path to the source ideation brief |
 | 5 | `research_summary` | Text | Key findings from the research phase |
 | 6 | `section_numbers` | List | Which spec sections this skill is responsible for |
-| 7 | `patterns` | Text | Active spec-domain patterns to avoid (from `spec-patterns.md`) |
+| 7 | `patterns` | Text | Active spec-domain patterns to avoid (from `.sdd/reviews/spec-patterns.md`) |
 | 8 | `target_language` | String | The programming language for companion artifacts (default: TypeScript) |
 
 ---

@@ -53,7 +53,7 @@ wp_frontmatter_fields:
   docs_scope:
     type: "array"
     items: "string"
-    description: "List of doc skill names to run for this WP (e.g., ['doc-api-reference', 'doc-changelog']). Empty array means all doc skills."
+    description: "List of doc skill short names to run for this WP (e.g., ['api-reference', 'changelog']). Empty array means all doc skills."
     managed_by: ["3. Planner"]
 
   coverage_code:

@@ -19,7 +19,7 @@ Every plan skill receives the following 9 inputs in its subagent prompt from the
 | 5 | `spec_artifacts_dir` | Path | Path to spec companion artifacts (`.sdd/specs/artifacts/<NNN>-<idea-name>/`) |
 | 6 | `research_summary` | Text | Key findings from the research phase |
 | 7 | `target_language` | String | Programming language for contract generation (default: TypeScript) |
-| 8 | `patterns` | Text | Active plan-domain patterns to avoid (from `plan-patterns.md`) |
+| 8 | `patterns` | Text | Active plan-domain patterns to avoid (from `.sdd/reviews/plan-patterns.md`) |
 | 9 | `phase` | Integer | Phase indicator: `1` (decomposition) or `2` (contract generation) |
 
 ---
