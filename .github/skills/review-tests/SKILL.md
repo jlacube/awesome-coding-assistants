@@ -12,7 +12,7 @@ This skill is invoked by the Review Coordinator as a subagent. It evaluates all 
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file for acceptance scenarios and BDD requirements.
 3. Read the WP file to identify in-scope tasks, FRs, and test requirements.
-4. Discover and read all test files associated with this WP.
+4. Discover and read all test files associated with this WP. Use `#tool:search/searchSubagent` to find test files matching WP scope patterns. Use `#tool:search/usages` to verify test coverage of contract symbols.
 5. Evaluate each checklist item below against the discovered test code.
 6. Write structured findings to the specified output path.
 7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).

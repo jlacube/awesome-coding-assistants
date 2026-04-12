@@ -12,7 +12,7 @@ This skill is invoked by the Review Coordinator as a subagent. It compares docum
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file for documentation requirements.
 3. Read the WP file to identify what was implemented.
-4. Read all `.sdd/docs/` files and compare against the actual codebase.
+4. Read all `.sdd/docs/` files and compare against the actual codebase. Use `#tool:search/searchSubagent` to discover implementation files for cross-referencing documentation accuracy.
 5. Evaluate each checklist item below.
 6. Write structured findings to the specified output path.
 7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).

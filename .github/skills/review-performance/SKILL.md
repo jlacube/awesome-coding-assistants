@@ -12,7 +12,7 @@ This skill is invoked by the Review Coordinator as a subagent. It detects perfor
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file for any performance NFRs (Section 10.1).
 3. Read the WP file to identify what was implemented and scope the review.
-4. Discover and read all implementation code relevant to this WP.
+4. Discover and read all implementation code relevant to this WP. Use `#tool:search/usages` to trace hot-path function call chains. Use `#tool:search/searchSubagent` to find WP-scoped files efficiently.
 5. Evaluate each checklist item below against the discovered code.
 6. Write structured findings to the specified output path.
 7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).

@@ -12,7 +12,7 @@ This skill is invoked by the Review Coordinator as a subagent. It receives a WP 
 1. Read this SKILL.md file for review instructions.
 2. Read the specification file to extract functional requirements.
 3. Read the WP file to identify what was implemented and scope the review.
-4. Discover and read all implementation code relevant to this WP.
+4. Discover and read all implementation code relevant to this WP. Use `#tool:search/usages` to trace contract symbol implementations and `#tool:search/changes` or `#tool:search/searchSubagent` to find files modified by this WP. Use `#tool:read/problems` to check for compile and lint errors in implementation files.
 5. Evaluate each checklist item below against the discovered code.
 6. Write structured findings to the specified output path.
 7. Return a brief summary (counts of PASS/WARN/FAIL/N/A).
