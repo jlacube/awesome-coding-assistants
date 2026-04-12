@@ -79,7 +79,7 @@ When `.sdd/state.md` exists but has corrupted or invalid YAML frontmatter:
 1. **Log a warning**: "State file at .sdd/state.md has corrupted YAML. Recreating from WP frontmatter ground truth."
 2. **Scan WP frontmatter**: Read all `.sdd/plans/WP*.md` files and extract their `lane:` values to determine actual pipeline state.
 3. **Reconstruct state**: Create a new state file replacing the corrupted one:
-   - `pipeline_stage`: Derive from WP `lane` values (if any WP has `lane: doing` or `lane: planned`, set to `implementation`; if any has `lane: for_review`, set to `review`; if all are `lane: done`, check documentation status)
+   - `pipeline_stage`: Derive from WP `lane` values using highest-urgency-first priority: `blocked` → escalate to user; `for_review` → `review`; `to_do` or `doing` or `planned` → `implementation`; all `done` → check documentation status. When multiple WPs have different lanes, the highest-urgency lane wins.
    - `current_wp`: Set to the lowest-numbered WP that is not `lane: done` (or null if all done)
    - `current_spec`: Derive from `.sdd/specs/` directory (the spec referenced by the current WP)
    - `last_agent`, `last_result`: Set to null (unknown after corruption)
@@ -108,7 +108,7 @@ When an agent invocation fails (agent reports error, produces no output, or time
 2. **Increment `retry_count`** in `.sdd/state.md`
 
 3. **Evaluate retry threshold**:
-   - If `retry_count` < 2: Retry the same agent with the same input. Log: "Retrying {agent} for {wp} (attempt {retry_count + 1} of 2)". Return to Step 6 with the same agent and prompt.
+   - If `retry_count` < 2: Retry the same agent with the same input. Log: "Retrying {agent} for {wp} (attempt {retry_count} of 2)". Return to Step 6 with the same agent and prompt.
    - If `retry_count` >= 2: **Escalate to user** (see Step 8c)
 
 ### Step 8c: Escalation on Max Retries (FR-011 step 4)
@@ -134,7 +134,7 @@ When any agent reports an escalation (spec ambiguity, environment issue, unresol
 
 ### Step 8e: Review Failure Escalation (FR-012)
 
-Track review cycles per WP using `review_cycles` frontmatter. When `review_cycles >= 3`:
+Track review cycles per WP using `review_cycles` frontmatter. When `review_cycles >= 2`:
 - **Halt** -- do NOT continue retrying
 - **Escalate to user** with all review feedback from all cycles
 - Wait for user guidance

@@ -122,17 +122,7 @@ Before any analysis, validate inputs and gather essential configuration:
 
 ### 0a. Schema Validation
 
-If invoked via `runSubagent` with a handoff prompt, validate the incoming handoff against the applicable schema (e.g., `orchestrator-handoff.schema.yaml`):
-
-1. **Read the schema file**: Read `.github/schemas/` for any schema with `target_agent: "7. Retro-Spec"`.
-2. **Validate required_artifacts**: For each entry in `required_artifacts`, verify the file exists at the specified path.
-3. **Validate required_state**: For each entry in `required_state`, evaluate the condition.
-4. **Validate context_fields**: For each field in `context_fields` where `required: true`, verify it is present and non-empty.
-5. **Run validation_rules**: For each rule in `validation_rules`, execute the check and verify the result.
-6. **On any failure**: Halt immediately. Report ALL failed checks with the schema's error messages.
-7. **On success**: Log "Schema validation passed" and proceed to Step 0b.
-
-If no applicable schema is found, or if invoked directly by a user, skip schema validation and proceed to Step 0b.
+Retro-Spec is user-invoked or Orchestrator-delegated. No inbound handoff schema validation is performed -- proceed directly to Step 0b.
 
 ### 0b. Input Validation
 
@@ -313,6 +303,9 @@ Assemble the final retro-spec documents from extracted data.
 4. Read the discovery manifest at: .sdd/retro/discovery-manifest.md
 5. Target language: <target_language>
 6. Scope: <full/project/overview>
+7. Source code path: <codebase_path>
+8. Project name: <project_name>
+9. All project spec paths: <all_project_specs>
 
 Produce:
 - Global view spec at: .sdd/retro/global-view.spec.md

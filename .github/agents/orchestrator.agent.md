@@ -122,6 +122,7 @@ The `pipeline_stage` field SHALL follow these valid transitions. Any transition 
 | 11 | documentation | implementation | Docs Agent completes and next WP exists |
 | 12 | documentation | complete | Docs Agent completes and no WPs remain |
 | 13 | implementation | complete | All WPs lane=done and documented |
+| 14 | complete | idle | Orchestrator restart with pipeline_stage=complete (new work cycle) |
 
 **Before setting `pipeline_stage`**, verify the transition is valid by checking this table. If the intended transition is not listed, halt and report the invalid transition attempt.
 
@@ -130,7 +131,7 @@ The `pipeline_stage` field SHALL follow these valid transitions. Any transition 
 On every startup, cross-verify `.sdd/state.md` against actual WP frontmatter to detect and resolve discrepancies:
 
 1. **Read state file**: Read `.sdd/state.md` to get `current_wp` and `pipeline_stage`.
-2. **Read all WP frontmatter**: Read all `.sdd/plans/WP*.md` files and extract their `lane:` values.
+2. **Read all WP frontmatter**: Read all `.sdd/plans/WP*.md` files and extract their `lane:` values. Also read `docs_completed` from each WP frontmatter to determine documentation status.
 3. **Compare and resolve**: If the state file and WP frontmatter disagree, trust WP frontmatter as ground truth and update the state file accordingly.
    - Example: If state file claims `current_wp: WP03` with `pipeline_stage: review` but WP03's frontmatter has `lane: done`, update the state file to reflect the actual state (proceed to documentation for WP03 or the next WP if docs are already done).
 4. **Log discrepancies**: Record any discrepancy found in the status report. Format: "State verification: state.md said {field}={old_value}, WP frontmatter says {actual_value}. Updated state.md."
@@ -160,7 +161,7 @@ Before every decision, read these files to determine current state:
 | 8 | WP has `lane: doing` (in progress) | Resume implementation | **4. Coder** | implementation |
 | 9 | WP has `lane: blocked` | Escalate to user with blocking reason | **User** | same |
 | 10 | All WPs have `lane: done` AND documented | Pipeline complete | **None (halt)** | complete |
-| 11 | All MVP WPs done, non-MVP remain | Ask user to continue | **User decision** | idle |
+| 11 | All MVP WPs done, non-MVP remain | Ask user to continue | **User decision** | varies (yes: implementation, no: complete) |
 | 12 | Agent failure, `retry_count` < 2 | Retry failed agent | **Same agent** | same |
 | 13 | Agent failure, `retry_count` >= 2 | Escalate to user | **User** | same |
 
@@ -284,7 +285,7 @@ Agent prompt templates (include ALL required context_fields from the target agen
 - **Ideation**: "Create an ideation brief for: {user's feature description}"
 - **Spec Architect**: "Develop the brainstorming session output into a full specification. The brief is at {brief_path}"
 - **Planner**: "Decompose the specification into work packages. The spec is at {spec_path}. Companion artifacts are at: {artifacts_dir}"
-- **Coder**: "Implement {wp_id} - {wp_title}. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Dependency {dep_wp} is lane=done (approved). IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons or invoke the reviewer directly."
+- **Coder**: "Implement {wp_id} - {wp_title}. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}." Include dependency context only when `depends_on` is non-empty: "Dependency {dep_wp} is lane=done (approved)." Always append: "IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons or invoke the reviewer directly."
 - **Review Coordinator**: "Review {wp_id}. It is at lane=for_review. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Test status: check WP Activity Log for latest test results. IMPORTANT: When done, report the verdict and return control -- do NOT use handoff buttons or invoke the coder directly."
 - **Docs Agent**: "{wp_id} has been approved. WP file: {wp_path}. Spec: {spec_path}. Contracts: {contracts_dir}. Update documentation. IMPORTANT: When done, report completion and return control -- do NOT use handoff buttons." (Section 8.1)
 
@@ -305,7 +306,7 @@ After every agent invocation completes, update `.sdd/state.md` BEFORE deciding t
    - `retry_count`: Handle according to the result (see Step 8a/8b)
    - `error_log`: Handle according to the result (see Step 8a/8b)
    - `updated_at`: Set to current ISO 8601 timestamp
-3. Write the updated state file back using `replace_string_in_file` for the YAML frontmatter block
+3. Write the updated state file back by editing the YAML frontmatter block
 4. If the state file cannot be updated, halt and report with: the last known state AND the update that failed
 
 **Critical invariant**: The state file MUST be updated BEFORE the Orchestrator decides its next action. This ensures every decision is based on current state, not stale state (FR-009, FR-010).
@@ -369,7 +370,7 @@ When ALL WPs (MVP and non-MVP, or only MVP if user chose to halt) have `lane: do
 | Escalation resolved by user | Reset state, re-read from disk, use decision table for next agent | FR-015 |
 | WP lane set to `blocked` | Escalate to user with blocking reason from WP Activity Log | Decision Table row 9 |
 | WP `review_cycles >= 2` at `for_review` | Escalate to user before dispatching another review | Step 8e |
-| Same WP fails review 3 times | Halt, present all feedback, ask user | FR-012 |
+| Same WP fails review 2 times | Halt, present all feedback, ask user | FR-012 |
 | Circular dependency detected | Halt with cycle description (E-050), ask user to resolve | FR-042 |
 | Missing dependency reference | Halt with "{wp} depends on {dep} which does not exist" (E-051) | FR-042 |
 | All WPs blocked by unmet deps | Report blocked status with unmet dep list (E-052), continue | FR-040 |

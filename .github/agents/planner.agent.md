@@ -10,6 +10,8 @@ handoffs:
       Plan approved. Work packages at: .sdd/plans/
       Contracts at: .sdd/plans/contracts/
       Start with WP01.
+      WP file: .sdd/plans/WP01-<slug>.md
+      Spec: <spec_path>
     send: true
   - label: Clarify Specification
     agent: 2. Spec Architect
@@ -76,9 +78,13 @@ Commit after every meaningful unit of plan work. Never let plan artifacts exist 
 
 ## Step 0 - Schema Validation (FR-004, FR-005)
 
-Before any other action, validate the incoming handoff against `spec-to-planner.schema.yaml`. This MUST be the FIRST step -- do not proceed to spec selection, research, or skill dispatch until validation passes.
+Before any other action, validate the incoming handoff against the relevant schema. This MUST be the FIRST step -- do not proceed to spec selection, research, or skill dispatch until validation passes.
 
-1. **Read the schema file**: Read `.github/schemas/spec-to-planner.schema.yaml` using `read_file`. If the schema file does not exist, halt with: "Schema file not found at `.github/schemas/spec-to-planner.schema.yaml`. Cannot validate handoff."
+1. **Read the schema file**: Determine the source agent from the handoff prompt context:
+   - If the source is Retro-Spec (mentions "retro-spec", "legacy codebase", or "reverse-engineered"): read `.github/schemas/retro-spec-to-planner.schema.yaml`
+   - Otherwise (standard path from Spec Architect or Orchestrator): read `.github/schemas/spec-to-planner.schema.yaml`
+   
+   If the schema file does not exist, halt with: "Schema file not found at `<path>`. Cannot validate handoff."
 
 2. **Validate required_artifacts**: For each entry in the schema's `required_artifacts`:
    - Verify the spec file exists at the specified path.
@@ -119,6 +125,8 @@ Before any other action, validate the incoming handoff against `spec-to-planner.
 
 Before decomposition, dispatch the `review-spec-completeness` skill for a structured completeness validation:
 
+0. **Ensure output directory**: Run `mkdir -p .sdd/plans/` to ensure the output directory exists before writing.
+
 1. **Dispatch `review-spec-completeness`** via `runSubagent`:
    ```
    Validate spec completeness before planning decomposition.
@@ -129,7 +137,7 @@ Before decomposition, dispatch the `review-spec-completeness` skill for a struct
    4. Write findings to: .sdd/plans/spec-completeness-report.md
    ```
 
-2. **Evaluate findings**: Read the output file. If any FAIL findings exist, create a structured gap report from them. If only PASS/WARN/N/A findings, proceed.
+2. **Evaluate findings**: Read the output file. If the skill dispatch failed, the subagent returned an error, or the output file `.sdd/plans/spec-completeness-report.md` does not exist after dispatch, log a warning and proceed to Step 3 -- do not halt the planning process for a pre-check failure. If the file exists and any FAIL findings are present, create a structured gap report from them. If only PASS/WARN/N/A findings, proceed.
 
 Additionally, run a 7-point completeness check against the spec:
 
@@ -194,7 +202,7 @@ This is auto-loop attempt <N> of 3.
 
 ### 4a. Workspace Research
 
-Dispatch a workspace research subagent using `runSubagent` with the `Explore` agent:
+Dispatch a workspace research subagent using `runSubagent` with the `Explore` agent (the VS Code Copilot built-in read-only exploration subagent):
 
 ```
 Search the workspace for existing code, configuration, and documentation related to: <spec topic>.
@@ -281,9 +289,11 @@ Execute Phase 1 planning: <skill_name>
 2. Read the spec at: <spec_path>
 3. Read spec companion artifacts at: <spec_artifacts_dir>
 4. Read existing plan state at: <plan_dir>
-5. Research context: <research_summary>
-6. Active patterns to avoid: <patterns>
-7. Target language: <target_language>
+5. Contracts directory: <contracts_dir>
+6. Research context: <research_summary>
+7. Active patterns to avoid: <patterns>
+8. Target language: <target_language>
+9. Phase: 1
 
 Write plan files to <plan_dir>.
 
@@ -312,6 +322,9 @@ Execute Phase 2 contract generation: <skill_name>
 3. Read the plan at: <plan_dir> (README + WP files)
 4. Target language: <target_language>
 5. Contracts directory: <contracts_dir>
+6. Research context: <research_summary>
+7. Active patterns to avoid: <patterns>
+8. Phase: 2
 
 For each WP that this skill applies to, generate contract files in <contracts_dir>/<WP-slug>/.
 
@@ -351,7 +364,7 @@ After all skills have completed, validate the plan:
 
 If issues are found in 10a or 10b:
 
-1. **WP file issues** (task count, acceptance criteria, guidance): Re-dispatch `plan-acceptance` with a targeted prompt specifying only the affected WPs and the specific issues to fix. The skill updates existing WP files.
+1. **WP file issues** (task count, acceptance criteria, guidance): Re-dispatch `plan-acceptance` with a targeted prompt specifying only the affected WPs and the specific issues to fix. The skill updates existing WP files. For ambiguous language violations in task descriptions, re-dispatch `plan-decomposition` instead (it owns the task text).
 2. **Contract file issues** (field mismatches, missing contracts): Re-dispatch the specific Phase 2 skill responsible for the contract type (e.g., `plan-data-schemas` for entity field inconsistencies, `plan-interface-contracts` for signature mismatches). Include the validation finding in the dispatch prompt so the skill knows exactly what to fix.
 3. **Dependency issues**: Fix directly by updating the affected WP files' `depends_on` frontmatter and markdown table.
 4. **Max fix attempts**: Re-dispatch up to 2 times per issue. If an issue persists after 2 re-dispatch attempts, document it in the README under "Consistency Notes" and proceed.
@@ -409,6 +422,17 @@ git commit -m "docs(plan): add contracts for WP<NN>"
 Always use the handoff buttons when available. Default to recommending **Coder** for a freshly approved plan.
 
 </workflow>
+
+---
+lane: planned
+depends_on: []
+docs_scope: []
+target_language: <target_language>
+target_framework: <target_framework>
+coverage_code: 80
+coverage_branch: 90
+# review_status: # set by Coder on rework, absent on fresh WPs
+---
 
 ## Objective
 One paragraph describing what this work package delivers and why it comes at this point in the sequence.

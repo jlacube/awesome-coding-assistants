@@ -126,7 +126,7 @@ Load the full artifact chain before any review work begins. Load these in order:
 
 1. **WP plan file** (`.sdd/plans/WP<NN>-*.md`) - already identified in Step 1.
 2. **Specification** - read the WP file's `Spec` field to find the spec path (e.g., `.sdd/specs/001-feature.spec.md`). Read the spec file.
-3. **Ideation brief** - read the spec file's `Source brief` field to find the brief path (e.g., `.sdd/ideas/001-feature.md`). Read the brief.
+3. **Ideation brief** - read the spec file's `Source brief` field to find the brief path (e.g., `.sdd/ideas/001-feature.md`). If the `Source brief` field is absent (e.g., retro-spec-generated specs), skip brief reading and continue.
 4. **Plan index** - read `.sdd/plans/README.md` for dependency context.
 
 If any artifact in the chain (WP file, spec, brief, or plan index) is missing or unreadable, halt and report: "Cannot proceed: <artifact> not found at <path>."
@@ -234,12 +234,13 @@ Review <WP-id> using the <skill-name> review skill.
 
 1. Read the skill file at: <skill_path>
 2. Read the specification at: <spec_path>
-3. Discover and read all implementation code relevant to this skill's domain for <WP-id>.
+3. Read contract files at: <contracts_dir>
+4. Discover and read all implementation code relevant to this skill's domain for <WP-id>.
    The WP file is at: <wp_path>
-4. Evaluate each checklist item from the skill file against the discovered code.
-5. Write your findings to: <output_path>
+5. Evaluate each checklist item from the skill file against the discovered code.
+6. Write your findings to: <output_path>
    Use the structured findings format from the skill file.
-6. Return a brief summary of your findings (counts of PASS/WARN/FAIL/N/A).
+7. Return a brief summary of your findings (counts of PASS/WARN/FAIL/N/A).
 
 Important:
 - Do NOT modify any source code, the WP file, or the spec file.
@@ -448,7 +449,7 @@ After updating the WP:
 
 1. Read `.sdd/plans/README.md` to find ALL WPs that reference the same spec file.
 2. For each such WP, read its `lane` frontmatter value.
-3. If ALL WPs referencing this spec have `lane: done`, update the spec file's `> **Status**:` field from `Draft` or `Validated` to `Approved`.
+3. If ALL WPs referencing this spec have `lane: done`, update the spec file's `> **Status**:` field from `Validated` to `Approved`. If the current status is `Draft`, log a warning ("Spec status is Draft -- must be Validated before promotion to Approved") and do NOT change it.
 4. Include the spec file in the commit (Step 15) if its status was changed.
 
 ## Step 14 - Domain-Specific Patterns Curation (FR-013, FR-014, FR-015)
@@ -462,7 +463,6 @@ Map each finding to a domain-specific file based on the skill that produced it:
 | Skill | Domain | Target file |
 |-------|--------|------------|
 | `review-spec` | spec | `.sdd/reviews/spec-patterns.md` |
-| `review-spec-completeness` | spec | `.sdd/reviews/spec-patterns.md` |
 | `review-security` | code | `.sdd/reviews/code-patterns.md` |
 | `review-quality` | code | `.sdd/reviews/code-patterns.md` |
 | `review-tests` | code | `.sdd/reviews/code-patterns.md` |
@@ -479,6 +479,10 @@ If the domain cannot be determined for a finding, place the pattern in the close
 For each domain file that will be modified, read it using `read_file`. If a domain file does not exist, create it with the initial structure:
 
 ```markdown
+---
+patterns_version: 1
+---
+
 # [Domain] Patterns
 
 ## Active Patterns
@@ -572,7 +576,7 @@ git commit -m "docs(review): <WP-id> verdict <Approved|Approved with Findings|Ch
 
 List every file explicitly in `git add`. Never use `git add .` or `git add -A`.
 
-If the git commit fails, report the error to the user and halt. Do not retry.
+If the git commit fails, retry once. If it fails again, report the error to the user and halt.
 
 ## Step 16 - Present Verdict and Stop (FR-023, FR-024)
 

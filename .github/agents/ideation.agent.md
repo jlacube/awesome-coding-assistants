@@ -6,7 +6,7 @@ tools: [vscode/askQuestions, vscode/memory, execute/getTerminalOutput, execute/a
 handoffs:
   - label: Develop into Specification
     agent: 2. Spec Architect
-    prompt: "Develop the ideation brief into a full specification"
+    prompt: "Develop the ideation brief into a full specification. The brief is at: <brief_path>"
     send: true
   - label: Escalate to User
     agent: agent
@@ -193,7 +193,7 @@ If any of these remain unclear, loop back to the appropriate workflow phase.
 
 <brief_template>
 ```markdown
-# [Idea Name] — Ideation Brief
+# [Idea Name] - Ideation Brief
 
 ## The Idea
 A crisp, jargon-free summary of what this is and why it matters.

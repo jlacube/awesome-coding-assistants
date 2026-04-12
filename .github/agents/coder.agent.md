@@ -72,6 +72,7 @@ Before any other action, validate the incoming handoff against the relevant sche
 1. **Determine schema**: Based on the handoff source:
    - If this is a fresh implementation (WP has `lane: planned`): read `.github/schemas/planner-to-coder.schema.yaml`
    - If this is rework after review (WP has `lane: to_do` and review findings exist): read `.github/schemas/reviewer-to-coder.schema.yaml`
+   - If this is a resumed implementation after interruption (WP has `lane: doing`): skip schema validation entirely -- the handoff was already validated on initial entry. Proceed directly to Step 1.
    - Determine the source by examining the handoff prompt context (e.g., mentions of "FB-XX", "Changes Required", "review findings" indicate rework from Reviewer).
 
 2. **Read the schema file** using `read_file`. If the schema file does not exist, halt with: "Schema file not found at `<path>`. Cannot validate handoff."
@@ -117,7 +118,7 @@ Before dispatching any skill, read the full context chain:
 3. Extract the WP slug from the filename (e.g., `WP03-review-spec.md` -> slug is `review-spec`). Read contract files in `.sdd/plans/contracts/<WP-slug>/` using `list_dir` then `read_file` for each file.
 4. **Read shared contracts**: Read `.sdd/plans/contracts/shared/` using `list_dir` then `read_file` for each file. These contain entity types and interfaces shared across WPs. If the directory does not exist or is empty, proceed without error.
 5. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
-6. **Extract target language and framework**: Read `target_language` and `target_framework` from the WP file's YAML frontmatter. If `target_language` is absent, fall back to reading the spec's Section 9.2 Technology Stack. If still undetermined, halt with: "Cannot determine target language. Set `target_language` in WP frontmatter or spec Section 9.2." Store these values for use in the Step 6 dispatch template.
+6. **Extract target language and framework**: Read `target_language` and `target_framework` from the WP file's YAML frontmatter. If `target_language` is absent, fall back to reading the spec's Section 9.2 Technology Stack. If still undetermined, halt with: "Cannot determine target language. Set `target_language` in WP frontmatter or spec Section 9.2." If `target_framework` is absent, use an empty string. Store these values for use in the Step 6 dispatch template.
 7. **Research context**: Extract the `## Research Context` section from the WP file (if present). This contains technology-specific gotchas, library version notes, and known pitfalls collected during the Planner's research phase. Include this in skill dispatch prompts.
 8. **Dependency check**: For each WP listed in the `Depends on` field, read that WP file's YAML frontmatter `lane:` value. If any dependency has `lane` not equal to `done`, halt with: "Dependency WP<NN> has lane=<value> (not done). Complete WP<NN> before implementing this WP." Do not proceed.
 
@@ -138,6 +139,7 @@ After loading the artifact chain, determine whether this is a fresh implementati
 1. Read the WP's `lane` frontmatter value and `review_status` field.
 2. Check if the WP file contains a `## Review` section with `FB-XX` items.
 3. **Rework Mode**: If `lane: to_do` AND FB-XX items exist in the Review section, enter Rework Mode. Set `rework_mode = true`. Skip Steps 3-6 and proceed directly to **Step 6b (Rework Fast Path)**.
+3a. **Error guard**: If `lane: to_do` but NO FB-XX items exist in the Review section, halt with error: "WP has lane: to_do but no review findings (FB-XX items). Cannot determine rework scope. Escalate to user."
 4. **Standard Mode**: If `lane: planned`, `lane: doing`, or no review feedback exists, set `rework_mode = false`. Proceed to Step 3.
 
 Rework Mode avoids re-running the full 5-skill pipeline (env-setup, implementation, unit-tests, integration-tests, debug) for targeted fixes. Only the affected code is modified and only affected tests are re-run. This is critical for fast Coder-Review-Fix cycles.
@@ -355,6 +357,19 @@ Review feedback items to fix:
 
 Recent implementation diff context:
 <diff_summary>
+```
+
+Substitution values:
+| Variable | Source |
+|----------|--------|
+| `<WP-id>` | WP identifier (e.g., WP03) |
+| `<skill_path>` | `.github/skills/code-debug/SKILL.md` or `.github/skills/code-implementation/SKILL.md` |
+| `<wp_path>` | WP file path from Step 1 |
+| `<contracts_dir>` | Contract directory from Step 2 |
+| `<spec_refs>` | Spec references from WP file |
+| `<patterns>` | Loaded patterns from Step 2c |
+| `<FB-XX list>` | Formatted as: `FB-01: description (file:line)` per finding |
+| `<diff_summary>` | Output of `git diff` showing recent implementation changes |
 
 Rules:
 - Address EVERY FB-XX item -- do not skip, defer, or partially fix
@@ -403,11 +418,15 @@ After `code-unit-tests` and `code-integration-tests` complete, check test result
 Debug failing tests.
 
 1. Read the skill instructions at: <skill_path>
-2. Failing test output:
+2. Read the WP file at: <wp_path>
+3. Failing test output:
 <test_output>
-3. Source files: <file_list>
-4. Contract files at: <contracts_dir>
-5. Spec refs: <spec_refs>
+4. Source files: <file_list>
+5. Contract files at: <contracts_dir>
+6. Spec refs: <spec_refs>
+7. Active patterns to avoid: <patterns>
+8. Target: <target_language> with <target_framework>
+9. Tasks: <task_list>
 
 Diagnose root causes. Fix source code (prefer) or tests (only if test is wrong per spec).
 Re-run ALL tests (unit + integration) after fixes.
@@ -416,6 +435,21 @@ Do NOT modify contract files -- they are read-only.
 Report: fixed tests, still-failing tests, regressions.
 Debug attempt: <N> of 3.
 ```
+
+Substitution values:
+| Variable | Source |
+|----------|--------|
+| `<skill_path>` | `.github/skills/code-debug/SKILL.md` |
+| `<wp_path>` | WP file path from Step 1 |
+| `<test_output>` | Captured test runner output from failed tests |
+| `<file_list>` | Files modified in implementation steps |
+| `<contracts_dir>` | Contract directory from Step 2 |
+| `<spec_refs>` | Spec references from WP file |
+| `<patterns>` | Loaded patterns from Step 2c |
+| `<target_language>` | From WP frontmatter |
+| `<target_framework>` | From WP frontmatter |
+| `<task_list>` | Task list from WP file |
+| `<N>` | Current debug attempt number |
 
 3. After the debug skill completes, check test results again.
 4. If tests still fail and `debug_attempt < 3`: increment `debug_attempt`, dispatch `code-debug` again with updated test output.
@@ -472,7 +506,7 @@ Do NOT prepend or insert mid-list -- always append to the end.
 
 After all skills complete and all tests pass:
 
-1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds. Read `coverage_code` and `coverage_branch` from the WP file's YAML frontmatter. If these fields are absent, use defaults: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check. Cap coverage remediation at 2 re-dispatches. If coverage still fails after 2 remediation attempts, escalate to the user via `askQuestions` with the full coverage report: "Coverage remains below threshold after 2 remediation attempts. Code: <actual>%/<required>%. Branch: <actual>%/<required>%. How would you like to proceed?" The user may lower thresholds, accept current coverage, or provide guidance.
+1. **Coverage verification (FR-014.1)**: First, check if the WP produced executable source files (`.ts`, `.py`, `.go`, `.rs`, `.js`, `.jsx`, `.tsx`). If NO executable files were created or modified (WP is documentation-only, config-only, or markdown-only), skip coverage enforcement and log: "Coverage check skipped -- WP contains no executable source code." If executable files exist, run a final coverage report and verify thresholds. Read `coverage_code` and `coverage_branch` from the WP file's YAML frontmatter. If these fields are absent, use defaults: minimum 80% code coverage, minimum 90% branch coverage. If coverage is below thresholds, re-dispatch the test skills (`code-unit-tests`, `code-integration-tests`) to add more tests, then re-check. Cap coverage remediation at 2 re-dispatches. If coverage still fails after 2 remediation attempts, escalate to the user via `vscode_askQuestions` with the full coverage report: "Coverage remains below threshold after 2 remediation attempts. Code: <actual>%/<required>%. Branch: <actual>%/<required>%. How would you like to proceed?" The user may lower thresholds, accept current coverage, or provide guidance.
 2. **Set lane (FR-014.2)**: Update the WP file's `lane:` frontmatter to `for_review`.
 3. **Activity Log**: Append: `<ISO-8601-timestamp> - coder - lane=for_review - All tasks complete, tests passing, coverage met`
 4. **Update plan index**: Update the WP's status in `.sdd/plans/README.md` to reflect completion.
