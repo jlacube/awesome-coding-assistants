@@ -8,7 +8,7 @@ Reference: FR-005, FR-006 of `.sdd/specs/007-docs-agent.spec.md`
 
 ## 1. Inputs (FR-005)
 
-Every doc skill receives the following 6 inputs in its subagent prompt from the coordinator:
+Every doc skill receives the following 7 inputs in its subagent prompt from the coordinator:
 
 | # | Input | Type | Description |
 |---|-------|------|-------------|
@@ -18,8 +18,8 @@ Every doc skill receives the following 6 inputs in its subagent prompt from the 
 | 4 | `source_files` | List(Path) | Implementation source files modified by the WP |
 | 5 | `docs_dir` | Path | Path to existing documentation directory (`.sdd/docs/`) for incremental updates |
 | 6 | `patterns` | Text | Active doc-domain patterns to avoid (from `.sdd/reviews/doc-patterns.md`) |
+| 7 | `contracts_dir` | Path | Path to the contracts directory for this WP (`.sdd/plans/contracts/<WP-slug>/`) |
 
-> **Exception**: `doc-inline-code` omits `docs_dir` (input #5) because it writes to source files, not to `.sdd/docs/`. Its input table has 5 entries.
 
 ---
 

@@ -125,16 +125,25 @@ Skills SHALL NOT invent additional severity levels (e.g., INFO, LOW, HIGH) in th
 
 ## 5. Canonical Dispatch Order (FR-029)
 
-The Review Coordinator dispatches skills in this order:
+The Review Coordinator dispatches skills in three batches with short-circuit logic:
 
-1. `review-spec` — spec adherence (highest priority, most likely to FAIL)
-2. `review-architecture` — architecture adherence
-3. `review-security` — security audit
-4. `review-quality` — code quality
-5. `review-performance` — performance review
-6. `review-tests` — test quality
-7. `review-deps` — dependency review
-8. `review-docs` — documentation accuracy
+**Batch 1 (Critical)**:
+1. `review-spec` -- spec adherence (highest priority, most likely to FAIL)
+2. `review-architecture` -- architecture adherence
+3. `review-security` -- security audit
+
+If Batch 1 produces any FAIL, the coordinator MAY skip Batch 2 and Batch 3 to issue an early "Changes Required" verdict.
+
+**Batch 2 (Quality)**:
+4. `review-quality` -- code quality
+5. `review-performance` -- performance review
+
+**Batch 3 (Coverage)**:
+6. `review-tests` -- test quality
+7. `review-deps` -- dependency review
+8. `review-docs` -- documentation accuracy
+
+**Re-review scoping**: On review cycles >= 2, the coordinator skips skills that previously returned all-PASS, dispatching only skills whose scope intersects with the rework changes.
 
 `review-spec-completeness` is dispatched separately by the Planner as a pre-planning validation, not as part of the per-WP review cycle.
 

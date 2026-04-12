@@ -58,14 +58,13 @@ Report to the coordinator with these fields:
 
 ## Step 1 -- Read and Order Tasks (FR-026)
 
-One `code-implementation` invocation handles all tasks in one WP. Process tasks sequentially in dependency order.
+Each `code-implementation` invocation handles a single task dispatched by the Coder agent. The Coder dispatches one task at a time in dependency order.
 
-1. Read all tasks from the `task_list` input
-2. Build a dependency graph from each task's `Depends on` field
-3. Sort tasks in topological order (tasks with no dependencies first)
-4. If circular dependencies are detected, report failure immediately
+1. Read the task from the `task_list` input (single task with acceptance criteria)
+2. Verify all task dependencies are satisfied (prior tasks completed)
+3. If dependencies are unmet, report failure immediately
 
-For each task in order, execute Steps 2-4.
+Execute Steps 2-4 for this task.
 
 ---
 

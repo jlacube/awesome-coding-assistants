@@ -23,7 +23,7 @@ Every retro skill receives the following inputs in its subagent prompt from the 
 | 7 | `project_name` | String | Name of the project being analyzed |
 | 8 | `module_filter` | String | Which modules to analyze (`"all"` or comma-separated list) |
 
-> **Exception — `retro-discovery`**: Receives only 3 inputs (`skill_path`, `source_path`, `output_path`) because it bootstraps the pipeline before accumulators, manifests, or artifacts exist.
+> **Exception -- `retro-discovery`**: Receives only 3 inputs (`skill_path`, `codebase_path`, `output_path`) because it bootstraps the pipeline before accumulators, manifests, or artifacts exist. Note: the output path is hardcoded to `.sdd/retro/discovery-manifest.md` in the agent dispatch template.
 
 > **Exception — `retro-assembly`**: Replaces `module_filter` with `scope` (full/project/overview) and adds `all_project_specs` (paths to all project-level accumulators) because it operates across all projects.
 
@@ -131,15 +131,17 @@ The coordinator discovers skills by scanning `retro-*/SKILL.md` via glob and dis
 
 ## 7. Canonical Skill Dispatch Order
 
-| Phase | Order | Skill | Produces |
-|-------|-------|-------|----------|
-| Discovery | 0 | `retro-discovery` | Discovery manifest |
-| Extraction | 1 | `retro-architecture` | Section 9, dependency graphs |
-| Extraction | 2 | `retro-data-model` | Section 7, data-schema artifacts |
-| Extraction | 3 | `retro-api-contracts` | Section 8, API/interface artifacts |
-| Extraction | 4 | `retro-business-logic` | Sections 4, 5, 6, state-machine artifacts |
-| Extraction | 5 | `retro-cross-cutting` | Sections 10, 12, 13, error-catalog artifacts |
-| Validation | 6 | `retro-test-analysis` | Section 11, coverage mapping |
-| Assembly | 7 | `retro-assembly` | Final 18-section specs, global view |
+| Phase | Order | Skill | Produces | Project-level | Module-level |
+|-------|-------|-------|----------|--------------|-------------|
+| Discovery | 0 | `retro-discovery` | Discovery manifest | Yes | No |
+| Extraction | 1 | `retro-architecture` | Section 9, dependency graphs | Yes | No (project-level only) |
+| Extraction | 2 | `retro-data-model` | Section 7, data-schema artifacts | Yes | Yes |
+| Extraction | 3 | `retro-api-contracts` | Section 8, API/interface artifacts | Yes | Yes |
+| Extraction | 4 | `retro-business-logic` | Sections 4, 5, 6, state-machine artifacts | Yes | Yes |
+| Extraction | 5 | `retro-cross-cutting` | Sections 10, 12, 13, error-catalog artifacts | Yes | Yes |
+| Validation | 6 | `retro-test-analysis` | Section 11, coverage mapping | Yes (post-loop) | No |
+| Assembly | 7 | `retro-assembly` | Final 18-section specs, global view | Yes | Yes |
 
 Skills not present are skipped. Skills present but not in this list are dispatched after all known skills, in alphabetical order.
+
+**Module-level dispatches** receive both `accumulator_path` (the module-level spec) and `project_spec_path` (the parent project-level spec) so skills can reference project-wide context.
