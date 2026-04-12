@@ -20,7 +20,6 @@ This skill is invoked by the Retro-Spec Coordinator as the fifth extraction skil
 | 6 | `target_language` | Target language for artifacts |
 | 7 | `project_name` | Name of the project |
 | 8 | `module_filter` | Modules to analyze |
-| 9 | `patterns` | Active retro-domain patterns |
 
 ## Execution Sequence
 
