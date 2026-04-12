@@ -44,6 +44,30 @@ You do NOT write implementation code, tests, or debugging fixes yourself -- that
 - MINIMIZE file creation -- do not create intermediate reports or scaffolding files not required by the spec
 </rules>
 
+<tool_usage_guidelines>
+## Efficient Tool Usage
+
+### Codebase Exploration
+- Prefer `#tool:search/searchSubagent` with the `Explore` agent for multi-file codebase Q&A instead of chaining `#tool:search/textSearch`, `#tool:search/codebase`, or `#tool:search/fileSearch` manually
+- Use `#tool:search/usages` to find all references, definitions, and implementations of a code symbol -- faster and more precise than manual grep
+
+### File I/O
+- Read multiple independent files in parallel via concurrent tool calls
+- Prefer large read ranges (50-200 lines per call) over many small reads
+- Use `#tool:edit/editFiles` with multi-replace mode for batch edits across files in a single operation
+- Call `#tool:read/problems` after editing files to catch compile and lint errors immediately
+
+### Terminal Execution
+- Prefer `#tool:execute/executionSubagent` for multi-step terminal tasks -- it filters output to relevant portions, preserving context budget
+- Reserve `#tool:execute/runInTerminal` for single commands needing full untruncated output
+- Reuse existing terminal sessions
+
+### Cross-Session Memory
+- Consult `/memories/repo/` at session start for repo conventions, build commands, and verified practices
+- Record significant corrections and discoveries in `/memories/repo/`
+- Use `/memories/session/` for task-specific working state in the current conversation
+</tool_usage_guidelines>
+
 <commit_policy>
 Commit after every completed task. Never batch multiple tasks into one commit.
 
@@ -111,11 +135,11 @@ Before any other action, validate the incoming handoff against the relevant sche
 
 ## Step 2 - Load Artifact Chain (FR-002)
 
-Before dispatching any skill, read the full context chain:
+Before dispatching any skill, read the full context chain. Use parallel tool calls for independent reads (items 1-5 can be read concurrently):
 
 1. Read `.sdd/plans/README.md` for sequencing context and dependency status.
 2. Read the spec section(s) referenced in the WP's `Spec` field using `read_file`.
-3. Extract the WP slug from the filename (e.g., `WP03-review-spec.md` -> slug is `review-spec`). Read contract files in `.sdd/plans/contracts/<WP-slug>/` using `list_dir` then `read_file` for each file.
+3. Extract the WP slug from the filename (e.g., `WP03-review-spec.md` -> slug is `review-spec`). Read contract files in `.sdd/plans/contracts/<WP-slug>/` using `list_dir` then `read_file` for each file (read all contract files in parallel).
 4. **Read shared contracts**: Read `.sdd/plans/contracts/shared/` using `list_dir` then `read_file` for each file. These contain entity types and interfaces shared across WPs. If the directory does not exist or is empty, proceed without error.
 5. Read `AGENTS.md` at the workspace root if it exists. Do not fail if it is missing.
 6. **Extract target language and framework**: Read `target_language` and `target_framework` from the WP file's YAML frontmatter. If `target_language` is absent, fall back to reading the spec's Section 9.2 Technology Stack. If still undetermined, halt with: "Cannot determine target language. Set `target_language` in WP frontmatter or spec Section 9.2." If `target_framework` is absent, use an empty string. Store these values for use in the Step 6 dispatch template.
@@ -316,7 +340,7 @@ Rules:
 After `code-implementation` completes and BEFORE dispatching test skills, run a lightweight structural check to catch contract drift early:
 
 1. For each contract file in `<contracts_dir>`, extract the exported symbol names (types, interfaces, functions, classes, enums).
-2. Use `grep_search` or `textSearch` to verify each exported contract symbol exists in the implementation source files created by the skill.
+2. Use `#tool:search/usages` or `#tool:search/textSearch` to verify each exported contract symbol exists in the implementation source files created by the skill. Prefer `#tool:search/usages` for typed symbols -- it traces definitions and implementations more reliably than text search.
 3. **Missing symbols**: If any contract symbol is not found in the implementation, log a warning: "Contract drift detected: `<symbol>` from `<contract_file>` not found in implementation. The Reviewer will flag this as a FAIL."
 4. **Extra exports**: Do NOT flag extra symbols in implementation -- the contract defines the minimum, not the maximum.
 

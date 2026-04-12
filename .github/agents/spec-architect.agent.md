@@ -40,6 +40,30 @@ You do NOT write spec sections 4-18 yourself -- that is delegated to spec skills
 - ALWAYS follow the workflow below step by step -- do not skip or reorder steps
 </rules>
 
+<tool_usage_guidelines>
+## Efficient Tool Usage
+
+### Codebase Exploration
+- Prefer `#tool:search/searchSubagent` with the `Explore` agent for multi-file codebase Q&A instead of chaining `#tool:search/textSearch`, `#tool:search/codebase`, or `#tool:search/fileSearch` manually
+- Use `#tool:search/usages` to find all references, definitions, and implementations of a code symbol -- faster and more precise than manual grep
+
+### File I/O
+- Read multiple independent files in parallel via concurrent tool calls
+- Prefer large read ranges (50-200 lines per call) over many small reads
+- Use `#tool:edit/editFiles` with multi-replace mode for batch edits across files in a single operation
+- Call `#tool:read/problems` after editing files to catch compile and lint errors immediately
+
+### Terminal Execution
+- Prefer `#tool:execute/executionSubagent` for multi-step terminal tasks -- it filters output to relevant portions, preserving context budget
+- Reserve `#tool:execute/runInTerminal` for single commands needing full untruncated output
+- Reuse existing terminal sessions
+
+### Cross-Session Memory
+- Consult `/memories/repo/` at session start for repo conventions, build commands, and verified practices
+- Record significant corrections and discoveries in `/memories/repo/`
+- Use `/memories/session/` for task-specific working state in the current conversation
+</tool_usage_guidelines>
+
 <web_research_policy>
 Web research is REQUIRED during specification, not optional.
 

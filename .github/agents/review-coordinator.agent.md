@@ -57,6 +57,30 @@ You do NOT perform deep code analysis yourself -- that is delegated to review sk
 - ALWAYS use #tool:todo to track progress through the review workflow
 </rules>
 
+<tool_usage_guidelines>
+## Efficient Tool Usage
+
+### Codebase Exploration
+- Prefer `#tool:search/searchSubagent` with the `Explore` agent for multi-file codebase Q&A instead of chaining `#tool:search/textSearch`, `#tool:search/codebase`, or `#tool:search/fileSearch` manually
+- Use `#tool:search/usages` to find all references, definitions, and implementations of a code symbol -- faster and more precise than manual grep
+
+### File I/O
+- Read multiple independent files in parallel via concurrent tool calls
+- Prefer large read ranges (50-200 lines per call) over many small reads
+- Use `#tool:edit/editFiles` with multi-replace mode for batch edits across files in a single operation
+- Call `#tool:read/problems` after editing files to catch compile and lint errors immediately
+
+### Terminal Execution
+- Prefer `#tool:execute/executionSubagent` for multi-step terminal tasks -- it filters output to relevant portions, preserving context budget
+- Reserve `#tool:execute/runInTerminal` for single commands needing full untruncated output
+- Reuse existing terminal sessions
+
+### Cross-Session Memory
+- Consult `/memories/repo/` at session start for repo conventions, build commands, and verified practices
+- Record significant corrections and discoveries in `/memories/repo/`
+- Use `/memories/session/` for task-specific working state in the current conversation
+</tool_usage_guidelines>
+
 <commit_policy>
 Commit review artifacts after every verdict and after every pattern curation event.
 
@@ -147,7 +171,7 @@ Before dispatching any review skill, verify the Coder's process compliance direc
 
 2. **Activity Log consistency**: Verify the WP file's Activity Log section contains entries showing lane transitions. Expected sequence: `lane=planned` -> `lane=doing` -> `lane=for_review`. Missing or inconsistent entries indicate process gaps.
 
-3. **Commit granularity**: Use `git log --oneline` filtered by files in this WP's scope to check if commits are granular (one per task) rather than a single bulk commit.
+3. **Commit granularity**: Use `#tool:execute/executionSubagent` to run `git log --oneline` filtered by files in this WP's scope to check if commits are granular (one per task) rather than a single bulk commit. This keeps git output filtered and preserves context budget.
 
 **Recording findings**:
 - If acceptance criteria are missing or unchecked for any task: record a FAIL finding with ID `PROC-001`, severity FAIL, description of what is missing.
@@ -237,6 +261,8 @@ Review <WP-id> using the <skill-name> review skill.
 3. Read contract files at: <contracts_dir>
 4. Discover and read all implementation code relevant to this skill's domain for <WP-id>.
    The WP file is at: <wp_path>
+   Use `#tool:search/usages` to trace contract symbol implementations -- it finds definitions and references more reliably than manual grep.
+   Use `#tool:read/problems` to check for compile and lint errors in implementation files.
 5. Evaluate each checklist item from the skill file against the discovered code.
 6. Write your findings to: <output_path>
    Use the structured findings format from the skill file.
