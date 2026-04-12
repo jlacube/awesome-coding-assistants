@@ -34,7 +34,7 @@ This skill receives the following 7 inputs via the coordinator's subagent prompt
 
 1. **Read SKILL.md** -- Load this file for changelog generation instructions
 2. **Read existing docs** -- Read `.sdd/docs/CHANGELOG.md` if it exists to understand current content and identify the insertion point
-3. **Read source material** -- Read the WP file, spec, contract files, and implementation source files for content
+3. **Read source material** -- Read the WP file, spec, contract files, and implementation source files for content. Read multiple independent files in parallel.
 4. **Write documentation** -- Prepend a new changelog entry after the file header, before existing entries (do NOT append to the end)
 
 ## Constraints

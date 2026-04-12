@@ -34,7 +34,7 @@ This skill receives the following 7 inputs via the coordinator's subagent prompt
 
 1. **Read SKILL.md** -- Load this file for documentation generation instructions
 2. **Read existing docs** -- Read `.sdd/docs/deployment-guide.md` if it exists to understand current content
-3. **Read source material** -- Read the WP file, spec, contract files, and implementation source files for content
+3. **Read source material** -- Read the WP file, spec, contract files, and implementation source files for content. Read multiple independent files in parallel.
 4. **Write documentation** -- Update or create `.sdd/docs/deployment-guide.md` incrementally (do NOT recreate from scratch)
 
 ## Constraints

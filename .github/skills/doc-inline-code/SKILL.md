@@ -34,8 +34,8 @@ This skill receives the following 7 inputs via the coordinator's subagent prompt
 
 1. **Read SKILL.md** -- Load this file for inline documentation instructions
 2. **Read existing docs** -- Read the source files listed in `source_files` to understand current documentation state
-3. **Read source material** -- Read the WP file, spec, and contract files to understand the purpose and expected behavior of each function/module
-4. **Write documentation** -- Update source files in-place, adding or updating docstrings, comments, and type annotations without modifying logic
+3. **Read source material** -- Read the WP file, spec, and contract files to understand the purpose and expected behavior of each function/module. Use `#tool:search/usages` to find symbol definitions and call sites for accurate docstrings.
+4. **Write documentation** -- Update source files in-place, adding or updating docstrings, comments, and type annotations without modifying logic. Use `#tool:edit/editFiles` with multi-replace mode for batch docstring additions. Call `#tool:read/problems` after edits to verify no syntax errors were introduced.
 
 ---
 
