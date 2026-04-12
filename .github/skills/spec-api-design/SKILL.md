@@ -27,7 +27,7 @@ This skill receives the following inputs via the coordinator's subagent prompt:
 
 1. **Read this SKILL.md** to load instructions and guidelines
 2. **Read the accumulator** at `accumulator_path` to understand sections 1-7 (including Data Model)
-3. **Read the brief** at `brief_path` for context
+3. **Read the brief** at `brief_path` for context. Read accumulator and brief in parallel.
 4. **Write Section 8** to the accumulator by APPENDING after existing content
 5. **Produce companion artifacts** in `artifacts_dir`: `api-contracts.<ext>`, `error-catalog.<ext>`, and `interfaces.<ext>`
 

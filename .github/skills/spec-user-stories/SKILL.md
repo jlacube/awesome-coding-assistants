@@ -27,7 +27,7 @@ This skill receives the following inputs via the coordinator's subagent prompt:
 
 1. **Read this SKILL.md** to load instructions and guidelines
 2. **Read the accumulator** at `accumulator_path` to understand sections 1-4, 10, 12, 13 (everything spec-requirements wrote)
-3. **Read the brief** at `brief_path` for full context
+3. **Read the brief** at `brief_path` for full context. Read accumulator and brief in parallel.
 4. **Write sections 5, 6** to the accumulator by APPENDING after existing content
 5. **Produce artifacts** - N/A (this skill produces no companion artifacts)
 
