@@ -34,7 +34,7 @@ This skill is dispatched by the Planner Coordinator during Phase 1, after plan-d
 
 1. **Read SKILL.md** - Load this file for acceptance criteria instructions
 2. **Read plan state** - Read WP files written by plan-decomposition
-3. **Read spec + artifacts** - Read the full spec at `spec_path` for SHALL obligations, BDD scenarios, and implementation details
+3. **Read spec + artifacts** - Read the full spec at `spec_path` for SHALL obligations, BDD scenarios, and implementation details. Read multiple independent files in parallel via concurrent tool calls.
 4. **Modify WP files** - Update existing WP files and README in `plan_dir` (using `[CONSISTENCY FIX]` marker per FR-027)
 
 ---

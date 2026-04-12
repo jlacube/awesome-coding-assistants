@@ -34,7 +34,7 @@ This skill is dispatched by the Planner Coordinator during Phase 1. It analyzes 
 
 1. **Read SKILL.md** - Load this file for planning instructions
 2. **Read plan state** - Read existing plan files (README, any existing WP files) to understand prior context
-3. **Read spec + artifacts** - Read the full spec at `spec_path` and companion artifacts at `spec_artifacts_dir`
+3. **Read spec + artifacts** - Read the full spec at `spec_path` and companion artifacts at `spec_artifacts_dir`. Read multiple independent files in parallel via concurrent tool calls.
 4. **Write plan files** - Write WP files and skeleton README to `plan_dir`
 
 ---

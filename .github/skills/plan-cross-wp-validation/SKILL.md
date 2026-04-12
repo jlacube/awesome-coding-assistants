@@ -34,7 +34,7 @@ This skill is dispatched by the Planner Coordinator as the final Phase 2 skill. 
 
 1. **Read SKILL.md** - Load this file for validation instructions
 2. **Read plan state** - Read README, ALL WP files, and ALL contract files from `contracts_dir`
-3. **Read spec + artifacts** - Read the full spec and ALL companion artifacts from `spec_artifacts_dir`
+3. **Read spec + artifacts** - Read the full spec and ALL companion artifacts from `spec_artifacts_dir`. Read multiple independent files in parallel via concurrent tool calls.
 4. **Write fixes + outputs** - Fix inconsistencies in WP/contract files, generate config schema, update README
 
 ---
