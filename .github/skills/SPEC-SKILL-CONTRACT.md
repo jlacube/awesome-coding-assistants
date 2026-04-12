@@ -29,7 +29,7 @@ Every spec skill SHALL execute these 5 steps in order:
 
 1. **Read SKILL.md** - Load its own SKILL.md to get spec writing instructions and guidelines
 2. **Read accumulator** - Read the current accumulator file to understand what earlier skills have written
-3. **Read brief** - Read the source ideation brief for context
+3. **Read brief** - Read the source ideation brief for context. Read accumulator and brief in parallel via concurrent tool calls.
 4. **Write section(s)** - Write its assigned section(s) to the accumulator file (appending, not overwriting prior sections)
 5. **Produce artifacts** - Produce companion artifact files in the artifacts directory (if applicable to this skill)
 

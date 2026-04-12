@@ -23,8 +23,8 @@ Every review skill SHALL execute these steps in order:
 | 1 | **Read SKILL.md** | Load this skill's own instructions |
 | 2 | **Read spec** | Focus on the section(s) relevant to this skill's domain |
 | 3 | **Read WP file** | Extract WP scope, task list, acceptance criteria, and `depends_on` |
-| 4 | **Discover target files** | Find implementation/test/doc/dep files via `get_changed_files` or `git diff` |
-| 5 | **Evaluate checklist** | Apply the skill-specific checklist to each target file |
+| 4 | **Discover target files** | Find implementation/test/doc/dep files via `#tool:search/searchSubagent` (preferred for multi-file discovery), `#tool:search/usages` (for tracing specific symbols), `get_changed_files`, or `git diff`. Read multiple files in parallel. |
+| 5 | **Evaluate checklist** | Apply the skill-specific checklist to each target file. Use `#tool:read/problems` to check for compile and lint errors. |
 | 6 | **Write findings** | Write findings to `output_path` using the output format below |
 | 7 | **Return summary** | Return PASS/WARN/FAIL/N/A counts to the coordinator |
 

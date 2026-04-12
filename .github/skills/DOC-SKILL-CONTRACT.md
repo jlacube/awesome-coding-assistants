@@ -29,7 +29,7 @@ Every doc skill SHALL execute these 4 steps in order:
 
 1. **Read SKILL.md** - Load its own SKILL.md to get documentation generation instructions
 2. **Read existing docs** - Read the current documentation files in `.sdd/docs/` to understand what already exists
-3. **Read source material** - Read the WP file, spec, contract files, and implementation source files for content
+3. **Read source material** - Read the WP file, spec, contract files, and implementation source files for content. Read multiple independent files in parallel via concurrent tool calls. Use `#tool:search/searchSubagent` to discover implementation files when the file list is not provided.
 4. **Write documentation** - Update or create documentation files incrementally (do NOT recreate from scratch)
 
 ---

@@ -30,7 +30,7 @@ Every plan skill SHALL execute these 4 steps in order:
 
 1. **Read SKILL.md** - Load its own SKILL.md to get planning instructions and guidelines
 2. **Read plan state** - Read the current plan files (README, WP files, existing contracts) to understand what earlier skills have written
-3. **Read spec + artifacts** - Read the source spec and companion artifacts for requirements context
+3. **Read spec + artifacts** - Read the source spec and companion artifacts for requirements context. Read multiple independent files in parallel via concurrent tool calls.
 4. **Write assigned artifacts** - Write its assigned output to the plan directory (Phase 1) or contracts directory (Phase 2)
 
 ---

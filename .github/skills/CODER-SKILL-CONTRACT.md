@@ -28,9 +28,9 @@ Every coding skill receives the following 8 inputs in its subagent prompt from t
 Every coding skill SHALL execute these 5 steps in order:
 
 1. **Read SKILL.md** - Load its own SKILL.md to get implementation instructions and guidelines
-2. **Read WP + contracts** - Read the WP file and contract files (interfaces, data schemas, API contracts, state machines, error catalogs) to understand what to implement
+2. **Read WP + contracts** - Read the WP file and contract files (interfaces, data schemas, API contracts, state machines, error catalogs) to understand what to implement. Read multiple independent files in parallel via concurrent tool calls.
 3. **Read spec sections** - Read the spec sections referenced by its tasks for requirements context
-4. **Execute implementation work** - Perform the skill's primary function (code, tests, or debugging)
+4. **Execute implementation work** - Perform the skill's primary function (code, tests, or debugging). Use `#tool:edit/editFiles` with multi-replace mode for batch edits. Call `#tool:read/problems` after file edits to catch compile and lint errors immediately. Use `#tool:execute/executionSubagent` for multi-step terminal tasks. Use `#tool:search/usages` to trace symbol references when needed.
 5. **Report results** - Report files modified, tasks completed, test results, and issues back to the coordinator
 
 ---

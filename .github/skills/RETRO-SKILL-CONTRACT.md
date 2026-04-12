@@ -36,7 +36,7 @@ Every retro skill SHALL execute these 5 steps in order:
 1. **Read SKILL.md** -- Load its own SKILL.md to get extraction instructions and guidelines
 2. **Read discovery manifest** -- Read the discovery manifest to understand project/module topology
 3. **Read accumulator** -- Read the current accumulator to understand what earlier skills have extracted
-4. **Analyze source code** -- Statically analyze the legacy source code at `source_path` (NEVER execute it)
+4. **Analyze source code** -- Statically analyze the legacy source code at `source_path` (NEVER execute it). Use `#tool:search/searchSubagent` for broad codebase exploration and `#tool:search/usages` to trace symbol references and dependency graphs. Read multiple files in parallel.
 5. **Write extraction results** -- Write findings to the accumulator and produce companion artifacts
 
 ---
