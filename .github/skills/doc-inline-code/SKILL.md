@@ -10,7 +10,7 @@ This skill is invoked by the Docs Agent Coordinator as a subagent. It adds and u
 
 ## Input Contract (FR-005)
 
-This skill receives the following 5 inputs via the coordinator's subagent prompt, as defined in `DOC-SKILL-CONTRACT.md`:
+This skill receives the following 7 inputs via the coordinator's subagent prompt, as defined in `DOC-SKILL-CONTRACT.md`:
 
 | # | Input | Type | Description |
 |---|-------|------|-------------|
@@ -18,7 +18,9 @@ This skill receives the following 5 inputs via the coordinator's subagent prompt
 | 2 | `wp_path` | Path | Path to the approved WP file and its task list |
 | 3 | `spec_path` | Path | Path to the spec file; includes contract files directory (`.sdd/plans/contracts/<WP-slug>/`) |
 | 4 | `source_files` | List(Path) | Implementation source files modified by the WP |
-| 5 | `patterns` | Text | Active doc-domain patterns to avoid (from `.sdd/reviews/doc-patterns.md`) |
+| 5 | `docs_dir` | Path | Path to existing documentation directory (`.sdd/docs/`) for incremental updates |
+| 6 | `patterns` | Text | Active doc-domain patterns to avoid (from `.sdd/reviews/doc-patterns.md`) |
+| 7 | `contracts_dir` | Path | Path to contract files for this WP (`.sdd/plans/contracts/<WP-slug>/`) |
 
 ## Output Contract
 
